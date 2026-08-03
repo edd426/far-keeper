@@ -1,0 +1,114 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url || steps.deployment-retry.outputs.page_url }}
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url || steps.deployment-retry.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate build identity and diary manifest
+        run: |
+          chmod +x scripts/build.sh
+          ./scripts/build.sh
+          ls -la build-sha.txt build-sha.js diary/manifest.json
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Stage site
+        run: |
+          mkdir -p "$RUNNER_TEMP/site"
+          rsync -a --exclude='/previews' --exclude='/.git*' ./ "$RUNNER_TEMP/site/"
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ runner.temp }}/site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        continue-on-error: true
+
+      - name: Pause before retry
+        if: steps.deployment.outcome == 'failure'
+        run: sleep 30
+
+      - name: Retry deploy
+        id: deployment-retry
+        if: steps.deployment.outcome == 'failure'
+        uses: actions/deploy-pages@v4
+
+  screenshot:
+    needs: deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout main with history
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install Playwright and Chromium
+        run: |
+          npm install --no-save playwright@1.49.0
+          npx playwright install --with-deps chromium
+
+      - name: Wait for Pages to settle
+        run: sleep 25
+
+      - name: Capture configured views
+        env:
+          PAGE_URL: ${{ needs.deploy.outputs.page_url }}
+        run: |
+          mkdir -p previews
+          DATE_TAG="$(date -u +%Y-%m-%d)"
+          SHA_SHORT="$(git rev-parse --short HEAD)"
+          node scripts/screenshot.js --manifest scripts/views.json \
+            "$PAGE_URL" previews "$DATE_TAG" "$SHA_SHORT"
+
+      - name: Commit screenshots if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [[ -n "$(git status --porcelain previews/)" ]]; then
+            DEPLOY_SHA="$(git rev-parse --short HEAD)"
+            git add previews/
+            git commit -m "ci: deploy preview for ${DEPLOY_SHA}" -m "[skip ci]"
+            for i in 1 2 3; do
+              git push && break
+              git pull --rebase && continue
+            done
+          else
+            echo "no screenshot changes to commit"
+          fi

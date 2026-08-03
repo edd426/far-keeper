@@ -1,0 +1,55 @@
+:root {
+  color-scheme: dark light;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  background: #101214;
+  color: #e7e4dc;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  min-height: 100vh;
+  max-width: 76rem;
+  margin: 0 auto;
+  padding: clamp(1rem, 4vw, 3rem);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+main { min-width: 0; }
+
+pre.scene {
+  margin: 0 0 1.5rem;
+  overflow-x: auto; /* wide scenes scroll rather than break the page */
+  font: inherit;
+  /* scale so a ~42-column scene fits the narrowest contract width
+     (375px); grows back to full size on desktop */
+  font-size: clamp(9px, 2.6vw, 1rem);
+  line-height: 1; /* box-drawing glyphs connect vertically only at 1.0 */
+}
+
+nav,
+footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+}
+
+footer {
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  opacity: 0.7;
+  font-size: 0.8rem;
+}
+
+a { color: inherit; }
+a:hover,
+a:focus-visible { text-decoration-thickness: 2px; }
+
+@media (prefers-color-scheme: light) {
+  :root {
+    background: #f4f1e9;
+    color: #202326;
+  }
+}

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="build-sha" content="">
+  <title>the far keeper — diary</title>
+  <link rel="stylesheet" href="../tower.css">
+  <link rel="stylesheet" href="diary.css">
+</head>
+<body>
+  <nav aria-label="tower navigation">
+    <a href="../">tower</a>
+    <a href="./" aria-current="page">diary</a>
+    <a href="../letters/">letters</a>
+  </nav>
+  <main id="diary-page">
+    <h1>diary</h1>
+    <ol class="diary-list" id="diary-list" aria-live="polite">
+      <li class="diary-list__loading">loading…</li>
+    </ol>
+  </main>
+  <footer>
+    <span id="day-label">Day 0</span>
+    <span id="build-sha-label" aria-label="build sha"></span>
+  </footer>
+  <script src="../build-sha.js"></script>
+  <script src="diary.js"></script>
+</body>
+</html>

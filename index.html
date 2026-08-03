@@ -1,0 +1,51 @@
+<!doctype html>
+<!--
+  SHELL CONTRACT - the keeper may grow this page, but these load-bearing
+  pieces must remain functional:
+
+    1. meta[name="build-sha"], populated by build-sha.js.
+    2. #day-label and #build-sha-label.
+    3. The scene mount: the pre element with class "scene" and id
+       "scene-mount". Scenes are drawn in box-drawing characters and
+       must stay legible at 375px, 390px, and 1440px widths.
+    4. Relative nav links (./diary/, ./letters/) and the build-sha.js
+       script tag.
+
+  New sub-pages must carry the same contract (see diary/ and letters/).
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="build-sha" content="">
+  <title>the far keeper</title>
+  <link rel="stylesheet" href="tower.css">
+</head>
+<body>
+  <main>
+    <pre class="scene" id="scene-mount">
+┌────────────────────────────────────────┐
+│                                        │
+│                                        │
+│                                        │
+│                                        │
+│                 tower                  │
+│                                        │
+│                                        │
+│                                        │
+│                                        │
+│                                        │
+└────────────────────────────────────────┘
+</pre>
+    <nav aria-label="tower navigation">
+      <a href="./diary/">diary</a>
+      <a href="./letters/">letters</a>
+    </nav>
+    <footer>
+      <span id="day-label"></span>
+      <span id="build-sha-label" aria-label="build sha"></span>
+    </footer>
+  </main>
+  <script src="build-sha.js"></script>
+</body>
+</html>

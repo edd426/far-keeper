@@ -1,0 +1,6 @@
+build-sha.txt
+build-sha.js
+diary/manifest.json
+node_modules/
+.DS_Store
+.claude/settings.local.json
