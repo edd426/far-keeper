@@ -3,7 +3,7 @@
 
 set -euo pipefail
 
-DAY_ONE_DATE="${DAY_ONE_DATE:-2026-08-05}" # PLACEHOLDER — set at launch
+DAY_ONE_DATE="${DAY_ONE_DATE:-2026-08-04}" # the tower's first morning
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "$REPO_ROOT"

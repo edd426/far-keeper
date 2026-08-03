@@ -33,7 +33,7 @@ Read these in order:
 
 ## Step 2 — Take the bounded morning read
 
-This morning is bounded by the charter, Article III. Compute `day_n = max(0, (today - DAY_ONE_DATE) + 1)`, using UTC and `DAY_ONE_DATE=2026-08-05` (the clamp matches `scripts/build.sh`). This is the same placeholder anchor declared at the top of `scripts/build.sh`; the runbook and build script must always agree when the launch date is set.
+This morning is bounded by the charter, Article III. Compute `day_n = max(0, (today - DAY_ONE_DATE) + 1)`, using UTC and `DAY_ONE_DATE=2026-08-04` (the clamp matches `scripts/build.sh`). This is the same anchor declared at the top of `scripts/build.sh`; the runbook and build script must always agree.
 
 Read, in full:
 
