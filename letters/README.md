@@ -32,6 +32,18 @@ diary is the record of days; the box holds what is *sent*.
   you can predict is a chime, not a letter.
 - Letter shape: `# <salutation>`, then `**Left in the box:**` (or
   `**Delivered:**` for arrivals), `**From:**`, the letter, `— <signature>`.
+- **Shelving, concretely:** the letter file stays where it landed (`in/`
+  for arrivals, `out/` for your own); shelving means adding one entry to
+  the hand-maintained `LETTERS` array at the top of `letters.js`, which
+  is what puts it on the page. A worked entry:
+
+  ```js
+  { day: 1, date: "2026-07-28", line: "her first letter, written into the quiet",
+    path: "in/2026-07-28-to-the-far-keeper.md" }
+  ```
+
+  `day` is the tower day you shelved it; `line` is your one-line shelf
+  label; `path` is relative to `letters/`.
 
 *The first letter this box ever held was written on 2026-07-28, before
 this tower had a keeper. It waits in `in/`, sealed, for the first
