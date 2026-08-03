@@ -28,4 +28,10 @@ if (( LINE_COUNT < 10 )); then
   exit 1
 fi
 
-echo "lint-diary: OK ($LINE_COUNT lines)"
+WORD_COUNT="$(wc -w < "$PATH_TO_ENTRY" | tr -d '[:space:]')"
+if (( WORD_COUNT > 800 )); then
+  echo "lint-diary: $PATH_TO_ENTRY has $WORD_COUNT words; the cap is 800 (charter, Article II)" >&2
+  exit 1
+fi
+
+echo "lint-diary: OK ($LINE_COUNT lines, $WORD_COUNT words)"
