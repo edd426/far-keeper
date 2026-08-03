@@ -1,0 +1,3 @@
+The errand was run and this file is its only trace.
+Written by a probe agent on 2026-08-03; not committed, not load-bearing.
+Delete it freely once the survey has been read.
