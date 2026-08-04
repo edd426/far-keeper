@@ -14,11 +14,17 @@ else
 fi
 DATE_TAG="$(date -u +%Y-%m-%d)"
 PREVIEW_PATH="previews/${DATE_TAG}-${DEPLOY_SHA}.png"
-DEADLINE=$(( $(date +%s) + 300 ))
+# This poll spans BOTH CI jobs: deploy (~1-2 min) and then screenshot, which
+# only starts after deploy finishes and sleeps 25s for Pages to settle. At the
+# old 300s the healthy Day 1 run finished with ~60s to spare — a margin thin
+# enough that a normal run reads as a failure. 600s gives the honest wall time
+# room. The keeper is not idle meanwhile; the runbook has it drafting the diary.
+TIMEOUT_SECONDS="${WAIT_FOR_DEPLOY_TIMEOUT:-600}"
+DEADLINE=$(( $(date +%s) + TIMEOUT_SECONDS ))
 POLL_INTERVAL=20
 
 echo "wait-for-deploy: waiting for $PREVIEW_PATH on origin/main"
-echo "wait-for-deploy: deadline in 5 minutes; polling every ${POLL_INTERVAL}s"
+echo "wait-for-deploy: deadline in $(( TIMEOUT_SECONDS / 60 )) minutes; polling every ${POLL_INTERVAL}s"
 
 while [[ $(date +%s) -lt $DEADLINE ]]; do
   if ! git fetch origin main --quiet 2>/dev/null; then
@@ -45,6 +51,6 @@ while [[ $(date +%s) -lt $DEADLINE ]]; do
   sleep "$POLL_INTERVAL"
 done
 
-echo "wait-for-deploy: TIMEOUT after 5 minutes; preview never appeared" >&2
+echo "wait-for-deploy: TIMEOUT after $(( TIMEOUT_SECONDS / 60 )) minutes; preview never appeared" >&2
 echo "wait-for-deploy: check https://github.com/edd426/far-keeper/actions" >&2
 exit 1

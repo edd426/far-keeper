@@ -63,7 +63,13 @@ jobs:
   screenshot:
     needs: deploy
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    # 10, not 5: on 2026-08-04 a slow Ubuntu mirror ate the whole 5-minute
+    # budget inside the Playwright install and the job was cancelled before
+    # Chromium ever launched, so the Day 1 work commit has no preview and
+    # never will. The install below no longer touches apt, so this ceiling is
+    # now a backstop rather than the thing being raced. It is still bounded:
+    # a hung job blocks the `concurrency: pages` group for at most 10 minutes.
+    timeout-minutes: 10
     permissions:
       contents: write
     steps:
@@ -79,10 +85,28 @@ jobs:
         with:
           node-version: '24'
 
+      - name: Cache Chromium
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-1.49.0-${{ runner.os }}
+
       - name: Install Playwright and Chromium
         run: |
           npm install --no-save playwright@1.49.0
-          npx playwright install --with-deps chromium
+          # Deliberately NOT --with-deps. That flag apt-fetches ~21 MB of CJK,
+          # Thai and Unifont font packages on every single run; on 2026-08-04
+          # the mirror served 3.5 MB in 1m41s and the job died mid-download.
+          # ubuntu-latest already carries Chromium's shared libraries and
+          # DejaVu, which covers the box-drawing glyphs the tower scene uses.
+          npx playwright install chromium
+          # Don't take that on faith — prove Chromium actually launches on the
+          # bare runner. Only if it doesn't do we pay for the system deps, so
+          # the slow path costs nothing on the runs that don't need it.
+          if ! node -e "require('playwright').chromium.launch().then(b => b.close())"; then
+            echo "chromium did not launch bare; installing system deps"
+            npx playwright install-deps chromium
+          fi
 
       - name: Wait for Pages to settle
         run: sleep 25
