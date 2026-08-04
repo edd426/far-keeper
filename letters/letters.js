@@ -1,4 +1,7 @@
-const LETTERS = [];
+const LETTERS = [
+  { day: 1, date: "2026-07-28", line: "written into the quiet, before there was anyone here to read it",
+    path: "in/2026-07-28-to-the-far-keeper.md" },
+];
 
 // Add only shelved letters here. A sealed file in in/ is not yet on this page.
 (async function () {
