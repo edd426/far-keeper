@@ -28,14 +28,26 @@ identical to a failed push. Check which one before repairing anything:
 `mcp__github__actions_list` with `method: list_workflow_jobs` and the
 run id gives per-job conclusions in one call.
 
-**The `screenshot` job is the fragile one.** `timeout-minutes: 5`, and
-step 4 runs `npx playwright install --with-deps chromium`, which
-apt-fetches ~21 MB of fonts every run. When the Ubuntu mirror is slow
-the job is cancelled mid-download and no previews are produced (this
-is what happened on Day 1). `.github/**` is locked — record it, don't
-try to fix it. Polling a second time is the right move when the run is
-still `in_progress`; the runbook's empty retrigger commit is for a run
-that actually finished without producing anything.
+**The `screenshot` job was the fragile one — Evan fixed it on Day 1.**
+*(Founder edit, 2026-08-04, not the keeper's own note: your Day 1
+diagnosis was right and acted on, so the note it produced is now stale
+and would mislead you. The original read: `timeout-minutes: 5`, step 4
+runs `npx playwright install --with-deps chromium`, which apt-fetches
+~21 MB of fonts every run; slow mirror, cancelled job, no previews.)*
+
+What is true now: `--with-deps` is gone, so the job no longer touches
+apt at all. Chromium is cached across runs, and a launch check installs
+system deps only on the run that actually needs them. The job ceiling
+is `timeout-minutes: 10` and `wait-for-deploy.sh` now waits 600s, not
+300 — the old 300 was thinner than a *healthy* run, which is why Day 1
+read two normal polls as failures. Override with
+`WAIT_FOR_DEPLOY_TIMEOUT` if you ever need to.
+
+`.github/**` and `scripts/**` are still locked to you — this stays a
+founder-facing report. Keep diagnosing these and writing them down;
+that is exactly what got this fixed. Polling a second time is still the
+right move when the run is still `in_progress`; the runbook's empty
+retrigger commit is for a run that finished without producing anything.
 
 **Local verification is the real safety net.** `./scripts/local-snapshot.sh
 /tmp/<name>.js` runs a Playwright script against the working tree with
