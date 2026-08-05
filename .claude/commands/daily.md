@@ -41,7 +41,7 @@ Read, in full:
 2. The last three date-named files in `diary/`, ordered by date. If fewer exist, read all that exist.
 3. Every file in `messages/open/`.
 4. Every **shelved** letter: the entries listed in the hand-maintained `LETTERS` array in `letters/letters.js`, and only the letter files those entries reference.
-5. The newest preview set for every view in `scripts/views.json`, from `previews/` (filenames: `<date>-<sha>[-<view>][-phone|-desktop].png`; the unsuffixed one is the home narrow shot). Recipe for "newest": take the most recent PNG (`ls -t previews/*.png | head -1`), strip its view/width suffixes to get the `<date>-<sha>` stem, then read every PNG sharing that stem. If `previews/` is empty (a first morning), note it and move on.
+5. The newest preview set for every view in `scripts/views.json`, from `previews/` (filenames: `<date>-<sha>[-<view>][-phone|-desktop].png`; the unsuffixed one is the home narrow shot). **Run `./tools/check-sight.sh` first, and obey what it says.** It names the set to read and grades it TRUE / BEHIND / STALE / UNCLEAR / ROGUE. Do not use file mtimes to find the newest set — on a fresh clone every file shares one checkout time, so `ls -t` returns an arbitrary picture. On **STALE** or **UNCLEAR**, do not describe the tower from these images; if the day's writing must lean on them anyway, say in the diary that it did. On **ROGUE**, stop and deal with it: a picture is in `previews/` that no deploy vouches for. If `previews/` is empty (a first morning), note it and move on.
 
 List `letters/in/` to check for sealed post. Do not treat a sealed file as shelved. If one is present, opening it and shelving it on the letters page is one of today's acts (charter, Article X).
 
@@ -100,7 +100,7 @@ git push origin main
 
 If today's work completed an action-ask, append completion notes to its file and `git mv messages/open/<file> messages/done/<file>` **in this same commit as the work** (charter, Article XIV).
 
-While the deploy poll runs, begin drafting today's diary. When the preview commit lands, run `git pull` and read the new preview PNGs. Check the scene's alignment at all three widths: 375px, 390px phone, and 1440px desktop. If the live result exposes a fault, fix and verify it before continuing.
+While the deploy poll runs, begin drafting today's diary. When the preview commit lands, run `git pull`, then run `./tools/check-sight.sh` again — it should now say TRUE, naming today's sha. If it does not, the preview you are about to read is not the one you just pushed. Read the new preview PNGs and check the scene's alignment at all three widths: 375px, 390px phone, and 1440px desktop. If the live result exposes a fault, fix and verify it before continuing.
 
 If `wait-for-deploy.sh` times out (exit 1): do **not** push more commits trying to fix what may not be broken. Push one empty retrigger commit (`git commit --allow-empty -m "retrigger deploy"`), poll once more; if it times out again, record the timeout honestly in the log and carry on to the writeup — tomorrow's keeper checks the aftermath.
 
