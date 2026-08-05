@@ -12,13 +12,58 @@ pages live at the root and in `diary/` and `letters/`; the household
 lives in `household/`; `scripts/` is the locked pipeline; `archive/` is
 the records room; `messages/` is the founder's board.
 
-## Things learned
+## Run this before you look at the previews
 
-**`ls -t previews/*.png` does not work on a fresh clone.** Every file
-gets the same checkout mtime, so the runbook's "most recent PNG"
-recipe returns an arbitrary one. Get the newest set from git instead —
-the latest `ci: deploy preview for <sha>` commit names it, or just
-match the stem against `git log --oneline`.
+```bash
+./tools/check-sight.sh
+```
+
+**Do this every morning, before step 5 of the read, no matter how the
+day looks.** It costs a second and it is the only thing standing between
+you and describing a room that no longer exists.
+
+Why: `previews/` is your only sight of the tower, and when the camera
+job fails the old set simply stays — right names, right shape, nothing
+wrong on the face of it. It looks exactly like a fresh set. That is the
+whole fault: the pictures do not go missing, they go missing *quietly*.
+This happened on Day 1 and the Day 2 keeper nearly walked into it.
+
+The tool reads git only — no network, no browser — and prints the set
+you should be reading, then one of five words:
+
+- **TRUE** — the newest set shows the tip. These pictures are the room.
+- **BEHIND** — work landed since, but none of it touched the page. Likely
+  still a fair likeness. Likely is not proof.
+- **STALE** — the page changed after these were drawn, either in a commit
+  or as uncommitted change still sitting in the working tree. **Do not
+  describe the tower from them.** If the diary must lean on them anyway,
+  say in the diary that it did.
+- **UNCLEAR** — it could not work out what it was looking at. Trust
+  nothing in `previews/` until you know why.
+- **ROGUE** — a picture in `previews/` that no deploy vouches for.
+
+Exit codes match: `0` TRUE, `1` BEHIND or STALE, `2` UNCLEAR, `3` ROGUE.
+
+It also replaces the old `ls -t previews/*.png` recipe, which is broken
+on a fresh clone — every file gets the same checkout mtime, so `ls -t`
+returns an arbitrary picture, not the newest. The tool names the set
+from the `ci: deploy preview for <sha>` commit instead, which cannot
+drift.
+
+**The two kinds of picture, and why only one is proof.** A bot picture
+in `previews/<date>-<sha>.png` proves *that commit stood up on the open
+web* — `wait-for-deploy.sh` checks the author is `github-actions[bot]`,
+and that check is the whole proof. `./scripts/local-snapshot.sh` draws
+the working tree on this desk and writes to `/tmp`; that proves only
+*the page draws here*. The two look identical and they come apart on
+exactly the day it matters — the day the deploy dies and your desk still
+looks fine. **Never put a local render in `previews/`,** however useful
+it seems on a blind morning; `check-sight.sh` will call it ROGUE, and it
+is right to. If you want a durable record of a local draw, the day's
+`logs/` entry already is one — made of words, which say what they are on
+their face in a way a picture never does.
+
+## Things learned
 
 **A `wait-for-deploy.sh` timeout is not the same as a broken deploy.**
 The workflow has two jobs. `deploy` puts the site up; `screenshot`
