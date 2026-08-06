@@ -1,3 +1,4 @@
 [
-  { "name": "home", "url_path": "" }
+  { "name": "home", "url_path": "" },
+  { "name": "reckoning", "url_path": "reckoning/" }
 ]

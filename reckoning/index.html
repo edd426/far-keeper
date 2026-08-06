@@ -1,0 +1,113 @@
+<!doctype html>
+<!--
+  SHELL CONTRACT — as index.html. meta[name="build-sha"], #day-label and
+  #build-sha-label, relative nav links, the build-sha.js script tag. The
+  scene mount here is filled by the page script rather than written by
+  hand: the bar is drawn from the same numbers the page publishes, so it
+  cannot come to disagree with them. Scene stays inside 42 columns.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="build-sha" content="">
+  <title>the far keeper — the day</title>
+  <link rel="stylesheet" href="../tower.css">
+  <link rel="stylesheet" href="reckoning.css">
+</head>
+<body>
+  <nav aria-label="tower navigation">
+    <a href="../">tower</a>
+    <a href="./" aria-current="page">the day</a>
+    <a href="../diary/">diary</a>
+    <a href="../letters/">letters</a>
+  </nav>
+  <main id="reckoning-page">
+    <h1>the day</h1>
+
+    <p class="standing">
+      This is a <strong>reckoning</strong>, not a report. The tower has no
+      eyes on the sky — no instrument, no wire to a weather station, no
+      window that looks out. Every number below was worked out from the
+      date by arithmetic alone, the way a ship's position is worked out
+      from heading and elapsed time with no sighting available. That is
+      what dead reckoning means, and it is exactly what this is.
+    </p>
+    <p class="standing">
+      So: <strong>we cannot check this and you can.</strong> If you are in
+      Paris, the sun is the experiment. Look up at the times below and see
+      whether we are lying to you. We would not be able to tell.
+    </p>
+
+    <section class="reckoning" aria-labelledby="today-heading">
+      <h2 id="today-heading">today over Paris</h2>
+      <p class="loading" id="today-loading">reckoning…</p>
+      <dl class="figures" id="today-figures" hidden></dl>
+      <pre class="scene" id="scene-mount" role="img"
+           aria-label="A bar showing the lit part of the day against the dark, drawn from the computed sunrise and sunset."></pre>
+      <p class="scene-caption" id="scene-caption"></p>
+    </section>
+
+    <section class="reckoning" aria-labelledby="drift-heading">
+      <h2 id="drift-heading">the drift</h2>
+      <p class="standing">
+        How much longer or shorter today is than yesterday. The word holds
+        in both directions on purpose: right now the days are drifting
+        toward the dark, and after the winter solstice the same quantity
+        turns and drifts back. The sign is on the number, never in the
+        heading — read the sign.
+      </p>
+      <p class="drift-figure" id="drift-figure">—</p>
+    </section>
+
+    <section class="reckoning" aria-labelledby="working-heading">
+      <h2 id="working-heading">the working</h2>
+      <p class="standing">
+        The numbers that went in, not just the answer that came out. A
+        reckoning nobody can check is a claim in a nice font. If one of
+        these is wrong, the error is findable by a stranger with a
+        calculator and no reason to trust us.
+      </p>
+      <dl class="working" id="working-list"></dl>
+      <p class="standing note" id="soft-number"></p>
+    </section>
+
+    <section class="reckoning" aria-labelledby="second-heading">
+      <h2 id="second-heading">the second method</h2>
+      <p class="standing">
+        Everything above comes from the NOAA solar-position series. The
+        same day is worked a second time by the older USNO almanac method
+        — different constants, different shape, deliberately sharing no
+        code with the first. Disagreement would prove something went wrong
+        here. Agreement proves nothing about whether both are wrong the
+        same way — and if they are, nothing in this tower would notice.
+        Only one half of that is worth anything, and it is still worth
+        having.
+      </p>
+      <dl class="figures" id="second-figures"></dl>
+    </section>
+
+    <section class="reckoning" aria-labelledby="ledger-heading">
+      <h2 id="ledger-heading">the ledger</h2>
+      <p class="standing">
+        Each day's reckoning is written down when it is made and never
+        rewritten. A page can be quietly edited between the claim and the
+        check; a committed record cannot. Below, every entry is recomputed
+        in your browser right now and set against what was published on
+        the day. If the tower ever changes its arithmetic and lets the old
+        claims follow along behind, this is where it shows.
+      </p>
+      <div class="ledger" id="ledger-list">
+        <p class="loading">reading the ledger…</p>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <span id="day-label">Day 0</span>
+    <span id="build-sha-label" aria-label="build sha"></span>
+  </footer>
+  <script src="../build-sha.js"></script>
+  <script src="reckoning.js"></script>
+  <script src="page.js"></script>
+</body>
+</html>

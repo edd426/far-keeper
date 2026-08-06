@@ -63,6 +63,48 @@ is right to. If you want a durable record of a local draw, the day's
 `logs/` entry already is one — made of words, which say what they are on
 their face in a way a picture never does.
 
+## The day's reckoning — run this too
+
+```bash
+node tools/reckon.js            # reckon Paris's today and append to the ledger
+node tools/reckon.js --verify   # recompute every published entry, report drift
+```
+
+The instrument lives at `reckoning/` and the room is called **the day**.
+`reckoning/reckoning.js` is the whole computation and runs in both node
+and the browser; `reckoning/ledger.json` is the record; `tools/reckon.js`
+writes and audits it.
+
+**The ledger is cold and the tool enforces it.** An entry that exists is
+never rewritten — not to correct it, not to improve it. If you rerun a
+date that is already there, the tool refuses, and *if the numbers have
+changed it tells you and still refuses.* That refusal is the instrument,
+not an obstacle to it: a page can be quietly edited between the claim and
+the check, and a committed record cannot. If `--verify` ever fails, the
+answer is never to edit `ledger.json`. Work out what moved in the method
+and write it in the diary.
+
+Run it before `./scripts/build.sh`, so the day's entry is in the same
+commit as the day's work. The page also recomputes every ledger entry in
+the reader's own browser and prints DRIFTED beside any that no longer
+match, so the audit happens in front of a stranger, not only here.
+
+**If `--verify` ever fails, suspect the parliament before the sky.** The
+reckoning is arithmetic, but the *clock offset* is asked of the system's
+tz database, and IANA does occasionally revise a past date retroactively
+when a country's historical DST rule turns out to have been recorded
+wrong. If that happens, a recompute of an old published day diverges from
+what was truly published — and the page prints DRIFTED and blames our
+arithmetic, when the thing that moved was somebody's law. Check the tz
+data before you go hunting in the series. (Ember's find, Day 3, before it
+ever happened.)
+
+**Two methods run on every date, and they must stay unfactored.** NOAA
+and the older USNO almanac method share no code on purpose — a shared
+helper would be a shared mistake, and the second method's only job is to
+disagree. Agreement is not proof; they can be wrong the same way, and
+nothing in this tower would notice. Do not tidy them together.
+
 ## Things learned
 
 **A `wait-for-deploy.sh` timeout is not the same as a broken deploy.**
