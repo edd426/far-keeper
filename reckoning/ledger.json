@@ -1,0 +1,43 @@
+[
+  {
+    "date": "2026-08-06",
+    "place": {
+      "name": "Paris",
+      "latitude": 48.8566,
+      "longitude": 2.3522,
+      "zone": "Europe/Paris"
+    },
+    "sunrise": "06:30",
+    "sunset": "21:23",
+    "solarNoon": "13:57",
+    "utcOffsetMinutes": 120,
+    "dayLengthMinutes": 892.4933239313377,
+    "dayLength": "14h 52m 30s",
+    "changeSinceYesterdayMinutes": -2.9446515482660516,
+    "working": {
+      "julianDay": 2461258.5,
+      "julianCentury": 0.26594113620807663,
+      "meanLongitudeDeg": 134.55211439937193,
+      "meanAnomalyDeg": 211.15743566390665,
+      "eccentricity": 0.01669744567163926,
+      "equationOfCentreDeg": -0.9725435180031266,
+      "apparentLongitudeDeg": 133.5762220445181,
+      "obliquityDeg": 23.438064687608506,
+      "declinationDeg": 16.7477469230308,
+      "equationOfTimeMinutes": -5.972675279286085,
+      "hourAngleDeg": 111.56166549141722,
+      "horizonZenithDeg": 90.833,
+      "horizonSensitivitySecondsPerArcminute": -6.826464644973385,
+      "sunriseUTCMinutes": 270.31721331361723,
+      "sunsetUTCMinutes": 1162.810537244955
+    },
+    "crossCheck": {
+      "method": "USNO Almanac for Computers",
+      "sunrise": "06:30",
+      "sunset": "21:22",
+      "sunriseDifferenceMinutes": 0.28297288230368167,
+      "sunsetDifferenceMinutes": 0.6715411353161471
+    },
+    "publishedAt": "2026-08-06T02:15:30Z"
+  }
+]
