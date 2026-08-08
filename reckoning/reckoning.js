@@ -142,6 +142,89 @@
     return (((localMean - lngHour) % 24) + 24) % 24 * 60;   // minutes after 00:00 UTC
   }
 
+  // Ember's guard, banked Day 4, built Day 5, corrected twice more the
+  // same day. A check on offsets this file has actually gone and looked
+  // up, not a number carried in from the world and left unattributed —
+  // that is the standard it is held to, after Ash read the first draft
+  // as a sentence and asked whether anyone had earned it.
+  //
+  // Nobody had, quite. The first draft claimed Europe/Paris "only ever
+  // produces 60 or 120" as if that were a fact about the shape of a UTC
+  // offset. It is not. It is a fact about French law since a date this
+  // comment can name, and it is false outside that date. Gnomon walked
+  // the zone at six-hour steps across its whole recorded tz history
+  // (2026-08-08) and found exactly:
+  //   1970–2035: {60, 120}      — the modern set; 120 first appears 1976-03-28
+  //   1940–1945: {0, 60, 120}   — the war years, occupied-zone time included
+  //   1891–1911: {0, 9}         — Paris Mean Time, +00:09:21 rounded to 9,
+  //                                the city's own noon, in force to 1911-03-11
+  //
+  // So {60, 120} is a witnessed claim with a domain, not a law. It holds,
+  // confirmed, from PARIS_MODERN_DOMAIN_START on — earlier than that
+  // (the war years, Paris Mean Time, and the unsampled decades between
+  // 1911 and 1970) this guard has not looked and does not assert. A
+  // 9-minute offset before 1911-03-11 is not impossible; it is real, it
+  // is what the sun over that city's own meridian actually said, and a
+  // guard that called it impossible would be false in the tower's own
+  // manner — confident, and wrong, about a thing it never checked.
+  //
+  // The general fallback, for any zone other than Europe/Paris, keeps
+  // the same shape at a coarser grain: every IANA zone *today* sits on a
+  // whole quarter-hour between UTC-12:00 (Baker Island) and UTC+14:00
+  // (Kiritimati). That range also rejects a whole day (1440) passed off
+  // as "24 quarter-hours" — the coarse break, and the likelier one: a
+  // day is what falls apart when a *date* breaks, not when a clock does.
+  // But this, too, is a claim about the world *now*, not eternal — it
+  // would have rejected Paris's own 9 minutes exactly as wrongly, which
+  // is why Europe/Paris is checked on its own witnessed terms instead of
+  // falling into this general case.
+  //
+  // "Evidence" is Latin *videre*, to see: it owes a look at something
+  // outside itself, fetched fresh, every time it is asked — the almanac
+  // cross-check and `--verify` both pay that cost on every run.
+  // "Impossible" is *possum* negated: a value can be ruled out from its
+  // own shape with no sighting required *at the moment it is checked* —
+  // but the shape itself still had to be gathered from the world once,
+  // by looking, and banked. The saving is real: one lookup standing in
+  // for a lookup on every call. The debt is real too: a banked witness
+  // that doesn't declare when it looked and over what range reads as a
+  // fact nobody earned, wearing evidence's flat voice without having
+  // paid evidence's cost — which is the exact failure this file exists
+  // to catch, now aimed at itself.
+  var PARIS_MODERN_OFFSETS_MINUTES = [60, 120];
+  var PARIS_MODERN_DOMAIN_START = '1970-01-01'; // see the sampling above
+  var GENERAL_OFFSET_RANGE_MINUTES = { min: -720, max: 840 };
+  function assertPlausibleOffset(offsetMinutes, zone, dateISO) {
+    if (zone === 'Europe/Paris') {
+      if (dateISO < PARIS_MODERN_DOMAIN_START) {
+        // Before the witnessed domain: this guard has nothing earned to
+        // assert here (Paris Mean Time, the war years, and the unsampled
+        // decades between are all real history it hasn't looked at), so
+        // it says nothing rather than call a true offset impossible.
+        return offsetMinutes;
+      }
+      if (PARIS_MODERN_OFFSETS_MINUTES.indexOf(offsetMinutes) === -1) {
+        throw new Error(
+          'reckoning: impossible UTC offset ' + offsetMinutes + 'min for Europe/Paris on ' +
+          dateISO + ' — the modern era (' + PARIS_MODERN_DOMAIN_START + ' on) only ever runs ' +
+          '60 or 120. Check the tz data before the arithmetic.'
+        );
+      }
+      return offsetMinutes;
+    }
+    var ok = offsetMinutes % 15 === 0
+      && offsetMinutes >= GENERAL_OFFSET_RANGE_MINUTES.min
+      && offsetMinutes <= GENERAL_OFFSET_RANGE_MINUTES.max;
+    if (!ok) {
+      throw new Error(
+        'reckoning: impossible UTC offset ' + offsetMinutes + 'min for ' + zone +
+        ' — no zone reckons outside a quarter-hour between UTC-12:00 and UTC+14:00. ' +
+        'Check the tz data before the arithmetic.'
+      );
+    }
+    return offsetMinutes;
+  }
+
   // What the zone was doing at that instant. This is the true clock
   // talking, not arithmetic: the daylight-saving rule is a fact about a
   // parliament, not about the sky, and it belongs to the tz database
@@ -172,7 +255,7 @@
       Number(parts.year), Number(parts.month) - 1, Number(parts.day),
       hour, Number(parts.minute), Number(parts.second)
     );
-    return Math.round((asIfUTC - instant.getTime()) / 60000);
+    return assertPlausibleOffset(Math.round((asIfUTC - instant.getTime()) / 60000), zone, dateISO);
   }
 
   function shiftDate(dateISO, days) {

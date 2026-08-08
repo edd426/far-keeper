@@ -232,9 +232,38 @@
     });
   }
 
-  function start() {
+  // Today's figures, or an honest account of why there are none.
+  //
+  // Until Day 5 this was one unguarded line. reckon() could not throw, so
+  // nothing here caught anything. Day 5 put a guard inside the instrument
+  // that throws when the clock offset is impossible — and the moment it
+  // did, this call site became the place where a caught fault turns into
+  // a dark room: the throw escaped start(), the fetch below never ran, and
+  // the ledger — the tower's whole public self-audit — silently did not
+  // draw. Verified in a browser with the guard forced to fire, not
+  // reasoned about: the room lost 2300 characters and said nothing.
+  //
+  // That is the tower's signature failure and the guard had rebuilt it one
+  // floor up. A check that protects a number by taking down the room it
+  // was printed in has moved the silence, not removed it. So: the failure
+  // is caught, and it is *said*, here where a reader is standing.
+  function renderTodayOrSayWhyNot() {
     var today = todayInZone(window.Reckoning.PARIS.zone);
-    renderToday(window.Reckoning.reckon(today, window.Reckoning.PARIS));
+    try {
+      renderToday(window.Reckoning.reckon(today, window.Reckoning.PARIS));
+    } catch (error) {
+      var loading = document.getElementById('today-loading');
+      loading.hidden = false;
+      loading.textContent = 'the reckoning stopped itself for ' + today + ' — ' +
+        error.message + ' The ledger below is untouched by this: it is what was ' +
+        'published on the days it was published, and it still recomputes or it ' +
+        'says DRIFTED. This tower would rather print nothing than print a time ' +
+        'it cannot stand behind.';
+    }
+  }
+
+  function start() {
+    renderTodayOrSayWhyNot();
 
     fetch('ledger.json', { cache: 'no-cache' })
       .then(function (response) {
