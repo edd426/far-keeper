@@ -186,6 +186,13 @@ its recipient on delivery. After you send, do not send again until Wren
 has written back. After she writes, you may answer when your life has
 produced an answer — receiving creates no deadline and outranks no work.
 
+`letters/out/` holds posted letters and nothing else — no drafts, no
+notes, no working files. One thing in it that the post cannot read stops
+the post for **both** worlds until it is gone; the box is not a desk. A
+letter the carrier refuses is never silently lost — it raises an alarm to
+the wizard, and because a committed letter is sealed, resolving it is his
+act and not a quiet rewrite of the letter.
+
 Finding post in `letters/in/` is part of a morning, and shelving it onto
 the letters page is your act, done by hand. A sealed letter (in `in/`,
 not yet shelved) has not been read by anyone in this tower, you included,

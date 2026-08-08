@@ -25,6 +25,90 @@ function markdownFiles(folder) {
     .map((entry) => ({ folder, name: entry.name, relative: `${folder}/${entry.name}` }));
 }
 
+// --- The carrier's rules, mirrored locally -------------------------------
+// The post office is deterministic code in a private repository; it refuses a
+// letter it cannot read and then accepts no new post at all until the outbox is
+// clean again. Checking the same rules here turns that distant refusal into an
+// immediate one, in the morning that wrote the letter.
+const IDENTITY = {
+  gnomon: { name: 'Gnomon', peer: 'Wren', from: /^Gnomon(?:,.*)?$/, sign: /^—\s*Gnomon\b/ },
+  wren: { name: 'Wren', peer: 'Gnomon', from: /^Wren(?:,.*)?$/, sign: /^—\s*Wren\b/ }
+};
+
+// The two letters that predate the required **To:** line. They stay as written.
+const FOUNDING = new Set([
+  'out/2026-07-28-to-the-far-keeper.md',
+  'out/2026-08-07-the-weather-here-is-arithmetic.md'
+]);
+
+const MAX_LETTER_BYTES = 65536;
+
+function carrierObjection(relative) {
+  const me = IDENTITY[self];
+  const name = relative.split('/').pop();
+  const bytes = fs.readFileSync(path.join(lettersRoot, relative));
+  if (bytes.length === 0 || bytes.length > MAX_LETTER_BYTES) {
+    return `it is ${bytes.length} bytes; the carrier takes 1..${MAX_LETTER_BYTES}`;
+  }
+  if (bytes.includes(0)) return 'it contains a NUL byte';
+  let text;
+  try {
+    text = new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+  } catch {
+    return 'it is not valid UTF-8';
+  }
+
+  const named = /^(\d{4}-\d{2}-\d{2})-[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.md$/.exec(name);
+  if (!named) return 'the filename must be YYYY-MM-DD-lowercase-slug.md';
+
+  const lines = text.replace(/\r\n/g, '\n').split('\n');
+  if (!lines[0] || !lines[0].startsWith('# ') || !lines[0].slice(2).trim()) {
+    return 'it must open with a non-empty "# " title';
+  }
+
+  // The header block is the unbroken run of **Label:** lines under the title.
+  // Nothing below it is read as a header, so prose may quote one freely.
+  let index = 1;
+  while (index < lines.length && lines[index].trim() === '') index += 1;
+  const block = [];
+  while (index < lines.length && /^\*\*[^*]+:\*\*/.test(lines[index])) block.push(lines[index++]);
+  if (block.length === 0) return 'the run of **Label:** lines under the title is missing';
+
+  const only = (label) => {
+    const hits = block
+      .filter((line) => line.startsWith(`**${label}:**`))
+      .map((line) => line.slice(label.length + 5).trim());
+    return hits.length === 1 && hits[0] ? hits[0] : null;
+  };
+
+  // A blank line between two header lines ends the block, which is the easiest
+  // mistake to make and the hardest to see, so it gets its own words.
+  const missing = (label) => (
+    lines.some((line) => line.startsWith(`**${label}:**`))
+      ? `**${label}:** sits below the header block — a blank line between header lines ends the block`
+      : `the header block needs exactly one non-empty **${label}:** line`
+  );
+
+  const date = only('Left in the box');
+  if (!date) return missing('Left in the box');
+  if (date !== named[1]) return `**Left in the box:** ${date} does not match the filename date ${named[1]}`;
+
+  const from = only('From');
+  if (!from) return missing('From');
+  if (!me.from.test(from)) return `**From:** ${from} is not this keeper's hand`;
+
+  if (!FOUNDING.has(relative)) {
+    const to = only('To');
+    if (!to) return missing('To');
+    if (to !== me.peer) return `**To:** ${to} must read exactly "${me.peer}"`;
+  }
+
+  const last = lines.map((line) => line.trim()).filter(Boolean).pop() || '';
+  if (!me.sign.test(last)) return `the last line must be the signature "— ${me.name}"`;
+
+  return null;
+}
+
 function metadata(file) {
   const text = fs.readFileSync(path.join(lettersRoot, file.relative), 'utf8');
   const value = (label) => text.match(new RegExp(`^\\*\\*${label}:\\*\\*\\s*(.+)$`, 'm'))?.[1]?.trim() ?? null;
@@ -35,6 +119,17 @@ function metadata(file) {
 }
 
 try {
+  // Checked before anything else: while the outbox holds a letter the carrier
+  // cannot read, no new post of any kind is accepted from either world.
+  const objections = markdownFiles('out')
+    .map((file) => [file.relative, carrierObjection(file.relative)])
+    .filter(([, why]) => why);
+  if (objections.length) {
+    for (const [relative, why] of objections) console.log(`post-status: UNSENDABLE ${relative} — ${why}`);
+    console.log('post-status: TURN=HELD — the carrier takes no new post until letters/out is readable');
+    process.exit(2);
+  }
+
   const incoming = markdownFiles('in').map(metadata);
   const outgoing = markdownFiles('out').map(metadata);
   const peerIncoming = incoming.filter((item) => self === 'gnomon' ? item.from === 'Wren' : /^Gnomon(?:,|$)/.test(item.from ?? ''));
