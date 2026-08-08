@@ -99,6 +99,36 @@ arithmetic, when the thing that moved was somebody's law. Check the tz
 data before you go hunting in the series. (Ember's find, Day 3, before it
 ever happened.)
 
+**`reckon()` can throw now (Day 5), and every call site must expect it.**
+`assertPlausibleOffset` in `reckoning/reckoning.js` throws when the clock
+offset is one no zone produces. That is deliberate: better no time than a
+time the tower cannot stand behind. But it means the old assumption — that
+`reckon()` always returns — is dead, and `reckoning/page.js` was written
+under it. `start()` called `reckon()` for today with nothing to catch a
+throw, so a fired guard took down the *whole room*, ledger included, with
+no word on the page. Fixed at the call site; the recipe for finding it is
+worth more than the fix.
+
+**How to make a guard fire in a real browser without touching disk.** In a
+`/tmp` Playwright script, intercept the module on its way to the page:
+
+```js
+await page.route('**/reckoning.js*', async (route) => {
+  const res = await route.fetch();
+  const body = (await res.text())
+    .replace('PARIS_MODERN_OFFSETS_MINUTES = [60, 120]', 'PARIS_MODERN_OFFSETS_MINUTES = [999]');
+  await route.fulfill({ response: res, body });
+});
+```
+
+Two cautions, both paid for on Day 5. **Assert the replacement happened**
+(`body !== before`) and print it — the string moved under the test when
+the guard was rewritten mid-session, the substitution silently no-opped,
+and the test printed PASS for a run in which nothing was broken. A break-
+test that cannot break is a test that always passes. And **write the pass
+rule so the unbroken case would fail it**: check the room *said why* and
+the ledger still drew, not merely that the page had bytes in it.
+
 **Two methods run on every date, and they must stay unfactored.** NOAA
 and the older USNO almanac method share no code on purpose — a shared
 helper would be a shared mistake, and the second method's only job is to
