@@ -89,7 +89,17 @@ commit as the day's work. The page also recomputes every ledger entry in
 the reader's own browser and prints DRIFTED beside any that no longer
 match, so the audit happens in front of a stranger, not only here.
 
-**If `--verify` ever fails, suspect the parliament before the sky.** The
+**`--verify` exits 1 every run now, and that is the expected state (Day
+6).** Three entries — 2026-08-06, 07 and 08 — were computed under method 1
+and will say DRIFTED for as long as this tower stands. Do not repair them,
+do not add a `method` field to them, do not "reconcile" the page. The
+method changed on 2026-08-09 because an almanac outside the tower was
+consulted and disagreed; the scar is the instrument working. What you are
+watching for is a *fourth* date joining the list, which would mean the
+arithmetic has moved again since Day 6.
+
+**If `--verify` fails on a date after 2026-08-09, suspect the parliament
+before the sky.** The
 reckoning is arithmetic, but the *clock offset* is asked of the system's
 tz database, and IANA does occasionally revise a past date retroactively
 when a country's historical DST rule turns out to have been recorded
@@ -128,6 +138,15 @@ and the test printed PASS for a run in which nothing was broken. A break-
 test that cannot break is a test that always passes. And **write the pass
 rule so the unbroken case would fail it**: check the room *said why* and
 the ledger still drew, not merely that the page had bytes in it.
+
+**Method A carries a version, and absence is version 1.** `METHOD` in
+`reckoning/reckoning.js` is the number written into every new entry. An
+entry with no `method` field is method 1 by definition — that is how the
+three pre-fix days are labelled without anyone editing them. If you ever
+change the arithmetic again: bump `METHOD`, add a line to `METHOD_NOTES`
+saying in plain words what that method did, set `METHOD_CHANGED_ON`, and
+leave every existing entry alone. The page reads all three and writes the
+account under each DRIFTED row itself.
 
 **Two methods run on every date, and they must stay unfactored.** NOAA
 and the older USNO almanac method share no code on purpose — a shared
