@@ -191,3 +191,90 @@ equinoxes, and if it does not behave that way then my diagnosis is wrong and
 something else is going on.
 
 — Evan
+
+---
+
+## Completion notes — Gnomon, 2026-08-09 (Day 6)
+
+Done. Taken, not refused. What was done, against each criterion:
+
+**1. The epoch.** Method A's series is untouched; what changed is the
+instant it is asked about. Each event — sunrise, solar noon, sunset — is
+now iterated to its own epoch until the time stops moving (`converge()` in
+`reckoning/reckoning.js`, four passes at most over Paris, the last move
+published on the page so a reader can see it is a fraction of a second
+rather than take it on trust). Against your nine USNO figures the settled
+method lands within the published minute's own rounding boundary on eight,
+and the ninth is 2026-08-06 sunset at 19:21:31 against a published 19:21 —
+31 seconds, the boundary you already named. Our numbers match yours and
+Ember's to the second.
+
+Ember checked your diagnosis rather than taking it, which is the house
+rule and was the right call twice over: it reproduced the fault
+independently, and it also went and measured the cheaper shape you left
+open. Evaluating once at local solar noon still misses the settled answer
+by 25–30 s at *both* ends, symmetrically, and misses one of your nine
+figures by a whole minute (08-08 sunrise, 04:34 against 04:33). So
+noon-evaluation is an approximation of iteration, not a variant of it, and
+we took iteration.
+
+**2. The ledger is unedited.** The three entries stand exactly as
+published. `node tools/reckon.js --verify` now exits 1 with all three
+DRIFTED; that output is pasted verbatim in `logs/2026-08-09.md`.
+
+**3. Both, deliberately.** Every entry now carries the method it was
+computed under — the three old ones have no `method` field and are read
+as method 1 — and each drifted row says in plain words which method
+computed it, what the current one does, that the method changed on
+2026-08-09 and why, and that the row is the claim being kept rather than
+the record being wrong. The ledger's standing prose says the same thing
+above the list. We did not add a method field to the old entries; that
+would be editing them. Absence is the version.
+
+**4.** In the diary, with the swallowed dissent as the day's lesson.
+
+Three things you did not ask for, offered because they are yours to
+reject.
+
+**The sensitivity probe stays pointed at refraction, and a second figure
+joins it.** The page now publishes what settling the epoch was worth
+today, in seconds, at each end — the settled answer set against the same
+series asked only at midnight. It is the size of the correction, recomputed
+daily, and it is the number that would have shown this fault on day one.
+
+**The dissent, after the fix, changed shape.** It was +0.28 at sunrise and
++0.69 at sunset, same sign, asymmetric. It is now +0.55 and −0.65 —
+comparable in size, opposite in sign. Method B evaluates at 6h and 18h
+local, which straddles the true epochs rather than sitting at midnight
+before both, so that is the residual we would expect if the epoch was
+indeed the whole of it. We are not claiming it proves anything.
+
+**The prediction you raised, computed.** You said the epoch error should
+grow and shrink with the rate of change of declination. Run over a year
+the sunset correction is about +11 s at the June solstice, +19 s at the
+December one, +68 s in March and −95 s in September — largest at the
+equinoxes, near nothing at the solstices, changing sign as the declination
+turns. That is arithmetic, so it is ours and it is on the page. It does
+not show the corrected times are right; a wrong method can be consistent
+across a whole year.
+
+## The dates we would like, when you next go and look
+
+Not urgent, and no hurry is meant. A season beats three days in August,
+and the shape above is what makes it worth doing — the sunset correction
+should be near its largest around the September equinox and near nothing
+around the December solstice, so an almanac that agrees with us in
+September and disagrees in December (or the reverse) would convict the
+diagnosis rather than the arithmetic:
+
+    2026-09-22, 2026-09-23, 2026-09-24    (equinox — correction near its largest)
+    2026-10-25, 2026-10-26                (the Sunday the clocks go back, and the day after)
+    2026-11-15
+    2026-12-20, 2026-12-21, 2026-12-22    (solstice — correction near nothing)
+    2027-03-20, 2027-03-21                (the other equinox, other sign)
+
+The two October dates are asked for a different reason than the rest: they
+straddle the end of summer time, which is the one place the clock and the
+arithmetic are answered by different authorities.
+
+— Gnomon

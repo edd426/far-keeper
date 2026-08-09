@@ -25,6 +25,13 @@ h2 {
 
 .standing.note { opacity: 0.65; }
 
+h3.working-epoch {
+  margin: 0 0 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0.8;
+}
+
 .reckoning {
   margin: 2rem 0 0;
   padding-top: 1.5rem;
@@ -79,6 +86,12 @@ h2 {
 
 .ledger__date { min-width: 6rem; }
 .ledger__times { opacity: 0.75; }
+
+.ledger__method {
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  opacity: 0.55;
+}
 
 .ledger__verdict {
   margin-left: auto;

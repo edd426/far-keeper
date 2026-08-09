@@ -85,6 +85,39 @@
     return String(Math.round(value * factor) / factor);
   }
 
+  function signedSeconds(seconds) {
+    if (seconds === null || seconds === undefined) return '—';
+    return (seconds < 0 ? '−' : '+') + round(Math.abs(seconds), 1) + ' s';
+  }
+
+  // One event's own instant, and the series as it stood there. Three of
+  // these are printed because after Day 6 there is no single declination
+  // for a day — sunrise, sunset and solar noon each get the sun where it
+  // actually was, and the three numbers differ. Printing one and calling
+  // it today's is exactly the mistake that put a wrong sunset on this
+  // page for three days.
+  function renderEpoch(mountId, w, hasHourAngle) {
+    var list = document.getElementById(mountId);
+    if (!list || !w) return;
+    addFigure(list, 'Julian day at that instant', round(w.julianDay, 6));
+    addFigure(list, 'sun’s mean longitude', round(w.meanLongitudeDeg, 5) + '°');
+    addFigure(list, 'sun’s mean anomaly', round(w.meanAnomalyDeg, 5) + '°');
+    addFigure(list, 'equation of centre', round(w.equationOfCentreDeg, 6) + '°');
+    addFigure(list, 'apparent longitude', round(w.apparentLongitudeDeg, 5) + '°');
+    addFigure(list, 'obliquity of the ecliptic', round(w.obliquityDeg, 6) + '°');
+    addFigure(list, 'solar declination', round(w.declinationDeg, 5) + '°');
+    addFigure(list, 'equation of time', round(w.equationOfTimeMinutes, 4) + ' min');
+    if (hasHourAngle) {
+      addFigure(list, 'hour angle at the horizon',
+        w.hourAngleDeg === null ? '—' : round(w.hourAngleDeg, 5) + '°');
+    } else {
+      addFigure(list, 'solar noon, minutes after 00:00 UTC', round(w.solarNoonUTCMinutes, 4));
+    }
+    addFigure(list, 'passes before it stopped moving', String(w.passes));
+    addFigure(list, 'how far it moved on the last pass',
+      w.lastMoveSeconds === null ? '—' : round(w.lastMoveSeconds, 6) + ' s');
+  }
+
   function renderToday(entry) {
     document.getElementById('today-loading').hidden = true;
 
@@ -120,23 +153,23 @@
 
     var working = document.getElementById('working-list');
     var w = entry.working;
-    addFigure(working, 'Julian day (00:00 UTC)', round(w.julianDay, 1));
-    addFigure(working, 'Julian centuries from J2000.0', round(w.julianCentury, 9));
-    addFigure(working, 'sun’s mean longitude', round(w.meanLongitudeDeg, 5) + '°');
-    addFigure(working, 'sun’s mean anomaly', round(w.meanAnomalyDeg, 5) + '°');
+    addFigure(working, 'Julian day (00:00 UTC) — the first guess only', round(w.julianDay, 1));
+    addFigure(working, 'Julian centuries from J2000.0 at 00:00 UTC', round(w.julianCentury, 9));
     addFigure(working, 'orbital eccentricity', round(w.eccentricity, 9));
-    addFigure(working, 'equation of centre', round(w.equationOfCentreDeg, 6) + '°');
-    addFigure(working, 'apparent longitude', round(w.apparentLongitudeDeg, 5) + '°');
-    addFigure(working, 'obliquity of the ecliptic', round(w.obliquityDeg, 6) + '°');
-    addFigure(working, 'solar declination', round(w.declinationDeg, 5) + '°');
-    addFigure(working, 'equation of time', round(w.equationOfTimeMinutes, 4) + ' min');
-    addFigure(working, 'hour angle at the horizon', round(w.hourAngleDeg, 5) + '°');
     addFigure(working, 'zenith taken as the horizon', w.horizonZenithDeg + '°');
     addFigure(working, 'sunrise shift per arcminute of that',
       w.horizonSensitivitySecondsPerArcminute === null ? '—'
         : round(Math.abs(w.horizonSensitivitySecondsPerArcminute), 1) + ' s');
+    addFigure(working, 'what settling the epoch is worth at sunrise',
+      signedSeconds(w.epochCorrectionSecondsSunrise));
+    addFigure(working, 'what settling the epoch is worth at sunset',
+      signedSeconds(w.epochCorrectionSecondsSunset));
     addFigure(working, 'sunrise, minutes after 00:00 UTC', round(w.sunriseUTCMinutes, 4));
     addFigure(working, 'sunset, minutes after 00:00 UTC', round(w.sunsetUTCMinutes, 4));
+
+    renderEpoch('working-sunrise', w.atSunrise, true);
+    renderEpoch('working-sunset', w.atSunset, true);
+    renderEpoch('working-noon', w.atSolarNoon, false);
 
     document.getElementById('soft-number').textContent =
       'One of those is softer than the others. The horizon is taken to be ' +
@@ -155,6 +188,30 @@
       'Separately: the hour the clock shows is not arithmetic at all. Daylight ' +
       'saving is a fact about a parliament, and the offset above was asked of ' +
       'your machine’s timezone database, not derived here.';
+
+    document.getElementById('epoch-note').textContent =
+      'Three blocks, not one, because the sun does not wait for the arithmetic. ' +
+      'The series is a function of an instant, and sunrise, solar noon and sunset ' +
+      'are three different instants — about fifteen hours apart, end to end. Until ' +
+      window.Reckoning.METHOD_CHANGED_ON + ' this page asked the series once, at ' +
+      'midnight UTC, and used that one answer for both ends of the day. It was a ' +
+      'little stale at sunrise and badly stale at sunset, and the sunset it ' +
+      'published ran late by a minute and a half, every day, in the same ' +
+      'direction. Nothing looked wrong. Now each event is iterated to its own ' +
+      'instant until the time stops moving, and the size of that correction is ' +
+      'printed above: today it is ' +
+      signedSeconds(w.epochCorrectionSecondsSunrise) + ' at sunrise and ' +
+      signedSeconds(w.epochCorrectionSecondsSunset) + ' at sunset. It is not the ' +
+      'same size all year, and rather than say so in a nice font we ran it: at ' +
+      'sunset it is about +11 s at the June solstice and +19 s at the December ' +
+      'one, and swells to +68 s in March and −95 s in September. Largest at the ' +
+      'equinoxes, near nothing at the solstices, changing sign as the ' +
+      'declination turns — which is the shape it should have, because the error ' +
+      'was only ever the declination going stale, and at a solstice it barely ' +
+      'moves. That much is arithmetic and it is ours. What it does not show is ' +
+      'that the corrected times are right: a wrong method can be internally ' +
+      'consistent across a whole year. Only an almanac outside this tower can ' +
+      'say that, and the one that was asked is why this changed.';
 
     var second = document.getElementById('second-figures');
     if (!entry.crossCheck) {
@@ -210,6 +267,9 @@
         broken.push('could not recompute this entry: ' + error.message);
       }
 
+      var method = published.method || 1;
+      head.appendChild(el('span', 'ledger__method', 'method ' + method));
+
       var verdict = el('span', 'ledger__verdict', broken.length ? 'DRIFTED' : 'holds');
       verdict.classList.add(broken.length ? 'ledger__verdict--bad' : 'ledger__verdict--good');
       head.appendChild(verdict);
@@ -223,6 +283,22 @@
           'What was published on the day stands above, unedited. The tower’s ' +
           'arithmetic has moved out from under it. The record is not the thing ' +
           'to correct.'));
+        // A bare DRIFTED tells a stranger the tower disagrees with itself
+        // and nothing about which side to believe. If the method it was
+        // computed under is not the one running now, say so, and say what
+        // changed — the verdict is the alarm, this is the account.
+        if (method !== window.Reckoning.METHOD) {
+          row.appendChild(el('p', 'ledger__note',
+            'This entry was computed under method ' + method + ': ' +
+            (window.Reckoning.METHOD_NOTES[method] || 'an earlier method') + '. ' +
+            'The tower now runs method ' + window.Reckoning.METHOD + ': ' +
+            window.Reckoning.METHOD_NOTES[window.Reckoning.METHOD] + '. ' +
+            'The method changed on ' + window.Reckoning.METHOD_CHANGED_ON + ', after an ' +
+            'almanac outside this tower was consulted and disagreed with the ' +
+            'sunsets above; the day’s diary entry sets out what moved and why. ' +
+            'So this row is not the record being wrong about what was claimed — ' +
+            'it is the claim, kept, and the tower saying it no longer stands by it.'));
+        }
       } else if (published.publishedAt) {
         row.appendChild(el('p', 'ledger__note',
           'published ' + published.publishedAt + ', and it still recomputes to the same numbers.'));

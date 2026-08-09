@@ -17,6 +17,20 @@
 // same way — but disagreement is proof of trouble, and that asymmetry is
 // worth the second computation.
 //
+// Day 6 correction, and the reason the method carries a version now.
+// Until 2026-08-09 method A evaluated its whole series once, at 00:00 UTC
+// of the date, and used that single declination for both ends of the day.
+// The sun does not wait: over Paris in August sunrise falls about 4.5
+// hours after that instant and sunset about 19.3, and the declination is
+// a little stale at one end and badly stale at the other. Sunset ran late
+// by one to two minutes, every day, in the same direction. Three days had
+// been published that way before an almanac outside this tower was asked
+// and disagreed.
+//
+// The series below is untouched. What changed is the *instant it is asked
+// about*: each event is now iterated to its own epoch until the answer
+// stops moving. See EPOCH_MAX_PASSES.
+//
 // Runs in a browser (defines window.Reckoning) and in node (exports).
 
 (function (root) {
@@ -33,6 +47,20 @@
   // radius. 90 + 50/60 = 90.833. This is the one number here that is a
   // fact about air rather than about geometry.
   var HORIZON_ZENITH = 90.833;
+
+  // The method's own version, written into every entry from Day 6 on.
+  // A ledger entry with no `method` on it was computed under method 1 —
+  // the whole series evaluated once at 00:00 UTC — and there are exactly
+  // three of those: 2026-08-06, 07 and 08. They are not edited and never
+  // will be. The number exists so that a stranger reading a DRIFTED
+  // verdict is told *which* arithmetic moved, rather than left to guess
+  // whether the tower was wrong then or is cheating now.
+  var METHOD = 2;
+  var METHOD_NOTES = {
+    1: 'series evaluated once at 00:00 UTC, one declination for both ends of the day',
+    2: 'series evaluated at each event’s own instant, iterated until settled'
+  };
+  var METHOD_CHANGED_ON = '2026-08-09';
 
   var PARIS = {
     name: 'Paris',
@@ -112,6 +140,85 @@
     working.sunriseUTC = solarNoon - 4 * hourAngle;
     working.sunsetUTC = solarNoon + 4 * hourAngle;
     return working;
+  }
+
+  // ---- The epoch, and why the series is asked more than once ----
+  //
+  // `noaa()` above answers one question: where does the sun stand at the
+  // instant you hand it? Sunrise and sunset are the instants where the
+  // answer crosses the horizon — so the epoch you want is the answer you
+  // are looking for, and the way out of that circle is to go round it.
+  // Start at 00:00 UTC, get a first guess at the event, ask the series
+  // again *at that guess*, and repeat until the time stops moving.
+  //
+  // Over Paris it settles in three passes and never needs more than four.
+  // The cap is a cap, not a schedule: a formula that silently spins is
+  // worse than one that stops and says how far it got, so the last move
+  // is published in the working and a reader can see it is a fraction of
+  // a second rather than take that on trust.
+  //
+  // The cheaper shape — evaluate once at local solar noon, as NOAA's own
+  // spreadsheet does — was tried and rejected on the day this was fixed.
+  // Ember measured it: noon-evaluation still misses the settled answer by
+  // 25 to 30 seconds at *both* ends, symmetrically, because solar noon is
+  // the day's rough midpoint and not either event's own instant. Against
+  // the almanac it misses one figure of nine by a whole minute where
+  // iterating misses none. It is an approximation of this, not a variant
+  // of it.
+  var EPOCH_MAX_PASSES = 8;
+  var EPOCH_SETTLE_MINUTES = 1e-7;   // about six microseconds
+
+  function converge(pick, jd0, latitude, longitude, zenith) {
+    var working = noaa(jd0, latitude, longitude, zenith);
+    if (working.never) return working;
+
+    var minutes = pick(working), passes = 0, moved = null;
+    for (var i = 0; i < EPOCH_MAX_PASSES; i++) {
+      var next = noaa(jd0 + minutes / 1440, latitude, longitude, zenith);
+      passes += 1;
+      if (next.never) return next;
+      var settled = pick(next);
+      moved = Math.abs(settled - minutes);
+      minutes = settled;
+      working = next;
+      if (moved < EPOCH_SETTLE_MINUTES) break;
+    }
+
+    working.epochJulianDay = jd0 + minutes / 1440;
+    working.epochPasses = passes;
+    working.epochLastMoveSeconds = moved === null ? null : moved * 60;
+    return working;
+  }
+
+  function pickSunrise(w) { return w.sunriseUTC; }
+  function pickSunset(w) { return w.sunsetUTC; }
+  function pickSolarNoon(w) { return w.solarNoonUTC; }
+
+  // Everything method A has to say about one date, each event settled at
+  // its own epoch. Returns a `never` object unchanged if the sun does not
+  // cross the horizon there that day.
+  function solarDay(year, month, day, latitude, longitude, zenith) {
+    var jd = julianDay(year, month, day);
+    var atMidnight = noaa(jd, latitude, longitude, zenith);
+    if (atMidnight.never) return { never: atMidnight.never, working: atMidnight };
+
+    var rise = converge(pickSunrise, jd, latitude, longitude, zenith);
+    var set = converge(pickSunset, jd, latitude, longitude, zenith);
+    var noon = converge(pickSolarNoon, jd, latitude, longitude, zenith);
+    if (rise.never || set.never || noon.never) {
+      return { never: (rise.never || set.never || noon.never), working: atMidnight };
+    }
+
+    return {
+      julianDayMidnight: jd,
+      atMidnight: atMidnight,
+      rise: rise,
+      set: set,
+      noon: noon,
+      sunriseUTC: rise.sunriseUTC,
+      sunsetUTC: set.sunsetUTC,
+      solarNoonUTC: noon.solarNoonUTC
+    };
   }
 
   // ---- Method B: USNO Almanac for Computers, low-precision sunrise ----
@@ -288,9 +395,9 @@
     var month = Number(dateISO.slice(5, 7));
     var day = Number(dateISO.slice(8, 10));
 
-    var a = noaa(julianDay(year, month, day), place.latitude, place.longitude);
+    var a = solarDay(year, month, day, place.latitude, place.longitude);
     if (a.never) {
-      return { date: dateISO, place: place, working: a, never: a.never };
+      return { date: dateISO, method: METHOD, working: a.working, place: place, never: a.never };
     }
 
     var offsetRise = zoneOffsetMinutes(dateISO, a.sunriseUTC, place.zone);
@@ -303,9 +410,10 @@
     // ledger — so that the change we publish is a claim this file makes
     // today, not a claim it is quoting.
     var yesterdayISO = shiftDate(dateISO, -1);
-    var yb = noaa(julianDay(
-      Number(yesterdayISO.slice(0, 4)), Number(yesterdayISO.slice(5, 7)), Number(yesterdayISO.slice(8, 10))
-    ), place.latitude, place.longitude);
+    var yb = solarDay(
+      Number(yesterdayISO.slice(0, 4)), Number(yesterdayISO.slice(5, 7)), Number(yesterdayISO.slice(8, 10)),
+      place.latitude, place.longitude
+    );
     var yesterdayLength = yb.never ? null : yb.sunsetUTC - yb.sunriseUTC;
 
     var bRise = usno(year, month, day, place.latitude, place.longitude, true);
@@ -318,11 +426,13 @@
     // much. It does not say how often it is off, or by how much, and this
     // tower has no way to find that out. Naming the second question and
     // refusing to answer it is the honest half of the answer.
-    var nudged = noaa(julianDay(year, month, day), place.latitude, place.longitude, HORIZON_ZENITH + 1 / 60);
+    var nudged = converge(pickSunrise, a.julianDayMidnight,
+      place.latitude, place.longitude, HORIZON_ZENITH + 1 / 60);
     var sensitivity = nudged.never ? null : (nudged.sunriseUTC - a.sunriseUTC) * 60;
 
     return {
       date: dateISO,
+      method: METHOD,
       place: {
         name: place.name, latitude: place.latitude, longitude: place.longitude, zone: place.zone
       },
@@ -334,21 +444,25 @@
       dayLength: durationWords(dayLength),
       changeSinceYesterdayMinutes: yesterdayLength === null ? null : dayLength - yesterdayLength,
       working: {
-        julianDay: a.julianDay,
-        julianCentury: a.julianCentury,
-        meanLongitudeDeg: a.meanLongitude,
-        meanAnomalyDeg: a.meanAnomaly,
-        eccentricity: a.eccentricity,
-        equationOfCentreDeg: a.equationOfCentre,
-        apparentLongitudeDeg: a.apparentLongitude,
-        obliquityDeg: a.obliquity,
-        declinationDeg: a.declination,
-        equationOfTimeMinutes: a.equationOfTime,
-        hourAngleDeg: a.hourAngle,
+        julianDay: a.julianDayMidnight,
+        julianCentury: a.atMidnight.julianCentury,
+        eccentricity: a.atMidnight.eccentricity,
         horizonZenithDeg: HORIZON_ZENITH,
         horizonSensitivitySecondsPerArcminute: sensitivity,
+        // What the epoch is worth, today, in seconds: the settled answer
+        // set against the same series asked only at 00:00 UTC — which is
+        // what this file published until 2026-08-09. Not a leftover: it
+        // is the size of the correction, computed fresh every day, and it
+        // should shrink toward the solstices and grow toward the
+        // equinoxes. If it does not behave that way, the diagnosis was
+        // wrong and this number is where it shows.
+        epochCorrectionSecondsSunrise: (a.sunriseUTC - a.atMidnight.sunriseUTC) * 60,
+        epochCorrectionSecondsSunset: (a.sunsetUTC - a.atMidnight.sunsetUTC) * 60,
         sunriseUTCMinutes: a.sunriseUTC,
-        sunsetUTCMinutes: a.sunsetUTC
+        sunsetUTCMinutes: a.sunsetUTC,
+        atSunrise: epochWorking(a.rise),
+        atSunset: epochWorking(a.set),
+        atSolarNoon: epochWorking(a.noon)
       },
       crossCheck: bRise === null || bSet === null ? null : {
         method: 'USNO Almanac for Computers',
@@ -357,6 +471,28 @@
         sunriseDifferenceMinutes: a.sunriseUTC - bRise,
         sunsetDifferenceMinutes: a.sunsetUTC - bSet
       }
+    };
+  }
+
+  // The series as it stood at one event's own instant. Published per event
+  // because after Day 6 there is no single "the declination today" — there
+  // are three, and pretending otherwise is the shape of the bug that was
+  // just taken out.
+  function epochWorking(w) {
+    return {
+      julianDay: w.epochJulianDay,
+      julianCentury: w.julianCentury,
+      meanLongitudeDeg: w.meanLongitude,
+      meanAnomalyDeg: w.meanAnomaly,
+      equationOfCentreDeg: w.equationOfCentre,
+      apparentLongitudeDeg: w.apparentLongitude,
+      obliquityDeg: w.obliquity,
+      declinationDeg: w.declination,
+      equationOfTimeMinutes: w.equationOfTime,
+      hourAngleDeg: w.hourAngle === undefined ? null : w.hourAngle,
+      solarNoonUTCMinutes: w.solarNoonUTC,
+      passes: w.epochPasses,
+      lastMoveSeconds: w.epochLastMoveSeconds
     };
   }
 
@@ -372,6 +508,9 @@
   var api = {
     reckon: reckon,
     PARIS: PARIS,
+    METHOD: METHOD,
+    METHOD_NOTES: METHOD_NOTES,
+    METHOD_CHANGED_ON: METHOD_CHANGED_ON,
     julianDay: julianDay,
     shiftDate: shiftDate,
     durationWords: durationWords
