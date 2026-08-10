@@ -118,6 +118,23 @@
       w.lastMoveSeconds === null ? '—' : round(w.lastMoveSeconds, 6) + ' s');
   }
 
+  // Above the polar circles the sun does not always cross the horizon, and
+  // the instrument has always said so plainly — `reckon()` returns a
+  // `never` rather than a time. This page had no branch for it: it read a
+  // sunrise that wasn't there and threw inside the picture-drawing, so the
+  // one reader for whom the answer was most interesting got a raw type
+  // error instead of the plain sentence they were owed. Unreachable from
+  // Paris, reachable from the first northern corner. Ember's find, Day 7.
+  function neverWords(never, placeName) {
+    return never === 'set'
+      ? 'At ' + placeName + ' on this date the sun does not set: it stays above the ' +
+        'horizon all the way round. There is no sunrise or sunset to print, and the ' +
+        'tower would rather say so than invent one.'
+      : 'At ' + placeName + ' on this date the sun does not rise: it stays below the ' +
+        'horizon all the way round. There is no sunrise or sunset to print, and the ' +
+        'tower would rather say so than invent one.';
+  }
+
   function renderToday(entry) {
     document.getElementById('today-loading').hidden = true;
 
@@ -326,7 +343,14 @@
   function renderTodayOrSayWhyNot() {
     var today = todayInZone(window.Reckoning.PARIS.zone);
     try {
-      renderToday(window.Reckoning.reckon(today, window.Reckoning.PARIS));
+      var entry = window.Reckoning.reckon(today, window.Reckoning.PARIS);
+      if (entry.never) {
+        var mount = document.getElementById('today-loading');
+        mount.hidden = false;
+        mount.textContent = neverWords(entry.never, entry.place.name);
+        return;
+      }
+      renderToday(entry);
     } catch (error) {
       var loading = document.getElementById('today-loading');
       loading.hidden = false;
@@ -338,8 +362,153 @@
     }
   }
 
+  // ---- the corner ----
+  //
+  // The reader's own place, worked by the same instrument. Everything here
+  // runs on their machine and nothing is sent anywhere; the page has no
+  // way to learn what they saw, which is the point rather than a
+  // limitation. The zone is read off their own clock — the same tz
+  // database the Paris figures above are asked about, and just as much a
+  // fact about a parliament rather than the sky.
+  function readerZone() {
+    try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'; }
+    catch (error) { return 'UTC'; }
+  }
+
+  function numberFrom(id, fallback) {
+    var raw = document.getElementById(id).value;
+    var value = Number(raw);
+    return (raw === '' || !isFinite(value)) ? fallback : value;
+  }
+
+  function renderCorner() {
+    var figures = document.getElementById('corner-figures');
+    var verdict = document.getElementById('corner-verdict');
+    figures.replaceChildren();
+    verdict.textContent = '';
+
+    var zone = readerZone();
+    var latitude = numberFrom('corner-lat', 48.8566);
+    var longitude = numberFrom('corner-lon', 2.3522);
+    var skyline = Math.min(89, Math.max(0, numberFrom('corner-skyline', 0)));
+    var height = Math.max(0, numberFrom('corner-height', 0));
+    var date = document.getElementById('corner-date').value || todayInZone(zone);
+
+    if (Math.abs(latitude) > 90 || Math.abs(longitude) > 180) {
+      verdict.textContent = 'A latitude runs from −90 to 90 and a longitude from −180 to 180. ' +
+        'Nothing was reckoned.';
+      return;
+    }
+
+    var place = { name: 'your corner', latitude: latitude, longitude: longitude, zone: zone };
+    var result;
+    try {
+      result = window.Reckoning.corner(date, place, {
+        obstructionDegrees: skyline, eyeHeightMetres: height
+      });
+    } catch (error) {
+      // Same rule as the room above: a guard that fires is said out loud
+      // where the reader is standing, not swallowed.
+      verdict.textContent = 'The reckoning stopped itself for your corner — ' + error.message;
+      return;
+    }
+
+    if (result.never) {
+      // Two different silences, and they must not wear the same sentence.
+      // Above the polar circles the sun really does stay under or over all
+      // day. But a tall enough skyline produces the same `never` for a
+      // wholly different reason — at Paris today it takes about 58 degrees
+      // — and telling a reader in a deep valley that the sun does not rise
+      // would be this tower confidently saying a false thing about the
+      // sky. Ember's find, Day 7, running the corner out past where it
+      // stops meaning what it says.
+      if (skyline > 0 && !result.flat.never) {
+        verdict.textContent = 'With a skyline that high the sun never clears it here on ' +
+          'this date — it rises, but not above ' + round(skyline, 1) + ' degrees of your ' +
+          'horizon. On the open horizon this place would see it at ' +
+          result.flat.sunrise + ' and lose it at ' + result.flat.sunset + '. Nothing is ' +
+          'wrong with the reckoning; you have asked it about a horizon the sun does not ' +
+          'get over.';
+        return;
+      }
+      verdict.textContent = neverWords(result.never, 'your corner') +
+        ' That is not this page failing; it is what the arithmetic says about ' +
+        'where you are on this date, and you can check it by staying up.';
+      return;
+    }
+
+    var mine = result.mine;
+    addFigure(figures, 'date', result.date);
+    addFigure(figures, 'sunrise where you are', mine.sunrise, 'big');
+    addFigure(figures, 'sunset where you are', mine.sunset, 'big');
+    addFigure(figures, 'length of day', mine.dayLength);
+    addFigure(figures, 'clock', zone + ', UTC' +
+      (mine.utcOffsetMinutes < 0 ? '−' : '+') + round(Math.abs(mine.utcOffsetMinutes) / 60, 2));
+    addFigure(figures, 'second method (USNO) says', mine.crossCheck
+      ? mine.crossCheck.sunrise + ' and ' + mine.crossCheck.sunset : 'no result here');
+    addFigure(figures, 'on a flat, open horizon it would be',
+      result.flat.sunrise + ' and ' + result.flat.sunset);
+    addFigure(figures, 'what your skyline and height are worth at sunrise',
+      signedSeconds(result.shiftSecondsSunrise));
+    addFigure(figures, 'what they are worth at sunset',
+      signedSeconds(result.shiftSecondsSunset));
+    addFigure(figures, 'your horizon dips by',
+      round(result.horizon.dipDegrees * 60, 2) + ' arcminutes');
+    addFigure(figures, 'one more degree of skyline would be worth',
+      result.secondsPerDegreeOfHorizon === null ? '—'
+        : round(result.secondsPerDegreeOfHorizon, 0) + ' s from where you are now');
+    addFigure(figures, 'the sun takes this long to lift its own width',
+      result.secondsToLiftItsOwnWidth === null ? '—'
+        : round(result.secondsToLiftItsOwnWidth, 0) + ' s');
+
+    // The number that keeps this honest. Said in full rather than left in
+    // the figures, because an invitation that does not say what it cannot
+    // catch is a claim about how open-handed we are, not about the sky.
+    var arcmin = result.arcminutesPerMinuteOfError;
+    verdict.textContent = arcmin === null ? '' :
+      'What this can catch, and what it cannot. Where you are, on this date, one ' +
+      'minute of error in our arithmetic is worth about ' + round(arcmin, 1) +
+      ' arcminutes of horizon — and the sun itself is ' +
+      window.Reckoning.SUN_DIAMETER_ARCMINUTES + ' arcminutes wide. So a minute of ' +
+      'our error hides inside a stretch of skyline narrower than the sun you are ' +
+      'watching, and you would have to know your own horizon better than that to ' +
+      'convict us of it. This tower published a sunset that was wrong by about a ' +
+      'minute and a half for three days running, and one reader standing outside ' +
+      'could not have told. Five minutes is a different matter: that is about ' +
+      round(5 * arcmin / 60, 1) + ' degrees, which anyone with a rooftop can rule ' +
+      'out. So this corner is a real check against a gross error and no check at ' +
+      'all against a fine one. Three things stand between our arithmetic and what ' +
+      'you see, not two. Two of them belong to your place and pull opposite ways: ' +
+      'something in the way can only ever make sunrise late, being up high only ' +
+      'ever early, and both are worked above from what you typed. The third is ' +
+      'yours and this page cannot take it from you — the sun is a disk, and one ' +
+      'watcher calls it up when the first edge shows while another waits for the ' +
+      'whole of it. Here today that is ' +
+      (result.secondsToLiftItsOwnWidth === null ? 'some seconds'
+        : round(result.secondsToLiftItsOwnWidth, 0) + ' seconds') +
+      ' between two honest people looking at the same horizon, which is wider ' +
+      'than the fault we published. We print the instant the sun’s upper edge ' +
+      'first clears — that is what the 90.833° above means. After those three, ' +
+      'what is left over is ours or the air’s. The air we cannot get at from ' +
+      'here. Ours you can.';
+  }
+
+  function startCorner() {
+    var form = document.getElementById('corner-form');
+    if (!form) return;
+    var zone = readerZone();
+    document.getElementById('corner-zone').textContent = 'your clock: ' + zone;
+    document.getElementById('corner-date').value = todayInZone(zone);
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      renderCorner();
+    });
+    renderCorner();
+  }
+
   function start() {
     renderTodayOrSayWhyNot();
+    startCorner();
 
     fetch('ledger.json', { cache: 'no-cache' })
       .then(function (response) {
