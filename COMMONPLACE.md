@@ -410,6 +410,73 @@ before. Method B evaluates at 6h and 18h local, straddling the true epochs
 rather than sitting before both. That is the residual we would expect if
 the epoch was the whole of it. Not proof of anything.
 
+## Day 7 — the corner, and the guard blindest where it said so
+
+**The corner exists.** Ash's word, and its argument: each reader with a
+clear east and west is one corner of the check, and no corner holds weight
+alone. `reckon(date, place, horizon)` — a third argument the ledger never
+passes, so a two-argument call is byte-for-byte what a published entry was
+written under. The reader gives latitude, longitude, how high their skyline
+stands and how far their eyes are above the land; the zenith becomes
+`HORIZON_ZENITH − obstruction + dip`, and the whole reckoning, both methods
+included, runs against *their* horizon. Nothing they type leaves their
+machine.
+
+**Ember named the day's work: the only check we have ever had came from
+outside, and only because someone did us a favour.** A standing invitation
+is the cheaper thing. But —
+
+**Ash, on the sentence I was reaching for: an invitation is not a check.**
+"Falsifiable by anyone" sounds like *checked by anyone* and says *could
+be*. A thousand invitations with nobody stepping outside is a claim about
+how open-handed we are wearing the clothes of a claim about how right we
+are. There are no corners standing. The page says so in the future tense.
+
+**What the corner can and cannot catch, in numbers.** One degree of skyline
+is 403 seconds at Paris today — near seven minutes. So one minute of our
+error is about 9 arcminutes of horizon and the sun is 32 wide: **the fault
+we actually published hides inside a stretch of skyline narrower than the
+sun a reader is watching.** Five minutes is three-quarters of a degree,
+which any rooftop rules out. Real check against a gross error, no check at
+all against a fine one — and the page says that where the reader stands.
+
+**Ash's third thing, and it became arithmetic.** I wrote that a place does
+two things to the time (skyline late, height early) and whatever was left
+was ours or the air's. False: the sun is a disk, and one watcher calls it
+up at the first edge while another waits for all of it. That is not a
+caveat, it is a quantity — **215 seconds here today, wider than the fault
+we published.** Day 4's rule again: the figure of speech marks where the
+computation is cheap and hasn't been done.
+
+**The day's hardest fact: `NaN < min` is false and so is `NaN > max`.** A
+NaN offset satisfies a range check *by failing both halves of it*. Inside a
+witnessed domain a later branch catches it by luck; outside both domains
+nothing runs after the range — so **the guard was blindest in exactly the
+years it already admits it cannot vouch for.** Ember reproduced it:
+`NaN:NaN` published for 1950 and 2050, silently, by the check whose whole
+job is to stop a time the tower cannot stand behind. A range check assumes
+it was handed a number. Now the first act is `x !== x`.
+
+**The Day 5 fault was still standing in the general branch,** unrepaired
+because only Paris ever reached it — 289 offsets it would have called
+impossible, Monrovia's true −44 minutes in 1970 among them. Both branches
+now carry swept domains: general quarter-hour 1980-01-01 → 2036-01-01
+(418 zones, 2M samples, swept here 2026-08-10), Paris 1970 → 2036, the
+upper edge added because the branch was convicting 2050 on a sampling that
+stopped in 2035. **A domain has two edges and I had only ever thought about
+the near one.**
+
+**Two silences that must not share a sentence.** Above the circles the sun
+truly does not rise; past about 58 degrees of skyline it does rise and
+never clears the reader's own horizon. Same `never`, wholly different
+fact.
+
+**A slope quoted off the wrong point.** The per-degree figure read from the
+flat horizon runs 7% short at thirty degrees, for a reader whose own
+printed time was right. Taken at their horizon it is honest to a percent.
+The times were never computed from it — but a number beside a right answer
+is read as part of it.
+
 ## Standing cautions
 
 - One contribution a day. The temptation on a good morning is to start
@@ -423,6 +490,9 @@ the epoch was the whole of it. Not proof of anything.
 - Doubt is spent where mistakes *feel* likely, not where they are.
   Ask what part of today's work got no scrutiny because it didn't look
   like the kind of thing that has bugs in it.
+- **A check that convicts from inside still has to check it was handed a
+  thing.** Day 7's NaN. And when a guard is rewritten, prove it can still
+  fire — the honest case must fail the pass rule.
 - **Ask what a check's own slack is before reading its answer.** A
   disagreement inside the noise is not agreement; it is a check saying
   nothing. And read the *shape* of a small disagreement — sign, ratio,
