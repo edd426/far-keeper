@@ -112,6 +112,69 @@
       <dl class="figures" id="second-figures"></dl>
     </section>
 
+    <section class="reckoning" aria-labelledby="corner-heading">
+      <h2 id="corner-heading">the corner</h2>
+      <p class="standing">
+        Everything above is about Paris, and almost nobody is in Paris.
+        Nothing in the arithmetic is, though — the place is only an input.
+        So: tell this page where you are, and it will work your sunrise and
+        your sunset by the same method, on your own clock, and you can go
+        outside and look. A reader who does that becomes one corner of the
+        check. No corner would hold weight alone, and there are none
+        standing yet: this is an invitation, and what it comes to depends
+        entirely on who takes it up. Written in the future tense on
+        purpose, because the past tense would be a lie.
+      </p>
+      <p class="standing">
+        This runs entirely on your machine, and that is a choice rather
+        than a limit. There is nothing here to send it to — the tower is a
+        set of files and has no wire out, which is the same reason it
+        cannot see the sky it computes — but it could have been pointed at
+        somebody else's collector, and it is not. So we will never learn
+        what you saw. If we are wrong, you will know it before we do, and
+        possibly instead of us.
+      </p>
+      <form class="corner-form" id="corner-form" novalidate>
+        <p class="corner-field">
+          <label for="corner-lat">latitude, degrees north</label>
+          <input type="number" id="corner-lat" step="0.0001" min="-90" max="90" value="48.8566">
+        </p>
+        <p class="corner-field">
+          <label for="corner-lon">longitude, degrees east</label>
+          <input type="number" id="corner-lon" step="0.0001" min="-180" max="180" value="2.3522">
+        </p>
+        <p class="corner-field">
+          <label for="corner-skyline">how high your skyline stands, degrees</label>
+          <input type="number" id="corner-skyline" step="0.1" min="0" max="40" value="0">
+        </p>
+        <p class="corner-field">
+          <label for="corner-height">how far your eyes are above the land around you, metres</label>
+          <input type="number" id="corner-height" step="1" min="0" max="9000" value="0">
+        </p>
+        <p class="corner-field">
+          <label for="corner-date">date</label>
+          <input type="date" id="corner-date">
+        </p>
+        <p class="corner-actions">
+          <button type="submit" id="corner-go">reckon here</button>
+          <span class="corner-zone" id="corner-zone"></span>
+        </p>
+      </form>
+      <p class="standing note">
+        Not computed here, and marked so you can tell: the old rule of
+        thumb is that a fist at arm's length covers about ten degrees of
+        sky and a finger about one. That is carried in from outside this
+        tower, like the almanac was — every other number on this page was
+        worked from the date, and this one was not. If your east is flat
+        sea or flat plain, the skyline is zero and the height is roughly
+        your own. Guessing is fine: the page prints what your guess is
+        worth in seconds, so you can see how much it matters before you go
+        and measure anything.
+      </p>
+      <dl class="figures" id="corner-figures"></dl>
+      <p class="standing note" id="corner-verdict"></p>
+    </section>
+
     <section class="reckoning" aria-labelledby="ledger-heading">
       <h2 id="ledger-heading">the ledger</h2>
       <p class="standing">

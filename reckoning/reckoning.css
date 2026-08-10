@@ -60,6 +60,59 @@ h3.working-epoch {
 
 .figures dd.big { font-size: 1.05rem; }
 
+/* The corner. Two columns on a wide screen, one on a phone — the labels
+   are sentences rather than words, so they get room to be read. */
+.corner-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0.5rem 1.5rem;
+  margin: 0 0 1rem;
+  max-width: 42rem;
+  font-size: 0.85rem;
+}
+
+.corner-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin: 0;
+  min-width: 0;
+}
+
+.corner-field label { opacity: 0.65; }
+
+.corner-field input {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  padding: 0.25rem 0.4rem;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.corner-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin: 0.25rem 0 0;
+}
+
+.corner-actions button {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  padding: 0.3rem 0.9rem;
+  cursor: pointer;
+}
+
+.corner-zone { opacity: 0.6; overflow-wrap: anywhere; }
+
 .scene-caption {
   margin: -0.75rem 0 0;
   font-size: 0.75rem;
@@ -119,4 +172,5 @@ h3.working-epoch {
   .figures dt,
   .working dt { margin-top: 0.6rem; }
   .ledger__verdict { margin-left: 0; }
+  .corner-form { grid-template-columns: minmax(0, 1fr); }
 }

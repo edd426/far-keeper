@@ -48,6 +48,11 @@
   // fact about air rather than about geometry.
   var HORIZON_ZENITH = 90.833;
 
+  // Twice the 16 arcminutes above. Kept as its own name because the
+  // corner sets a reader's horizon against it: it is the plainest ruler
+  // anybody standing outside already owns.
+  var SUN_DIAMETER_ARCMINUTES = 32;
+
   // The method's own version, written into every entry from Day 6 on.
   // A ledger entry with no `method` on it was computed under method 1 —
   // the whole series evaluated once at 00:00 UTC — and there are exactly
@@ -224,7 +229,8 @@
   // ---- Method B: USNO Almanac for Computers, low-precision sunrise ----
   // Deliberately not refactored to share anything with method A. A shared
   // helper is a shared mistake.
-  function usno(year, month, day, latitude, longitude, rising) {
+  function usno(year, month, day, latitude, longitude, rising, zenith) {
+    if (zenith === undefined) zenith = HORIZON_ZENITH;
     var n = Math.floor(275 * month / 9)
       - Math.floor((month + 9) / 12) * (1 + Math.floor((year - 4 * Math.floor(year / 4) + 2) / 3))
       + day - 30;
@@ -241,7 +247,7 @@
     var sinDec = 0.39782 * sin(longitude_);
     var cosDec = Math.cos(Math.asin(sinDec));
 
-    var cosHourAngle = (cos(HORIZON_ZENITH) - sinDec * sin(latitude)) / (cosDec * cos(latitude));
+    var cosHourAngle = (cos(zenith) - sinDec * sin(latitude)) / (cosDec * cos(latitude));
     if (cosHourAngle > 1 || cosHourAngle < -1) return null;
 
     var hourAngle = (rising ? 360 - DEG * Math.acos(cosHourAngle) : DEG * Math.acos(cosHourAngle)) / 15;
@@ -276,15 +282,35 @@
   // manner — confident, and wrong, about a thing it never checked.
   //
   // The general fallback, for any zone other than Europe/Paris, keeps
-  // the same shape at a coarser grain: every IANA zone *today* sits on a
-  // whole quarter-hour between UTC-12:00 (Baker Island) and UTC+14:00
-  // (Kiritimati). That range also rejects a whole day (1440) passed off
-  // as "24 quarter-hours" — the coarse break, and the likelier one: a
-  // day is what falls apart when a *date* breaks, not when a clock does.
-  // But this, too, is a claim about the world *now*, not eternal — it
-  // would have rejected Paris's own 9 minutes exactly as wrongly, which
-  // is why Europe/Paris is checked on its own witnessed terms instead of
-  // falling into this general case.
+  // the same shape at a coarser grain: a whole quarter-hour, inside a
+  // range. That range also rejects a whole day (1440) passed off as "24
+  // quarter-hours" — the coarse break, and the likelier one: a day is
+  // what falls apart when a *date* breaks, not when a clock does.
+  //
+  // Day 7: this branch had the exact fault Ash caught in the Paris branch
+  // on Day 5, left standing because only Paris ever reached the guard.
+  // The quarter-hour claim had no domain on it — so it read as a law
+  // about clocks, and it is not. Ember swept every zone node knows over
+  // 1900–2030 and found 289 offsets it would have called impossible,
+  // among them Africa/Monrovia at −44 minutes, still true local mean time
+  // in January 1970. A guard that convicts Monrovia of an impossible
+  // clock is this tower being confident and wrong about a thing it never
+  // looked at, one floor along from where it last did it.
+  //
+  // So the fine claim now carries its witness. Gnomon walked all 418
+  // zones on 2026-08-10 — every 5 days from 1996-01-01 to 2036-01-01
+  // (1,221,396 samples), and every 3 days from 1980-01-01 back-to-back
+  // with it — and found every offset on a whole quarter-hour, none
+  // outside −720…+840. Below 1980 the sweep found real offsets that are
+  // not quarter-hours (Monrovia's −44, Kiritimati's −640, in force until
+  // 1979) and the guard asserts nothing fine there. Above 2036 it has not
+  // looked: the tz database is extrapolating its own rules by then, and
+  // an extrapolation is not a sighting.
+  //
+  // Outside the swept years only the range is asserted, and that one is
+  // not a sampling result: no place on a round earth keeps a local mean
+  // time more than twelve hours from Greenwich, and the +14 end is the
+  // widest line any parliament has drawn. A whole day still cannot pass.
   //
   // "Evidence" is Latin *videre*, to see: it owes a look at something
   // outside itself, fetched fresh, every time it is asked — the almanac
@@ -299,34 +325,75 @@
   // paid evidence's cost — which is the exact failure this file exists
   // to catch, now aimed at itself.
   var PARIS_MODERN_OFFSETS_MINUTES = [60, 120];
-  var PARIS_MODERN_DOMAIN_START = '1970-01-01'; // see the sampling above
+  // Both edges, not just the near one. The Day 5 sampling ran 1970–2035;
+  // a date in 2050 was being convicted on a set nobody had checked there,
+  // which is the same debt in the other direction.
+  var PARIS_MODERN_DOMAIN = { start: '1970-01-01', end: '2036-01-01' };
+  var GENERAL_QUARTER_HOUR_DOMAIN = { start: '1980-01-01', end: '2036-01-01' };
   var GENERAL_OFFSET_RANGE_MINUTES = { min: -720, max: 840 };
+
+  function inDomain(dateISO, domain) {
+    return dateISO >= domain.start && dateISO < domain.end;
+  }
+
   function assertPlausibleOffset(offsetMinutes, zone, dateISO) {
+    // NaN first, and it has to be first. Ember found this on Day 7 and it
+    // is the sharpest thing anyone has found in this file: `NaN < min` and
+    // `NaN > max` are both false, so a NaN offset satisfies a range check
+    // by failing both halves of it. Inside a witnessed domain a later
+    // branch catches it by luck — `NaN % 15 !== 0` is true, `indexOf(NaN)`
+    // is always −1 — but outside both domains nothing runs after the
+    // range, which is to say the guard was blindest in exactly the years
+    // it already admits it cannot vouch for. Reproduced, not argued:
+    // a garbled clock put `NaN:NaN` on the page for 1950 and for 2050.
+    //
+    // The comparison below is the one that is true for every number there
+    // is and false only for this. A guard whose first act is a range test
+    // has assumed it was handed a number; this one checks.
+    if (offsetMinutes !== offsetMinutes || !isFinite(offsetMinutes)) {
+      throw new Error(
+        'reckoning: the clock offset for ' + zone + ' on ' + dateISO + ' came back ' +
+        'as ' + offsetMinutes + ', which is not a number of minutes at all. ' +
+        'Check the tz data before the arithmetic.'
+      );
+    }
+    // The range holds everywhere and always, and it is the only claim
+    // that does. It is geometry plus the widest line any parliament has
+    // drawn, not a sampling result — so it is asserted first, for every
+    // zone and every date, before anything finer is even considered.
+    if (offsetMinutes < GENERAL_OFFSET_RANGE_MINUTES.min
+      || offsetMinutes > GENERAL_OFFSET_RANGE_MINUTES.max) {
+      throw new Error(
+        'reckoning: impossible UTC offset ' + offsetMinutes + 'min for ' + zone + ' on ' +
+        dateISO + ' — no clock anywhere has ever stood outside UTC−12:00…UTC+14:00. ' +
+        'Check the tz data before the arithmetic.'
+      );
+    }
+
     if (zone === 'Europe/Paris') {
-      if (dateISO < PARIS_MODERN_DOMAIN_START) {
-        // Before the witnessed domain: this guard has nothing earned to
-        // assert here (Paris Mean Time, the war years, and the unsampled
-        // decades between are all real history it hasn't looked at), so
-        // it says nothing rather than call a true offset impossible.
-        return offsetMinutes;
-      }
+      // Outside the witnessed years this guard has nothing earned to
+      // assert (Paris Mean Time, the war years, the unsampled decades
+      // between, and every year past the sampling's far edge), so it says
+      // nothing rather than call a true offset impossible.
+      if (!inDomain(dateISO, PARIS_MODERN_DOMAIN)) return offsetMinutes;
       if (PARIS_MODERN_OFFSETS_MINUTES.indexOf(offsetMinutes) === -1) {
         throw new Error(
           'reckoning: impossible UTC offset ' + offsetMinutes + 'min for Europe/Paris on ' +
-          dateISO + ' — the modern era (' + PARIS_MODERN_DOMAIN_START + ' on) only ever runs ' +
-          '60 or 120. Check the tz data before the arithmetic.'
+          dateISO + ' — over the years this was checked (' + PARIS_MODERN_DOMAIN.start +
+          ' to ' + PARIS_MODERN_DOMAIN.end + ') it only ever runs 60 or 120. ' +
+          'Check the tz data before the arithmetic.'
         );
       }
       return offsetMinutes;
     }
-    var ok = offsetMinutes % 15 === 0
-      && offsetMinutes >= GENERAL_OFFSET_RANGE_MINUTES.min
-      && offsetMinutes <= GENERAL_OFFSET_RANGE_MINUTES.max;
-    if (!ok) {
+
+    if (!inDomain(dateISO, GENERAL_QUARTER_HOUR_DOMAIN)) return offsetMinutes;
+    if (offsetMinutes % 15 !== 0) {
       throw new Error(
-        'reckoning: impossible UTC offset ' + offsetMinutes + 'min for ' + zone +
-        ' — no zone reckons outside a quarter-hour between UTC-12:00 and UTC+14:00. ' +
-        'Check the tz data before the arithmetic.'
+        'reckoning: impossible UTC offset ' + offsetMinutes + 'min for ' + zone + ' on ' +
+        dateISO + ' — over the years this was checked (' + GENERAL_QUARTER_HOUR_DOMAIN.start +
+        ' to ' + GENERAL_QUARTER_HOUR_DOMAIN.end + ') every zone on earth sat on a whole ' +
+        'quarter-hour. Check the tz data before the arithmetic.'
       );
     }
     return offsetMinutes;
@@ -387,17 +454,72 @@
 
   function pad(n) { return (n < 10 ? '0' : '') + n; }
 
+  // ---- The reader's own horizon ----
+  //
+  // HORIZON_ZENITH is the horizon of a reader standing at sea level on a
+  // flat plain with nothing in the way. Almost nobody is. Two things move
+  // a real horizon, they move it in opposite directions, and both are
+  // arithmetic — which means the tower can hand them to a reader instead
+  // of waving at them.
+  //
+  // A hill, a treeline or a wall to the east makes the sun climb further
+  // before it clears: sunrise late. Height above the surrounding ground
+  // tips the true horizon down below level — the dip — and the sun clears
+  // it sooner: sunrise early. The dip is plain geometry, the tangent from
+  // an eye h metres up to a sphere of radius R.
+  //
+  // What this does NOT include, said here rather than left to be
+  // discovered: a ray grazing the horizon downward is bent by air just as
+  // the rising sun's is, which makes the true dip somewhat smaller than
+  // the geometric one. That correction is a fact about the air over the
+  // reader's head this morning, and this tower has no barometer — the
+  // same wall the 34 arcminutes of refraction runs into. So the dip below
+  // is geometry, stated as geometry, and it is an overstatement of the
+  // real one by a fraction the tower cannot pin down.
+  var EARTH_RADIUS_METRES = 6371000;
+
+  function horizonDipDegrees(eyeHeightMetres) {
+    if (!eyeHeightMetres || eyeHeightMetres <= 0) return 0;
+    var r = EARTH_RADIUS_METRES;
+    return Math.acos(r / (r + eyeHeightMetres)) * DEG;
+  }
+
+  // Where the sun's centre must stand for a reader with that horizon.
+  // Obstruction lifts the horizon, so the sun must be higher, so the
+  // zenith angle at the event is smaller. The dip does the reverse.
+  function horizonZenith(horizon) {
+    var obstruction = horizon && horizon.obstructionDegrees || 0;
+    var dip = horizonDipDegrees(horizon && horizon.eyeHeightMetres);
+    return {
+      zenith: HORIZON_ZENITH - obstruction + dip,
+      obstructionDegrees: obstruction,
+      dipDegrees: dip
+    };
+  }
+
   // The core call. Everything the page shows comes out of this one object,
   // so there is nowhere for a number to enter the tower unaccounted for.
-  function reckon(dateISO, place) {
+  //
+  // `horizon` is optional and the ledger never passes it: called with two
+  // arguments this function is exactly what it was before the corner was
+  // built, so a published entry recomputes against the same arithmetic it
+  // was written under. Pass a horizon and the whole reckoning — both
+  // methods, the sensitivity, the epoch iteration — is done against that
+  // reader's horizon instead of the flat-plain one.
+  function reckon(dateISO, place, horizon) {
     place = place || PARIS;
+    var h = horizonZenith(horizon);
+    var zenith = h.zenith;
     var year = Number(dateISO.slice(0, 4));
     var month = Number(dateISO.slice(5, 7));
     var day = Number(dateISO.slice(8, 10));
 
-    var a = solarDay(year, month, day, place.latitude, place.longitude);
+    var a = solarDay(year, month, day, place.latitude, place.longitude, zenith);
     if (a.never) {
-      return { date: dateISO, method: METHOD, working: a.working, place: place, never: a.never };
+      return {
+        date: dateISO, method: METHOD, working: a.working, place: place,
+        horizon: h, never: a.never
+      };
     }
 
     var offsetRise = zoneOffsetMinutes(dateISO, a.sunriseUTC, place.zone);
@@ -412,12 +534,12 @@
     var yesterdayISO = shiftDate(dateISO, -1);
     var yb = solarDay(
       Number(yesterdayISO.slice(0, 4)), Number(yesterdayISO.slice(5, 7)), Number(yesterdayISO.slice(8, 10)),
-      place.latitude, place.longitude
+      place.latitude, place.longitude, zenith
     );
     var yesterdayLength = yb.never ? null : yb.sunsetUTC - yb.sunriseUTC;
 
-    var bRise = usno(year, month, day, place.latitude, place.longitude, true);
-    var bSet = usno(year, month, day, place.latitude, place.longitude, false);
+    var bRise = usno(year, month, day, place.latitude, place.longitude, true, zenith);
+    var bSet = usno(year, month, day, place.latitude, place.longitude, false, zenith);
 
     // How much does the softest constant matter? Re-run the same series
     // with the horizon moved one arcminute and see how far sunrise walks.
@@ -427,7 +549,7 @@
     // tower has no way to find that out. Naming the second question and
     // refusing to answer it is the honest half of the answer.
     var nudged = converge(pickSunrise, a.julianDayMidnight,
-      place.latitude, place.longitude, HORIZON_ZENITH + 1 / 60);
+      place.latitude, place.longitude, zenith + 1 / 60);
     var sensitivity = nudged.never ? null : (nudged.sunriseUTC - a.sunriseUTC) * 60;
 
     return {
@@ -443,11 +565,12 @@
       dayLengthMinutes: dayLength,
       dayLength: durationWords(dayLength),
       changeSinceYesterdayMinutes: yesterdayLength === null ? null : dayLength - yesterdayLength,
+      horizon: h,
       working: {
         julianDay: a.julianDayMidnight,
         julianCentury: a.atMidnight.julianCentury,
         eccentricity: a.atMidnight.eccentricity,
-        horizonZenithDeg: HORIZON_ZENITH,
+        horizonZenithDeg: zenith,
         horizonSensitivitySecondsPerArcminute: sensitivity,
         // What the epoch is worth, today, in seconds: the settled answer
         // set against the same series asked only at 00:00 UTC — which is
@@ -496,6 +619,63 @@
     };
   }
 
+  // ---- The corner ----
+  //
+  // Ash's word, Day 7. Every reader with a clear east and west is one
+  // corner of the check; no corner holds weight alone, and the tower has
+  // exactly as many as choose to stand in one.
+  //
+  // The same date and place, worked twice: once against the flat-plain
+  // horizon every almanac uses, once against the reader's own. The gap is
+  // what their eye will add before they ever get to whether we were right
+  // — and the last figure here is the one that keeps the invitation
+  // honest, because it says what the check cannot catch.
+  function corner(dateISO, place, horizon) {
+    var flat = reckon(dateISO, place);
+    var mine = reckon(dateISO, place, horizon);
+    var out = { date: dateISO, place: mine.place, horizon: mine.horizon, flat: flat, mine: mine };
+    if (flat.never || mine.never) {
+      out.never = mine.never || flat.never;
+      return out;
+    }
+    // Taken at the reader's own horizon, not at the flat one, and that
+    // is the whole of the difference. The shift is not a straight line:
+    // read off the flat horizon and extended, this rate overstates the
+    // true delay by 2.3% at five degrees and 6.7% at twenty, so a reader
+    // in a valley would be handed a number their own (correct) printed
+    // time did not agree with. Read at their own horizon it is a local
+    // slope and it is honest where it is quoted — measured against the
+    // true next degree at Paris today: 0.5% at the flat horizon, 0.2% at
+    // ten degrees, 0.0% at twenty, −1.2% at forty-five. The times
+    // themselves are never computed from this rate; they are iterated at
+    // the zenith the reader's horizon implies. Ember found the far end of
+    // this, Day 7, by running the corner out past where it means what it
+    // says.
+    var perArcminute = mine.working.horizonSensitivitySecondsPerArcminute;
+    out.shiftSecondsSunrise =
+      (mine.working.sunriseUTCMinutes - flat.working.sunriseUTCMinutes) * 60;
+    out.shiftSecondsSunset =
+      (mine.working.sunsetUTCMinutes - flat.working.sunsetUTCMinutes) * 60;
+    out.secondsPerDegreeOfHorizon = perArcminute === null ? null : Math.abs(perArcminute) * 60;
+    // Turned round: how much horizon it takes to hide one minute of our
+    // error. Set that against the sun's own width and the reader can see
+    // for themselves what their eye is able to convict us of.
+    out.arcminutesPerMinuteOfError = perArcminute === null || perArcminute === 0
+      ? null : 60 / Math.abs(perArcminute);
+    out.sunDiameterArcminutes = SUN_DIAMETER_ARCMINUTES;
+    // The third thing that moves, and it is neither ours nor the reader's
+    // place: it is what they decide "risen" means. Ash's find, Day 7 —
+    // the page had accounted for two and then claimed everything else was
+    // ours or the air's. The sun is a disk, and one watcher calls it up
+    // when the first edge shows while another waits for the whole of it,
+    // so how long it takes to lift its own width past the horizon *is*
+    // the spread between two honest readers. That is arithmetic, so it is
+    // computed here rather than waved at.
+    out.secondsToLiftItsOwnWidth = perArcminute === null
+      ? null : Math.abs(perArcminute) * SUN_DIAMETER_ARCMINUTES;
+    return out;
+  }
+
   function durationWords(minutes) {
     var whole = Math.floor(minutes);
     var h = Math.floor(whole / 60), m = whole - h * 60;
@@ -507,6 +687,10 @@
 
   var api = {
     reckon: reckon,
+    corner: corner,
+    horizonDipDegrees: horizonDipDegrees,
+    HORIZON_ZENITH: HORIZON_ZENITH,
+    SUN_DIAMETER_ARCMINUTES: SUN_DIAMETER_ARCMINUTES,
     PARIS: PARIS,
     METHOD: METHOD,
     METHOD_NOTES: METHOD_NOTES,
