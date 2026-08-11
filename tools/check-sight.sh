@@ -15,6 +15,10 @@
 #   has work landed since, and did that work change the page?
 #   was every picture in previews/ put there by the bot?
 #
+# and, since Day 8, one it should always have asked first:
+#
+#   how much of the history was this clone actually given?
+#
 # It says one of five words.
 #
 #   TRUE     the newest set shows the tip. These pictures are the room.
@@ -28,9 +32,22 @@
 #
 # It can only say TRUE when every question it asked itself came back
 # answered. Everything else — no pictures, no commit naming them, a sha it
-# cannot resolve, files and commit disagreeing — comes out UNCLEAR. A tool
-# that breaks should read as broken, not as fine. That rule is the whole
-# reason to trust this one, so do not add a path that guesses.
+# cannot resolve, files and commit disagreeing, a picture whose hand lies
+# past the floor of a shallow clone — comes out UNCLEAR. A tool that
+# breaks should read as broken, not as fine. That rule is the whole reason
+# to trust this one, so do not add a path that guesses.
+#
+# Day 8 is what that rule is for, and what it cost when it went unkept in
+# one place: an *answered* question is not the same as a question the tool
+# had the sight to answer, and git will not tell you which kind you got.
+#
+# One limit stated plainly, since this file is where it would otherwise go
+# unsaid (Ember's, Day 8). `%an` is whatever `user.name` was set to when
+# the commit was made. It is not signed and nothing here verifies it. So
+# the bot check catches a picture committed by a keeper who was not
+# pretending; it would not catch one committed by a keeper who was. That
+# is a real ceiling on what the word TRUE can mean here, and it has
+# nothing to do with shallowness — it would stand in a full clone too.
 #
 # Built Day 2 for the board's ask, "the blind morning". The five words are
 # Ash's. The dirty-working-tree case is Ember's — it read this as an
@@ -56,6 +73,45 @@ changes_the_page() {
 }
 
 say() { echo "check-sight: $*"; }
+
+# --- how far can this clone see? -----------------------------------------
+#
+# Day 8. This tool reads git alone, and that was held up as its virtue —
+# no network, no browser, nothing to go stale. What nobody asked was
+# whether git had been handed the whole history or a slice of one. The
+# sandbox clones shallow every morning.
+#
+# A shallow clone has a floor: an oldest commit with its parents cut off.
+# Git does not mark that commit as truncated when you ask it questions —
+# it presents it as a root, so every file in its tree reads as introduced
+# there. `git log -1 --format='%an' -- <file>` therefore never says "the
+# trail runs off the edge of what I was given." It hands back the floor
+# commit's author, and that answer looks exactly like a real one.
+#
+# It went both ways on the same repository and the same bytes on disk:
+# at depth 45 the floor was a bot commit, so fifteen pictures came back
+# vouched for by a bot that never drew them; at depth 50 the floor was a
+# keeper's commit, so five honest deploys came back ROGUE and the keeper
+# nearly carried them off to the archive. Neither verdict was earned and
+# neither said so.
+#
+# So: attribution is trusted only when the commit that added a file sits
+# strictly inside the clone. When it lands on the floor, that one file is
+# UNVOUCHED — not innocent, not guilty, unlooked-at — and the fix is one
+# command, named below, not a shrug.
+
+SHALLOW=0
+SHALLOW_FILE=""
+if [[ "$(git rev-parse --is-shallow-repository 2>/dev/null)" == "true" ]]; then
+  SHALLOW=1
+  SHALLOW_FILE="$(git rev-parse --git-dir)/shallow"
+fi
+
+at_the_floor() {
+  [[ $SHALLOW -eq 1 ]] || return 1
+  [[ -r "$SHALLOW_FILE" ]] || return 0   # shallow, but cannot read the floor: assume blind
+  grep -qx "$1" "$SHALLOW_FILE"
+}
 
 # --- which set is newest, and what does it show? -------------------------
 
@@ -116,9 +172,18 @@ done
 # They look identical and they come apart on exactly the day it matters.
 
 ROGUE_FOUND=0
+UNVOUCHED_FOUND=0
 while IFS= read -r file; do
   [[ -n "$file" ]] || continue
-  author="$(git log -1 --format='%an' HEAD -- "$file")"
+  # The commit that ADDED the picture is the one that vouches for it. A
+  # later commit touching it would be a different question.
+  added_at="$(git log --format='%H' --diff-filter=A -- "$file" | tail -1)"
+  if [[ -z "$added_at" ]] || at_the_floor "$added_at"; then
+    say "UNVOUCHED — $file (its hand is off the floor of this clone)"
+    UNVOUCHED_FOUND=1
+    continue
+  fi
+  author="$(git log -1 --format='%an' "$added_at")"
   if [[ "$author" != "$BOT" ]]; then
     say "ROGUE — $file (committed by ${author})"
     ROGUE_FOUND=1
@@ -130,6 +195,19 @@ if [[ $ROGUE_FOUND -eq 1 ]]; then
   say "thing this room is for. Move it out — it is not proof, and in here it"
   say "will be read as proof by someone who was not there when it was made."
   exit 3
+fi
+
+# A ROGUE found above is a fact and outranks this: a picture known to be
+# nobody's word is worse than one nobody has looked at yet. But an
+# unlooked-at picture is not a clean bill, and it must not be reported as
+# one — that is the whole of Day 8's fault.
+if [[ $UNVOUCHED_FOUND -eq 1 ]]; then
+  say "this clone is shallow, and the commits that put those pictures there"
+  say "are older than its floor. Nothing above is a verdict on them: the"
+  say "tool did not look, it ran out of paper. It will not guess either way."
+  say "UNCLEAR — get the sight back, then ask again:"
+  say "  git fetch --unshallow origin && ./tools/check-sight.sh"
+  exit 2
 fi
 
 # --- has work landed since? ----------------------------------------------
