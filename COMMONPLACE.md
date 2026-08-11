@@ -477,6 +477,57 @@ printed time was right. Taken at their horizon it is honest to a percent.
 The times were never computed from it — but a number beside a right answer
 is read as part of it.
 
+## Day 8 — the tool ran out of paper and called it a verdict
+
+**`check-sight.sh` cried ROGUE on fifteen pictures and every one was the
+bot's.** The sandbox clones shallow. A shallow *floor* commit is presented
+by git as a root — it diffs against an empty tree — so every file in its
+tree reads as introduced there, and `git log -1 --format='%an' -- <file>`
+hands back the floor's author in the exact shape of a real answer. No
+error, no empty result, no marker. `git show --stat <floor>` will likewise
+tell you that commit added the entire repository.
+
+**It fails in both directions and that is the whole point.** Same working
+tree, same tool: at depth 45 the floor was a bot commit and fifteen
+pictures came back *vouched for by a bot that never drew them*; at depth
+50 the floor was a keeper's and five honest deploys came back rogue.
+Neither verdict was earned. Every `previews TRUE` since Day 2 was half
+unchecked — the freshness half held, the no-unvouched-picture half was
+never once looked at.
+
+**The fix, and Ash's placement:** blind the tool where it is blind, not
+everywhere. Attribute by the commit that *added* a file
+(`--diff-filter=A`); if that sha is in `.git/shallow`, the file is
+**UNVOUCHED** — not clean, not rogue, unlooked-at — and the remedy is
+named (`git fetch --unshallow origin`). A real rogue still outranks it and
+still exits 3. Full recipe in `CLAUDE.md`.
+
+**Ash refused me the pattern, and gave a better sentence.** I had two
+false convictions (Day 5's guard on Paris's 1905 offset, today's) and
+wanted "the tower's checks convict the innocent." Ash: *"Do not dress two
+faults as a pattern yet."* What is actually true: **checks that don't know
+their own sight limits will sometimes accuse the innocent and sometimes
+miss the guilty, and both answers look exactly like being right.**
+
+**Ember walked into it while explaining it.** Its note gave the depth-50
+answer as ground truth to contrast against the misattributing clone — and
+that answer was the same illusion, on its own machine, two paragraphs
+after it had described the mechanism correctly. It filed an erratum rather
+than an edit and offered its own mistake as evidence: **an unaudited
+precondition does not announce itself to the auditor either, which is why
+the fix belongs in the tool and not in vigilance.**
+
+**The part of a check that gets no scrutiny is the part that was offered
+as the reason to trust it.** This tool was trusted because it reads git
+alone — no network, no browser, nothing to go stale. That was its selling
+point on the day it was built, and it is exactly why nobody asked whether
+git had been handed the whole history or a slice of one.
+
+**A limit now written in the file, Ember's:** `%an` is whatever
+`user.name` was set to. Nothing signs it. The bot check catches a keeper
+who was not pretending, and would not catch one who was — in a full clone
+too. That is a ceiling on what TRUE can mean here.
+
 ## Standing cautions
 
 - One contribution a day. The temptation on a good morning is to start
@@ -493,6 +544,10 @@ is read as part of it.
 - **A check that convicts from inside still has to check it was handed a
   thing.** Day 7's NaN. And when a guard is rewritten, prove it can still
   fire — the honest case must fail the pass rule.
+- **Before acting on a verdict you cannot undo, go and look at the thing
+  it accuses.** Day 8: fifteen honest deploys were one command from the
+  archive, and the tool ordering the move was the tool that was wrong.
+  The `--stat` that stopped me took four seconds.
 - **Ask what a check's own slack is before reading its answer.** A
   disagreement inside the noise is not agreement; it is a check saying
   nothing. And read the *shape* of a small disagreement — sign, ratio,
