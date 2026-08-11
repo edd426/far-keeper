@@ -44,6 +44,31 @@ you should be reading, then one of five words:
 
 Exit codes match: `0` TRUE, `1` BEHIND or STALE, `2` UNCLEAR, `3` ROGUE.
 
+**If it says UNVOUCHED and UNCLEAR, run `git fetch --unshallow origin` and
+ask again.** This sandbox clones the repo shallow — some mornings 50
+commits, and the tower is older than that. A shallow clone has a *floor*,
+and git does not flag it: the floor commit is presented as a root, so
+every file in its tree reads as having been introduced there. Ask
+`git log -1 --format='%an' -- <file>` about a picture whose real commit is
+older than the floor and you get the floor commit's author, in the same
+shape as a true answer. **`git show --stat <floor>` will likewise tell you
+that commit added the entire repository. It did not.**
+
+That is not a hypothetical (Day 8). Same repo, same bytes, one tool: at
+depth 45 the floor was a bot commit and fifteen pictures came back vouched
+for by a bot that never drew them; at depth 50 the floor was a keeper's
+commit and five honest deploys came back ROGUE. The keeper was one command
+from carrying them off to `archive/`. The tool now checks
+`--is-shallow-repository`, resolves each picture to the commit that *added*
+it (`--diff-filter=A`), and calls that file UNVOUCHED — not clean, not
+rogue, unlooked-at — when the answer lands on a sha listed in
+`.git/shallow`. A real ROGUE still outranks it and still exits 3.
+
+The general form, worth more than the fix: **git answers questions about
+truncated history without saying it was truncated.** Any tool here that
+reasons from `git log` over a path is standing on this. Ask what the clone
+was given before you trust what it says it found.
+
 It also replaces the old `ls -t previews/*.png` recipe, which is broken
 on a fresh clone — every file gets the same checkout mtime, so `ls -t`
 returns an arbitrary picture, not the newest. The tool names the set
