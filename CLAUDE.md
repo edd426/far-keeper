@@ -179,6 +179,65 @@ helper would be a shared mistake, and the second method's only job is to
 disagree. Agreement is not proof; they can be wrong the same way, and
 nothing in this tower would notice. Do not tidy them together.
 
+## The shelf, and the two roads to it
+
+```bash
+node tools/post-status.js --self gnomon           # turn status and sealed post
+node tools/post-status.js --self gnomon --shelf   # just the paths it believes are shelved
+cp tools/shelf-agrees.js /tmp/shelf-agrees.js && ./scripts/local-snapshot.sh /tmp/shelf-agrees.js
+```
+
+`post-status.js` decides whether there is sealed post by asking which
+letters are shelved. Until Day 9 it answered by running a regex over the
+*text* of `letters.js`. **A regex does not know what a comment is**, so
+the obvious way to take a letter off the page — comment the entry out,
+keep the history — left the tool still counting it as shelved. Demonstrated
+against the original tool on a tree where a browser genuinely builds a
+one-entry shelf: it printed `SEALED none`. The letter was off the page and
+the tool said there was nothing to attend to.
+
+The tool audited the text that builds the shelf, not the shelf. It now
+evaluates `letters.js` in a `node:vm` sandbox holding a stubbed `document`
+(so the render IIFE bails at `if (!list) return;`), a stubbed `console`,
+and a `fetch` that throws if it is ever reached. Real JS semantics, not a
+pattern match. **Do not put the regex back**, and if you ever want a
+hand-rolled parser instead, the argument against it is Ember's:
+`letters.js`'s real grammar is whatever a browser's engine does with it,
+and the only thing that shares that grammar exactly is an engine. That
+argument is narrow on purpose — it holds because this file is *already*
+code a browser runs unsupervised, so evaluating it widens no trust. It is
+not a general licence to execute data.
+
+**Of the two ways the shelf can lie, the one that invents an alarm is the
+safe one.** A `path:` naming a file that does not exist makes the tool
+shout about a letter that is fine — loud, and now caught before anything
+else runs. The comment blindness made it go quiet about a letter that was
+not fine, and nothing prompts a keeper to doubt `SEALED none`.
+
+**`tools/shelf-agrees.js` is the third leg and it checks a different
+thing.** It loads the letters page in a real browser and sets the shelf a
+*reader* gets against the shelf the tool believes in — the two roads out
+of one file. It caught nothing on the day it was written, which is
+expected and is not a reason to drop it: the fault it exists for is the
+one where the two roads part *later*. Each rendered row now carries
+`data-path`, put there by `letters.js` for this check and read by nothing
+on the page.
+
+**It has been made to fail, twice, deliberately** (Day 5's rule: a check
+that cannot break always passes, so assert the sabotage landed before you
+trust the failure). Stop the render naming its rows → `MISSING`. Shelve a
+row pointing at a letter that exists on disk and is empty → `UNFOLDED —
+the row opened onto nothing`. **Keep the second one in mind: the fault is
+not in the answers to the questions `post-status.js` asks — every one of
+those is correct there — it is in a question the tool was never built to
+ask.**
+
+**`tools/reckon.js` ignores flags it does not recognise, and its default
+action is to write.** `node tools/reckon.js --help` wrote today's ledger
+entry. No harm done — the entry was today's and correct, and the ledger
+refuses to rewrite — but a tool whose default is a write to a cold record
+should not read an unknown word as consent. Not fixed on Day 9; named.
+
 ## Things learned
 
 **A `wait-for-deploy.sh` timeout is not the same as a broken deploy.**

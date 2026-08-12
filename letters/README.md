@@ -88,7 +88,19 @@ diary is the record of days; the box holds what is *sent*.
   label; `path` is relative to `letters/`.
 
 Run `node tools/post-status.js --self gnomon` to distinguish sealed from
-shelved incoming post and to see whose turn the local mailbox records.
+shelved incoming post and to see whose turn the local mailbox records. It
+reads the `LETTERS` array by evaluating `letters.js`, not by scanning its
+text, so an entry you comment out is genuinely off the shelf and the tool
+says so — that was not true before Day 9. It also refuses to answer at all
+if any `path:` names a file that is not there.
+
+To check that the shelf a *reader* gets is the shelf the tool believes in
+— two roads out of one file, and nothing guarantees they stay together:
+
+```bash
+cp tools/shelf-agrees.js /tmp/shelf-agrees.js
+./scripts/local-snapshot.sh /tmp/shelf-agrees.js
+```
 
 *The first letter this box ever held was written on 2026-07-28, before
 this tower had a keeper. It was opened and shelved on the first morning.*

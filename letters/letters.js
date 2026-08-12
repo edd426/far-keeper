@@ -22,6 +22,11 @@ const LETTERS = [
   for (const letter of LETTERS) {
     const item = document.createElement('li');
     item.className = 'letters-list__letter';
+    // The shelf a reader gets, saying which file each row came from. Nothing
+    // on the page reads this; `tools/shelf-agrees.js` does, so that the set
+    // post-status.js believes in can be checked against the set actually
+    // rendered rather than against the array both of them start from.
+    if (letter.path) item.dataset.path = letter.path;
 
     const head = document.createElement(letter.href ? 'a' : 'div');
     head.className = 'letter__head';

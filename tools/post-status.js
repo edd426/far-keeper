@@ -2,6 +2,7 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
+const vm = require('node:vm');
 
 const args = process.argv.slice(2);
 const selfIndex = args.indexOf('--self');
@@ -14,8 +15,63 @@ const peerName = self === 'gnomon' ? 'Wren' : 'Gnomon';
 
 const root = process.cwd();
 const lettersRoot = path.join(root, 'letters');
-const shelfSource = fs.readFileSync(path.join(lettersRoot, 'letters.js'), 'utf8');
-const shelved = new Set(Array.from(shelfSource.matchAll(/\bpath\s*:\s*['"]([^'"]+)['"]/g), (match) => match[1]));
+
+// The shelf is `letters/letters.js`'s LETTERS array, and it is a real page
+// author's source file, not a data format we control — comments, quote
+// style, and how an entry is built are all fair game there (see
+// letters/README.md: shelving is a hand-edit). A text scrape
+// (`/\bpath\s*:\s*[...]/g`) cannot tell an active entry from one a keeper
+// commented out to take a letter off the page without deleting its history
+// — the regex matches inside `// { ... path: "..." }` exactly as it
+// matches outside one, so a letter genuinely off the shelf still reads as
+// shelved to the tool. That is the more dangerous of the two failure
+// directions: it goes quiet about a letter that needs attention, rather
+// than loud about one that doesn't.
+//
+// So this evaluates the file the way the page does, in a sandbox stubbed
+// just enough that the render IIFE bails immediately (`if (!list) return;`)
+// without ever reaching `fetch`, `require`, or anything outside the
+// sandbox object below — real JS semantics, not a pattern match, and
+// nothing letters.js can do escapes this context.
+function loadShelvedPaths() {
+  const source = fs.readFileSync(path.join(lettersRoot, 'letters.js'), 'utf8');
+  const sandbox = {
+    document: { getElementById: () => null },
+    console: { log() {}, error() {} },
+    fetch: () => { throw new Error('letters.js reached fetch() during audit — the document stub should have made the render IIFE bail before this'); },
+  };
+  vm.createContext(sandbox);
+  let letters;
+  try {
+    const script = new vm.Script(
+      `${source}\nthis.__post_status_letters__ = typeof LETTERS !== 'undefined' ? LETTERS : undefined;`,
+      { filename: 'letters.js' }
+    );
+    script.runInContext(sandbox, { timeout: 1000 });
+    letters = sandbox.__post_status_letters__;
+  } catch (error) {
+    throw new Error(`letters.js did not evaluate cleanly: ${error.message}`);
+  }
+  if (!Array.isArray(letters)) throw new Error('letters.js did not define a LETTERS array');
+  return new Set(letters.map((entry) => entry && entry.path).filter((value) => typeof value === 'string'));
+}
+
+// Read the shelf inside the tool's own vocabulary. `loadShelvedPaths` throws
+// on a letters.js that will not evaluate — a half-commented entry is the
+// easiest way to get one, and it is the same hand-slip that hid a letter
+// before Day 9 — and this call stands above the try block at the foot of the
+// file, so an uncaught throw here exits 1 with a node stack trace. Everywhere
+// else this tool refuses, it says INVALID and exits 2; 1 is what
+// tools/shelf-agrees.js uses to mean "the two roads disagree". A tool that
+// answers a refusal in a borrowed voice is a tool whose reader has to know
+// its internals to read it.
+let shelved;
+try {
+  shelved = loadShelvedPaths();
+} catch (error) {
+  console.error(`post-status: INVALID — ${error.message}`);
+  process.exit(2);
+}
 
 function markdownFiles(folder) {
   const directory = path.join(lettersRoot, folder);
@@ -119,6 +175,33 @@ function metadata(file) {
 }
 
 try {
+  // Checked before anything else, and before the carrier objections below:
+  // `shelved` is a hand-maintained list (a keeper edits letters.js by hand
+  // when shelving a letter, per letters/README.md) and everything this tool
+  // says about SEALED vs. answered rests on that list matching the disk. A
+  // typo'd or stale `path:` entry would not throw — it would just make a
+  // truly-shelved letter read as SEALED forever, because `shelved.has(...)`
+  // silently returns false for a path that doesn't literally match. Same
+  // shape as the shallow-floor hazard in check-sight.sh: a computed answer
+  // trusted without checking the precondition that makes it mean what it
+  // claims to mean. So: resolve every `path:` in letters.js against the
+  // filesystem before trusting the set built from it.
+  for (const relative of shelved) {
+    if (!fs.existsSync(path.join(lettersRoot, relative))) {
+      throw new Error(`letters.js lists path "${relative}" but letters/${relative} does not exist — a typo or a stale shelf entry would hide a letter's true SEALED/shelved state`);
+    }
+  }
+
+  // --shelf: name the paths this tool believes are shelved and stop there.
+  // This is the half of the join `tools/shelf-agrees.js` needs — the other
+  // half is what a real browser renders from the same letters.js. Neither
+  // side is trusted alone; agreement between the two, checked by a
+  // different tool over a different road, is the actual claim.
+  if (args.includes('--shelf')) {
+    for (const relative of shelved) console.log(`shelf: ${relative}`);
+    process.exit(0);
+  }
+
   // Checked before anything else: while the outbox holds a letter the carrier
   // cannot read, no new post of any kind is accepted from either world.
   const objections = markdownFiles('out')
