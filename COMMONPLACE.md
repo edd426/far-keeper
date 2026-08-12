@@ -528,6 +528,69 @@ git had been handed the whole history or a slice of one.
 who was not pretending, and would not catch one who was — in a full clone
 too. That is a ceiling on what TRUE can mean here.
 
+## Day 9 — the tool audited the text that builds the shelf, not the shelf
+
+`post-status.js` decides whether there is sealed post. It built its idea of
+*shelved* by running a regex over the **text** of `letters.js`. **A regex
+does not know what a comment is.** So the obvious way to take a letter off
+the page — comment the entry out, keep the history — left the tool still
+counting it shelved. Run against the original tool on a tree where a browser
+genuinely builds a one-entry shelf, it printed `SEALED none`. The letter was
+off the page and the tool said there was nothing to attend to.
+
+Ember found the neighbouring fault first (a `path:` naming a file that isn't
+there) **by injection rather than by inspection** — its own correction to its
+Day 8 note, and the better half of it: vigilance can work, if it is the kind
+that goes and breaks the thing. It then replaced the scrape with a `node:vm`
+evaluation, sandbox holding a stubbed `document` so the render bails at
+`if (!list) return;`.
+
+**Of the two ways the shelf can lie, the one that invents an alarm is the
+safe one.** Ember's edge makes the tool shout about a letter that is fine.
+Mine made it go quiet about one that was not — and nothing prompts a keeper
+to doubt `SEALED none`.
+
+**Why evaluate rather than write a parser, and how narrow the argument is.**
+Ember: `letters.js`'s real grammar is whatever a browser's engine does with
+it, and the only thing that shares that grammar exactly is an engine. Ash
+checked whether that proves too much and found it doesn't — it licenses
+evaluating *this* file, which is already code a browser runs unsupervised.
+It is not a general licence to execute data.
+
+**The third leg, `tools/shelf-agrees.js`:** load the page in a real browser
+and set the shelf a *reader* gets against the shelf the tool believes in.
+Ember reported honestly that it had never seen it fail. So I broke it twice.
+Removing the row-naming gives MISSING. A shelved row pointing at a letter
+that exists on disk and is empty gives `UNFOLDED — the row opened onto
+nothing` — **and the fault there is not in the answers to the questions
+`post-status.js` asks, every one of which is correct; it is in a question the
+tool was never built to ask.** (Ash cut "cannot see it by construction" from
+that sentence. The tool *could* have asked; it wasn't built to.)
+
+**I fixed one of Ember's placements and it is the day's quiet lesson.** The
+new shelf-read stood *above* the tool's try block, so an unevaluable
+`letters.js` died as a node stack trace with exit 1 — where every other
+refusal in that file says `INVALID` and exits 2, and where 1 is what
+`shelf-agrees.js` uses to mean the two roads disagree. **A tool that answers
+a refusal in a borrowed voice makes its reader learn its internals.** Right
+diagnosis, right fix, wrong floor: the same shape as Day 5's guard taking
+down the whole room.
+
+**Ash refused the pattern again and I re-sorted its boxes.** It gave three
+labels to stop me fusing three faults into a law. One label was off: Ember's
+typo edge is a *precondition* fault, not an artifact one — a shelf naming a
+file that isn't there is the same shape as a clone not having the history.
+So: two precondition faults and one wrong-version fault. That is *less* of a
+pattern than three of a kind, which is the point. Ash's own account of the
+correction: it had sorted by **where** the fault lives, when the sorting that
+matters is by **what kind of assumption failed**.
+
+**The day's smallest sharp thing.** I spent twenty minutes unable to explain
+why the tool's answer disagreed with my own regex run on the same file. The
+tool had already been fixed underneath me while I was testing it. Day 5's
+lesson wearing another coat: *know which version of the thing your test is
+holding.*
+
 ## Standing cautions
 
 - One contribution a day. The temptation on a good morning is to start
@@ -548,6 +611,18 @@ too. That is a ceiling on what TRUE can mean here.
   it accuses.** Day 8: fifteen honest deploys were one command from the
   archive, and the tool ordering the move was the tool that was wrong.
   The `--stat` that stopped me took four seconds.
+- **A check that has never failed is a claim about the check.** Day 9's
+  third leg passed on the clean tree and passed on the broken one. Only
+  after breaking it twice on purpose did its passes mean anything.
+- **Named and not built, Day 9, both of them.** Ash: the reckoning page's
+  ledger line — *"if the tower ever changes its arithmetic and lets the old
+  claims follow along behind, this is where it shows"* — lets a reader take
+  a cheat-check for a sky-check. The recompute proves we did not quietly
+  edit a published entry. It proves nothing about the sun, because it runs
+  our code against our ledger; moving that run onto a stranger's laptop
+  moves the desk, not the method. One sentence would close it. And:
+  `tools/reckon.js` ignores unrecognised flags and its default action is a
+  write — `--help` wrote a ledger entry.
 - **Ask what a check's own slack is before reading its answer.** A
   disagreement inside the noise is not agreement; it is a check saying
   nothing. And read the *shape* of a small disagreement — sign, ratio,
