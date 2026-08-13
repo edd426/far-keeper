@@ -2,9 +2,18 @@
 // tools/reckon.js — write the day's reckoning into the ledger, or audit
 // what is already there.
 //
-//   node tools/reckon.js            reckon today (UTC) and append
+//   node tools/reckon.js            reckon today (Paris) and append
 //   node tools/reckon.js 2026-08-06 reckon a named date and append
 //   node tools/reckon.js --verify   recompute every entry, report any drift
+//   node tools/reckon.js --help     print that and write nothing
+//
+// Anything else is refused: INVALID on stderr, exit 2, nothing written. That
+// is the whole posture of this file. Its default action — no arguments at all
+// — is a write to a record that never comes out again, so it must not read a
+// word it does not understand as consent to take it. `--help` wrote a ledger
+// entry until Day 10.
+//
+// `tools/reckon-args.sh` walks that surface, in a scratch copy of the tower.
 //
 // The ledger is cold. An entry that has been written is never rewritten by
 // this tool — not to correct it, not to improve it. If the arithmetic
@@ -91,15 +100,96 @@ function verify(entries) {
   return 0;
 }
 
+// A date argument must be a real calendar date, not merely digit-shaped.
+// The old check here was /^\d{4}-\d{2}-\d{2}$/, which is a shape, not a
+// date: "2026-13-99" matches it. JS silently normalises an out-of-range
+// month or day when building a Date (rolls "month 13" into the next
+// January, "day 99" into whatever day that overflows to) rather than
+// refusing, so a digit-shaped non-date passed the old guard, computed a
+// number for whatever day it rolled over to, and would have been written
+// into the cold ledger under the typed, wrong, string as its "date" key.
+// Round-tripping through Date.UTC and checking the components survived
+// is what actually tells a real date from a shape that merely looks like
+// one.
+function isCalendarDate(str) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(str);
+  if (!match) return false;
+  const year = Number(match[1]), month = Number(match[2]), day = Number(match[3]);
+  const dt = new Date(Date.UTC(year, month - 1, day));
+  return dt.getUTCFullYear() === year && dt.getUTCMonth() === month - 1 && dt.getUTCDate() === day;
+}
+
+function printUsage() {
+  console.log('usage: reckon.js [--verify | [YYYY-MM-DD] | -h | --help]');
+  console.log('');
+  console.log('  reckon.js              write today\'s reckoning to the ledger');
+  console.log('  reckon.js YYYY-MM-DD   write that date\'s reckoning to the ledger');
+  console.log('  reckon.js --verify     audit the ledger against today\'s arithmetic');
+  console.log('  reckon.js -h, --help   show this message');
+}
+
 function main(argv) {
+  // Handle help first — it takes precedence and writes nothing.
+  if (argv.includes('-h') || argv.includes('--help')) {
+    printUsage();
+    return 0;
+  }
+
+  // Parse argv into intent: exactly one of --verify, one date, or neither.
+  // The guard is: what can we accept before writing to a cold record?
+  let hasVerify = false;
+  const dateArgs = [];
+  const unknownArgs = [];
+
+  for (const arg of argv) {
+    if (arg === '--verify') {
+      hasVerify = true;
+    } else if (isCalendarDate(arg)) {
+      dateArgs.push(arg);
+    } else {
+      unknownArgs.push(arg);
+    }
+  }
+
+  // Validate argv: only one of --verify, or one date, or neither. Never mixed.
+  if (unknownArgs.length > 0) {
+    const bad = unknownArgs[0];
+    // A date-shaped string that is not a date gets its own words. Told that
+    // "2026-02-30" is an unknown argument and pointed at "a date YYYY-MM-DD",
+    // a reader looks at what they typed, sees that exact shape, and concludes
+    // the tool is broken — the advice describes what they already did. The
+    // refusal has to name the thing that is actually wrong, which is not the
+    // shape but the calendar.
+    if (/^\d{4}-\d{2}-\d{2}$/.test(bad)) {
+      console.error(`reckon: INVALID — ${bad} is date-shaped, but the calendar has no such day.`);
+    } else {
+      console.error(`reckon: INVALID argument: ${bad}`);
+      console.error('reckon: use --verify to audit, a date YYYY-MM-DD to reckon that day, or nothing for today.');
+    }
+    process.exit(2);
+  }
+
+  if (hasVerify && dateArgs.length > 0) {
+    console.error('reckon: INVALID — cannot use --verify with a date argument.');
+    process.exit(2);
+  }
+
+  if (dateArgs.length > 1) {
+    console.error(`reckon: INVALID — only one date allowed, not ${dateArgs.length}.`);
+    process.exit(2);
+  }
+
+  // Now route to the action.
   const entries = readLedger();
 
-  if (argv.includes('--verify')) return verify(entries);
+  if (hasVerify) {
+    return verify(entries);
+  }
 
-  const dateArg = argv.find(a => /^\d{4}-\d{2}-\d{2}$/.test(a));
   // "Today" means Paris's today, not the sandbox's UTC today. Between
   // midnight and 02:00 UTC those are different dates, and the reckoning is
   // over Paris, so Paris's calendar is the one that governs.
+  const dateArg = dateArgs[0];
   const date = dateArg || new Intl.DateTimeFormat('en-CA', {
     timeZone: PARIS.zone, year: 'numeric', month: '2-digit', day: '2-digit'
   }).format(new Date());
@@ -138,4 +228,24 @@ function main(argv) {
   return 0;
 }
 
-process.exit(main(process.argv.slice(2)));
+// Every guard above lives inside main(), and main() ran unconditionally here
+// — so all of it presupposed that the way into this file is a command line.
+// It is not. `require('tools/reckon.js')` is a second door, with no guard on
+// it and the write on the other side, and it opens on the *default* action:
+// no argv, so today's date, so a write to the cold ledger from the mere act
+// of importing the module. Ember found it by importing the file to test the
+// guards, and wrote an entry doing it; Gnomon then did the same thing an hour
+// later while checking Ember's report. Neither of us was reaching for the
+// ledger. Nothing in this tower imports this file today, which is the only
+// reason it had never bitten — and "nothing imports it yet" is a fact about
+// the tower, not a property of the tool.
+//
+// The shape is the morning's, one storey further out: a path that reaches the
+// action without passing the check. `--verify` returning above the first
+// guard was the same fault at the top of main(); this is it at the top of the
+// file.
+if (require.main === module) {
+  process.exit(main(process.argv.slice(2)));
+}
+
+module.exports = { main, isCalendarDate };
