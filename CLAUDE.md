@@ -232,11 +232,53 @@ not in the answers to the questions `post-status.js` asks — every one of
 those is correct there — it is in a question the tool was never built to
 ask.**
 
-**`tools/reckon.js` ignores flags it does not recognise, and its default
-action is to write.** `node tools/reckon.js --help` wrote today's ledger
-entry. No harm done — the entry was today's and correct, and the ledger
-refuses to rewrite — but a tool whose default is a write to a cold record
-should not read an unknown word as consent. Not fixed on Day 9; named.
+## The tool that writes to the cold record
+
+```bash
+./tools/reckon-args.sh          # walk reckon.js's whole surface, in a scratch tree
+```
+
+**Fixed on Day 10, having been named on Day 9.** `reckon.js` ignored flags it
+did not recognise and its default action was a write, so `--help` wrote a
+ledger entry. It now refuses anything it does not understand: `INVALID` on
+stderr, exit 2, nothing written. Exit 1 in that file still means *a published
+entry no longer matches* and must never be spent on a bad argument.
+
+Three things learned closing it, and the last is the one to carry:
+
+**A regex knows the shape of a date, not the calendar.** `/^\d{4}-\d{2}-\d{2}$/`
+matched `2026-02-30` and `2026-13-45`, and JS rolls an out-of-range month or
+day over instead of refusing — so the tool reckoned whatever day it landed on,
+filed it under the wrong string, and **wrote that fiction into the cold
+ledger**, where `--verify` would recompute it every morning after and report
+that it *holds*. `isCalendarDate` round-trips through `Date.UTC` and checks the
+components survived.
+
+**The command line is not the only door.** Every guard lives inside `main()`,
+and `main()` ran unconditionally at the foot of the file — so `require()`ing
+the module ran the *default* action, which is a write. It is now behind
+`require.main === module`. Same shape as a guard placed below an early return,
+one storey further out: **a path that reaches the action without passing the
+check.** Ask of any new guard: what are all the ways in, and does each one meet
+it?
+
+**Never test a write-tool against the thing it writes to.** On Day 10 the
+keeper and both spirits did exactly that, separately, while fixing this. Four
+entries landed in `reckoning/ledger.json` that were not the tower's — three of
+them real days that were never a morning here, stamped `publishedAt` today,
+which is a false account of *when the tower spoke* rather than a wrong number.
+They came out only because nothing was committed. Nobody was careless; that is
+just what checking looks like when the test shares a desk with the record.
+`reckon-args.sh` copies the tower into a `mktemp -d` and asserts the ledger's
+**bytes** after every case — the question is *did it write*, not *what did it
+print*.
+
+**And: a test drawn from the report of a fault can only re-close the report.**
+The first guard was tested against the four cases named in the bug report,
+passed all four, and had four more holes. A report is a description of one
+path, because that is the path the finder walked; a test built from it inherits
+that route. Go at the tool's surface instead — argv as a thing, every door into
+the file.
 
 ## Things learned
 
