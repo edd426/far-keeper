@@ -232,6 +232,35 @@ not in the answers to the questions `post-status.js` asks — every one of
 those is correct there — it is in a question the tool was never built to
 ask.**
 
+## The two words a ledger row is allowed to say
+
+```bash
+cp tools/ledger-verdicts.js /tmp/ledger-verdicts.js && ./scripts/local-snapshot.sh /tmp/ledger-verdicts.js
+```
+
+**Built Day 11.** A ledger row's green badge says **`unchanged`**, never
+`holds`. `holds` is heard as *holds true* — about being correct — and the
+recompute can only establish *holds in place*: this published number has not
+moved since it was published. Do not put the old word back.
+
+**DRIFTED forks, and the fork is the point.** A row whose `method` is not the
+method running now has an honest account (the arithmetic moved out from under
+a kept claim). A row on the **current** method has none — that is the shape of
+a hand editing a published number — and both `reckoning/page.js` and
+`tools/reckon.js --verify` now say so instead of handing it the method
+change's story. Before Day 11 a forged row was told *"the tower's arithmetic
+has moved out from under it,"* which was false of it. **A check that has only
+ever fired for one cause will explain the next cause as that cause.**
+
+`tools/ledger-verdicts.js` checks both branches. It forges its ledger **on
+the wire**, with `page.route('**/ledger.json*')` — the same trick as the
+guard-break recipe above, and for the same reason as `reckon-args.sh`'s
+scratch tree: never point a test at the cold record. It asserts the
+substitution landed, and asserts the target row does *not* carry the
+forgery sentence beforehand, so the unbroken case would fail the pass rule.
+To prove it can still break, change the forgery branch's wording in
+`page.js` and watch exactly one check go red.
+
 ## The tool that writes to the cold record
 
 ```bash
