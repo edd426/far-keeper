@@ -32,7 +32,7 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const LEDGER = path.join(ROOT, 'reckoning', 'ledger.json');
-const { reckon, PARIS } = require(path.join(ROOT, 'reckoning', 'reckoning.js'));
+const { reckon, PARIS, METHOD } = require(path.join(ROOT, 'reckoning', 'reckoning.js'));
 
 function readLedger() {
   if (!fs.existsSync(LEDGER)) return [];
@@ -76,27 +76,59 @@ function verify(entries) {
     console.log('reckon: the ledger is empty — nothing to verify.');
     return 0;
   }
-  let drifted = 0;
+  // `holds` was the word here until Day 11, and it said more than this
+  // check can establish. Recomputing an entry proves it has not moved
+  // since the day it was published. It proves nothing about the sun: this
+  // is our arithmetic run against our own record, and a wrong method held
+  // steady recomputes to the same wrong answer every morning.
+  //
+  // And DRIFTED was one word for two facts. A row whose `method` is not
+  // the method running now has an honest account to give — the arithmetic
+  // moved out from under a kept claim. A row computed under the method
+  // running now has no such account, and telling its reader to "work out
+  // what changed in the method" hands it one it has not earned. That is
+  // the shape of a hand moving a number, and the tool should say so
+  // rather than assume the innocent case. Ember demonstrated it in a
+  // scratch copy on Day 11 by forging exactly that row.
+  let sameMethod = 0;
+  let methodMoved = 0;
   for (const entry of entries) {
     const fresh = reckon(entry.date, PARIS);
     const diffs = differences(entry, fresh);
     if (diffs.length === 0) {
-      console.log(`reckon: ${entry.date} holds.`);
+      console.log(`reckon: ${entry.date} unchanged since it was published.`);
     } else {
-      drifted += 1;
-      console.log(`reckon: ${entry.date} HAS DRIFTED`);
+      const entryMethod = entry.method || 1;
+      const current = entryMethod === METHOD;
+      if (current) sameMethod += 1; else methodMoved += 1;
+      console.log(`reckon: ${entry.date} HAS DRIFTED` +
+        (current
+          ? ` — under method ${entryMethod}, which is the method running now`
+          : ` — published under method ${entryMethod}; the tower now runs method ${METHOD}`));
       for (const line of diffs) console.log(`reckon:   ${line}`);
     }
   }
+  const drifted = sameMethod + methodMoved;
   if (drifted > 0) {
     console.log('');
     console.log(`reckon: ${drifted} published entr${drifted === 1 ? 'y' : 'ies'} no longer match today's arithmetic.`);
     console.log('reckon: do NOT edit the ledger. The ledger is the record of what was claimed.');
-    console.log('reckon: work out what changed in the method, and write it in the diary.');
+    if (methodMoved > 0) {
+      console.log(`reckon: ${methodMoved} of them ${methodMoved === 1 ? 'was' : 'were'} computed under a method the tower no longer runs.`);
+      console.log('reckon: work out what changed in the method, and write it in the diary.');
+    }
+    if (sameMethod > 0) {
+      console.log(`reckon: ${sameMethod} of them ${sameMethod === 1 ? 'was' : 'were'} computed under method ${METHOD}, which is the method running now.`);
+      console.log('reckon: there is no method change to blame for that. Either a published');
+      console.log('reckon: number was edited after the day, or the arithmetic moved without the');
+      console.log('reckon: method number moving with it. Read the commits that touched');
+      console.log('reckon: reckoning/ledger.json before you believe anything kinder.');
+    }
     return 1;
   }
   console.log('');
-  console.log(`reckon: all ${entries.length} published entr${entries.length === 1 ? 'y holds' : 'ies hold'}.`);
+  console.log(`reckon: all ${entries.length} published entr${entries.length === 1 ? 'y is' : 'ies are'} unchanged since publication.`);
+  console.log('reckon: that is a check on the record, not on the sky.');
   return 0;
 }
 

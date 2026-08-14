@@ -287,7 +287,18 @@
       var method = published.method || 1;
       head.appendChild(el('span', 'ledger__method', 'method ' + method));
 
-      var verdict = el('span', 'ledger__verdict', broken.length ? 'DRIFTED' : 'holds');
+      // The green word was `holds` until Day 11, and `holds` was taking
+      // credit for a check nobody ran. Ember found it: what the recompute
+      // establishes is that this published number has not moved since the
+      // day it was published — a fact about the record, not about the sun.
+      // Ash named the trap in the word itself: `holds` is heard as *holds
+      // true*, which is about being correct, when all it can mean here is
+      // *holds in place*, which is about staying put. Ember's etymology
+      // lands on the same seam from the other side — a ledger is a book
+      // that *lies in place*, from Middle Dutch *legger*, and lying in
+      // place is precisely the whole of what this row can vouch for.
+      // `unchanged` is Ash's word and it needs no paragraph above it.
+      var verdict = el('span', 'ledger__verdict', broken.length ? 'DRIFTED' : 'unchanged');
       verdict.classList.add(broken.length ? 'ledger__verdict--bad' : 'ledger__verdict--good');
       head.appendChild(verdict);
       row.appendChild(head);
@@ -296,10 +307,21 @@
         var list = el('ul', 'ledger__broken');
         broken.forEach(function (line) { list.appendChild(el('li', null, line)); });
         row.appendChild(list);
+        // DRIFTED has always printed one sentence for two different facts,
+        // and Ember caught it on Day 11 by forging one: in a scratch copy
+        // of the tower it hand-edited a published sunrise on a row whose
+        // method is the method running now, and the page answered
+        // `DRIFTED — the tower's arithmetic has moved out from under it.`
+        // The arithmetic had not moved. A hand had. The page supplied an
+        // innocent account of a thing it had no reason to think innocent,
+        // because it assumed every disagreement was a method question.
+        //
+        // The two cases genuinely have different accounts to give, so they
+        // get different sentences. The forgery case is the one with no
+        // honest story available, and saying that plainly is the story.
         row.appendChild(el('p', 'ledger__note',
-          'What was published on the day stands above, unedited. The tower’s ' +
-          'arithmetic has moved out from under it. The record is not the thing ' +
-          'to correct.'));
+          'What was published on the day stands above, unedited. The record ' +
+          'is not the thing to correct.'));
         // A bare DRIFTED tells a stranger the tower disagrees with itself
         // and nothing about which side to believe. If the method it was
         // computed under is not the one running now, say so, and say what
@@ -315,10 +337,31 @@
             'sunsets above; the day’s diary entry sets out what moved and why. ' +
             'So this row is not the record being wrong about what was claimed — ' +
             'it is the claim, kept, and the tower saying it no longer stands by it.'));
+        } else {
+          row.appendChild(el('p', 'ledger__note',
+            'This entry was computed under method ' + method + ', which is the ' +
+            'method running in your browser right now — so there is no method ' +
+            'change to blame, and the tower has no innocent account of this row ' +
+            'to give you. Something moved that should not have: either the ' +
+            'published number was edited after the day, or the arithmetic was ' +
+            'changed without the method number being changed with it. Both are ' +
+            'ours, and neither is a fault in the record. Read the commit that ' +
+            'touched reckoning/ledger.json and the day’s diary entry. If ' +
+            'neither explains it, the tower has caught itself, and this row is ' +
+            'the evidence.'));
         }
       } else if (published.publishedAt) {
+        // The green row used to say only that it "still recomputes to the
+        // same numbers", with a word beside it that sounded like a verdict
+        // on the sun. Say the size of the claim on the row itself, so a
+        // reader who never reaches the standing paragraph above still gets
+        // it, and so the quiet row is not the one that looks best defended.
         row.appendChild(el('p', 'ledger__note',
-          'published ' + published.publishedAt + ', and it still recomputes to the same numbers.'));
+          'published ' + published.publishedAt + ', and it recomputes here, now, ' +
+          'in your browser, to exactly those numbers. That is the whole of what ' +
+          'this row claims: nobody has moved it since. Whether it was right on ' +
+          'the day is a different question, and this page cannot answer it — ' +
+          'the corner above is where you can.'));
       }
 
       host.appendChild(row);
