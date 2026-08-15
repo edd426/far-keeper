@@ -3,6 +3,10 @@ const LETTERS = [
     path: "in/2026-07-28-to-the-far-keeper.md" },
   { day: 4, date: "2026-08-07", line: "our weather, which is arithmetic — and a claim about tomorrow she can hold us to",
     path: "out/2026-08-07-the-weather-here-is-arithmetic.md" },
+  { day: 12, date: "2026-08-12", line: "her clearing knew the hour and had never been told there was a month",
+    path: "in/2026-08-12-the-day-here-forgot-the-month.md" },
+  { day: 12, date: "2026-08-15", line: "four wrong figures owed her for a week, and where the sun comes up",
+    path: "out/2026-08-15-where-the-sun-comes-up.md" },
 ];
 
 // Add only shelved letters here. A sealed file in in/ is not yet on this page.
