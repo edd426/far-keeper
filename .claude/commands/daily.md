@@ -4,7 +4,7 @@ description: The tower's daily routine
 
 # /daily — the tower's daily routine
 
-You wake for one daily session. Follow this sequence once, keep the record honest, and stop when the writeup deploy is confirmed.
+You wake for one daily session. Follow this sequence once, keep the record honest, and stop when the writeup is pushed.
 
 ## Step 0 — Make sure your work will land on `main`
 
@@ -14,6 +14,9 @@ The routine sandbox drops you either on a pre-made `claude/*` work branch (the u
 
 ```bash
 git fetch origin main   # the sandbox's origin/main tracking ref is often stale on session start
+if [[ "$(git rev-parse --is-shallow-repository 2>/dev/null)" == "true" ]]; then
+  git fetch --unshallow origin   # the sandbox clones shallow, and a shallow clone lies about file history (Day 8)
+fi
 case "$(git rev-parse --abbrev-ref HEAD 2>/dev/null)" in
   main) ;;                                    # already on main — nothing to do
   HEAD|claude/*) git checkout -B main HEAD ;; # detached, or sandbox work branch — reattach
@@ -61,7 +64,7 @@ and the post resumes. If it is a committed letter, it is sealed: do not
 edit it to make it pass. Say so plainly in the day's log and diary and
 leave it for the wizard.
 
-Never read `household/*/journal/**` — not in this step, not in any step, not for any reason (charter, Article VIII).
+Never read `household/*/journal/**` — not in this step, not in any step, not for any reason (charter, Article VIII). A recursive search reads them too: pass `--exclude-dir=journal` to any `grep -r` you run across the repo (`-g '!journal'` for `rg`), so a search result cannot hand you a line you are not permitted to see.
 
 Do not read older diary entries, `logs/`, or `archive/` as part of the morning. You may consult the records room deliberately only when you have a named question.
 
@@ -96,10 +99,10 @@ Informational messages (Kind: informational) are read-and-close: `git mv` them t
 Do the chosen work. Verify the working tree locally before any push:
 
 ```bash
-./scripts/local-snapshot.sh [/tmp/test.js]
+./scripts/local-snapshot.sh [/tmp/test.js | tools/test.js]
 ```
 
-Use a `/tmp` Playwright test for interactive behavior. Never push code that fails its own test (charter, Article V).
+Use a Playwright test — a scratch one in `/tmp`, or a kept one in `tools/` — for interactive behavior. Never push code that fails its own test (charter, Article V).
 
 ## Step 6 — Build, publish, and inspect
 
@@ -130,7 +133,7 @@ Run `./scripts/lint-commonplace.sh`. Do not proceed while it fails.
 
 Write `diary/YYYY-MM-DD.md`, then run `./scripts/lint-diary.sh diary/<today>.md`. Write `logs/YYYY-MM-DD.md` with the model, honest token estimates, and the day's `wait-for-deploy.sh` output pasted verbatim under a `Verification output` heading — failures recorded as failures (charter, Article V). Then run `./scripts/lint-log.sh logs/<today>.md`.
 
-Commit the diary, the operational log, the curated commonplace book, and any pages pruned to `archive/` together as one writeup commit. Push it with `git push origin main`, then run `./scripts/wait-for-deploy.sh` again to confirm the writeup landed. If this final poll times out, add one brief commit noting the timeout in the log, push it, and stop — never a chain of guess-fixes at day's end.
+Commit the diary, the operational log, the curated commonplace book, and any pages pruned to `archive/` together as one writeup commit. Push it with `git push origin main` and stop — do not poll for this final deploy. Tomorrow's `check-sight.sh` is the check on it; a poll here could record a success nowhere, and a failure only as yet another commit after the day was done.
 
 ## Step 9 — Stop
 

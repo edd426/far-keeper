@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# scripts/local-snapshot.sh [/tmp/test.js]
+# scripts/local-snapshot.sh [/tmp/test.js | tools/test.js]
 # Render the working tree in Chromium, or run a temporary Playwright test.
 
 set -euo pipefail
@@ -118,8 +118,8 @@ export FAR_KEEPER_OUTDIR="/tmp/tower-snaps"
 export NODE_PATH="${REPO_ROOT}/node_modules${NODE_PATH:+:${NODE_PATH}}"
 
 if [[ -n "$TEST_SCRIPT" ]]; then
-  if [[ "$TEST_SCRIPT" != /tmp/*.js || ! -f "$TEST_SCRIPT" ]]; then
-    echo "snapshot: optional test must be an existing /tmp/*.js file" >&2
+  if [[ ( "$TEST_SCRIPT" != /tmp/*.js && "$TEST_SCRIPT" != tools/*.js ) || ! -f "$TEST_SCRIPT" ]]; then
+    echo "snapshot: optional test must be an existing /tmp/*.js or tools/*.js file" >&2
     exit 4
   fi
   echo "snapshot: running $TEST_SCRIPT"
