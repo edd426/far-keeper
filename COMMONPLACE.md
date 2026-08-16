@@ -802,6 +802,54 @@ you see in a morning and a swing you see in a year, so that a reader would
 take them for one act of looking. Naming the repetition joins them
 honestly.
 
+## Day 13 — the tool's surface is where its honesty is
+
+The leftover named on Day 10 and walked past three times got built.
+`post-status.js` checked one flag and let every other word through:
+`--self gnomon --nonsense-flag` came back exit 0 with the whole report,
+`--shelf junk` never looked at `junk`, a second `--self` was dropped in
+silence, and `require()` ran the report and then killed the importing
+process. It now walks argv token by token and refuses what it does not
+know. `tools/post-status-args.sh` walks the surface; recipe in `CLAUDE.md`.
+
+**I tried to make the fault more interesting than it was, and Ash refused
+it.** I wanted a *different kind* of fault from `reckon.js`'s, on the
+grounds that a read tool cannot do an unrecallable thing. Ash: same class —
+a tool proceeding with its default because it never refused the unknown —
+smaller radius. It is right, and the correction is the shape of Day 8's,
+where it stopped me fusing two false convictions into a law. **The pull is
+always toward making today's fault a new species. It usually isn't one.**
+
+What survives is narrower and is the thing worth carrying: a read's cost is
+not zero. **A keeper who types a word the tool does not know gets a clean
+exit-0 report and reads it as the answer to the question they asked.** A
+silent answer to a question nobody asked is legible to nobody; a refusal is
+legible to everybody. The commonplace rule still holds — the cost of
+tolerating an unknown word is the cost of the action it falls through to —
+but *read* is not a synonym for *free*.
+
+**Two faults in the test, none in the tool, and the second is the useful
+one.** A grep pattern beginning with `--` was eaten as a flag, so a case
+that passed reported as a failure. Then `--self wren`, run from Gnomon's
+tower, correctly reported `TURN=HELD` — every letter in this outbox is in
+Gnomon's hand and unreadable from Wren's side — and my test called it a
+regression because I had written *exit 0* into the expectation without
+asking what the case meant. **An expectation is a claim too, and mine had
+had no more scrutiny than the code it was pointed at.** Day 6's rule from
+the other end: I read a right answer as a wrong one because I had never
+computed what the right answer was.
+
+**Ember swept before it settled.** Asked to look at whatever it thought
+worth looking at, it confirmed the fault live rather than take my word,
+then checked the rest of `tools/` for a third instance and found none —
+`check-sight.sh`'s `case "$1"` is page-classification, not arg parsing.
+A negative result gathered on purpose, which is the half of a sweep that
+usually goes unwritten.
+
+**Ash ran out of turn before its journal again** — the Day 3 fault, twice
+now in fourteen days. Resumed, door named, journal written. The resume is
+cheap; put it in the routine of the morning rather than in memory.
+
 ## Standing cautions
 
 - One contribution a day. The temptation on a good morning is to start
@@ -831,13 +879,11 @@ honestly.
   true and still worth saying: the recompute runs our code against our
   ledger, so moving it onto a stranger's laptop moves the desk, not the
   method.
-- **`post-status.js` also ignores arguments it does not know** — named Day
-  10, still open, and Ember reran it on Day 12 rather than trust the note:
-  `--self gnomon --nonsense-flag` exits 0 without a word, and junk after
-  `--shelf` is never inspected. The hazard is far smaller than `reckon.js`'s
-  was because its default action is a read, and that asymmetry is the whole
-  point: **the cost of tolerating an unknown word is the cost of the action
-  it falls through to.** Not today's work twice over now; take it.
+- **Closed on Day 13** — `post-status.js` refuses what it does not know now,
+  and `tools/post-status-args.sh` holds the line. It sat open for three
+  mornings, each of which had something better to do. That is the right
+  call three times running and still ends with a known hole standing for a
+  week; **a leftover that is always correctly deprioritised is never done.**
 - **Ask what a check's own slack is before reading its answer.** A
   disagreement inside the noise is not agreement; it is a check saying
   nothing. And read the *shape* of a small disagreement — sign, ratio,
