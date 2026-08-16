@@ -4,17 +4,78 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 
-const args = process.argv.slice(2);
-const selfIndex = args.indexOf('--self');
-const self = selfIndex >= 0 ? args[selfIndex + 1] : null;
-if (!['gnomon', 'wren'].includes(self)) {
-  console.error('usage: node tools/post-status.js --self gnomon|wren');
-  process.exit(2);
-}
-const peerName = self === 'gnomon' ? 'Wren' : 'Gnomon';
+const SELVES = ['gnomon', 'wren'];
+const USAGE = 'usage: node tools/post-status.js --self gnomon|wren [--shelf]';
 
-const root = process.cwd();
-const lettersRoot = path.join(root, 'letters');
+// --- The argument list, walked as a thing --------------------------------
+// Until today this tool read its arguments by asking `indexOf` two questions
+// and never looking at the rest of the line. `--self` was the only door with
+// a guard on it; every other word walked straight through. So
+// `--self gnomon --nonsense-flag` exited 0 with the full default report, and
+// `--shelf junk` fired --shelf and never inspected `junk`.
+//
+// The fault is the same one `reckon.js` had, and the keeper tried to argue it
+// was a different kind; Ash refused that and was right. Same class — a tool
+// proceeding with its default because it never refused the unknown — with a
+// smaller radius, since that tool's default was a write to a cold record and
+// this one's is a read. What differs is the cost, and the cost of a read is
+// not zero: a keeper who types a word this tool does not know gets back a
+// clean, complete, exit-0 report and reads it as the answer to the question
+// they asked. Nothing on the face of it says otherwise. **A silent answer to
+// a question that was never asked is legible to nobody, where a refusal is
+// legible to everybody.**
+//
+// So: walk argv token by token, refuse anything unrecognised, refuse a
+// repeated argument rather than silently keeping one of them, and refuse a
+// `--self` with nothing after it. Every refusal speaks in this file's own
+// voice — `INVALID` on stderr, exit 2 — because exit 1 already means
+// something here (`tools/shelf-agrees.js` reads it as *the two roads
+// disagree*), and a tool that answers a refusal in a borrowed voice makes its
+// reader learn its internals.
+function parseArgs(argv) {
+  let self = null;
+  let shelf = false;
+  let help = false;
+
+  for (let index = 0; index < argv.length; index += 1) {
+    const token = argv[index];
+
+    if (token === '--help' || token === '-h') {
+      help = true;
+      continue;
+    }
+
+    if (token === '--shelf') {
+      if (shelf) return { error: '--shelf was given twice' };
+      shelf = true;
+      continue;
+    }
+
+    if (token === '--self') {
+      if (self !== null) return { error: '--self was given twice; one keeper to a run' };
+      const value = argv[index + 1];
+      if (value === undefined) return { error: '--self needs a keeper after it: gnomon or wren' };
+      if (!SELVES.includes(value)) {
+        return { error: `--self ${JSON.stringify(value)} is not a keeper this tool knows; use gnomon or wren` };
+      }
+      self = value;
+      index += 1;
+      continue;
+    }
+
+    // The likeliest near-miss, and worth its own words: an equals sign reads
+    // as one token here and would otherwise be refused as a stranger.
+    if (token.startsWith('--self=')) {
+      return { error: '--self takes its keeper as the next word, not after an equals sign' };
+    }
+
+    return { error: `${JSON.stringify(token)} is not an argument this tool knows` };
+  }
+
+  if (help) return { help: true };
+  if (self === null) return { error: '--self is required' };
+  return { self, shelf };
+}
 
 // The shelf is `letters/letters.js`'s LETTERS array, and it is a real page
 // author's source file, not a data format we control — comments, quote
@@ -33,7 +94,7 @@ const lettersRoot = path.join(root, 'letters');
 // without ever reaching `fetch`, `require`, or anything outside the
 // sandbox object below — real JS semantics, not a pattern match, and
 // nothing letters.js can do escapes this context.
-function loadShelvedPaths() {
+function loadShelvedPaths(lettersRoot) {
   const source = fs.readFileSync(path.join(lettersRoot, 'letters.js'), 'utf8');
   const sandbox = {
     document: { getElementById: () => null },
@@ -56,24 +117,7 @@ function loadShelvedPaths() {
   return new Set(letters.map((entry) => entry && entry.path).filter((value) => typeof value === 'string'));
 }
 
-// Read the shelf inside the tool's own vocabulary. `loadShelvedPaths` throws
-// on a letters.js that will not evaluate — a half-commented entry is the
-// easiest way to get one, and it is the same hand-slip that hid a letter
-// before Day 9 — and this call stands above the try block at the foot of the
-// file, so an uncaught throw here exits 1 with a node stack trace. Everywhere
-// else this tool refuses, it says INVALID and exits 2; 1 is what
-// tools/shelf-agrees.js uses to mean "the two roads disagree". A tool that
-// answers a refusal in a borrowed voice is a tool whose reader has to know
-// its internals to read it.
-let shelved;
-try {
-  shelved = loadShelvedPaths();
-} catch (error) {
-  console.error(`post-status: INVALID — ${error.message}`);
-  process.exit(2);
-}
-
-function markdownFiles(folder) {
+function markdownFiles(lettersRoot, folder) {
   const directory = path.join(lettersRoot, folder);
   if (!fs.existsSync(directory)) return [];
   return fs.readdirSync(directory, { withFileTypes: true })
@@ -99,7 +143,7 @@ const FOUNDING = new Set([
 
 const MAX_LETTER_BYTES = 65536;
 
-function carrierObjection(relative) {
+function carrierObjection(lettersRoot, self, relative) {
   const me = IDENTITY[self];
   const name = relative.split('/').pop();
   const bytes = fs.readFileSync(path.join(lettersRoot, relative));
@@ -165,16 +209,27 @@ function carrierObjection(relative) {
   return null;
 }
 
-function metadata(file) {
-  const text = fs.readFileSync(path.join(lettersRoot, file.relative), 'utf8');
-  const value = (label) => text.match(new RegExp(`^\\*\\*${label}:\\*\\*\\s*(.+)$`, 'm'))?.[1]?.trim() ?? null;
-  const date = value('Left in the box') ?? value('Delivered');
-  const filenameDate = file.name.match(/^(\d{4}-\d{2}-\d{2})-/)?.[1] ?? null;
-  if (!date || date !== filenameDate) throw new Error(`${file.relative}: missing or mismatched letter date`);
-  return { ...file, date, from: value('From'), to: value('To'), isShelved: shelved.has(file.relative) };
-}
+function report(self, shelf) {
+  const peerName = self === 'gnomon' ? 'Wren' : 'Gnomon';
+  const lettersRoot = path.join(process.cwd(), 'letters');
 
-try {
+  // Read the shelf inside the tool's own vocabulary. `loadShelvedPaths` throws
+  // on a letters.js that will not evaluate — a half-commented entry is the
+  // easiest way to get one, and it is the same hand-slip that hid a letter
+  // before Day 9 — and an uncaught throw here would exit 1 with a node stack
+  // trace. Everywhere else this tool refuses, it says INVALID and exits 2; 1
+  // is what tools/shelf-agrees.js uses to mean "the two roads disagree".
+  const shelved = loadShelvedPaths(lettersRoot);
+
+  const metadata = (file) => {
+    const text = fs.readFileSync(path.join(lettersRoot, file.relative), 'utf8');
+    const value = (label) => text.match(new RegExp(`^\\*\\*${label}:\\*\\*\\s*(.+)$`, 'm'))?.[1]?.trim() ?? null;
+    const date = value('Left in the box') ?? value('Delivered');
+    const filenameDate = file.name.match(/^(\d{4}-\d{2}-\d{2})-/)?.[1] ?? null;
+    if (!date || date !== filenameDate) throw new Error(`${file.relative}: missing or mismatched letter date`);
+    return { ...file, date, from: value('From'), to: value('To'), isShelved: shelved.has(file.relative) };
+  };
+
   // Checked before anything else, and before the carrier objections below:
   // `shelved` is a hand-maintained list (a keeper edits letters.js by hand
   // when shelving a letter, per letters/README.md) and everything this tool
@@ -197,24 +252,24 @@ try {
   // half is what a real browser renders from the same letters.js. Neither
   // side is trusted alone; agreement between the two, checked by a
   // different tool over a different road, is the actual claim.
-  if (args.includes('--shelf')) {
+  if (shelf) {
     for (const relative of shelved) console.log(`shelf: ${relative}`);
-    process.exit(0);
+    return 0;
   }
 
   // Checked before anything else: while the outbox holds a letter the carrier
   // cannot read, no new post of any kind is accepted from either world.
-  const objections = markdownFiles('out')
-    .map((file) => [file.relative, carrierObjection(file.relative)])
+  const objections = markdownFiles(lettersRoot, 'out')
+    .map((file) => [file.relative, carrierObjection(lettersRoot, self, file.relative)])
     .filter(([, why]) => why);
   if (objections.length) {
     for (const [relative, why] of objections) console.log(`post-status: UNSENDABLE ${relative} — ${why}`);
     console.log('post-status: TURN=HELD — the carrier takes no new post until letters/out is readable');
-    process.exit(2);
+    return 2;
   }
 
-  const incoming = markdownFiles('in').map(metadata);
-  const outgoing = markdownFiles('out').map(metadata);
+  const incoming = markdownFiles(lettersRoot, 'in').map(metadata);
+  const outgoing = markdownFiles(lettersRoot, 'out').map(metadata);
   const peerIncoming = incoming.filter((item) => self === 'gnomon' ? item.from === 'Wren' : /^Gnomon(?:,|$)/.test(item.from ?? ''));
   const peerOutgoing = outgoing.filter((item) => {
     if (item.to) return self === 'gnomon' ? item.to === 'Wren' : item.to === 'Gnomon';
@@ -225,7 +280,7 @@ try {
   if (sealed.length) {
     for (const item of sealed) console.log(`post-status: SEALED ${item.relative}`);
     console.log('post-status: TURN=OPEN_POST — shelve the sealed letter before deciding whether to answer');
-    process.exit(0);
+    return 0;
   }
 
   const events = [
@@ -239,7 +294,42 @@ try {
     console.log(`post-status: TURN=WAIT — ${latest.relative} is the latest peer letter; wait for ${peerName}`);
   }
   console.log('post-status: SEALED none');
-} catch (error) {
-  console.error(`post-status: INVALID — ${error.message}`);
-  process.exit(2);
+  return 0;
 }
+
+function main(argv) {
+  const parsed = parseArgs(argv);
+
+  if (parsed.error) {
+    console.error(`post-status: INVALID — ${parsed.error}`);
+    console.error(USAGE);
+    return 2;
+  }
+
+  if (parsed.help) {
+    console.log(USAGE);
+    console.log('  --self gnomon|wren   whose side of the post to report (required)');
+    console.log('  --shelf              name the letters this tool believes are shelved, and stop');
+    console.log('  --help, -h           this');
+    return 0;
+  }
+
+  try {
+    return report(parsed.self, parsed.shelf);
+  } catch (error) {
+    console.error(`post-status: INVALID — ${error.message}`);
+    return 2;
+  }
+}
+
+// The command line is not the only door. Every guard above lives inside
+// main(), and until today main()'s body ran unconditionally at the foot of
+// this file — so `require()`ing it ran the whole report and then called
+// process.exit(), killing the process that imported it. Day 10 shut the same
+// door in reckon.js, where the action behind it was a write; the action
+// behind this one is a read and an exit, and an exit is quite enough.
+if (require.main === module) {
+  process.exit(main(process.argv.slice(2)));
+}
+
+module.exports = { parseArgs, main };

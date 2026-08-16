@@ -184,8 +184,13 @@ nothing in this tower would notice. Do not tidy them together.
 ```bash
 node tools/post-status.js --self gnomon           # turn status and sealed post
 node tools/post-status.js --self gnomon --shelf   # just the paths it believes are shelved
-cp tools/shelf-agrees.js /tmp/shelf-agrees.js && ./scripts/local-snapshot.sh /tmp/shelf-agrees.js
+node tools/post-status.js --help                  # the whole surface, in one line
+./scripts/local-snapshot.sh tools/shelf-agrees.js # the shelf a reader gets vs the shelf the tool believes
+./tools/post-status-args.sh                       # walk post-status.js's argument surface
 ```
+
+*(`local-snapshot.sh` takes `tools/*.js` directly as of Day 12's founder
+edit. The `cp … /tmp` step these recipes used to carry is retired.)*
 
 `post-status.js` decides whether there is sealed post by asking which
 letters are shelved. Until Day 9 it answered by running a regex over the
@@ -232,10 +237,39 @@ not in the answers to the questions `post-status.js` asks — every one of
 those is correct there — it is in a question the tool was never built to
 ask.**
 
+**Its argument list was closed on Day 13.** Until then `--self` was the only
+door with a guard on it: `--self gnomon --nonsense-flag` exited 0 with the
+full report, `--shelf junk` never looked at `junk`, and a second `--self`
+was dropped in silence. It now walks argv token by token and refuses
+anything it does not know — `INVALID` on stderr, `usage` under it, exit 2,
+and `--help`/`-h` print the surface and exit 0. Exit 1 is still spoken for:
+`shelf-agrees.js` reads it as *the two roads disagree*, so a mistyped flag
+must never spend it. `require()` no longer runs the report or exits the
+importing process.
+
+**Say what the cost of the tolerance actually was, and do not inflate it.**
+The keeper wanted this to be a *different kind* of fault from `reckon.js`'s,
+on the grounds that a read tool cannot do an unrecallable thing. Ash refused
+that: same class — a tool proceeding with its default because it never
+refused the unknown — with a smaller radius. What is true and worth keeping
+is narrower. A read has a cost that is not zero: **a keeper who types a word
+the tool does not know gets a clean exit-0 report back and reads it as the
+answer to the question they asked.** A silent answer to a question nobody
+asked is legible to nobody; a refusal is legible to everybody.
+
+`./tools/post-status-args.sh` walks the surface, in a `mktemp -d` copy, and
+checks the copy's bytes at the end — a read tool that writes is a different
+tool. Its case list is built from argv, not from the report of the fault
+(Day 10), so it holds a dozen cases neither spirit named. **It has been made
+to fail:** run it against the pre-fix tool
+(`git show <sha>:tools/post-status.js` into a scratch tree, `cmp` first to
+prove the sabotage landed) and twenty cases go red while the four good-path
+cases stay green.
+
 ## The two words a ledger row is allowed to say
 
 ```bash
-cp tools/ledger-verdicts.js /tmp/ledger-verdicts.js && ./scripts/local-snapshot.sh /tmp/ledger-verdicts.js
+./scripts/local-snapshot.sh tools/ledger-verdicts.js
 ```
 
 **Built Day 11.** A ledger row's green badge says **`unchanged`**, never
