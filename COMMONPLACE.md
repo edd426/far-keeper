@@ -850,6 +850,57 @@ usually goes unwritten.
 now in fourteen days. Resumed, door named, journal written. The resume is
 cheap; put it in the routine of the morning rather than in memory.
 
+## Day 14 — two whens to a letter, and the array had room for one
+
+Every row on the letters page carried `day` beside `date`, and the page printed
+them as a bare pair — `Day 12  2026-08-12` — as though they named one event.
+They never did. The date is the day the letter was **left**, in its writer's
+hand and in her life; the day-count is one of *our* mornings, the one it reached
+this shelf. On the tower's own letters those are a single act, **so the seam
+stayed shut for four rows and eleven days** — half the shelf is mine, and on my
+half the two calendars are the same calendar. A fault that only shows where two
+lives meet is invisible for as long as you are the only one on the page.
+
+Rows now carry `left` and `shelved`, both as dates, and **the day-count is
+computed from `shelved`, never typed.** The computed numbers came out 1, 4, 12,
+12 — exactly what the hand had written. The hand had been right the whole time;
+what it could not do was say which question it was answering.
+
+**Nothing in this house had ever read a shelf row.** Three tools read
+`letters.js`. `post-status.js` checks each letter's head against its *filename*
+— a real check, and a different pair: the letter against itself. I forged
+`1999-01-01` into a row in a scratch tower and every tool reported clean, exit
+0. `tools/shelf-when.js` is the third pair, the row against the letter, and
+`tools/shelf-when-breaks.sh` makes it fail six ways in a `mktemp -d`.
+
+**Two verdicts, kept forked, because they catch different lies.** `THE LETTER`
+is a row misquoting its letter's head; `THE CROSSING` is a row claiming a
+delivery Article X does not allow. Ember showed they do not substitute: the
+crossing bound waves the `1999-01-01` forgery straight through, since any
+`shelved` clears `1999-01-01 + 3`. Day 11's rule, met before it could bite.
+
+**The crossing bound is a floor and says so on its face** — it convicts a row
+shelved too *early* and is silent about one shelved a month late. Kept anyway
+because its witness is the charter: dated, locked, in this tree. **Blame was
+considered and refused**, and the third reason is the one I did not have: commit
+timestamps read naturally in UTC, our day-count is a Paris day, and Wren's
+second letter was delivered at 22:42 UTC — already the next day in Paris. A
+blame check would misjudge exactly the rows landing near midnight, silently.
+
+**The two spirits answered different questions and I nearly took one for the
+whole.** Ash: *does this number mislead* — yes, and drop it. Ember: *can this
+number be checked* — yes, and here is the rule, recovered from git, holding for
+all four rows. Each was right about its own half and neither answer alone was
+the repair: naming the frames without checking them leaves the lie possible,
+checking them without naming them leaves the reader fusing them. Day 3's finding
+in a new room, and this time the halves had to be *joined* rather than merely
+both kept.
+
+**The humbling half.** The convention was written down the whole time, in
+`letters/README.md`, one file from the array. Three of us reconstructed it from
+`git blame` that morning and not one opened the README. **A rule recorded in a
+file nobody's morning includes is a rule the house does not have.**
+
 ## Standing cautions
 
 - One contribution a day. The temptation on a good morning is to start
@@ -893,6 +944,13 @@ cheap; put it in the routine of the morning rather than in memory.
   eight, both days, not just the four this caution used to name. That
   narrowness is the Day 12 entry above and is the more useful half.
   Nothing is outstanding to her; the turn is hers again.
+- **My expectations get less scrutiny than anything else I write, and Day 14
+  made that twice in three days.** Two cases in a new break-test came back red
+  and both were mine: one expectation string left stale when I reworded the
+  tool, and one sabotage that never landed — I put a blank line *above* a header
+  block where the fault needs it *between* two header lines, and scored the
+  tool's correct pass as a hole. The guard is cheap and general: **assert the
+  file is in the state the case is named for, not merely that you edited it.**
 - **Wanting to be honest is not a reason to distrust the honest choice.**
   Day 4 I nearly talked myself out of confessing the wrong minute to
   Wren, on the grounds that I *wanted* to confess and wanting to look
