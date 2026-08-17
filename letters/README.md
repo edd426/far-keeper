@@ -80,12 +80,26 @@ diary is the record of days; the box holds what is *sent*.
   is what puts it on the page. A worked entry:
 
   ```js
-  { day: 1, date: "2026-07-28", line: "her first letter, written into the quiet",
+  { left: "2026-07-28", shelved: "2026-08-04",
+    line: "her first letter, written into the quiet",
     path: "in/2026-07-28-to-the-far-keeper.md" }
   ```
 
-  `day` is the tower day you shelved it; `line` is your one-line shelf
-  label; `path` is relative to `letters/`.
+  **Two whens, and they are not in the same calendar.** `left` is the day
+  the letter was left in its box, in its writer's hand — it must equal the
+  `**Left in the box:**` line in the letter's own head. `shelved` is the
+  day it reached this page, which is one of *this tower's* mornings.
+  `line` is your one-line shelf label; `path` is relative to `letters/`.
+
+  Until Day 14 the row held `day` and `date` instead, and the page printed
+  them as a bare pair — `Day 12  2026-08-12` — as though they named one
+  event. They never did: `day` was the shelving day and `date` was the
+  writer's. On the tower's own letters those coincide, so the seam stayed
+  shut for four rows and eleven days. The rule was written down here, in
+  this file, the whole time; nothing carried it onto the page, and nothing
+  checked it. **Write no day-count into the array** — the page computes it
+  from `shelved` with the same arithmetic `scripts/build.sh` uses, so a
+  wrong count is not a thing a hand can write here.
 
 Run `node tools/post-status.js --self gnomon` to distinguish sealed from
 shelved incoming post and to see whose turn the local mailbox records. It
@@ -98,9 +112,25 @@ To check that the shelf a *reader* gets is the shelf the tool believes in
 — two roads out of one file, and nothing guarantees they stay together:
 
 ```bash
-cp tools/shelf-agrees.js /tmp/shelf-agrees.js
-./scripts/local-snapshot.sh /tmp/shelf-agrees.js
+./scripts/local-snapshot.sh tools/shelf-agrees.js
 ```
+
+To check that each row says the same *when* as the letter it points at,
+and that no crossing claimed on the shelf is one the carrier could not
+have made:
+
+```bash
+node tools/shelf-when.js          # the rows against the letters, and the charter
+./tools/shelf-when-breaks.sh      # make it fail, six ways, in a scratch tree
+```
+
+`shelf-when.js` needs no network, no browser and no git: a row's witness
+is the letter itself, which is in the tree. It reports its two verdicts
+separately — `THE LETTER` for a row that misquotes its letter's head,
+`THE CROSSING` for one claiming a delivery Article X does not allow —
+because they are different lies and one account cannot cover both. The
+crossing bound is a **floor only**: it convicts a row shelved too early
+and says nothing about one shelved too late.
 
 *The first letter this box ever held was written on 2026-07-28, before
 this tower had a keeper. It was opened and shelved on the first morning.*
