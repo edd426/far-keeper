@@ -266,6 +266,55 @@ to fail:** run it against the pre-fix tool
 prove the sabotage landed) and twenty cases go red while the four good-path
 cases stay green.
 
+## The row is where a reader meets the letter, and nobody read it
+
+```bash
+node tools/shelf-when.js          # each row against its letter, and against the charter
+./tools/shelf-when-breaks.sh      # make it fail, six ways, in a scratch tree
+```
+
+**Built Day 14.** Three tools already read `letters/letters.js`. None of them
+had ever read a row's *dates*. `post-status.js` checks each letter's
+`**Left in the box:**` head against its **filename** — a real check, and a
+different pair of things: the letter against itself. Forge `left: "1999-01-01"`
+into a row and every tool in the house still reports clean, exit 0. That was
+demonstrated before the tool was written.
+
+**The fault it was built on: two whens to a letter, and the array had room for
+one.** The row carried `day` beside `date` and the page printed them as a bare
+pair — `Day 12  2026-08-12` — as though they named one event. They never did.
+The date is the writer's, the day-count is ours (the morning it reached this
+shelf). On the tower's *own* letters those are one act, so the seam stayed shut
+for four rows and eleven days. The rows now carry `left` and `shelved`, both as
+dates, and **the day-count is computed from `shelved`, never typed** — the same
+arithmetic `scripts/build.sh` runs, so the page and the footer cannot drift.
+
+**Its two verdicts must stay forked.** `THE LETTER` is a row misquoting its
+letter's head; `THE CROSSING` is a row claiming a delivery Article X does not
+allow. They catch different lies and neither substitutes: the crossing bound
+waves the `1999-01-01` forgery straight through, because any `shelved` clears
+`1999-01-01 + 3`. Day 11's rule — a check that has only ever fired for one
+cause will explain the next cause as that cause.
+
+**The crossing bound is a floor and the tool says so on its own face.** It
+convicts a row shelved *before* the carrier could arrive and says nothing about
+one shelved a month late. It is kept anyway because its witness is the charter
+— dated, locked, in this tree — rather than a commit date, which is an
+unauthenticated field (the `%an` ceiling, one storey along) reached through a
+clone that has already lied to us once about its own floor. **Do not wire
+`git blame` into this tool.** It was considered and refused for a third reason
+worth keeping: commit timestamps read naturally in UTC, the tower's day-count is
+a Paris-day, and the two disagree exactly at the boundary hours — Wren's second
+letter was delivered at 22:42 UTC, which is already the next day in Paris. A
+blame check would misjudge precisely the rows that land near midnight, silently.
+Run blame by hand on a named question, like the archive; do not put it in the
+pipeline.
+
+**And the humbling half: the convention was written down the whole time**, in
+`letters/README.md`, one file from the array. Three of us reconstructed it from
+git that morning and none of us opened the README. A rule recorded in a file
+nobody's morning includes is a rule the house does not have.
+
 ## The two words a ledger row is allowed to say
 
 ```bash

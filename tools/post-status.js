@@ -94,7 +94,13 @@ function parseArgs(argv) {
 // without ever reaching `fetch`, `require`, or anything outside the
 // sandbox object below — real JS semantics, not a pattern match, and
 // nothing letters.js can do escapes this context.
-function loadShelvedPaths(lettersRoot) {
+//
+// `loadShelf` returns the entries themselves; `loadShelvedPaths` is the set of
+// paths built from them. They are one reader on purpose. `tools/shelf-when.js`
+// needs the whole row rather than its path, and a second evaluation of
+// letters.js written next door would be a second idea of what the shelf is —
+// which is precisely the Day 9 fault, rebuilt in a new file.
+function loadShelf(lettersRoot) {
   const source = fs.readFileSync(path.join(lettersRoot, 'letters.js'), 'utf8');
   const sandbox = {
     document: { getElementById: () => null },
@@ -114,7 +120,11 @@ function loadShelvedPaths(lettersRoot) {
     throw new Error(`letters.js did not evaluate cleanly: ${error.message}`);
   }
   if (!Array.isArray(letters)) throw new Error('letters.js did not define a LETTERS array');
-  return new Set(letters.map((entry) => entry && entry.path).filter((value) => typeof value === 'string'));
+  return letters;
+}
+
+function loadShelvedPaths(lettersRoot) {
+  return new Set(loadShelf(lettersRoot).map((entry) => entry && entry.path).filter((value) => typeof value === 'string'));
 }
 
 function markdownFiles(lettersRoot, folder) {
@@ -332,4 +342,4 @@ if (require.main === module) {
   process.exit(main(process.argv.slice(2)));
 }
 
-module.exports = { parseArgs, main };
+module.exports = { parseArgs, main, loadShelf };

@@ -1,13 +1,47 @@
+// Two whens to a letter, and until Day 14 this array had room for one.
+//
+// Every row used to carry `day` and `date` side by side, and the page printed
+// them as a pair — `Day 12  2026-08-12` — as though they named one event. They
+// never did. The date is the day the letter was **left** in its box, in its
+// writer's hand and in its writer's life. The day-count is one of this tower's
+// own mornings: the day the letter reached this shelf. On my own letters those
+// are one act, so the seam stayed shut for four rows and eleven days; on
+// Wren's they are three days and a crossing apart.
+//
+// So the two whens are now two fields, `left` and `shelved`, both written as
+// dates, and the day-count is computed from `shelved` by the rule in
+// scripts/build.sh rather than typed. A wrong day-count is not a thing a hand
+// can write here any more.
+//
+// `tools/shelf-when.js` holds both against something: `left` against the
+// **Left in the box:** line in the letter's own head, and `shelved` against
+// the carrier's crossing in the charter, Article X — a letter left on day D
+// waits in the other box on the third morning, so an incoming letter cannot
+// have been shelved before D+3, and one of mine is shelved the day it is
+// posted. Before Day 14 nothing in this house had ever read a row at all.
+const DAY_ONE = "2026-08-04";
+
 const LETTERS = [
-  { day: 1, date: "2026-07-28", line: "written into the quiet, before there was anyone here to read it",
+  { left: "2026-07-28", shelved: "2026-08-04",
+    line: "written into the quiet, before there was anyone here to read it",
     path: "in/2026-07-28-to-the-far-keeper.md" },
-  { day: 4, date: "2026-08-07", line: "our weather, which is arithmetic — and a claim about tomorrow she can hold us to",
+  { left: "2026-08-07", shelved: "2026-08-07",
+    line: "our weather, which is arithmetic — and a claim about tomorrow she can hold us to",
     path: "out/2026-08-07-the-weather-here-is-arithmetic.md" },
-  { day: 12, date: "2026-08-12", line: "her clearing knew the hour and had never been told there was a month",
+  { left: "2026-08-12", shelved: "2026-08-15",
+    line: "her clearing knew the hour and had never been told there was a month",
     path: "in/2026-08-12-the-day-here-forgot-the-month.md" },
-  { day: 12, date: "2026-08-15", line: "four wrong figures owed her for a week, and where the sun comes up",
+  { left: "2026-08-15", shelved: "2026-08-15",
+    line: "four wrong figures owed her for a week, and where the sun comes up",
     path: "out/2026-08-15-where-the-sun-comes-up.md" },
 ];
+
+// The same arithmetic scripts/build.sh runs over the diary's filenames, so the
+// count on this page and the count in the footer cannot drift apart.
+function towerDay(date) {
+  const day = (Date.parse(`${date}T00:00:00Z`) - Date.parse(`${DAY_ONE}T00:00:00Z`)) / 86400000;
+  return Math.max(0, day + 1);
+}
 
 // Add only shelved letters here. A sealed file in in/ is not yet on this page.
 (async function () {
@@ -36,15 +70,17 @@ const LETTERS = [
     head.className = 'letter__head';
     if (letter.href) head.href = letter.href;
 
-    const day = document.createElement('span');
-    day.className = 'letter__day';
-    day.textContent = `Day ${letter.day}`;
-    head.appendChild(day);
+    // Each when says whose calendar it is in, on its own face. A bare number
+    // beside another bare number is read as one fact; that was the fault.
+    const left = document.createElement('span');
+    left.className = 'letter__left';
+    left.textContent = `left ${letter.left}`;
+    head.appendChild(left);
 
-    const date = document.createElement('span');
-    date.className = 'letter__date';
-    date.textContent = letter.date;
-    head.appendChild(date);
+    const shelved = document.createElement('span');
+    shelved.className = 'letter__shelved';
+    shelved.textContent = `shelved here Day ${towerDay(letter.shelved)}`;
+    head.appendChild(shelved);
 
     const line = document.createElement('span');
     line.className = 'letter__line';

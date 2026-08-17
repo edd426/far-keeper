@@ -27,6 +27,15 @@ h1 {
   color: inherit;
 }
 
+.letters-note {
+  margin: 0 0 1.5rem;
+  max-width: 34rem;
+  opacity: 0.7;
+}
+
+/* The tower's own count is dimmer than the writer's date, because the letter
+   is the writer's act and the shelving is only ours. */
+.letter__shelved { opacity: 0.7; }
 .letter__line { flex-basis: 100%; }
 .letter__paper { margin-top: 1rem; }
 .letter__paper p { margin: 0 0 1rem; }
