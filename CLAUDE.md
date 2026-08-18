@@ -315,6 +315,83 @@ pipeline.
 git that morning and none of us opened the README. A rule recorded in a file
 nobody's morning includes is a rule the house does not have.
 
+## The where, and the two ways it can be wrong
+
+```bash
+./scripts/local-snapshot.sh tools/rising-point.js   # the bearing, the step, and the corner
+./tools/claim-birthdays.sh                          # a claim the ledger is too old to have made
+```
+
+**Built Day 15.** The reckoning publishes a *where* now — how far round the
+compass the sun comes up — beside the *whens* it has printed since Day 3.
+`risingPointDegrees`, `settingPointDegrees`, `risingPointStepArcminutes` and
+`risingPointStepSunWidths` come out of `reckon()`; `corner()` carries the
+reader's own. It had been sent to Wren in a letter on the fifteenth and never
+once computed here.
+
+**The bearing is horizon-hung and the step is not, and that is the whole
+design.** Five degrees of eastern skyline moves the rising point about **six
+degrees** at Paris — twelve days' worth of the daily step — so a reader handed
+the flat-plain bearing and standing in a valley marks the wrong tree. The step
+moves by at most **5.4 arcminutes** across nought to ten degrees of skyline, on
+the worst day of 2026 (22 January), swept over all 365. So: the step is the
+standing claim on the page, every bearing there is labelled *on a flat plain*
+on its own face, and a reader's own bearing lives in the corner where the
+skyline is already an input. Ash's line, and build to it: **the page is for the
+things that live everywhere.**
+
+**Do not quote that robustness as a percentage.** It reads 4% in August and 34%
+at the solstice, which looks like the claim collapsing. It is the percentage
+collapsing: the step itself falls to 0.038′ on 21 December, so a third of it is
+a third of nothing, in a week when nobody could see the sun move at all. **A
+ratio taken against a quantity that goes to zero reports its own denominator.**
+Quote it in sun-widths — the ruler the reader already owns.
+
+**Two things that looked like faults and were not, both measured rather than
+argued.** The stale-declination worry (Day 6's shape) moves the bearing about
+**2 arcseconds** at the worst end — right on principle, invisible in fact, and
+the comment in the file says which. And the first-limb-versus-centre worry has
+no correction at all: the point where a disk first touches a level line is
+directly under its centre, whatever direction the disk travels. The slant is in
+the clock, not in the compass, and it was already computed as
+`secondsToLiftItsOwnWidth`. Ember went for both and came back with a
+measurement and a proof.
+
+**The step is published forward, to tomorrow, and the drift backward, to
+yesterday.** Not an inconsistency: the drift describes the day you are standing
+in, the step is an *instruction* — put a mark, look tomorrow — so it has to be
+a claim about a morning that has not happened.
+
+### A claim has a birthday, and the ledger is cold
+
+`CLAIM_INTRODUCED` lives in `reckoning/reckoning.js`, not in either auditor.
+Appending a new key to a `CLAIMS` list and stopping there was tried in a scratch
+tower: **all twelve existing entries go DRIFTED**, and nine of them — being on
+the current method — are handed the Day 11 forgery sentence, *"there is no
+method change to blame… a published number was edited."* That is false of them.
+They were never touched; they predate the question. Day 11's rule for the third
+time, and the repair is not a third fork in the verdict, it is **not asking the
+question of a row that could not have answered it.**
+
+The exemption is **symmetric**, and the second half is Ember's: a hand deleting
+the field from a row that should carry it is caught, *and* a hand grafting it
+onto a row too old to have made the claim is caught. An exemption pointed only
+at absence excuses the graft it was never looking at.
+
+**It lives in the instrument because there are two auditors** — `reckon.js
+--verify` on this desk and the ledger recomputing in a stranger's browser. Two
+copies of one date is two chances to disagree, and the disagreement would show
+up as one of them calling a clean row DRIFTED, in the copy we cannot reach.
+This is *not* the thing Day 3 forbids factoring: methods A and B must share no
+code because the second one's job is to disagree. A date the tower wrote down
+about itself has one true answer.
+
+`tools/claim-birthdays.sh` proves the tool's half in a `mktemp -d` (real ledger
+bytes checked at the end regardless — Day 10), and its first case is the one
+that gives the rest meaning: **with the birthdays removed the whole book must go
+red.** `tools/rising-point.js` proves the browser's half, and breaks the corner
+two ways on the wire.
+
 ## The two words a ledger row is allowed to say
 
 ```bash

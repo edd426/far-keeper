@@ -890,5 +890,96 @@
       "sunsetDifferenceMinutes": -0.6984975221598688
     },
     "publishedAt": "2026-08-17T02:16:40Z"
+  },
+  {
+    "date": "2026-08-18",
+    "method": 2,
+    "place": {
+      "name": "Paris",
+      "latitude": 48.8566,
+      "longitude": 2.3522,
+      "zone": "Europe/Paris"
+    },
+    "sunrise": "06:47",
+    "sunset": "21:01",
+    "solarNoon": "13:54",
+    "utcOffsetMinutes": 120,
+    "dayLengthMinutes": 853.2259251331527,
+    "dayLength": "14h 13m 14s",
+    "changeSinceYesterdayMinutes": -3.2687821334550335,
+    "risingPointDegrees": 68.83996716572427,
+    "settingPointDegrees": 290.85560276927714,
+    "risingPointTomorrowDegrees": 69.35514270138303,
+    "risingPointStepArcminutes": 30.910532139525344,
+    "risingPointStepSunWidths": 0.965954129360167,
+    "horizon": {
+      "zenith": 90.833,
+      "obstructionDegrees": 0,
+      "dipDegrees": 0
+    },
+    "working": {
+      "julianDay": 2461270.5,
+      "julianCentury": 0.2662696783025325,
+      "eccentricity": 0.016697431838561278,
+      "horizonZenithDeg": 90.833,
+      "horizonSensitivitySecondsPerArcminute": -6.525926637904149,
+      "epochCorrectionSecondsSunrise": 16.911965460022884,
+      "epochCorrectionSecondsSunset": -88.38083011382423,
+      "sunriseUTCMinutes": 287.36031566937135,
+      "sunsetUTCMinutes": 1140.5862408025241,
+      "atSunrise": {
+        "julianDay": 2461270.6995557747,
+        "julianCentury": 0.2662751418418805,
+        "meanLongitudeDeg": 146.5765743977645,
+        "meanAnomalyDeg": 223.18132124503245,
+        "equationOfCentreDeg": -1.2895987526006634,
+        "apparentLongitudeDeg": 145.28367364629617,
+        "obliquityDeg": 23.43804606543131,
+        "declinationDeg": 13.092758861986141,
+        "equationOfTimeMinutes": -3.9335527446679834,
+        "hourAngleDeg": 106.79110926882414,
+        "solarNoonUTCMinutes": 714.5247527446679,
+        "passes": 4,
+        "lastMoveSeconds": 0
+      },
+      "atSunset": {
+        "julianDay": 2461271.2920737783,
+        "julianCentury": 0.26629136410070753,
+        "meanLongitudeDeg": 147.1605882065378,
+        "meanAnomalyDeg": 223.76530715503395,
+        "equationOfCentreDeg": -1.3037233350610031,
+        "apparentLongitudeDeg": 145.8535651397924,
+        "obliquityDeg": 23.43804515378063,
+        "declinationDeg": 12.900878301598544,
+        "equationOfTimeMinutes": -3.8006739297714303,
+        "hourAngleDeg": 106.54859171818822,
+        "solarNoonUTCMinutes": 714.3918739297714,
+        "passes": 4,
+        "lastMoveSeconds": 2.0874267647741362e-7
+      },
+      "atSolarNoon": {
+        "julianDay": 2461270.996151805,
+        "julianCentury": 0.26628326219862897,
+        "meanLongitudeDeg": 146.8689134933138,
+        "meanAnomalyDeg": 223.47364637532883,
+        "equationOfCentreDeg": -1.2966851626745044,
+        "apparentLongitudeDeg": 145.56892746674242,
+        "obliquityDeg": 23.43804560917053,
+        "declinationDeg": 12.996859854521182,
+        "equationOfTimeMinutes": -3.867399094934062,
+        "hourAngleDeg": 106.66981546941825,
+        "solarNoonUTCMinutes": 714.458599094934,
+        "passes": 3,
+        "lastMoveSeconds": 1.6291096471832134e-7
+      }
+    },
+    "crossCheck": {
+      "method": "USNO Almanac for Computers",
+      "sunrise": "06:47",
+      "sunset": "21:01",
+      "sunriseDifferenceMinutes": 0.5563717889537543,
+      "sunsetDifferenceMinutes": -0.7035013924194118
+    },
+    "publishedAt": "2026-08-18T02:19:13Z"
   }
 ]

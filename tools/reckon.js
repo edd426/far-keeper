@@ -32,7 +32,8 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const LEDGER = path.join(ROOT, 'reckoning', 'ledger.json');
-const { reckon, PARIS, METHOD } = require(path.join(ROOT, 'reckoning', 'reckoning.js'));
+const { reckon, PARIS, METHOD, CLAIM_INTRODUCED, claimApplies } =
+  require(path.join(ROOT, 'reckoning', 'reckoning.js'));
 
 function readLedger() {
   if (!fs.existsSync(LEDGER)) return [];
@@ -50,7 +51,45 @@ function writeLedger(entries) {
 
 // Compare only the published claims, not the whole object. The working is
 // evidence for the claim; the claim is what a reader was asked to believe.
-const CLAIMS = ['sunrise', 'sunset', 'solarNoon', 'dayLengthMinutes', 'changeSinceYesterdayMinutes'];
+const CLAIMS = [
+  'sunrise', 'sunset', 'solarNoon', 'dayLengthMinutes', 'changeSinceYesterdayMinutes',
+  'risingPointDegrees', 'risingPointStepArcminutes'
+];
+
+// ---- Claims have birthdays, and the ledger is cold ----
+//
+// Day 15. The tower began publishing where the sun comes up on this date
+// and not before, and the entries already in the ledger are never
+// rewritten — so twelve of them will never carry that field, lawfully.
+//
+// Appending the new keys to CLAIMS and stopping there was tried in a
+// scratch tower and it is worse than it sounds. Every existing row goes
+// DRIFTED, which would be bad enough; but nine of them are on the method
+// running now, so the Day 11 fork hands them *"there is no method change
+// to blame — either a published number was edited, or…"*. That sentence
+// is false of them. They were never touched. They predate the question.
+// Day 11's rule for the third time: **a check that has only ever fired
+// for one cause will explain the next cause as that cause** — and the
+// repair is not a third fork in the verdict, it is not asking the
+// question of a row that could not have answered it.
+//
+// So a claim is compared to a row only from the date the tower first
+// published it. Ember built and broke this, Day 15, in a mktemp -d copy
+// with the real ledger's bytes checked before and after (Day 10's rule,
+// which all three of us broke the day it was learned).
+//
+// The rule is deliberately **symmetric**, and the second half is Ember's
+// and not mine. I had named one hole: a hand *deletes* the field from a
+// row that should carry it, and a tolerant compare reads the absence as
+// "this row never claimed that". The mirror hole is a hand *grafting*
+// the field onto a row too old to have it — a forged claim in a place
+// nothing was looking, precisely because the exemption was pointed the
+// other way. An exemption that only ever excuses absence excuses that
+// too. Both are caught below.
+// The map itself lives in reckoning/reckoning.js and is imported, not
+// copied, because the page's ledger runs this same audit in a stranger's
+// browser. Two copies of one date is two chances to disagree, and the
+// disagreement would look like one auditor catching a forgery.
 
 function claimsOf(entry) {
   const out = {};
@@ -60,8 +99,22 @@ function claimsOf(entry) {
 
 function differences(published, recomputed) {
   const found = [];
+  const date = published.date;
   for (const key of CLAIMS) {
     const was = published[key], now = recomputed[key];
+    if (!claimApplies(key, date)) {
+      // The row is too old to be asked. It may not answer anyway.
+      if (was !== undefined) {
+        found.push(`${key}: this entry carries it, but ${date} predates ` +
+          `${CLAIM_INTRODUCED[key]}, when the tower first published it`);
+      }
+      continue;
+    }
+    if (was === undefined && now !== undefined) {
+      found.push(`${key}: published undefined, recomputed ${now} — the field is ` +
+        `missing from an entry that should carry it`);
+      continue;
+    }
     if (typeof was === 'number' && typeof now === 'number') {
       if (Math.abs(was - now) > 1e-9) found.push(`${key}: published ${was}, recomputed ${now}`);
     } else if (was !== now) {

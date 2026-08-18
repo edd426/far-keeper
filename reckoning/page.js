@@ -135,6 +135,82 @@
         'tower would rather say so than invent one.';
   }
 
+  // Degrees round from north through east, printed with the quarter of
+  // the compass named in words. A reader who does not carry a compass
+  // still knows which way east is, and "68.8°, east and a little north"
+  // is checkable by someone standing in a field; a bare bearing is not.
+  function quarterWords(degrees) {
+    var points = [
+      [0, 'due north'], [45, 'north-east'], [90, 'due east'],
+      [135, 'south-east'], [180, 'due south'], [225, 'south-west'],
+      [270, 'due west'], [315, 'north-west'], [360, 'due north']
+    ];
+    var at = 0;
+    for (var i = 1; i < points.length; i++) {
+      if (Math.abs(degrees - points[i][0]) < Math.abs(degrees - points[at][0])) at = i;
+    }
+    var off = degrees - points[at][0];
+    if (Math.abs(off) < 0.5) return points[at][1];
+    // Named by the neighbour it leans toward, not by a turn of the hand.
+    // "21° toward north-east" is a thing a person standing in a field can
+    // do something with; "21° anticlockwise" asks them to hold a compass
+    // rose the right way up first.
+    var toward = points[off > 0 ? Math.min(at + 1, points.length - 1) : Math.max(at - 1, 0)][1];
+    return points[at][1] + ', ' + round(Math.abs(off), 1) + '° toward ' + toward.replace('due ', '');
+  }
+
+  // The step is the standing claim and the bearings are horizon-hung, so
+  // the step is printed first and big and the bearings are printed with
+  // "on a flat plain" welded into the term. Day 14's fault was two
+  // numbers side by side that a reader fused into one fact; the repair
+  // there was to make each say whose calendar it was in on its own face,
+  // and this is the same repair on whose horizon.
+  function renderRisingPoint(entry) {
+    var list = document.getElementById('rising-figures');
+    var note = document.getElementById('rising-note');
+    if (!list) return;
+
+    if (entry.risingPointDegrees === null) {
+      note.textContent = 'The sun does not clear the horizon here today, ' +
+        'so there is no rising point to give.';
+      return;
+    }
+
+    if (entry.risingPointStepArcminutes === null) {
+      addFigure(list, 'step to tomorrow', '—');
+    } else {
+      var step = entry.risingPointStepArcminutes;
+      addFigure(list, 'from this morning to tomorrow morning',
+        (step < 0 ? '−' : '+') + round(Math.abs(step), 2) + '′ along your skyline', 'big');
+      addFigure(list, 'that, in widths of the sun itself',
+        round(Math.abs(entry.risingPointStepSunWidths), 3) + ' × 32′', 'big');
+    }
+    addFigure(list, 'rising point today, on a flat plain',
+      round(entry.risingPointDegrees, 2) + '° — ' + quarterWords(entry.risingPointDegrees));
+    addFigure(list, 'rising point tomorrow, on a flat plain',
+      entry.risingPointTomorrowDegrees === null ? '—'
+        : round(entry.risingPointTomorrowDegrees, 2) + '°');
+    addFigure(list, 'setting point today, on a flat plain',
+      entry.settingPointDegrees === null ? '—'
+        : round(entry.settingPointDegrees, 2) + '° — ' + quarterWords(entry.settingPointDegrees));
+
+    // Said as a fact about the reader's eye rather than about our
+    // arithmetic, because that is the question they are actually asking:
+    // is this a thing I could see happen.
+    if (entry.risingPointStepSunWidths !== null) {
+      var widths = Math.abs(entry.risingPointStepSunWidths);
+      note.textContent = widths >= 0.25
+        ? 'Tomorrow the sun clears your mark about ' + round(widths, 2) +
+          ' of its own width further ' +
+          (entry.risingPointStepArcminutes > 0 ? 'to the right' : 'to the left') +
+          ' — an amount an eye can hold. Two mornings is enough.'
+        : 'Tomorrow the sun clears your mark about ' + round(widths, 3) +
+          ' of its own width along, which is too little to see. Near the ' +
+          'solstices this quantity goes to nearly nothing, which is what ' +
+          'the word solstice is about. Leave more mornings between looks.';
+    }
+  }
+
   function renderToday(entry) {
     document.getElementById('today-loading').hidden = true;
 
@@ -167,6 +243,8 @@
         (d.sign < 0 ? 'shorter' : 'longer') + ' than yesterday.';
       drift.className = 'drift-figure ' + (d.sign < 0 ? 'drift--shorter' : 'drift--longer');
     }
+
+    renderRisingPoint(entry);
 
     var working = document.getElementById('working-list');
     var w = entry.working;
@@ -249,7 +327,9 @@
     ['sunset', 'sunset'],
     ['solarNoon', 'solar noon'],
     ['dayLengthMinutes', 'day length'],
-    ['changeSinceYesterdayMinutes', 'drift']
+    ['changeSinceYesterdayMinutes', 'drift'],
+    ['risingPointDegrees', 'rising point'],
+    ['risingPointStepArcminutes', 'step to tomorrow']
   ];
 
   function renderLedger(entries) {
@@ -275,6 +355,26 @@
         fresh = window.Reckoning.reckon(published.date, window.Reckoning.PARIS);
         CLAIMS.forEach(function (pair) {
           var was = published[pair[0]], now = fresh[pair[0]];
+          // A row written before the tower published this number could not
+          // have carried it, and must not be convicted of the silence. The
+          // map of birthdays is in reckoning.js so that this browser and
+          // `tools/reckon.js --verify` cannot come to hold different ideas
+          // of what a row was ever asked. The exemption runs both ways: a
+          // row too old to have made the claim and carrying it anyway is
+          // caught here, not waved through.
+          if (!window.Reckoning.claimApplies(pair[0], published.date)) {
+            if (was !== undefined) {
+              broken.push(pair[1] + ': this entry carries it, but ' + published.date +
+                ' predates ' + window.Reckoning.CLAIM_INTRODUCED[pair[0]] +
+                ', when the tower first published it');
+            }
+            return;
+          }
+          if (was === undefined && now !== undefined) {
+            broken.push(pair[1] + ': published nothing, recomputed ' + now +
+              ' — the field is missing from an entry that should carry it');
+            return;
+          }
           var same = (typeof was === 'number' && typeof now === 'number')
             ? Math.abs(was - now) <= 1e-9
             : was === now;
@@ -503,6 +603,32 @@
     addFigure(figures, 'the sun takes this long to lift its own width',
       result.secondsToLiftItsOwnWidth === null ? '—'
         : round(result.secondsToLiftItsOwnWidth, 0) + ' s');
+
+    // The clockless check, worked at the reader's own skyline. This is
+    // the only thing in the corner that does not ask them what time it
+    // is, and it is the figure most changed by what they typed — which
+    // is exactly why it could not be left on the page above.
+    if (result.risingPointDegrees !== null && result.risingPointDegrees !== undefined) {
+      addFigure(figures, 'where the sun comes up for you',
+        round(result.risingPointDegrees, 2) + '° — ' + quarterWords(result.risingPointDegrees), 'big');
+      addFigure(figures, 'where it goes down for you',
+        result.settingPointDegrees === null ? '—'
+          : round(result.settingPointDegrees, 2) + '° — ' + quarterWords(result.settingPointDegrees));
+      addFigure(figures, 'on a flat, open horizon it would come up at',
+        round(result.risingPointFlatDegrees, 2) + '°');
+      addFigure(figures, 'so your skyline and height move the rising point by',
+        result.risingPointShiftArcminutes === null ? '—'
+          : (result.risingPointShiftArcminutes < 0 ? '−' : '+') +
+            round(Math.abs(result.risingPointShiftArcminutes), 1) + '′ — ' +
+            round(Math.abs(result.risingPointShiftArcminutes) /
+              window.Reckoning.SUN_DIAMETER_ARCMINUTES, 2) + ' sun-widths');
+      addFigure(figures, 'step to tomorrow, at your horizon',
+        result.risingPointStepArcminutes === null ? '—'
+          : round(result.risingPointStepArcminutes, 2) + '′');
+      addFigure(figures, 'step to tomorrow, on a flat plain',
+        result.risingPointStepFlatArcminutes === null ? '—'
+          : round(result.risingPointStepFlatArcminutes, 2) + '′');
+    }
 
     // The number that keeps this honest. Said in full rather than left in
     // the figures, because an invitation that does not say what it cannot
