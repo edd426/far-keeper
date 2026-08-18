@@ -67,6 +67,40 @@
   };
   var METHOD_CHANGED_ON = '2026-08-09';
 
+  // ---- When each claim was born ----
+  //
+  // Day 15. The ledger is cold, so an entry written before the tower
+  // published a number will never carry that number — lawfully, and for
+  // as long as this tower stands. An auditor that asks every row for
+  // every claim convicts twelve honest entries of a silence they had no
+  // way to break.
+  //
+  // This lives here, and not in the auditor, because there are **two**
+  // auditors: `tools/reckon.js --verify` on this desk, and the ledger on
+  // the page, which recomputes every row in a stranger's own browser. If
+  // they held separate copies of this list they would eventually disagree
+  // about what a row was ever asked, and the disagreement would show up
+  // as one of them calling a clean row DRIFTED — the worst available
+  // outcome, since the whole point of the second auditor is that it runs
+  // where we cannot reach it.
+  //
+  // That is not the thing Day 3 forbids factoring together. Method A and
+  // method B must share no code because the second one's only job is to
+  // disagree with the first, and a shared helper would be a shared
+  // mistake. This is not a computation at all. It is a date the tower
+  // wrote down about itself, and there is only one true answer to it.
+  //
+  // A key absent from this map is a claim the tower has always published.
+  var CLAIM_INTRODUCED = {
+    risingPointDegrees: '2026-08-18',
+    risingPointStepArcminutes: '2026-08-18'
+  };
+
+  function claimApplies(key, entryDateISO) {
+    var introduced = CLAIM_INTRODUCED[key];
+    return !introduced || entryDateISO >= introduced;
+  }
+
   var PARIS = {
     name: 'Paris',
     latitude: 48.8566,
@@ -454,6 +488,53 @@
 
   function pad(n) { return (n < 10 ? '0' : '') + n; }
 
+  // ---- The rising point ----
+  //
+  // Where on the skyline the sun comes up, measured in degrees round from
+  // north through east. Everything else this file publishes is a *when*,
+  // and a when needs a clock to check. This is a *where*, and it needs a
+  // fixed mark and two mornings. Day 15: it had been sent to a
+  // correspondent in a letter and never once computed here.
+  //
+  // Two cautions live in this function and neither is decoration.
+  //
+  // The declination must be the one at the event's own settled instant,
+  // and this takes it as an argument rather than fetching one, so that
+  // every call site has to pass the converged working. That is Day 6's
+  // discipline. It is *not* Day 6's fault waiting to happen, and the
+  // difference was measured rather than assumed: Ember ran the staleness
+  // through, Day 15, at the badly-stale end (August sunset, 88 seconds of
+  // epoch correction) and the bearing moves about **2 arcseconds** —
+  // against a sun 1920 arcseconds wide and a daily step of 1800. Right on
+  // principle, invisible in fact. Saying which of those it is, is the
+  // whole of the honesty here.
+  //
+  // And it is the azimuth of the sun's *centre* at the moment that centre
+  // stands at `zenithDeg`. A watcher sees an edge, not a centre, and the
+  // sun climbs at a slant at this latitude, so it looked as though the
+  // first glint would sit off this bearing by some fraction of a width.
+  // It does not, and the reason is geometry rather than smallness: the
+  // point where a disk first touches a level line is directly under the
+  // disk's centre, whatever direction the disk is travelling. The slant
+  // governs how *long* the sun takes to lift its own width — which is
+  // `secondsToLiftItsOwnWidth` in the corner — and not where it touches.
+  // Ember went looking for the correction on Day 15 and came back with a
+  // proof that there isn't one, which is the more useful errand.
+  function risingPointDegrees(declinationDeg, zenithDeg, latitudeDeg) {
+    // Day 7: a range check assumes it was handed a number, and NaN
+    // satisfies one by failing both halves of it. Ask first.
+    if (declinationDeg !== declinationDeg || zenithDeg !== zenithDeg
+      || latitudeDeg !== latitudeDeg) return null;
+    var c = (sin(declinationDeg) - sin(latitudeDeg) * cos(zenithDeg))
+      / (cos(latitudeDeg) * sin(zenithDeg));
+    // Outside [-1, 1] the sun's centre never stands at that zenith there
+    // that day. `never` upstream catches this over Paris; the arithmetic
+    // still refuses rather than clamping, because a clamped bearing is a
+    // wrong answer wearing the shape of a right one.
+    if (c > 1 || c < -1) return null;
+    return Math.acos(c) * DEG;
+  }
+
   // ---- The reader's own horizon ----
   //
   // HORIZON_ZENITH is the horizon of a reader standing at sea level on a
@@ -538,6 +619,27 @@
     );
     var yesterdayLength = yb.never ? null : yb.sunsetUTC - yb.sunriseUTC;
 
+    // The rising point, and tomorrow's, so the step can be published.
+    //
+    // The drift looks *back* — it is about the day the reader is standing
+    // in. The step looks *forward*, because it is not a description, it is
+    // an instruction: put a mark on your skyline, look tomorrow, see
+    // whether the sun clears it where this page says it will. That makes
+    // it a claim about a morning that has not happened, which is the only
+    // kind of claim this tower can be caught on without anyone's help.
+    var tomorrowISO = shiftDate(dateISO, 1);
+    var tb = solarDay(
+      Number(tomorrowISO.slice(0, 4)), Number(tomorrowISO.slice(5, 7)), Number(tomorrowISO.slice(8, 10)),
+      place.latitude, place.longitude, zenith
+    );
+
+    var risingPoint = risingPointDegrees(a.rise.declination, zenith, place.latitude);
+    var settingPointArc = risingPointDegrees(a.set.declination, zenith, place.latitude);
+    var risingPointTomorrow = tb.never ? null
+      : risingPointDegrees(tb.rise.declination, zenith, place.latitude);
+    var stepArcminutes = (risingPoint === null || risingPointTomorrow === null)
+      ? null : (risingPointTomorrow - risingPoint) * 60;
+
     var bRise = usno(year, month, day, place.latitude, place.longitude, true, zenith);
     var bSet = usno(year, month, day, place.latitude, place.longitude, false, zenith);
 
@@ -565,6 +667,20 @@
       dayLengthMinutes: dayLength,
       dayLength: durationWords(dayLength),
       changeSinceYesterdayMinutes: yesterdayLength === null ? null : dayLength - yesterdayLength,
+      // Degrees round from north through east. The setting point is the
+      // same arc measured the other way round the compass, which is why
+      // it is 360 minus and not a second computation.
+      risingPointDegrees: risingPoint,
+      settingPointDegrees: settingPointArc === null ? null : 360 - settingPointArc,
+      risingPointTomorrowDegrees: risingPointTomorrow,
+      risingPointStepArcminutes: stepArcminutes,
+      // The step in the only unit a reader outside owns without buying
+      // anything. Ash, Day 15: the page is for the things that live
+      // everywhere, and a sun-width is a ruler everybody is already
+      // holding. Quoting this robustness as a *percentage* was the thing
+      // that lied — see the note in the corner.
+      risingPointStepSunWidths: stepArcminutes === null
+        ? null : stepArcminutes / SUN_DIAMETER_ARCMINUTES,
       horizon: h,
       working: {
         julianDay: a.julianDayMidnight,
@@ -673,6 +789,41 @@
     // computed here rather than waved at.
     out.secondsToLiftItsOwnWidth = perArcminute === null
       ? null : Math.abs(perArcminute) * SUN_DIAMETER_ARCMINUTES;
+
+    // ---- The rising point, and the one check here that needs no clock ----
+    //
+    // Day 15. Every other invitation on this page asks a reader to know
+    // what time it is: look at the sun, look at a watch, tell us whether
+    // they agree. This one does not. Put a mark on the skyline, look on
+    // two mornings, and see whether the sun clears it where we said. A
+    // reader with no clock at all can convict us of that.
+    //
+    // Which is why both legs are published rather than one. The bearing
+    // is *horizon-hung* and hard: five degrees of skyline to the east
+    // moves the rising point about six degrees at Paris — roughly twelve
+    // days' worth of the daily step — so a reader handed the flat-plain
+    // bearing and standing in a valley would mark the wrong tree. The
+    // step barely moves: across nought to ten degrees of skyline it
+    // shifts by at most 5.4 arcminutes, a sixth of the sun's own width,
+    // and that is the worst day of 2026 (22 January), swept.
+    //
+    // Stated in sun-widths on purpose. Written as a percentage of the
+    // step it reads as 4% in August and 34% at the solstice, which looks
+    // like the claim collapsing and is not: the step itself falls to
+    // 0.038 arcminutes on 21 December, so a third of it is a third of
+    // nothing, in a week when nobody could see any movement at all. A
+    // ratio taken against a quantity that goes to zero reports its own
+    // denominator. The sun's width is the ruler the reader already owns.
+    out.risingPointFlatDegrees = flat.risingPointDegrees;
+    out.risingPointDegrees = mine.risingPointDegrees;
+    out.settingPointFlatDegrees = flat.settingPointDegrees;
+    out.settingPointDegrees = mine.settingPointDegrees;
+    out.risingPointShiftArcminutes =
+      (flat.risingPointDegrees === null || mine.risingPointDegrees === null)
+        ? null : (mine.risingPointDegrees - flat.risingPointDegrees) * 60;
+    out.risingPointStepArcminutes = mine.risingPointStepArcminutes;
+    out.risingPointStepSunWidths = mine.risingPointStepSunWidths;
+    out.risingPointStepFlatArcminutes = flat.risingPointStepArcminutes;
     return out;
   }
 
@@ -695,6 +846,8 @@
     METHOD: METHOD,
     METHOD_NOTES: METHOD_NOTES,
     METHOD_CHANGED_ON: METHOD_CHANGED_ON,
+    CLAIM_INTRODUCED: CLAIM_INTRODUCED,
+    claimApplies: claimApplies,
     julianDay: julianDay,
     shiftDate: shiftDate,
     durationWords: durationWords
