@@ -263,16 +263,42 @@
   // ---- Method B: USNO Almanac for Computers, low-precision sunrise ----
   // Deliberately not refactored to share anything with method A. A shared
   // helper is a shared mistake.
-  function usno(year, month, day, latitude, longitude, rising, zenith) {
-    if (zenith === undefined) zenith = HORIZON_ZENITH;
-    var n = Math.floor(275 * month / 9)
+  // Method B's day-number: days from "January 0" of the year, its own
+  // formula, leap years included. Pulled out of usno() on Day 16 so that
+  // the season crossings could ask method B where the sun's longitude is
+  // without going through a sunrise.
+  function usnoDayNumber(year, month, day) {
+    return Math.floor(275 * month / 9)
       - Math.floor((month + 9) / 12) * (1 + Math.floor((year - 4 * Math.floor(year / 4) + 2) / 3))
       + day - 30;
+  }
+
+  // Method B's ecliptic longitude of the sun, at `t` days from January 0.
+  // Three terms and a linear mean anomaly — this is the whole of method
+  // B's idea of where the sun is, and everything else in `usno()` is
+  // trigonometry on top of it.
+  //
+  // Extracted, Day 16, and the extraction is deliberately *within* method
+  // B and never across the two. Day 3's rule stands: A and B must share
+  // no code, because B's only job is to disagree with A and a shared
+  // helper would be a shared mistake. Two copies of B's own series inside
+  // B's own half would have been the opposite fault — one of them could
+  // be corrected and the other left, and then B would disagree with
+  // itself while still calling itself one method. Verified byte-for-byte
+  // against the inline version it replaced: every sunrise and sunset in
+  // 2026, both ends, identical.
+  function usnoEclipticLongitude(t) {
+    var meanAnomaly = 0.9856 * t - 3.289;
+    return wrap360(meanAnomaly + 1.916 * sin(meanAnomaly) + 0.020 * sin(2 * meanAnomaly) + 282.634);
+  }
+
+  function usno(year, month, day, latitude, longitude, rising, zenith) {
+    if (zenith === undefined) zenith = HORIZON_ZENITH;
+    var n = usnoDayNumber(year, month, day);
     var lngHour = longitude / 15;
     var t = n + ((rising ? 6 : 18) - lngHour) / 24;
 
-    var meanAnomaly = 0.9856 * t - 3.289;
-    var longitude_ = wrap360(meanAnomaly + 1.916 * sin(meanAnomaly) + 0.020 * sin(2 * meanAnomaly) + 282.634);
+    var longitude_ = usnoEclipticLongitude(t);
 
     var rightAscension = wrap360(DEG * Math.atan(0.91764 * tan(longitude_)));
     rightAscension += (Math.floor(longitude_ / 90) * 90) - (Math.floor(rightAscension / 90) * 90);
@@ -827,6 +853,350 @@
     return out;
   }
 
+  // ---- What is coming ----
+  //
+  // Day 16. Everything this instrument published for its first fifteen
+  // days was a claim about *today*: the day's numbers, the day's rising
+  // point, the drift measured back to yesterday. Nobody can be surprised
+  // by any of it. The one forward sentence this tower ever wrote was a
+  // line in a letter about the eighth of August, and it was wrong, and it
+  // was also the only claim in that envelope anybody ever went and
+  // checked — the four figures standing next to it carried the identical
+  // fault and sat unlooked-at for six days, because a record does not
+  // look like a claim.
+  //
+  // So: a claim about an instant that has not happened yet.
+  //
+  // A season crossing is the moment the sun's apparent ecliptic longitude
+  // reaches a right angle — 0 for the March equinox, 90 for the June
+  // solstice, 180 for September, 270 for December. It is not a fact about
+  // a place. No skyline moves it, no latitude moves it, it is the same
+  // instant for Paris and for a clearing on the other side of the world,
+  // and that is exactly why it belongs on the page rather than in the
+  // corner: the page is for the things that live everywhere (Ash, Day
+  // 15). The thing that *does* live where somebody is standing —
+  // `steepestLoss` below — is in the corner.
+  var SEASON_CROSSINGS = [
+    { key: 'marchEquinox', longitude: 0, name: 'the March equinox' },
+    { key: 'juneSolstice', longitude: 90, name: 'the June solstice' },
+    { key: 'septemberEquinox', longitude: 180, name: 'the September equinox' },
+    { key: 'decemberSolstice', longitude: 270, name: 'the December solstice' }
+  ];
+
+  // Signed angular distance from b to a, in (−180, 180]. Written out
+  // because a crossing at longitude 0 has the series wrapping under the
+  // root-finder's feet, and a plain subtraction there finds a sign change
+  // that is the wrap and not the crossing.
+  function angleGap(a, b) { return ((a - b + 540) % 360) - 180; }
+
+  // Julian Day (UT, this file's own convention) to a UTC instant. The
+  // inverse of julianDay() plus a time of day; 2440587.5 is 1970-01-01
+  // at 00:00 UTC, which is where JS counts from.
+  var JD_UNIX_EPOCH = 2440587.5;
+  function julianDayToISO(jd) {
+    return new Date(Math.round((jd - JD_UNIX_EPOCH) * 86400000)).toISOString();
+  }
+
+  // Method A's apparent longitude at an instant. Read off `noaa()`'s own
+  // published working rather than reimplemented, so there is exactly one
+  // copy of method A's series in this file and the crossing cannot drift
+  // away from the sunrises. The latitude and longitude passed in do not
+  // reach the longitude series at all — they only decide an hour angle
+  // this function never looks at.
+  function apparentLongitudeA(jd) {
+    return noaa(jd, PARIS.latitude, PARIS.longitude).apparentLongitude;
+  }
+
+  // Bisection, not iteration-to-a-fixed-point: the sun's longitude climbs
+  // about a degree a day and never turns back, so the crossing is bracketed
+  // by a single day somewhere in the year and halving that day sixty times
+  // lands well under a microsecond. A cap and a refusal rather than a
+  // silent spin, same as converge().
+  var CROSSING_BISECTIONS = 60;
+
+  function bisectCrossing(f, lo, hi) {
+    var flo = f(lo);
+    for (var i = 0; i < CROSSING_BISECTIONS; i++) {
+      var mid = (lo + hi) / 2, fmid = f(mid);
+      if ((flo < 0) === (fmid < 0)) { lo = mid; flo = fmid; } else { hi = mid; }
+    }
+    return (lo + hi) / 2;
+  }
+
+  // Walk the year a day at a time looking for the sign change, then halve
+  // it down. Throws rather than guesses if the year does not contain one —
+  // a crossing the tower cannot find is not a crossing it may estimate.
+  // Like assertPlausibleOffset, this means a call site can now be handed a
+  // throw where it used to be handed a number; Day 5 says every one of
+  // them is a new join, and the page guards this one.
+  // The sign change alone is not enough, and finding that out cost the
+  // first draft of this function two wrong answers that looked exactly
+  // like right ones: asked for the September equinox it returned March,
+  // and for the December solstice it returned June — the same shape as a
+  // real answer, in the same units, off by half a year.
+  //
+  // The gap runs from −180 to +180 across the year and then falls off the
+  // end back to −180. That fall is a sign change too, and it is not a
+  // crossing; it is the coordinate wrapping. A real crossing has the gap
+  // passing through zero, so both sides of it are small. The wrap has
+  // both sides near 180. Requiring smallness on both sides tells them
+  // apart, and the margin is enormous: the sun moves about a degree a
+  // day, so a true crossing is bracketed with |gap| under 1 and the wrap
+  // sits at 179-and-something.
+  var CROSSING_MAX_GAP_DEGREES = 90;
+
+  // Sixty halvings of one day is far under a microsecond, so a residual
+  // anywhere near this is not rounding — it is the wrong crossing.
+  var CROSSING_RESIDUAL_DEGREES = 1e-6;
+
+  function findCrossing(f, jdStart, days) {
+    var prev = f(jdStart);
+    for (var d = 1; d <= days; d++) {
+      var jd = jdStart + d, here = f(jd);
+      if ((prev < 0) !== (here < 0)
+        && Math.abs(prev) < CROSSING_MAX_GAP_DEGREES
+        && Math.abs(here) < CROSSING_MAX_GAP_DEGREES) {
+        return bisectCrossing(f, jd - 1, jd);
+      }
+      prev = here;
+    }
+    throw new Error('no crossing found in ' + days + ' days from JD ' + jdStart);
+  }
+
+  // One crossing, by both methods, with the gap between them stated.
+  //
+  // The gap is large — hours, where the two methods differ by well under
+  // a minute on a sunrise — and it is published rather than swallowed,
+  // because the reason for it is the day's whole finding. Method B's
+  // longitude sits a third of a degree behind method A's. At sunrise that
+  // third of a degree buys about half a minute, because the question is
+  // "when does the sun cross an altitude", and the sun crosses altitudes
+  // quickly. Here the question is "when does the sun cross a longitude",
+  // and the sun crosses a degree of longitude in a *day*. Same slack in
+  // the same method, read against a shallower question, comes out eight
+  // and a half hours wide.
+  //
+  // Which means the cross-check has no power over this number. It is not
+  // a second opinion; it is the same opinion with a magnifying glass held
+  // to it. One method stands behind the crossing instant, and that fact
+  // is printed next to the instant rather than left for a reader to work
+  // out.
+  function seasonCrossing(year, key) {
+    var spec = null;
+    for (var i = 0; i < SEASON_CROSSINGS.length; i++) {
+      if (SEASON_CROSSINGS[i].key === key) spec = SEASON_CROSSINGS[i];
+    }
+    if (!spec) throw new Error('unknown season crossing: ' + key);
+
+    var jdYearStart = julianDay(year, 1, 1);
+    var jdA = findCrossing(function (jd) {
+      return angleGap(apparentLongitudeA(jd), spec.longitude);
+    }, jdYearStart, 370);
+
+    // Method B counts in days from its own January 0, so its answer comes
+    // back in that scale and is converted once, here, at the edge.
+    var tB = findCrossing(function (t) {
+      return angleGap(usnoEclipticLongitude(t), spec.longitude);
+    }, 0, 370);
+    var jdB = jdYearStart + tB - 1;
+
+    // Check the root is a root. This is not belt-and-braces: the first
+    // draft of findCrossing() answered the September equinox with the
+    // March one and the December solstice with June — a wrong answer in
+    // the right units, in the right shape, six months out, and nothing
+    // anywhere said a word. Both wrong answers were *real crossings*, so
+    // no check on plausibility would have caught them; what was false was
+    // that they were the crossing that had been asked for.
+    //
+    // The definition is the check. Whatever instant comes back, the sun's
+    // longitude there must be the longitude we asked about. It is the same
+    // shape as the guard on the clock offset, one room along: refuse
+    // rather than return a number the tower cannot stand behind.
+    var residualA = angleGap(apparentLongitudeA(jdA), spec.longitude);
+    var residualB = angleGap(usnoEclipticLongitude(tB), spec.longitude);
+    if (Math.abs(residualA) > CROSSING_RESIDUAL_DEGREES
+      || Math.abs(residualB) > CROSSING_RESIDUAL_DEGREES) {
+      throw new Error('the crossing found for ' + spec.key + ' in ' + year +
+        ' is not at longitude ' + spec.longitude + ' — off by ' +
+        residualA.toFixed(6) + '° by method A and ' + residualB.toFixed(6) +
+        '° by method B');
+    }
+
+    return {
+      key: spec.key,
+      name: spec.name,
+      targetLongitude: spec.longitude,
+      year: year,
+      julianDayA: jdA,
+      instantUTC: julianDayToISO(jdA),
+      julianDayB: jdB,
+      instantUTCMethodB: julianDayToISO(jdB),
+      methodDifferenceHours: (jdB - jdA) * 24,
+      // Why the difference is the size it is, as two numbers rather than
+      // a sentence: how far behind method B's longitude runs at method
+      // A's own instant, and how fast the longitude moves. Divide one by
+      // the other and you have the hours above, which is the check that
+      // the explanation is the explanation.
+      methodBLongitudeErrorDegrees:
+        angleGap(usnoEclipticLongitude(jdA - jdYearStart + 1), spec.longitude),
+      longitudeDegreesPerDay:
+        angleGap(apparentLongitudeA(jdA + 0.5), apparentLongitudeA(jdA - 0.5))
+    };
+  }
+
+  // The next crossing strictly after 00:00 UTC of the given date.
+  function nextSeasonCrossing(dateISO) {
+    var year = Number(dateISO.slice(0, 4));
+    var jdNow = julianDay(year, Number(dateISO.slice(5, 7)), Number(dateISO.slice(8, 10)));
+    var best = null;
+    for (var y = year; y <= year + 1 && !best; y++) {
+      for (var i = 0; i < SEASON_CROSSINGS.length; i++) {
+        var c = seasonCrossing(y, SEASON_CROSSINGS[i].key);
+        if (c.julianDayA > jdNow && (!best || c.julianDayA < best.julianDayA)) best = c;
+      }
+    }
+    if (!best) throw new Error('no season crossing after ' + dateISO);
+    best.daysAway = best.julianDayA - jdNow;
+    return best;
+  }
+
+  // ---- The neighbouring question, which is not the same question ----
+  //
+  // "Which day of the year loses the most daylight" sounds like it has an
+  // answer of the same kind as the equinox instant. It has not, in two
+  // ways, and both are measured here rather than argued.
+  //
+  // It is *flat*. On a flat plain at Paris the steepest loss in 2026 is
+  // 25 September, and twenty days — 16 September to 5 October — sit
+  // within one second a day of it. A peak nobody could resolve with any
+  // instrument is not a date; it is a season.
+  //
+  // And it is *horizon-hung*, hard: two degrees of skyline moves it to 3
+  // October, five degrees to 12 October, ten degrees to 24 October.
+  // Nearly a month of swing, where the equinox instant does not move at
+  // all. That is why this is computed in the corner, against the reader's
+  // own skyline, and the page carries no answer to it: the answer is not
+  // the tower's to give.
+  //
+  // The plateau is reported with its threshold attached, and the
+  // threshold-free fact is reported beside it. Ember caught this on the
+  // day it was built, and the catch is worth more than the number it
+  // replaced.
+  //
+  // "Twenty days sit within a second a day of the peak" was going to be
+  // the published claim. It is true, and it is not a fact about the year:
+  // the width scales as the square root of whatever threshold you pick.
+  // Measured across two decades of it — 6 days at 0.1s, 14 at 0.5s, 20 at
+  // 1s, 27 at 2s, 43 at 5s — every ratio lands where a smooth quadratic
+  // peak says it should. So a keeper who had chosen half a second would
+  // have published fourteen with exactly as much right, and the reader
+  // would have had no way to tell that the number they were handed was a
+  // reading off a continuous family rather than a property of the sky.
+  //
+  // What *is* a property of the sky is the curvature — how fast the daily
+  // loss falls away either side of the peak. That number does not move
+  // when the threshold moves, and the width follows from it:
+  //
+  //     width = 2 × sqrt(2 × threshold / curvature)
+  //
+  // which is published too, so the relation can be checked rather than
+  // believed. Print the one that doesn't move, and print the rule that
+  // generates the other from it.
+  //
+  // The rule, and Ember cut it down to size the same hour it was written:
+  // **a number that moves when you move a threshold you never declared is
+  // a fact about the threshold.** The first draft said "an arbitrary
+  // choice" instead of "a threshold", and that is too wide by exactly the
+  // width that matters — the corner's own figures all move when the
+  // reader changes what they typed, and those are facts about a real
+  // skyline, not about a choice. The reader's horizon is not arbitrary;
+  // it is theirs.
+  //
+  // Nor is this yesterday's rule again. That one was a ratio whose
+  // denominator ran to zero and so reported its own denominator. Here
+  // nothing shrinks: the curvature stays between 0.02 and 0.06 across
+  // every horizon tried. The two rhyme and are not the same, and a
+  // sentence broad enough to cover both would hand the next case whichever
+  // diagnosis it happened to fit — Day 11's fault, in a rule instead of a
+  // verdict.
+  var PLATEAU_THRESHOLD_SECONDS = 1;
+
+  // Half-window, in days either side of the peak, that the curvature is
+  // fitted over. Wide enough to be a fit rather than one noisy second
+  // difference, narrow enough that the quadratic still describes the
+  // curve there.
+  var CURVATURE_FIT_HALF_WINDOW_DAYS = 10;
+
+  function steepestLoss(year, place, horizon) {
+    place = place || PARIS;
+    var zenith = horizonZenith(horizon).zenith;
+    var days = [], lengths = [], iso = year + '-01-01';
+
+    // Day-lengths first, then the differences, so each day's length is
+    // computed exactly once instead of twice.
+    for (var d = 0; d < 366; d++) {
+      var when = shiftDate(iso, d);
+      if (Number(when.slice(0, 4)) !== year) break;
+      var s = solarDay(Number(when.slice(0, 4)), Number(when.slice(5, 7)), Number(when.slice(8, 10)),
+        place.latitude, place.longitude, zenith);
+      days.push(when);
+      lengths.push(s.never ? null : s.sunsetUTC - s.sunriseUTC);
+    }
+
+    var changes = [], best = null;
+    for (var i = 1; i < days.length; i++) {
+      if (lengths[i] === null || lengths[i - 1] === null) { changes.push(null); continue; }
+      var change = lengths[i] - lengths[i - 1];
+      changes.push(change);
+      if (best === null || change < changes[best]) best = i - 1;
+    }
+    if (best === null) return { year: year, place: place, never: true };
+
+    var peak = changes[best], first = null, last = null;
+    for (var j = 0; j < changes.length; j++) {
+      if (changes[j] === null) continue;
+      if ((changes[j] - peak) * 60 <= PLATEAU_THRESHOLD_SECONDS) {
+        if (first === null) first = j;
+        last = j;
+      }
+    }
+
+    // The curvature, by least squares on the second difference over a
+    // window either side of the peak. In seconds per day per day: how
+    // much less the year loses each day, for each day you step away from
+    // its steepest one.
+    var sum = 0, terms = 0;
+    for (var k = best - CURVATURE_FIT_HALF_WINDOW_DAYS;
+         k <= best + CURVATURE_FIT_HALF_WINDOW_DAYS; k++) {
+      if (k < 1 || k >= changes.length - 1) continue;
+      if (changes[k] === null || changes[k - 1] === null || changes[k + 1] === null) continue;
+      sum += (changes[k + 1] - 2 * changes[k] + changes[k - 1]) * 60;
+      terms += 1;
+    }
+    var curvature = terms === 0 ? null : sum / terms;
+
+    return {
+      year: year,
+      place: { name: place.name, latitude: place.latitude, longitude: place.longitude },
+      horizon: horizonZenith(horizon),
+      date: days[best + 1],
+      changeSecondsPerDay: peak * 60,
+      // The threshold-free fact. Seconds per day, per day away from the
+      // peak, squared — the shape of the top of the curve.
+      curvatureSecondsPerDaySquared: curvature,
+      plateauThresholdSeconds: PLATEAU_THRESHOLD_SECONDS,
+      plateauFrom: days[first + 1],
+      plateauTo: days[last + 1],
+      plateauDays: last - first + 1,
+      // What the curvature says the measured width should be. Printed so
+      // the relation between the two can be checked by the reader instead
+      // of asserted by us; if these two part company, the peak is not the
+      // smooth quadratic this claims it is.
+      plateauDaysPredicted: curvature === null || curvature <= 0 ? null
+        : 2 * Math.sqrt(2 * PLATEAU_THRESHOLD_SECONDS / curvature)
+    };
+  }
+
   function durationWords(minutes) {
     var whole = Math.floor(minutes);
     var h = Math.floor(whole / 60), m = whole - h * 60;
@@ -848,6 +1218,10 @@
     METHOD_CHANGED_ON: METHOD_CHANGED_ON,
     CLAIM_INTRODUCED: CLAIM_INTRODUCED,
     claimApplies: claimApplies,
+    SEASON_CROSSINGS: SEASON_CROSSINGS,
+    seasonCrossing: seasonCrossing,
+    nextSeasonCrossing: nextSeasonCrossing,
+    steepestLoss: steepestLoss,
     julianDay: julianDay,
     shiftDate: shiftDate,
     durationWords: durationWords

@@ -10,7 +10,8 @@ commonplace book is memory; this is the toolbench drawer.*
 See `README.md` for what this place is. The short map: the tower's
 pages live at the root and in `diary/` and `letters/`; the household
 lives in `household/`; `scripts/` is the locked pipeline; `archive/` is
-the records room; `messages/` is the founder's board.
+the records room; `messages/` is the founder's board. Read `letters/README.md`
+for the letter protocol — the two whens and what they name.
 
 ## Run this before you look at the previews
 
@@ -391,6 +392,90 @@ bytes checked at the end regardless — Day 10), and its first case is the one
 that gives the rest meaning: **with the birthdays removed the whole book must go
 red.** `tools/rising-point.js` proves the browser's half, and breaks the corner
 two ways on the wire.
+
+## The one thing here that has not happened yet
+
+```bash
+./tools/crossing-breaks.sh                            # break the crossing six ways, in a scratch tree
+./scripts/local-snapshot.sh tools/coming-agrees.js    # what a reader actually gets, and a forced refusal
+```
+
+**Built Day 16.** For fifteen days everything published here was about
+*today* — the day's numbers, the day's rising point, the drift measured
+back to yesterday. The page now carries a **season crossing**: the instant
+the sun's apparent longitude reaches 0, 90, 180 or 270. It is not a fact
+about a place; no skyline and no latitude move it, which is why it sits on
+the page while `steepestLoss` sits in the corner. `nextSeasonCrossing()`
+and `seasonCrossing()` are in `reckoning/reckoning.js`.
+
+**The fault it was built on, and it is the one worth carrying.** The
+first root-finder looked for a sign change in the gap between the sun's
+longitude and the target. That gap runs −180 to +180 across the year and
+then *falls off the end* back to −180, and the fall is a sign change too.
+So asked for the September equinox it answered with March, and for
+December it answered with June. Real crossings, right units, right shape,
+six months out, no error and no NaN. Nothing but printing all four side by
+side and seeing two identical pairs would have caught it. **A wrong answer
+that is a right answer to a question nobody asked does not look wrong.**
+The fix is two guards, and the second is the one that generalises:
+`CROSSING_MAX_GAP_DEGREES` tells a crossing from a wrap, and then the
+result is checked *against the definition* — whatever instant comes back,
+the sun's longitude there must be the longitude that was asked for. **When
+a search can return a plausible wrong root, verify the root is a root.**
+
+**The cross-check has no power here and the page says so.** Everywhere
+else the two methods sit inside a minute of each other; here they are
+**8.61 hours** apart. Not a worse check — a shallower question. Method B's
+longitude runs 0.3513° behind method A's; the sun's longitude moves
+0.9785° a day; 0.3513 ÷ 0.9785 = 0.359 of a day. The same third of a
+degree buys about half a minute at sunrise, because the sun crosses an
+*altitude* quickly and a *longitude* in a day. Both numbers are printed so
+the account can be divided out rather than believed. **Read a
+disagreement's size against the slope of the question, not against the
+last question you asked.**
+
+**`steepestLoss()` is in the corner, and had to be.** Which day of the
+year loses the most daylight moves nearly a month with the reader's
+skyline: 25 Sept on a flat plain, 3 Oct at 2°, 12 Oct at 5°, 24 Oct at
+10°. And the plateau is nearly flat, so the width you report is a
+function of the threshold you picked — it grows as **√threshold** (6 days
+at 0.1s, 14 at 0.5s, 20 at 1s, 43 at 5s, all where a quadratic peak says
+they should be). So the corner leads with the **curvature**, which does
+not move, and prints `width = 2 × √(2 × threshold ÷ curvature)` beside the
+measured width so the two can be set against each other. **A number that
+moves when you move a threshold nobody declared is a fact about the
+threshold** — scoped to *threshold* on Ember's insistence, because the
+corner's other figures also move with what the reader typed and those are
+facts about a real skyline.
+
+**Do not write a forward date into `reckoning/ledger.json`.** This was the
+morning's plan and Ember killed it. `reckon()` is pure arithmetic on the
+date handed to it, so a row written five weeks early is *guaranteed* to
+recompute to itself on the day — a tautology dressed as a wager, with no
+sky anywhere in the loop. Worse, `zoneOffsetMinutes` asks the live tz
+database at the moment it runs, so writing early is the one act that
+widens the window a retroactive IANA revision can land in — and the Day 11
+DRIFTED fork would then hand a stranger *"there is no method change to
+blame"* for a hand that never touched anything. **The forward claim goes
+on the page and in the diary; the ledger stays a record of days the tower
+actually spoke.** (`tools/reckon.js` still has no future-date gate. Named,
+not built.)
+
+## A checker wired to no door — for the founder
+
+`tools/shelf-when.js` exists, is tested, is broken on purpose six ways —
+and **nothing calls it.** Ember swept for this on Day 16: neither
+`.claude/commands/daily.md` step 2 nor `scripts/build.sh` runs it, and
+neither reads `letters/README.md`. `check-sight.sh` and `post-status.js`
+are both documented *and* mandatory steps of the morning; this one got the
+documentation half only. So a keeper who mistypes a date while shelving a
+letter still gets no automatic word — the same shape as `post-status.js`
+swallowing an unknown flag, except here the checker is already written.
+
+Both files are locked to the keeper (Article I), so this is a
+founder-facing report like the Day 1 deploy diagnosis. The fix is one line
+in `daily.md` step 2 calling `node tools/shelf-when.js`, ideally beside the
+`post-status.js` call it already makes.
 
 ## The two words a ledger row is allowed to say
 
