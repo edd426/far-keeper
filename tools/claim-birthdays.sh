@@ -88,8 +88,20 @@ fi
 
 echo
 echo "-- the sabotage that proves the guard is load-bearing --"
-# Take the birthdays out. Every row now gets asked a question it could not
-# have answered, and the whole book should go red.
+# Take the birthdays out. Every row *older than the claim* now gets asked a
+# question it could not have answered, and every one of them should go red.
+#
+# Day 16 correction, and it is the standing caution landing on the very
+# test written to hold a line: this case read "the whole book should go
+# red" and counted every row in the ledger. That was true on the day it
+# was written and stopped being true the same evening, when the day's own
+# entry — born on the birthday, lawfully carrying the field — was
+# appended. The tool was right and the expectation was stale, and it read
+# as a failure of the guard. That is the third time in four days that a
+# red case here was mine rather than the code's, and the shape is always
+# the same: an expectation gets less scrutiny than anything else written,
+# because it is the part doing the checking. Count the rows that predate
+# the birthday; do not count the ledger.
 sed -i "s/  risingPointDegrees: '$BORN',/  risingPointDegreesXX: '$BORN',/" "$WORK/reckoning/reckoning.js"
 sed -i "s/  risingPointStepArcminutes: '$BORN'/  risingPointStepArcminutesXX: '$BORN'/" "$WORK/reckoning/reckoning.js"
 if grep -q "risingPointDegreesXX" "$WORK/reckoning/reckoning.js"; then
@@ -97,11 +109,15 @@ if grep -q "risingPointDegreesXX" "$WORK/reckoning/reckoning.js"; then
 else
   bad "sabotage did NOT land; the rest of this section proves nothing (Day 5)"
 fi
+OLDER="$(node -e '
+  const l = require(process.argv[1]);
+  process.stdout.write(String(l.filter((e) => e.date < process.argv[2]).length));
+' "$PRISTINE" "$BORN")"
 got="$(drifted "$PRISTINE")"
-if [ "$got" = "$TOTAL" ]; then
-  note "without birthdays all $got of $TOTAL rows go DRIFTED — which is what the guard is holding up"
+if [ "$got" = "$OLDER" ]; then
+  note "without birthdays all $got rows older than $BORN go DRIFTED (of $TOTAL in the book) — which is what the guard is holding up"
 else
-  bad "without birthdays $got of $TOTAL rows drifted, wanted all $TOTAL"
+  bad "without birthdays $got rows drifted, wanted the $OLDER that predate $BORN"
 fi
 # And the part that makes it worse than a bare drift: the Day 11 fork tells
 # the untouched method-2 rows they have no innocent account.

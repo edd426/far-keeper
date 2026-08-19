@@ -505,6 +505,54 @@
     }
   }
 
+  // ---- what is coming ----
+  //
+  // The one forward claim on this page. Guarded like everything else that
+  // can throw: `nextSeasonCrossing` refuses rather than estimates if it
+  // cannot bracket a crossing, and Day 5's rule is that every throw makes
+  // its call site a new join. So the failure is caught and said here,
+  // where a reader is standing, and it does not take the rest of the room
+  // with it.
+  function renderComing() {
+    var list = document.getElementById('coming-figures');
+    var note = document.getElementById('coming-note');
+    if (!list) return;
+
+    var today = todayInZone(window.Reckoning.PARIS.zone);
+    var crossing;
+    try {
+      crossing = window.Reckoning.nextSeasonCrossing(today);
+    } catch (error) {
+      note.textContent = 'The reckoning could not find the next crossing — ' +
+        error.message + ' Nothing is printed here rather than an estimate.';
+      return;
+    }
+
+    addFigure(list, 'the next crossing', crossing.name, 'big');
+    addFigure(list, 'when, by method A', crossing.instantUTC.replace('.000Z', 'Z') + ' UTC', 'big');
+    addFigure(list, 'how far off', round(crossing.daysAway, 3) + ' days');
+    addFigure(list, 'the sun’s longitude at that instant',
+      round(crossing.targetLongitude, 0) + '°');
+    addFigure(list, 'when, by method B — the second opinion',
+      crossing.instantUTCMethodB.replace('.000Z', 'Z') + ' UTC');
+    addFigure(list, 'the two methods, apart by',
+      round(crossing.methodDifferenceHours, 2) + ' hours');
+    addFigure(list, 'method B’s longitude, behind method A’s by',
+      round(Math.abs(crossing.methodBLongitudeErrorDegrees), 4) + '°');
+    addFigure(list, 'and the sun’s longitude moves, per day',
+      round(crossing.longitudeDegreesPerDay, 4) + '°');
+
+    note.textContent =
+      'Divide the last two and you have the one above them: ' +
+      round(Math.abs(crossing.methodBLongitudeErrorDegrees), 4) + ' ÷ ' +
+      round(crossing.longitudeDegreesPerDay, 4) + ' = ' +
+      round(Math.abs(crossing.methodBLongitudeErrorDegrees) /
+        crossing.longitudeDegreesPerDay, 4) + ' of a day, which is ' +
+      round(Math.abs(crossing.methodBLongitudeErrorDegrees) /
+        crossing.longitudeDegreesPerDay * 24, 2) + ' hours. That is the whole of ' +
+      'the disagreement, accounted for, and it leaves nothing over.';
+  }
+
   // ---- the corner ----
   //
   // The reader's own place, worked by the same instrument. Everything here
@@ -522,6 +570,67 @@
     var raw = document.getElementById(id).value;
     var value = Number(raw);
     return (raw === '' || !isFinite(value)) ? fallback : value;
+  }
+
+  // The reader's own steepest-losing day, and the width of the plateau it
+  // sits on. Both are functions of the skyline they typed, which is the
+  // whole reason this is here and not on the page: at Paris the answer
+  // walks from late September to late October across ten degrees of hill.
+  //
+  // The plateau is printed beside the date rather than under it. A date
+  // alone reads as an answer of the same kind as the equinox instant, and
+  // it is not one — twenty days sit within a second a day of the flat
+  // peak. Day 14's fault was two numbers a reader fuses into one fact;
+  // this is one number a reader takes for a sharper thing than it is, and
+  // the repair is the same: print what it actually is beside it.
+  function renderSteepestLoss(place, horizon, year) {
+    var list = document.getElementById('steepest-figures');
+    var note = document.getElementById('steepest-note');
+    if (!list) return;
+    list.replaceChildren();
+    note.textContent = '';
+
+    var loss;
+    try {
+      loss = window.Reckoning.steepestLoss(year, place, horizon);
+    } catch (error) {
+      note.textContent = 'The reckoning stopped itself working your year — ' + error.message;
+      return;
+    }
+    if (loss.never) {
+      note.textContent = 'The sun does not cross your horizon on any day of ' + year +
+        ', so no day of that year loses more daylight than another.';
+      return;
+    }
+
+    addFigure(list, 'the day your ' + year + ' loses most daylight', loss.date, 'big');
+    addFigure(list, 'how much it loses that day',
+      round(Math.abs(loss.changeSecondsPerDay), 1) + ' s');
+    addFigure(list, 'how fast that falls away either side — the shape of the peak',
+      loss.curvatureSecondsPerDaySquared === null ? '—'
+        : round(loss.curvatureSecondsPerDaySquared, 4) + ' s per day, per day', 'big');
+    addFigure(list, 'so, days within ' + loss.plateauThresholdSeconds +
+      ' s a day of the peak', String(loss.plateauDays));
+    addFigure(list, 'which run from', loss.plateauFrom + ' to ' + loss.plateauTo);
+    addFigure(list, 'and what the shape above predicts that width should be',
+      loss.plateauDaysPredicted === null ? '—'
+        : round(loss.plateauDaysPredicted, 1) + ' days');
+
+    note.textContent = 'You gave us ' + round(loss.horizon.obstructionDegrees, 1) +
+      '° of skyline, and it puts your steepest day on ' + loss.date +
+      '. A flat, open horizon at Paris puts it on 2026-09-25 — that is how far ' +
+      'this one number moves for what you typed. ' +
+      'Read the shape before you write the date down: the width is not a fact ' +
+      'about your year, it is a fact about the one-second line we drew, and it ' +
+      'grows as the square root of wherever you draw it — 2 × √(2 × threshold ÷ ' +
+      'shape). Half a second would have given you about ' +
+      (loss.curvatureSecondsPerDaySquared === null ? '—'
+        : round(2 * Math.sqrt(1 / loss.curvatureSecondsPerDaySquared), 0)) +
+      ' days and five seconds about ' +
+      (loss.curvatureSecondsPerDaySquared === null ? '—'
+        : round(2 * Math.sqrt(10 / loss.curvatureSecondsPerDaySquared), 0)) +
+      ', with equal right. The shape is the part that does not move when we ' +
+      'change our minds.';
   }
 
   function renderCorner() {
@@ -630,6 +739,9 @@
           : round(result.risingPointStepFlatArcminutes, 2) + '′');
     }
 
+    renderSteepestLoss(place, { obstructionDegrees: skyline, eyeHeightMetres: height },
+      Number(result.date.slice(0, 4)));
+
     // The number that keeps this honest. Said in full rather than left in
     // the figures, because an invitation that does not say what it cannot
     // catch is a claim about how open-handed we are, not about the sky.
@@ -677,6 +789,7 @@
 
   function start() {
     renderTodayOrSayWhyNot();
+    renderComing();
     startCorner();
 
     fetch('ledger.json', { cache: 'no-cache' })
