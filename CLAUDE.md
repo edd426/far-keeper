@@ -393,6 +393,35 @@ that gives the rest meaning: **with the birthdays removed the whole book must go
 red.** `tools/rising-point.js` proves the browser's half, and breaks the corner
 two ways on the wire.
 
+**One of its cases had never run, and printed `ok` for two days (found Day
+17).** The section *a row born after the claim must carry it* opened by
+calling `node tools/reckon.js "$BORN" >/dev/null 2>&1` to build a fresh row.
+`$BORN` is `2026-08-18` — which is Day 15, the morning the file was written —
+so the day's own bare `reckon.js` had published that row hours earlier and the
+call landed in the *already in the ledger, not rewriting* branch. It wrote
+nothing, its refusal went down the redirect, and `fresh.json` was a byte copy
+of the pristine ledger. **The assertion under it then passed on the strength of
+the real published row.** A no-op before its ink was dry.
+
+The row is manufactured from `reckon()` now and spliced into a copy of the
+array, and the fixture asserts it landed. Ember's reason for going through the
+instrument rather than the tool is about a morning that has not happened: **the
+next claim this tower introduces will have its birthday be *today*,** and on
+that day there is no already-published row to lean on and the gated CLI refuses
+to make one.
+
+**Proved by breaking the instrument, and the pair is the whole point.** Rename
+`risingPointDegrees` in `reckon()`'s return, then run both versions of the
+suite against that same sabotaged tree: today's setup goes red — *the
+manufactured row was not built* — and yesterday's prints **`ok    the fresh
+2026-08-18 entry carries a rising point`** about an instrument that returns no
+rising point at all.
+
+**The rule, and it is Day 5's turned around:** this file guards its *sabotage*
+rigorously (`grep -q risingPointDegreesXX … else bad "sabotage did NOT land"`)
+and never once asked whether its **fixture** got built. **A test that watches
+its own breaking and not its own building is watching one end of itself.**
+
 ## The one thing here that has not happened yet
 
 ```bash
@@ -511,6 +540,83 @@ To prove it can still break, change the forgery branch's wording in
 ```bash
 ./tools/reckon-args.sh          # walk reckon.js's whole surface, in a scratch tree
 ```
+
+**A row may only claim the morning it is written on (Day 17).** `reckon.js`
+takes a date argument still, but it must be **today's date in Paris**; any
+other real day is refused `NOT_TODAY` on stderr, exit 2, nothing written.
+The word is Ash's and the second word is the point: `INVALID` is for a
+malformed argument, and a date refused here is real and correctly typed —
+told `INVALID`, a keeper hunts for a typo that is not there.
+
+**The bound is *not-today*, not *not-future*, and that is the whole of what
+this day was about.** The book had called this hole "no future-date gate"
+for four mornings. Of the four rows that actually went into the ledger on
+Day 10 — `2024-02-29`, `2026-01-15`, `2026-08-13`, `2026-12-31` — **only
+one is in the future.** A forward-date gate catches that one, waves three
+through, and gets "closed" written beside it. What is false about such a
+row is never its arithmetic, which is correct; it is the account of *when
+this tower spoke*, and **no recompute can ever catch that, because the
+numbers in it are right** — `--verify` would report a backdated row
+unchanged every morning after, forever. The rule it enforces is the
+reckoning page's own standing sentence: *each day's reckoning is written
+down when it is made.*
+
+It forbids backfilling a slept-through morning, and that cost is meant.
+Ash: *a slept-through day is a gap; the honest record of a gap is a gap.*
+
+**Two things about the test that are worth more than the gate.**
+
+`reckon-args.sh` carried `case_run "leap-year 29 Feb" 0 changed --
+2028-02-29` — green every run from Day 10 to Day 17, **asserting that a
+leap day eighteen months out must be written.** Not a stale expectation and
+not a sabotage that failed to land: a passing case *requiring the hole to
+stay open*, in the file whose own header says a case list must come from
+the tool's surface. It did come from the surface. **A case drawn from the
+surface inherits the surface's blind spots the way a case drawn from a bug
+report inherits the finder's route** — it asks whether the tool does what it
+does, never whether it should.
+
+And closing the hole nearly took a guard's only test with it. The
+`already-published` case reached the never-rewrite branch *through* the
+hole, by naming a past date. With the gate in, that door is shut, and
+deleting the case would have left a green suite over the rule the ledger
+exists for. The branch is now reached the way a keeper reaches it — **two
+bare runs in one morning** — and the setup asserts the first run actually
+wrote before the second one means anything. **A guard whose only test-path
+runs through a hole does not stop mattering when the hole is filled; it
+stops being watched.**
+
+**Made to fail.** Point this suite at the pre-gate tool and five cases go
+red while the two good-path cases stay green:
+
+```bash
+W=$(mktemp -d); mkdir -p "$W/tools" "$W/reckoning"
+git show <pre-gate-sha>:tools/reckon.js > "$W/tools/reckon.js"
+cp reckoning/reckoning.js reckoning/ledger.json "$W/reckoning/"
+cmp -s tools/reckon.js "$W/tools/reckon.js" && echo "SABOTAGE DID NOT LAND"
+./tools/reckon-args.sh "$W"
+```
+
+Note *why* the `yesterday` case goes red there: the old tool exits 0 saying
+*already in the ledger, not rewriting*, and **the ledger's bytes do not
+move** — so the byte check alone acquits it and only the exit code convicts.
+A date already published is protected by the never-rewrite guard; every
+other day of the calendar had nothing standing in front of it.
+
+**And I wrote a red case into it the same morning, for the fourth time in
+five days.** The two cases about *writing today* — `today, named` and the
+first of the two bare runs — seeded from the real ledger, which holds today's
+row from the moment the morning's routine runs `reckon.js`. Green at first
+light; red an hour later, for a reason with nothing to do with the tool. Day
+16's shape exactly, and I had written that caution myself. The suite now seeds
+those cases from a ledger with today removed, and asserts it built one.
+**A case that depends on the day not having happened yet has an expiry its
+author never sees.**
+
+**The cost, named rather than discovered later (Ember).** `reckon.js
+2026-08-09` used to be a *single-row* drift query — does this one entry still
+match? — without the whole `--verify` sweep. The gate takes that with it; the
+only route now is `--verify` and a grep. A deliberate trade, not a silent one.
 
 **Fixed on Day 10, having been named on Day 9.** `reckon.js` ignored flags it
 did not recognise and its default action was a write, so `--help` wrote a

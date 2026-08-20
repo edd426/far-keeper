@@ -3,9 +3,13 @@
 // what is already there.
 //
 //   node tools/reckon.js            reckon today (Paris) and append
-//   node tools/reckon.js 2026-08-06 reckon a named date and append
+//   node tools/reckon.js 2026-08-20 name today, and be told if you are wrong
 //   node tools/reckon.js --verify   recompute every entry, report any drift
 //   node tools/reckon.js --help     print that and write nothing
+//
+// The date argument may only ever be today's date in Paris. Any other real
+// day is refused with NOT_TODAY — see the long note above the gate for why
+// that bound is *not-today* and not merely *not-future*.
 //
 // Anything else is refused: INVALID on stderr, exit 2, nothing written. That
 // is the whole posture of this file. Its default action — no arguments at all
@@ -204,11 +208,70 @@ function isCalendarDate(str) {
   return dt.getUTCFullYear() === year && dt.getUTCMonth() === month - 1 && dt.getUTCDate() === day;
 }
 
+// "Today" in Paris, which is the only day this tool may write. Between
+// midnight and 02:00 UTC that is a different date from the sandbox's own,
+// and the reckoning is over Paris, so Paris's calendar governs. This asks
+// the system tz database, which is the same source `zoneOffsetMinutes`
+// already asks for every entry — the gate adds no dependence the row did
+// not already carry.
+function parisToday() {
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: PARIS.zone, year: 'numeric', month: '2-digit', day: '2-digit'
+  }).format(new Date());
+}
+
+// ---- A row may only claim the morning it was written on ----
+//
+// Day 17. The reckoning page has said this in its own standing words since
+// the ledger existed: *"Each day's reckoning is written down when it is made
+// and never rewritten."* Every one of the fourteen published rows obeys it —
+// each `publishedAt` falls on the same Paris day as the `date` it claims —
+// and until now nothing enforced it but sixteen mornings of habit.
+//
+// The book called this hole "no future-date gate", and that name is too
+// small. On Day 10 four rows went into the ledger that were not the tower's:
+// 2024-02-29, 2026-01-15, 2026-08-13, 2026-12-31. Only ONE of them was in
+// the future. A gate against forward dates catches that one and waves the
+// other three through, and a keeper would write "closed" beside it. Day 12's
+// fault exactly: the smallest box drawn round the fault, carefully checked
+// inside, and nobody asking how big the box ought to be.
+//
+// So the bound is not *not-future*. It is *not-today*. Every figure in a
+// row like that is correct arithmetic; what is false is the account of WHEN
+// THIS TOWER SPOKE, which is the one thing the ledger exists to be a record
+// of, and the one thing no recompute can ever catch — `--verify` would
+// recompute a backdated row every morning after and report that it is
+// unchanged, because it is.
+//
+// It forbids backfilling a morning the tower slept through, and that cost is
+// real and is meant. Ash, asked whether the bound was too tight: *"A
+// slept-through day is a gap. The honest record of a gap is a gap in the
+// ledger. If you fill the gap later, you are no longer recording what
+// happened; you are rewriting history to look tidier."*
+//
+// The word is Ash's too, and the reason for a second word is that `INVALID`
+// would be a lie about what is wrong. A date refused here is real, correctly
+// typed, and perfectly well formed. Nothing about the argument is malformed;
+// what fails is the claim the row would make. Told `INVALID`, a keeper looks
+// at what they typed for a typo that is not there.
+function refuseNotToday(date, today) {
+  console.error(`reckon: NOT_TODAY — ${date} is a real day, and today in Paris is ${today}.`);
+  console.error('reckon: The ledger is the record of what this tower reckoned on the morning it');
+  console.error('reckon: reckoned it. A row dated ' + date + ' written today would be correct');
+  console.error('reckon: arithmetic and a false account of when this tower spoke — and no');
+  console.error('reckon: recompute can ever catch that, because the numbers in it are right.');
+  console.error('reckon: Run with no date at all to reckon today. A claim about another day');
+  console.error('reckon: belongs on the page and in the diary; the ledger stays a record of');
+  console.error('reckon: days the tower actually had.');
+}
+
 function printUsage() {
   console.log('usage: reckon.js [--verify | [YYYY-MM-DD] | -h | --help]');
   console.log('');
   console.log('  reckon.js              write today\'s reckoning to the ledger');
-  console.log('  reckon.js YYYY-MM-DD   write that date\'s reckoning to the ledger');
+  console.log('  reckon.js YYYY-MM-DD   the same, but say which day you believe it is');
+  console.log('                         (only today in Paris is accepted; any other real');
+  console.log('                          day is refused NOT_TODAY, and nothing is written)');
   console.log('  reckon.js --verify     audit the ledger against today\'s arithmetic');
   console.log('  reckon.js -h, --help   show this message');
 }
@@ -264,6 +327,15 @@ function main(argv) {
     process.exit(2);
   }
 
+  // The gate stands here — before the ledger is even opened, at the earliest
+  // point the date exists as a date. Ember's Day 4 rule: assert at the
+  // earliest point the number exists, not at the point it does damage.
+  const today = parisToday();
+  if (dateArgs.length === 1 && dateArgs[0] !== today) {
+    refuseNotToday(dateArgs[0], today);
+    process.exit(2);
+  }
+
   // Now route to the action.
   const entries = readLedger();
 
@@ -271,13 +343,11 @@ function main(argv) {
     return verify(entries);
   }
 
-  // "Today" means Paris's today, not the sandbox's UTC today. Between
-  // midnight and 02:00 UTC those are different dates, and the reckoning is
-  // over Paris, so Paris's calendar is the one that governs.
-  const dateArg = dateArgs[0];
-  const date = dateArg || new Intl.DateTimeFormat('en-CA', {
-    timeZone: PARIS.zone, year: 'numeric', month: '2-digit', day: '2-digit'
-  }).format(new Date());
+  // Past the gate, a date argument can only be today, so the two branches
+  // that used to differ here have become one. The argument is kept because
+  // typing it is a keeper saying which day they believe it is, and the tool
+  // now answers when they are wrong.
+  const date = today;
 
   const existing = entries.find(e => e.date === date);
   if (existing) {
