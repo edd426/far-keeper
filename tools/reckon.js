@@ -5,6 +5,11 @@
 //   node tools/reckon.js            reckon today (Paris) and append
 //   node tools/reckon.js 2026-08-20 name today, and be told if you are wrong
 //   node tools/reckon.js --verify   recompute every entry, report any drift
+//
+// --verify recomputes each row at the place that row names, never at a
+// place chosen here. It said `reckon(date, PARIS)` until Day 18. See the
+// long note above `placeProblem` for what that cost and what the repair
+// cannot do.
 //   node tools/reckon.js --help     print that and write nothing
 //
 // The date argument may only ever be today's date in Paris. Any other real
@@ -101,6 +106,75 @@ function claimsOf(entry) {
   return out;
 }
 
+// ---- A row is recomputed at the place the row names ----
+//
+// Day 18. Until this morning both auditors — this one, and the copy of it
+// that runs in a stranger's browser — recomputed every published row at
+// `PARIS`, and threw away the `place` the row carries. Every entry in the
+// ledger has carried its own place since the first one, 2026-08-06: name,
+// latitude, longitude, zone. Neither auditor had ever read it.
+//
+// Nothing was ever wrong, because Paris is the only place that has ever
+// been in the book, so `entry.place` and `PARIS` have been the same object
+// every morning for eighteen days. Ash refused my first name for that —
+// I wanted Day 11's *a check that has only ever fired for one cause*, and
+// it does not fit: that fault fires and misreads, and this one has never
+// fired at all. Its name is an **untested assumption**. The code was asked
+// whether it recomputes each row at the place the row names, it answered
+// yes in its documentation, it did something else, and nobody ever fed it
+// a row that could tell the two answers apart.
+//
+// What it costs on the first morning the tower stands anywhere else: an
+// honest row — one this instrument wrote itself, standing in that place —
+// is recomputed against Paris, disagrees on every figure, and is convicted.
+// And being on the method running now, it is handed the Day 11 forgery
+// sentence: *there is no method change to blame; either a published number
+// was edited…* about a row no hand has touched. That is Day 15's shape for
+// the third time: an honest row told a lie about itself by a check that
+// never asked the right question. Demonstrated before it was fixed, with a
+// Reykjavík row manufactured by `reckon()` itself and spliced into a scratch
+// copy of the ledger; `tools/place-audit.sh` keeps that demonstration.
+//
+// **And the fix opens a hole underneath itself, which is the honest half of
+// today.** Once the auditor recomputes at the place the row names, the row
+// is steering its own audit: a hand that edits a row's latitude *and* its
+// numbers together produces a row that recomputes perfectly and prints
+// `unchanged`. Before today, editing the numbers alone was caught. It is not
+// closeable here. **A place is an input, and no recompute can check an
+// input, because the recompute is what the input feeds.** The commits are
+// the only witness to a place, and both auditors now say so on their face
+// and name the place they used, so that a wrong place is at least in front
+// of an eye rather than swallowed. Naming it is not a check and is not
+// offered as one.
+//
+// The narrow guard below is worth what an impossible-check is worth and no
+// more (Day 4, Day 5): it owes no witness because it is about the shape of
+// the thing — there is no latitude of 200 degrees and no zone the clock has
+// never heard of. It catches a slip. It does not catch a forger, who would
+// get all three right.
+function placeProblem(place) {
+  if (!place || typeof place !== 'object') return 'the row names no place at all';
+  const { latitude, longitude, zone, name } = place;
+  // Day 7: `NaN < min` is false and so is `NaN > max`, so a range check
+  // assumes it was handed a number. Ask that first, of both.
+  if (typeof latitude !== 'number' || !Number.isFinite(latitude)) {
+    return `latitude is ${JSON.stringify(latitude)}, which is not a number`;
+  }
+  if (typeof longitude !== 'number' || !Number.isFinite(longitude)) {
+    return `longitude is ${JSON.stringify(longitude)}, which is not a number`;
+  }
+  if (latitude < -90 || latitude > 90) return `latitude ${latitude} is off the earth`;
+  if (longitude < -180 || longitude > 180) return `longitude ${longitude} is off the earth`;
+  if (typeof zone !== 'string' || !zone) return 'the row names no zone';
+  try {
+    new Intl.DateTimeFormat('en-CA', { timeZone: zone }).format(new Date());
+  } catch (error) {
+    return `the clock has never heard of the zone ${JSON.stringify(zone)}`;
+  }
+  if (typeof name !== 'string' || !name) return 'the place has no name';
+  return null;
+}
+
 function differences(published, recomputed) {
   const found = [];
   const date = published.date;
@@ -149,16 +223,35 @@ function verify(entries) {
   // scratch copy on Day 11 by forging exactly that row.
   let sameMethod = 0;
   let methodMoved = 0;
+  let unplaced = 0;
   for (const entry of entries) {
-    const fresh = reckon(entry.date, PARIS);
+    // The row is recomputed at the place the row names, never at PARIS.
+    // See the long note above `placeProblem` — until Day 18 this line read
+    // `reckon(entry.date, PARIS)` and the first row written anywhere else
+    // would have been convicted of a forgery it did not commit.
+    const problem = placeProblem(entry.place);
+    if (problem) {
+      // Not a drift and not a clean row: a row this tool cannot check at
+      // all. It must not be counted among the quiet ones — `check-sight.sh`
+      // learned this on Day 2 and it is the same rule. A tool that cannot
+      // see must read as unable to see, never as finding nothing wrong.
+      console.log(`reckon: ${entry.date} UNPLACED — ${problem}. Not checked.`);
+      unplaced += 1;
+      continue;
+    }
+    const where = entry.place;
+    const fresh = reckon(entry.date, where);
     const diffs = differences(entry, fresh);
     if (diffs.length === 0) {
-      console.log(`reckon: ${entry.date} unchanged since it was published.`);
+      // The place is inside the verdict rather than printed beside it,
+      // because what was established is *unchanged given this place* and
+      // the place is the one thing here no recompute can vouch for.
+      console.log(`reckon: ${entry.date} unchanged at ${where.name} since it was published.`);
     } else {
       const entryMethod = entry.method || 1;
       const current = entryMethod === METHOD;
       if (current) sameMethod += 1; else methodMoved += 1;
-      console.log(`reckon: ${entry.date} HAS DRIFTED` +
+      console.log(`reckon: ${entry.date} HAS DRIFTED, recomputed at ${where.name}` +
         (current
           ? ` — under method ${entryMethod}, which is the method running now`
           : ` — published under method ${entryMethod}; the tower now runs method ${METHOD}`));
@@ -166,6 +259,13 @@ function verify(entries) {
     }
   }
   const drifted = sameMethod + methodMoved;
+  if (unplaced > 0) {
+    console.log('');
+    console.log(`reckon: ${unplaced} entr${unplaced === 1 ? 'y was' : 'ies were'} not checked at all.`);
+    console.log('reckon: a row is recomputed at the place it names, so a row that names no');
+    console.log('reckon: usable place cannot be recomputed. That is not a clean row and it is');
+    console.log('reckon: not a drifted one. Go and look at the entry.');
+  }
   if (drifted > 0) {
     console.log('');
     console.log(`reckon: ${drifted} published entr${drifted === 1 ? 'y' : 'ies'} no longer match today's arithmetic.`);
@@ -184,8 +284,15 @@ function verify(entries) {
     return 1;
   }
   console.log('');
-  console.log(`reckon: all ${entries.length} published entr${entries.length === 1 ? 'y is' : 'ies are'} unchanged since publication.`);
-  console.log('reckon: that is a check on the record, not on the sky.');
+  console.log(`reckon: all ${entries.length} published entr${entries.length === 1 ? 'y is' : 'ies are'} unchanged since publication,`);
+  console.log('reckon: each at the place its own row names.');
+  console.log('reckon: that is a check on the record, not on the sky. And it is a check on');
+  console.log('reckon: the numbers, not on the place: a place is an input, and no recompute');
+  console.log('reckon: can check an input, because the recompute is what the input feeds. A');
+  console.log('reckon: hand that moved a row\'s place and its numbers together would pass here.');
+  console.log('reckon: the commits that touched reckoning/ledger.json are the only witness to');
+  console.log('reckon: a place. This tool is the first part of that guard; a reader with the');
+  console.log('reckon: history is the second.');
   return 0;
 }
 
@@ -351,11 +458,21 @@ function main(argv) {
 
   const existing = entries.find(e => e.date === date);
   if (existing) {
-    const fresh = reckon(date, PARIS);
+    // A second audit of a published row, and it obeys the same rule as
+    // --verify: recompute at the place the row names. The write below
+    // still stands in Paris, because where this tower stands is a
+    // different day's work from how it reads its own record.
+    const problem = placeProblem(existing.place);
+    if (problem) {
+      console.log(`reckon: ${date} is already in the ledger. Not rewriting it.`);
+      console.log(`reckon: and it is UNPLACED — ${problem}. It could not be checked.`);
+      return 1;
+    }
+    const fresh = reckon(date, existing.place);
     const diffs = differences(existing, fresh);
     console.log(`reckon: ${date} is already in the ledger. Not rewriting it.`);
     if (diffs.length === 0) {
-      console.log('reckon: it still matches today\'s arithmetic.');
+      console.log(`reckon: it still matches today's arithmetic at ${existing.place.name}.`);
       return 0;
     }
     console.log('reckon: and it no longer matches today\'s arithmetic:');

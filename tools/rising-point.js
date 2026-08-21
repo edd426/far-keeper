@@ -279,7 +279,7 @@ async function cornerWith(page, skylineDegrees) {
       .map((n) => n.textContent.trim())
   })));
   const old = verdicts.filter((r) => r.date < '2026-08-18');
-  const oldDrifted = old.filter((r) => r.verdict === 'DRIFTED');
+  const oldDrifted = old.filter((r) => /^DRIFTED/.test(r.verdict ?? ''));
   check(old.length > 0, `${old.length} ledger rows predate the rising point`);
   check(
     oldDrifted.length === 3,
@@ -294,7 +294,7 @@ async function cornerWith(page, skylineDegrees) {
   // Day 6 scars: a scar is already DRIFTED, so grafting there would prove
   // nothing about whether the graft was noticed. Same reason the Day 11
   // forgery test asserts its target carries no forgery sentence first.
-  const graftTarget = old.find((r) => r.verdict === 'unchanged');
+  const graftTarget = old.find((r) => /^unchanged/.test(r.verdict ?? ''));
   check(!!graftTarget, `a clean pre-rising-point row exists to graft onto (${graftTarget?.date})`);
   check(
     !(graftTarget?.notes ?? []).some((n) => /predates/.test(n)),
@@ -324,7 +324,7 @@ async function cornerWith(page, skylineDegrees) {
         .map((n) => n.textContent.trim())
     };
   }, graftTarget.date);
-  check(graftedRow !== null && graftedRow.verdict === 'DRIFTED',
+  check(graftedRow !== null && /^DRIFTED/.test(graftedRow.verdict ?? ''),
     `${graftTarget.date}: a rising point grafted onto a row too old to have one is caught`);
   check(
     (graftedRow?.notes ?? []).some((n) => /predates 2026-08-18/.test(n)),

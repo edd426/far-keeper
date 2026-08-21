@@ -223,8 +223,14 @@
     addFigure(figures, 'length of day', entry.dayLength, 'big');
     addFigure(figures, 'clock', entry.place.zone + ', UTC' +
       (entry.utcOffsetMinutes < 0 ? '' : '+') + (entry.utcOffsetMinutes / 60));
-    addFigure(figures, 'place', entry.place.latitude.toFixed(4) + '°N, ' +
-      entry.place.longitude.toFixed(4) + '°E');
+    // The hemisphere is read off the sign rather than written into the
+    // string. It said `°N, °E` outright until Day 18, which is correct for
+    // Paris and for nowhere south or west of it — the same untested
+    // assumption as the ledger auditor one storey down, and it would have
+    // published "-33.8688°N" the first morning it was wrong.
+    addFigure(figures, 'place',
+      Math.abs(entry.place.latitude).toFixed(4) + '°' + (entry.place.latitude < 0 ? 'S' : 'N') + ', ' +
+      Math.abs(entry.place.longitude).toFixed(4) + '°' + (entry.place.longitude < 0 ? 'W' : 'E'));
 
     document.getElementById('scene-mount').textContent =
       drawBar(localMinutes(entry.sunrise), localMinutes(entry.sunset));
@@ -350,9 +356,35 @@
       head.appendChild(el('span', 'ledger__times',
         published.sunrise + ' → ' + published.sunset + '  (' + published.dayLength + ')'));
 
+      // Day 18. This line read `window.Reckoning.PARIS` until this morning,
+      // and every published row has carried its own `place` since the first
+      // one. The auditor threw it away. Nothing was ever wrong by it, because
+      // Paris is the only place that has ever been in the book — which is the
+      // whole of the fault: an assumption that was never once tested against
+      // a row that could tell it from the truth. The first row this tower
+      // ever writes standing anywhere else would have been recomputed against
+      // Paris, disagreed on every figure, and — being on the method running
+      // now — handed the forgery sentence below, about a row no hand touched.
+      //
+      // The place goes into the verdict rather than beside it, because what
+      // this row establishes is *unchanged given this place*, and the place
+      // is the one thing on it that no recompute can ever vouch for: a place
+      // is an input, and the recompute is what the input feeds. See the
+      // standing paragraph on the page, which says so to the reader.
+      var where = published.place;
+      var placeName = (where && where.name) ? where.name : null;
+      // A row that cannot be recomputed is neither clean nor drifted, and
+      // giving it DRIFTED would be one word doing two jobs again — Day 11's
+      // fault, which this page has already had once. `tools/ledger-place.js`
+      // caught the page having no third word on the morning it was written.
+      var unplaced = placeName ? null :
+        'this entry names no place, so there is nowhere to recompute it. That is ' +
+        'not a claim that it drifted and not a claim that it stands — it is this ' +
+        'page saying it could not check.';
       var fresh, broken = [];
       try {
-        fresh = window.Reckoning.reckon(published.date, window.Reckoning.PARIS);
+        if (unplaced) throw new Error(unplaced);
+        fresh = window.Reckoning.reckon(published.date, where);
         CLAIMS.forEach(function (pair) {
           var was = published[pair[0]], now = fresh[pair[0]];
           // A row written before the tower published this number could not
@@ -398,12 +430,20 @@
       // that *lies in place*, from Middle Dutch *legger*, and lying in
       // place is precisely the whole of what this row can vouch for.
       // `unchanged` is Ash's word and it needs no paragraph above it.
-      var verdict = el('span', 'ledger__verdict', broken.length ? 'DRIFTED' : 'unchanged');
+      var verdict = el('span', 'ledger__verdict',
+        unplaced ? 'UNPLACED'
+          : (broken.length ? 'DRIFTED' : 'unchanged') + ' at ' + placeName);
       verdict.classList.add(broken.length ? 'ledger__verdict--bad' : 'ledger__verdict--good');
       head.appendChild(verdict);
       row.appendChild(head);
 
-      if (broken.length) {
+      if (unplaced) {
+        row.appendChild(el('p', 'ledger__note', unplaced));
+        row.appendChild(el('p', 'ledger__note',
+          'Every entry in this ledger names the place it was reckoned for, and ' +
+          'has since the first one. A row that does not is a row something has ' +
+          'happened to. Read the commits that touched reckoning/ledger.json.'));
+      } else if (broken.length) {
         var list = el('ul', 'ledger__broken');
         broken.forEach(function (line) { list.appendChild(el('li', null, line)); });
         row.appendChild(list);
@@ -458,9 +498,11 @@
         // it, and so the quiet row is not the one that looks best defended.
         row.appendChild(el('p', 'ledger__note',
           'published ' + published.publishedAt + ', and it recomputes here, now, ' +
-          'in your browser, to exactly those numbers. That is the whole of what ' +
-          'this row claims: nobody has moved it since. Whether it was right on ' +
-          'the day is a different question, and this page cannot answer it — ' +
+          'in your browser, at ' + placeName + ', to exactly those numbers. That is ' +
+          'the whole of what this row claims: nobody has moved those numbers since. ' +
+          'The place is not part of that — it is the input this recompute was run ' +
+          'from, so nothing here can check it. Whether the numbers were right on ' +
+          'the day is a different question again, and this page cannot answer it — ' +
           'the corner above is where you can.'));
       }
 
