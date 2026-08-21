@@ -506,6 +506,75 @@ founder-facing report like the Day 1 deploy diagnosis. The fix is one line
 in `daily.md` step 2 calling `node tools/shelf-when.js`, ideally beside the
 `post-status.js` call it already makes.
 
+## A row is recomputed where the row says it stood
+
+```bash
+./tools/place-audit.sh                              # the desk auditor, sabotaged back to PARIS
+./scripts/local-snapshot.sh tools/ledger-place.js   # the browser auditor, forged on the wire
+```
+
+**Built Day 18.** Every entry in `reckoning/ledger.json` carries the `place`
+it was reckoned for — name, latitude, longitude, zone — and has since the
+first one, 2026-08-06. Until Day 18 **neither auditor read it.**
+`tools/reckon.js --verify` and the recompute in `reckoning/page.js` both said
+`reckon(date, PARIS)` and threw the row's own place on the floor.
+
+Nothing was ever wrong by it, because Paris is the only place ever written
+down. **Ash refused the name I reached for** — Day 11's *a check that has only
+ever fired for one cause* — on the ground that that fault fires and misreads,
+and this one has never fired at all. Its name is an **untested assumption**:
+the code was asked whether it recomputes a row at the place the row names, its
+documentation answered yes, it did something else, and no row was ever put in
+front of it that could tell the two answers apart.
+
+The cost, demonstrated before it was repaired: an honest Reykjavík row —
+written by `reckon()` itself — spliced into a scratch ledger is convicted, and
+being on the current method is handed the Day 11 forgery sentence, *there is no
+method change to blame… a published number was edited.* Day 15's shape for the
+third time.
+
+**The fix opens a hole underneath itself and the page says so.** Once the
+auditor recomputes at the place the row names, the row steers its own audit: a
+hand moving a row's place *and* its numbers together produces a row that
+recomputes perfectly. **A place is an input, and no recompute can check an
+input, because the recompute is what the input feeds.** The commits are a
+place's only witness. So the place goes *inside* the verdict — `unchanged at
+Paris`, never bare `unchanged` — and both auditors state the limit outright.
+Ash on the word: `unchanged` alone claims the whole row is unchanged; the
+badge's scope never moved but its **power** did, and binding the place into
+the sentence is what makes it honest again. **Do not print a bare verdict.**
+
+**A row that cannot be recomputed gets its own word, `UNPLACED`** — not
+DRIFTED, which would be one word doing two jobs, this page's own Day 11 fault.
+The narrow guard is `placeProblem()` in `tools/reckon.js`: NaN before range
+(Day 7 — `NaN < min` is false and so is `NaN > max`), latitude and longitude on
+the earth, a zone the clock has heard of. It catches a slip. **It does not
+catch a forger, who would get all three right,** and it must not be quoted as
+though it did.
+
+**What the fixtures prove, and what they cannot.** Ash's split, and it is the
+load-bearing half: a manufactured row proves **the fix is correct**; only a
+morning on which this tower really stands somewhere else, publishes a row
+there, and has it recomputed in a stranger's browser proves **the system
+works**. That second test cannot be manufactured — it has to happen in time.
+Both files say so on their own faces.
+
+Mechanics worth keeping. `place-audit.sh` restores the old behaviour by
+**substitution, not by sha** (`perl -0pi -e 's/reckon\(entry\.date, where\)/…
+PARIS…/'`), and asserts the substitution landed — a sha rots when history is
+rewritten, and this sandbox has already lied to us once about its own floor
+(Day 8). It asserts the **fixture was built** as rigorously as it asserts the
+sabotage landed (Day 17's rule, turned the right way round), and that the
+pristine ledger does *not* name Reykjavík, so the unbroken case would fail the
+pass rule. `ledger-place.js` forges on the wire with `page.route`, never on
+disk. **`ledger-place.js` found a real gap on the morning it was written**: the
+page had no third word, so a placeless row was going to read as DRIFTED.
+
+**And the change to the verdict string broke three other suites' expectations**
+— `ledger-verdicts.js` and `rising-point.js` matched `verdict === 'unchanged'`
+exactly. They now match the first token. Any new check on a ledger row must do
+the same: **the word is the verdict, the place is the condition on it.**
+
 ## The two words a ledger row is allowed to say
 
 ```bash

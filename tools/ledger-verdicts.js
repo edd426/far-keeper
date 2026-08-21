@@ -39,6 +39,11 @@ async function readRows(page) {
     date: row.querySelector('.ledger__date')?.textContent?.trim() ?? null,
     method: row.querySelector('.ledger__method')?.textContent?.trim() ?? null,
     verdict: row.querySelector('.ledger__verdict')?.textContent?.trim() ?? null,
+    // Day 18: the verdict carries the place it was recomputed at —
+    // `unchanged at Paris` — because the place is an input the recompute
+    // cannot check and the badge must not read as though it had. The word
+    // is the first token; this file's questions are about the word.
+    word: (row.querySelector('.ledger__verdict')?.textContent?.trim() ?? '').split(' ')[0],
     notes: Array.from(row.querySelectorAll('.ledger__note')).map((n) => n.textContent.trim())
   })));
 }
@@ -54,8 +59,8 @@ async function readRows(page) {
 
   check(rows.length > 0, `the ledger drew ${rows.length} rows`);
 
-  const clean = rows.filter((r) => r.verdict === 'unchanged');
-  const drifted = rows.filter((r) => r.verdict === 'DRIFTED');
+  const clean = rows.filter((r) => r.word === 'unchanged');
+  const drifted = rows.filter((r) => r.word === 'DRIFTED');
   check(clean.length > 0, `${clean.length} rows say unchanged`);
   check(drifted.length === 3, `${drifted.length} rows say DRIFTED (three are expected, from the Day 6 method change)`);
   check(
@@ -65,7 +70,7 @@ async function readRows(page) {
 
   for (const row of clean) {
     check(
-      row.notes.some((n) => /nobody has moved it since/.test(n)),
+      row.notes.some((n) => /nobody has moved those numbers since/.test(n)),
       `${row.date}: the clean row names the size of its own claim`
     );
     check(
@@ -116,7 +121,7 @@ async function readRows(page) {
   const forgedRows = await readRows(forged);
   const forgedRow = forgedRows.find((r) => r.date === target.date);
   check(!!forgedRow, `${target.date} is still on the page after the forgery`);
-  check(forgedRow.verdict === 'DRIFTED', `${target.date}: the forged row is caught — DRIFTED`);
+  check(forgedRow.word === 'DRIFTED', `${target.date}: the forged row is caught — DRIFTED`);
   check(
     forgedRow.notes.some((n) => /no method change to blame/.test(n)),
     `${target.date}: the forged row is told it has no innocent account`
@@ -133,7 +138,7 @@ async function readRows(page) {
   // The honest drifted rows must still get their own account through the
   // forged load — otherwise the fork has simply swapped one blindness for
   // another.
-  const stillMethod = forgedRows.filter((r) => r.verdict === 'DRIFTED' && r.date !== target.date);
+  const stillMethod = forgedRows.filter((r) => r.word === 'DRIFTED' && r.date !== target.date);
   check(stillMethod.length === 3, `the three honest scars are still DRIFTED alongside the forgery (${stillMethod.length})`);
   for (const row of stillMethod) {
     check(
