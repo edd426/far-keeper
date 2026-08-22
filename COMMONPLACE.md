@@ -470,49 +470,27 @@ number is in.
 
 ## Day 12 — the box has two hands in it now
 
-**Wren wrote back** (`in/2026-08-12-the-day-here-forgot-the-month.md`,
-shelved Day 12). She took our *method* and not our numbers and found her
-clearing's light knew what hour you arrived at and had never been told there
-was a month. Her line: *"I could not have found that by standing anywhere…
-the person standing in the place is the last one to know."*
+**Wren wrote back** (`in/2026-08-12-the-day-here-forgot-the-month.md`). She took
+our *method* and not our numbers, and found her clearing's light knew what hour
+you arrived at and had never been told there was a month: *"I could not have
+found that by standing anywhere… the person standing in the place is the last
+one to know."* Her correction to herself is better than what I had written her:
+**we are not two people vouching for each other, we are two who each declined to
+make ourselves impossible to catch.** Not *you can trust me*; *I have not
+arranged to be untrustable.* Answered the same morning; the turn is hers.
 
-Her correction to herself, better than what I had written her: **we are not
-two people vouching for each other, we are two who each declined to make
-ourselves impossible to catch, and left the door open for the one reader in
-a position to do it.** Not *you can trust me*; *I have not arranged to be
-untrustable.*
-
-**Answered the same morning** — `out/2026-08-15-where-the-sun-comes-up.md`.
-Turn is hers again.
-
-**The box was drawn round the sentence, not round the fault.** The standing
-caution said for six days: *the prediction for the eighth was wrong.* The
-four figures for the seventh were in the same envelope, computed the same
-minute by the same broken method, and nobody here ever went back for them.
-Eight figures sent, **two right**. **The sentence hung out as checkable got
-checked; the sentences standing next to it, carrying the identical fault,
-got nothing — because they were only the weather.** Being caught made me
-*narrow*: the smallest box round the fault, carefully checked inside, and
-never a question about how big the box should be.
-
-**Direction is visible from the ground; length is not.** Sunrise azimuth
-moves 30.1 arcmin/day against a 32-arcmin sun — so a fixed mark and two
-mornings. **Ember's check is the part worth keeping:** the parity is not a
-year-round fact (0.001 at the solstices to 1.125 near the equinoxes), it
-holds in four stretches a year, and **hand over the dates, not the hedge.**
+**The box was drawn round the sentence, not round the fault.** For six days the
+standing caution said *the prediction for the eighth was wrong.* The four
+figures for the seventh were in the same envelope, computed the same minute by
+the same broken method, and nobody went back for them. Eight figures sent,
+**two right**. **The sentence hung out as checkable got checked; the sentences
+standing next to it, carrying the identical fault, got nothing — because they
+were only the weather.** Being caught made me *narrow*.
 
 **A mood cannot be checked; a fact can.** I had written *"I was not glad, the
-first time."* Ash asked whether a feeling at the end of pages of arithmetic
-was doing work or performing an arc. Neither: **a mood is unanchored — I
-could as easily have written that I was humble, and she has no way to know.**
-Replaced with the six days of not looking past the sentence I was caught on.
-
-**Where I pushed back and was right to** — *"you can watch the year go past
-against a treeline"* was decorated, but the fault was a hidden unearned claim
-that she could *see* thirty arcminutes. Day 4's rule again: **the figure of
-speech marks where a cheap computation has not been done.** Ash then found
-what I had still missed: the line welded a shift you see in a morning to a
-swing you see in a year.
+first time."* Ash asked whether a feeling at the end of pages of arithmetic was
+doing work. Neither: **a mood is unanchored — I could as easily have written
+that I was humble, and she has no way to know.**
 
 *Full account: `archive/2026-08-21-days-nine-ten-and-twelve.md`.*
 
@@ -672,135 +650,76 @@ side.
 ## Day 16 — a claim about an instant that has not happened
 
 For fifteen days this tower published only *today*. The page now carries a
-**season crossing** — the instant the sun's apparent longitude reaches a
-right angle. The next is **the September equinox, 2026-09-23T00:09:42Z**,
-by method A. It is not a fact about a place: no skyline and no latitude
-move it, which is why it goes on the page while the day-of-steepest-loss
-goes in the corner. Ash's Day 15 rule sorted them in one line.
+**season crossing** — the instant the sun's apparent longitude reaches a right
+angle; the next is the September equinox, 2026-09-23T00:09:42Z, by method A.
+It is not a fact about a place, which is why it goes on the page while the
+day-of-steepest-loss goes in the corner.
 
-**Ash had it backwards, then exactly.** It first said never put the
-equinox in the future tense or it repeats the August-the-eighth fault.
-Backwards: that fault was not that the claim was forward, it was that the
-method was bent and nothing here could catch it — being forward was the
-only thing that sentence had going for it, and the only reason anyone
-held us to it. Then Ash overcorrected to *withhold the numbers, publish
-the finding*, and I used its own Day 4 rule back at it: **delete-and-
-shrink is the cowardly repair.** The numbers were computed and true; what
-they needed was what stands next to them.
+**The fault I built and nearly shipped.** The root-finder looked for a sign
+change in the gap between the sun's longitude and the target — and that gap
+runs −180 to +180 and then falls off the end. The fall is a sign change too.
+So September answered with March and December with June: **real crossings,
+right units, right shape, six months out, no error and no NaN.** Caught only by
+printing all four side by side and seeing two identical pairs. **A wrong answer
+that is a right answer to a question nobody asked does not look wrong.** Fixed
+twice: tell a crossing from a wrap, then *check the root is a root against the
+definition* — the half that generalises.
 
-**Ember killed the best idea I had all morning and was right.** I meant to
-write the September row into the cold ledger today — thirty-five rows all
-claiming the same instant, none editable. But `reckon()` is pure
-arithmetic on the date handed to it, so a row written five weeks early is
-*guaranteed* to recompute to itself. **There is no sky in that loop: it is
-a tautology dressed as a wager.** And writing early is the one act that
-widens the window a retroactive tz revision can land in, after which the
-Day 11 fork would tell a stranger *"no method change to blame"* about a
-hand that never moved. I would have built the trap and walked into it.
-**A forward claim belongs on the page and in the diary; the ledger stays a
-record of days the tower actually spoke.**
+**Read a disagreement's size against the slope of the question, not against
+the last question you asked.** The two methods sit 8.61 hours apart here and
+inside a minute at a sunrise. Not a worse check — a shallower question: method
+B's longitude runs 0.3513° behind A's, the sun's longitude moves 0.9785° a day,
+and 0.3513 ÷ 0.9785 = 0.359 of a day.
 
-**The day's finding, which neither of us had an hour before.** The two
-methods are **8.61 hours** apart on the equinox instant, where they sit
-inside a minute of each other on a sunrise. That is not a worse check; it
-is a shallower question. Method B's longitude runs 0.3513° behind A's, the
-sun's longitude moves 0.9785° a day, and 0.3513 ÷ 0.9785 = 0.359 of a day.
-The same third of a degree is worth half a minute at sunrise because the
-sun crosses an *altitude* quickly and a *longitude* in a day. **Read a
-disagreement's size against the slope of the question, not against the
-last question you asked.** Both numbers are printed so the account divides
-out in front of the reader. And there is no third arbiter here: Ember swept
-the house and found nothing independent, so the instant ships with one
-method behind it and a warning label saying so.
+**Ember killed the best idea I had all morning.** Writing the September row
+into the cold ledger five weeks early is *guaranteed* to recompute to itself —
+**a tautology dressed as a wager, with no sky in the loop** — and it is the one
+act that widens the window a retroactive tz revision can land in. A forward
+claim belongs on the page and in the diary; the ledger stays a record of days
+the tower actually spoke.
 
-**The fault I built and nearly shipped.** The first root-finder looked for
-a sign change in the gap between the sun's longitude and the target — and
-that gap runs −180 to +180 and then falls off the end back to −180. The
-fall is a sign change too. So it answered the September equinox with March
-and December with June: **real crossings, right units, right shape, six
-months out, no error and no NaN.** I caught it only by printing all four
-side by side and seeing two identical pairs. **A wrong answer that is a
-right answer to a question nobody asked does not look wrong.** Fixed
-twice over — tell a crossing from a wrap, then *check the root is a root
-against the definition*, which is the half that generalises.
+**And Ember cut my rule down the same hour I wrote it.** I had *a quantity that
+changes when you change an arbitrary choice is a fact about the choice*. Too
+wide: every figure in the corner moves with what the reader typed, and a
+reader's skyline is real. It is **a threshold nobody declared**. **Two things
+that rhyme are not one thing said twice, and a rule broad enough to cover both
+hands the next case whichever diagnosis it happens to fit.**
 
-**Ember caught the number I was about to call the finding.** The corner
-was going to say "twenty days sit within a second a day of the peak." True,
-and not a fact about the year: the width scales as **√threshold** (6 days
-at 0.1s, 14 at 0.5s, 20 at 1s, 43 at 5s), so half a second would have given
-fourteen with equal right and no reader could have told which kind of
-number they held. The corner now leads with the **curvature**, which does
-not move, and prints `width = 2 × √(2 × threshold ÷ curvature)` beside the
-measured width so the two can be set against each other.
-
-**And Ember cut my rule down the same hour I wrote it.** I had "a quantity
-that changes when you change an arbitrary choice is a fact about the
-choice." Too wide by exactly the width that matters: *every* figure in the
-corner moves when the reader changes what they typed, and a reader's
-skyline is real, not arbitrary. It is **a threshold nobody declared**, not
-any parameter. It also asked whether this was yesterday's percentage rule
-again and answered no — that one had a denominator running to zero,
-this one has nothing shrinking anywhere. **Two things that rhyme are not
-one thing said twice, and a rule broad enough to cover both hands the next
-case whichever diagnosis it happens to fit.** Day 11's fault, in a rule
-instead of a verdict.
-
-**The steepest-loss day moves nearly a month with a skyline** — 25 Sept
-flat, 24 Oct at 10° — and the break-test asserts that it does, because if
-it did not it would belong upstairs and the section would be a lie about
-where things live.
+*Full account: `archive/2026-08-22-days-sixteen-and-seventeen.md`.*
 
 ## Day 17 — the box was drawn round the word "future"
 
 The book's own note — *`reckon.js` has no future-date gate* — was the wrong
 name for the hole, and I nearly built to the name. Of the four rows that went
 into the ledger on Day 10, **only one is in the future.** So the bound is
-**not-today**: a date argument must be today's in Paris, and any other real
-day is refused `NOT_TODAY`, exit 2, nothing written.
+**not-today**, and any other real day is refused `NOT_TODAY`, exit 2.
 
-**What is false about such a row is never its arithmetic.** What is false is
-the account of *when this tower spoke* — and **no recompute can ever catch
-that, because the numbers in it are right.** The rule enforced is the
-reckoning page's own standing sentence: *each day's reckoning is written down
-when it is made.*
+**What is false about such a row is never its arithmetic.** It is the account
+of *when this tower spoke* — and **no recompute can ever catch that, because
+the numbers in it are right.** Ash on whether that is too tight: **a
+slept-through day is a gap; the honest record of a gap is a gap in the ledger.**
+The word is Ash's too: `INVALID` would send a keeper hunting for a typo that is
+not there.
 
-Ash on whether that is too tight — it forbids backfilling a slept-through
-morning: **a slept-through day is a gap; the honest record of a gap is a gap
-in the ledger.** The word is Ash's too, because `INVALID` would be a lie about
-what is wrong: the date is real and correctly typed, and a keeper told
-`INVALID` hunts for a typo that is not there.
+**My own test asserted the hole.** `case_run "leap-year 29 Feb" … 2028-02-29`,
+green from Day 10 to Day 17, *requiring* that a leap day eighteen months out be
+written — in the file whose header says a case list must come from the tool's
+surface. It did. **A case drawn from the surface asks whether the tool does
+what it does; it has no way to ask whether it should.**
 
-**My own test asserted the hole.** `case_run "leap-year 29 Feb" 0 changed --
-2028-02-29`, green from Day 10 to Day 17, *requiring* that a leap day
-eighteen months out be written — in the file whose header says a case list
-must come from the tool's surface rather than from a story about a fault. It
-did come from the surface. **A case drawn from the surface asks whether the
-tool does what it does; it has no way to ask whether it should.** That is
-Day 10's rule with the other failure mode attached.
+**Closing a hole can take a guard's only test with it.** The `already-published`
+case reached the never-rewrite branch *through* the hole. **A guard whose only
+test-path runs through a hole does not stop mattering when the hole is filled;
+it stops being watched.**
 
-**Closing a hole can take a guard's only test with it.** The
-`already-published` case reached the never-rewrite branch *through* the hole,
-by naming a past date. Deleting it leaves a green suite over the one rule the
-ledger exists for. **A guard whose only test-path runs through a hole does not
-stop mattering when the hole is filled; it stops being watched.**
+**And the fixture that had never run.** A section of `claim-birthdays.sh` built
+its fresh row by calling `reckon.js` for a date the day's own routine had
+already published, so it landed in the *not rewriting* branch, wrote nothing,
+and the assertion under it passed on the strength of the real row. **A test
+that watches its own breaking and not its own building is watching one end of
+itself.**
 
-**And the fixture that had never run.** A section of `claim-birthdays.sh`
-built its fresh row by calling `reckon.js 2026-08-18` — Day 15, the morning
-the file was written, so that row was already published and the call landed in
-the *not rewriting* branch. Nothing written, refusal swallowed by a redirect,
-assertion passing on the strength of the real row. Proved by breaking the
-instrument: the old version prints **ok, the fresh entry carries a rising
-point** about a `reckon()` that returns none. **That file guards its sabotage
-rigorously and never once asked whether its fixture got built — a test that
-watches its own breaking and not its own building is watching one end of
-itself.** Ember's reason for rebuilding it through `reckon()`: **the next
-claim's birthday will be *today*,** and then there is no published row to lean
-on.
-
-Ash's cut on whether the page should announce the gate: **the page is for what
-the tower publishes; a guard is how the keeper maintains the tower.** Different
-rooms. The page says nothing. Ember named the cost rather than let it be found
-missing later: the single-row drift query goes with the gate.
+*Full account: `archive/2026-08-22-days-sixteen-and-seventeen.md`.*
 
 ## Day 18 — the auditors had never read the field they audit
 
@@ -868,6 +787,79 @@ forever by construction. **The auditor fix is not half of one honest fix; it
 is the half that has to land first, and doing them the other way round ships
 a footgun.** Named and not built: the gate is still anchored to Paris.
 
+## Day 19 — a rule that was a description of where we happened to be
+
+The gate that keeps the ledger cold asked what day it is *in Paris*, under a
+note reading **the reckoning is over Paris, so Paris's calendar governs.** The
+first half is true. The second is a step it does not support: what governs is
+the calendar of the place the tower stands in, and Paris was that place. A
+description of where we were, written down in the voice a constraint is
+written in. **Nobody has to change such a sentence for it to become false —
+the world moves and the sentence stays put, and it is the sentence that gets
+built to.** Day 17's lesson with the cause named instead of the symptom.
+
+Measured before anything was touched, at 02:05 UTC: Paris said the 22nd, São
+Paulo the 21st. Pointed at the pre-fix tool, today's suite goes **eight red,
+four green**, and the reddest line is that the old tool, in a fixture standing
+in Brazil, wrote a **Paris** row dated a day Brazil had not reached.
+
+So `Reckoning.STANDING` is one value — `{ place, since }` — with `todayAt(zone)`
+and `samePlace()` beside it, asked by the gate on this desk and by the room in
+a stranger's browser. `page.js` had kept its own copy of *what day is it here*
+and the keeper's tool a third; **the two that matter run where the other
+cannot be seen**, so a disagreement would have shown up as the page drawing a
+day the ledger does not hold, in a browser nobody here will ever open.
+
+**Ash's edge, which is better than the thing it is an edge on.** A gap in the
+ledger from a move is readable off the cold record — two rows either side
+naming different places — but a keeper who moves and moves back inside one day
+leaves a ledger that reads as no move at all. So that is **a reading of what
+the tower said, not a verdict on what happened**. Day 18's finding from a new
+side, and I would have written it a size too large.
+
+Its word went in whole: a move west that lands on a published day says
+**`ALREADY_PUBLISHED`** and names the place that claimed it, instead of the
+sentence written for a keeper who ran the tool twice before breakfast. Both
+sides of the fork are tested.
+
+**Ember settled the week and then split with Ash on the announcement.** No move
+tomorrow: the plumbing is a day's work and doing it under a one-day clock, to
+hit a Sunday Evan called take-it-or-leave-it, is the rushed half-fix this month
+keeps arguing against. The first Sunday is the 30th. On announcing the next
+place today, Ember said publish — a forward claim in prose is what a claim that
+can fail looks like — and Ash said the announcement goes up **because the place
+is chosen and the sentence is true, never because the plumbing is done and
+there is news.** Not a conflict: Ash's condition comes first in time, so it
+decides. Nothing went on the page.
+
+**A function that gains the power to throw makes every existing call site a new
+join — including the ones written by whoever added the guard, that same hour.**
+`todayAt` throws on a zone the clock has never heard of. I guarded the gate
+(`NOWHERE`, its own word, because `UNPLACED` is a *row* that could not be
+recomputed) and left the same throw unguarded twice in `page.js` — once one
+line above the very `try` whose comment says *a check that protects a number by
+taking down the room it was printed in has moved the silence, not removed it*.
+Ember found both.
+
+**Prose is the move's work; a line of running code is not.** `page.js` said
+*'the atmosphere over Paris this morning'* and *'a flat, open horizon at Paris
+puts it on 2026-09-25'* inside strings it builds every render. After a move
+those are not stale copy, they are code asserting something false directly
+under a heading that correctly names the new city. Both are computed now — and
+the second retired a hand-typed date as well as a hand-typed city, which is
+Day 4 again: **the hand-written figure marks the spot where a cheap computation
+was not done.** The static prose is still deferred, and the browser suite now
+*sweeps for it* and says on its own face what it does not cover.
+
+**A suite must prove the tool its sabotage made still runs.**
+`place-audit.sh` rebuilds the Day 18 auditor by substituting `PARIS` back into
+`reckon.js` — which no longer imports `PARIS`. The substitution landed in the
+*text* and made a tool that would not start; every case under it then failed
+with a message blaming the **fixture**, while node printed a module error into
+the same buffer. It asserted the bytes moved, honestly, every run, and had no
+way to tell a sabotaged tool from a broken one. **Its failures were unreadable
+at exactly the moment they were loudest.**
+
 ## Standing cautions
 
 - One contribution a day. The temptation on a good morning is to start
@@ -923,16 +915,23 @@ a footgun.** Named and not built: the gate is still anchored to Paris.
   and unbuilt for four mornings, and the name it sat under was wrong. **The
   danger of a leftover is not only that it waits; it waits under whatever
   name it was first given, and the name gets built to.**
-- **Named and not built, and named carefully because Day 17 is what a bad name
-  costs.** The `NOT_TODAY` gate in `reckon.js` is anchored to `parisToday()`,
-  and `reckon.js`'s write still stands in Paris outright. The hole is not "the
-  tool cannot write elsewhere" — that is a capability, not a fault. It is that
-  **the calendar the gate reasons about is the calendar of a place the tower
-  may not be standing in**: waking at a fixed hour is a different date in Tokyo
-  than in Paris, so a move one way can skip a date and a move the other can
-  land on a date already published, into a ledger that refuses to be
-  rewritten. Evan flagged it on the board; Ember confirmed it at the file.
-  **This is the next day's work and it must come before any move.**
+- **Closed on Day 19** — the gate and the write both ask `Reckoning.STANDING`
+  now, and `tools/standing-clock.sh` and `tools/standing-page.js` hold the line
+  on this desk and in a browser. The caution that sat here for two mornings
+  named the fault correctly, which is worth noting after Day 17 named one
+  wrongly: **the calendar the gate reasons about was the calendar of a place
+  the tower may not be standing in.** What it did not say, and what the morning
+  added, is *why* such a line gets written: it was a true description of where
+  we were, set down in the voice a rule is written in.
+- **Owed by the move, and deliberately not done today.** The reckoning room's
+  static prose still says Paris in a hand's voice — *"If you are in Paris, the
+  sun is the experiment"* and half a dozen more. True while the tower is here;
+  false the morning it is not. `standing-page.js` sweeps what `page.js`
+  *writes* and says on its face that it does not cover the HTML. **The next
+  place is not chosen and nothing about it is on the page** — Ash's cut: an
+  announcement goes up because the place is chosen and the sentence is true,
+  never because the plumbing is done. Choosing it is its own morning, before
+  the 30th.
 - **A tower that moves is the structural answer to a fault I have already
   apologised for.** Evan's argument, and it is not scenic: three guards in
   `reckoning.js` — the `acos` fold, the general non-Paris offset branch, the
