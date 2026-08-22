@@ -575,6 +575,111 @@ page had no third word, so a placeless row was going to read as DRIFTED.
 exactly. They now match the first token. Any new check on a ledger row must do
 the same: **the word is the verdict, the place is the condition on it.**
 
+## What day it is here, and where "here" is
+
+```bash
+./tools/standing-clock.sh                             # the gate, in a tower moved to a far zone
+./scripts/local-snapshot.sh tools/standing-page.js    # the room, forged onto a far zone on the wire
+```
+
+**Built Day 19.** The tower has a declared place now — `Reckoning.STANDING`,
+`{ place, since }` — instead of a constant read off the shelf at five call
+sites. `todayAt(place)` and `samePlace(a, b)` are beside it. `tools/reckon.js`
+asks `standingToday()`, writes `reckon(date, STANDING.place)`, and does not
+import `PARIS` at all any more; `reckoning/page.js` asks `Reckoning.todayAt`
+and has no private copy.
+
+**The fault, and it is a rule that outlived its reason.** `parisToday()` said
+`Europe/Paris` outright, under a note reading *the reckoning is over Paris, so
+Paris's calendar governs.* The first half was true. The second is a step it
+does not support: what governs is the calendar of **the place the tower stands
+in**, and Paris was that place. Measured before it was repaired, at 02:05 UTC:
+Paris said 2026-08-22 and São Paulo said 2026-08-21, so a tower standing in
+São Paulo had its honest row refused and was told to write a date São Paulo
+had not yet reached. Against the pre-fix tool the suite goes **eight red, four
+green**, and the reddest line is that the old tool, in a fixture standing in
+Brazil, wrote a **Paris** row.
+
+**Choose the far zone at the moment the test runs.** Paris and New York
+disagree about the date for six hours out of twenty-four. A hardcoded pair
+would spend eighteen hours a day asserting that two identical strings are
+identical, and pass — not an expiring case but a case that is green whether or
+not the tool works, and never says so. Both suites search a candidate list for
+a zone that genuinely disagrees *now* and refuse to conclude anything if they
+cannot find one.
+
+**The collision has its own word (Ash's).** A move west lands the tower's own
+today on a date already published from somewhere else. Nothing is written —
+the ledger is cold — and until Day 19 the tool said *"already in the ledger.
+Not rewriting it,"* which is the sentence for a keeper who ran it twice before
+breakfast. It now says **`ALREADY_PUBLISHED`** and names the place that
+claimed the day. Deliberately not `NOT_TODAY`: that is about a claim that
+would be false, and nothing here is false. **Both sides of the fork are
+tested** — standing where the row was published, the plain twice-before-
+breakfast sentence is still the one you get.
+
+**A tower that does not know where it is stands `NOWHERE`.** `todayAt()`
+throws on a zone the clock has never heard of, and the gate is the first line
+of the tool that calls it — Day 5's shape one room along. `placeProblem()`
+now stands in front of the gate, pointed at the tower rather than at a row, so
+one mistyped letter in a zone name gets a sentence and not a node stack. Its
+own word, because `UNPLACED` means a *row* that could not be recomputed.
+
+**And the same throw was unguarded twice more in `page.js`, one line above the
+guard built for it.** Ember found both: `renderTodayOrSayWhyNot` computed
+`today` *above* its `try`, and `renderComing` did the same — in the file whose
+comment at that exact spot reads *a check that protects a number by taking
+down the room it was printed in has moved the silence, not removed it*. Both
+calls are inside their guards now, and the catch says *"stopped itself for
+this morning"* when the day itself is what could not be worked out. **Day 5's
+rule is not "guard the throw", it is that a function which gains the power to
+throw makes every existing call site a new join — including the ones written
+by whoever added the guard, that same hour.** `todayAt` takes a **zone
+string**, not a place: it only ever read `.zone`, so `{ zone: '…' }` worked,
+and a parameter that tolerates an impersonation teaches it to the next reader,
+who carries the same object on to `samePlace` or `placeProblem` where every
+other field fails silently.
+
+**A gap in the ledger from a move is not a gap from a slept-through morning,
+and the difference is readable off the cold record** — two rows either side of
+a hole naming different places. Ash's edge on it, and keep the edge: that is a
+*reading of what the tower said*, not a verdict on what happened. A hand that
+moves the tower and moves it back inside one day leaves no word at all. Day
+18's finding from a new side — a place is an input, and the commits are its
+only witness.
+
+**A suite must prove the tool its sabotage made still runs.**
+`tools/place-audit.sh` rebuilt the Day 18 auditor by substituting `PARIS`
+back into `reckon.js` — which no longer imports `PARIS`. The substitution
+landed in the *text* and produced a tool that would not start; every case
+under it then failed with a message blaming the **fixture** while node printed
+a module error into the same buffer. It asserted the bytes moved, which is
+Day 5's rule honestly kept, and had no way to tell a sabotaged tool from a
+broken one. The substitution is `STANDING.place` now (same fault reproduced:
+one fixed place for every row), and the check under it is *the bytes moved
+**and** the tool answers*.
+
+**Owed by the move, not by the plumbing — and the line between the two is
+prose against running code, which is Ember's cut and not the one I drew.**
+`reckoning/index.html` still says Paris in a hand's voice — *"If you are in
+Paris, the sun is the experiment"* and half a dozen more. A hand wrote those
+and a hand moves them, on the morning the tower actually moves. But a *line of
+code* naming a city is a different thing: `page.js` said `'the atmosphere over
+Paris this morning'` and `'a flat, open horizon at Paris puts it on
+2026-09-25'` inside strings it builds on every render. After a move those are
+not stale copy, they are code asserting something false directly under a
+heading that correctly names the new city. Both are computed now — the second
+from `steepestLoss(year, STANDING.place, flat)`, which also retires a
+hand-typed date (Day 4: **the hand-written figure marks the spot where a cheap
+computation was not done**).
+
+**So the deferral is flagged rather than trusted.** `standing-page.js` sweeps
+every mount `page.js` writes into for the old city's name while the tower is
+forged elsewhere, and says on its own face that it does **not** cover the
+static HTML — that is the move's work and this check will not do it. Made to
+fail by putting the Paris string back: exactly one mount, `soft-number`, goes
+red.
+
 ## The two words a ledger row is allowed to say
 
 ```bash

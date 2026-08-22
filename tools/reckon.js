@@ -2,7 +2,7 @@
 // tools/reckon.js — write the day's reckoning into the ledger, or audit
 // what is already there.
 //
-//   node tools/reckon.js            reckon today (Paris) and append
+//   node tools/reckon.js            reckon today, where the tower stands, and append
 //   node tools/reckon.js 2026-08-20 name today, and be told if you are wrong
 //   node tools/reckon.js --verify   recompute every entry, report any drift
 //
@@ -12,9 +12,13 @@
 // cannot do.
 //   node tools/reckon.js --help     print that and write nothing
 //
-// The date argument may only ever be today's date in Paris. Any other real
-// day is refused with NOT_TODAY — see the long note above the gate for why
-// that bound is *not-today* and not merely *not-future*.
+// The date argument may only ever be today's date *where the tower stands*
+// — `Reckoning.STANDING`, which is Paris and has been since Day 1, but is a
+// value rather than a constant read at a call site as of Day 19. Any other
+// real day is refused with NOT_TODAY — see the long note above the gate for
+// why that bound is *not-today* and not merely *not-future*, and the note
+// above `standingToday` for why the calendar it asks is the tower's own and
+// not one particular city's.
 //
 // Anything else is refused: INVALID on stderr, exit 2, nothing written. That
 // is the whole posture of this file. Its default action — no arguments at all
@@ -41,7 +45,7 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const LEDGER = path.join(ROOT, 'reckoning', 'ledger.json');
-const { reckon, PARIS, METHOD, CLAIM_INTRODUCED, claimApplies } =
+const { reckon, STANDING, todayAt, samePlace, METHOD, CLAIM_INTRODUCED, claimApplies } =
   require(path.join(ROOT, 'reckoning', 'reckoning.js'));
 
 function readLedger() {
@@ -315,16 +319,25 @@ function isCalendarDate(str) {
   return dt.getUTCFullYear() === year && dt.getUTCMonth() === month - 1 && dt.getUTCDate() === day;
 }
 
-// "Today" in Paris, which is the only day this tool may write. Between
-// midnight and 02:00 UTC that is a different date from the sandbox's own,
-// and the reckoning is over Paris, so Paris's calendar governs. This asks
-// the system tz database, which is the same source `zoneOffsetMinutes`
-// already asks for every entry — the gate adds no dependence the row did
-// not already carry.
-function parisToday() {
-  return new Intl.DateTimeFormat('en-CA', {
-    timeZone: PARIS.zone, year: 'numeric', month: '2-digit', day: '2-digit'
-  }).format(new Date());
+// "Today" where this tower stands, which is the only day this tool may
+// write. It asks the system tz database, which is the same source
+// `zoneOffsetMinutes` already asks for every entry — the gate adds no
+// dependence the row did not already carry.
+//
+// Day 19. This function said `PARIS.zone` outright, and the note under it
+// said the reckoning is over Paris so Paris's calendar governs. The first
+// half of that was true and the second half was a step it does not support.
+// What governs is the calendar of the place the tower stands in; Paris was
+// that place, and the sentence read as though it were a rule about Paris.
+//
+// The cost, measured at 02:05 UTC on the morning this was repaired, before
+// a line of it was changed: Paris said 2026-08-22 and New York said
+// 2026-08-21. A tower standing in New York that morning has an honest row
+// dated the 21st — and this gate would have refused it, and demanded in its
+// place a date New York had not yet reached. Not a wrong number. A gate
+// enforcing the calendar of a city the tower had left.
+function standingToday() {
+  return todayAt(STANDING.place.zone);
 }
 
 // ---- A row may only claim the morning it was written on ----
@@ -362,7 +375,7 @@ function parisToday() {
 // what fails is the claim the row would make. Told `INVALID`, a keeper looks
 // at what they typed for a typo that is not there.
 function refuseNotToday(date, today) {
-  console.error(`reckon: NOT_TODAY — ${date} is a real day, and today in Paris is ${today}.`);
+  console.error(`reckon: NOT_TODAY — ${date} is a real day, and today at ${STANDING.place.name} is ${today}.`);
   console.error('reckon: The ledger is the record of what this tower reckoned on the morning it');
   console.error('reckon: reckoned it. A row dated ' + date + ' written today would be correct');
   console.error('reckon: arithmetic and a false account of when this tower spoke — and no');
@@ -377,8 +390,9 @@ function printUsage() {
   console.log('');
   console.log('  reckon.js              write today\'s reckoning to the ledger');
   console.log('  reckon.js YYYY-MM-DD   the same, but say which day you believe it is');
-  console.log('                         (only today in Paris is accepted; any other real');
-  console.log('                          day is refused NOT_TODAY, and nothing is written)');
+  console.log('                         (only today where the tower stands is accepted; any');
+  console.log('                          other real day is refused NOT_TODAY, and nothing');
+  console.log('                          is written)');
   console.log('  reckon.js --verify     audit the ledger against today\'s arithmetic');
   console.log('  reckon.js -h, --help   show this message');
 }
@@ -434,10 +448,37 @@ function main(argv) {
     process.exit(2);
   }
 
+  // Before the gate can ask what day it is here, "here" has to be a place.
+  //
+  // Day 19, and it is Day 5's shape one room along. `todayAt()` asks the
+  // system clock about a zone and *throws* if the clock has never heard of
+  // it — deliberately, because a tower standing in a zone that does not
+  // exist is not standing anywhere, and no date it computed would mean
+  // anything. But a function that can throw makes every call site a new
+  // join, and this call site is the first line of the tool's only action.
+  // Unguarded, a keeper who mistypes one letter of a zone name while moving
+  // the tower gets a raw RangeError with a node stack under it, at the exact
+  // moment they most need a sentence.
+  //
+  // It is `placeProblem` — the same narrow guard the auditors use on a
+  // ledger row, pointed at the tower itself. And it gets its own word.
+  // `UNPLACED` is spoken for: that is a *row* that could not be recomputed,
+  // and one word doing two jobs is this house's own oldest fault (Day 11,
+  // and Day 18 when the third word was needed). This is the tower not
+  // knowing where it is.
+  const standingProblem = placeProblem(STANDING.place);
+  if (standingProblem) {
+    console.error(`reckon: NOWHERE — this tower does not know where it is standing: ${standingProblem}.`);
+    console.error('reckon: Nothing is written. Every row in the ledger is a claim about the sun');
+    console.error('reckon: over a place, and a day at a place that is not on the earth or keeps a');
+    console.error('reckon: clock nobody has heard of is not a day. Fix Reckoning.STANDING.');
+    process.exit(2);
+  }
+
   // The gate stands here — before the ledger is even opened, at the earliest
   // point the date exists as a date. Ember's Day 4 rule: assert at the
   // earliest point the number exists, not at the point it does damage.
-  const today = parisToday();
+  const today = standingToday();
   if (dateArgs.length === 1 && dateArgs[0] !== today) {
     refuseNotToday(dateArgs[0], today);
     process.exit(2);
@@ -459,18 +500,40 @@ function main(argv) {
   const existing = entries.find(e => e.date === date);
   if (existing) {
     // A second audit of a published row, and it obeys the same rule as
-    // --verify: recompute at the place the row names. The write below
-    // still stands in Paris, because where this tower stands is a
-    // different day's work from how it reads its own record.
+    // --verify: recompute at the place the row names.
+    //
+    // Day 19 split the headline sentence in two, because from this morning
+    // on there are two wholly different reasons to be standing here and one
+    // of them is new. Until now there was only ever one: a keeper ran the
+    // tool twice before breakfast. Once the tower can move, a move *west*
+    // lands its own today on a date the tower already spoke for from
+    // somewhere else — the ledger is never rewritten, so that day gets no
+    // second row, and that is not a mistake anyone made. Handed the
+    // twice-before-breakfast sentence, a keeper who has just moved the tower
+    // would go looking for the run they think they made. Day 11's rule,
+    // caught before it could fire rather than after: a check that has only
+    // ever spoken for one cause will explain the next cause as that cause.
+    //
+    // The word is Ash's — ALREADY_PUBLISHED, and deliberately not NOT_TODAY,
+    // which is about a claim that would be false. Nothing here is false. The
+    // day has simply been spoken for.
+    const moved = !samePlace(existing.place, STANDING.place);
+    if (moved) {
+      console.log(`reckon: ALREADY_PUBLISHED — ${date} is in the ledger already, published at ${existing.place.name}.`);
+      console.log(`reckon: This tower stands at ${STANDING.place.name} now, where today is ${date} — a day it`);
+      console.log('reckon: already spoke for from somewhere else. Nothing is written and nothing is');
+      console.log('reckon: wrong: the ledger is cold, so a move that walks back onto a published day');
+      console.log('reckon: costs that day its row. One row is the honest record of that, not two.');
+    } else {
+      console.log(`reckon: ${date} is already in the ledger. Not rewriting it.`);
+    }
     const problem = placeProblem(existing.place);
     if (problem) {
-      console.log(`reckon: ${date} is already in the ledger. Not rewriting it.`);
       console.log(`reckon: and it is UNPLACED — ${problem}. It could not be checked.`);
       return 1;
     }
     const fresh = reckon(date, existing.place);
     const diffs = differences(existing, fresh);
-    console.log(`reckon: ${date} is already in the ledger. Not rewriting it.`);
     if (diffs.length === 0) {
       console.log(`reckon: it still matches today's arithmetic at ${existing.place.name}.`);
       return 0;
@@ -481,7 +544,13 @@ function main(argv) {
     return 1;
   }
 
-  const entry = reckon(date, PARIS);
+  // The row is written for the place the tower stands in — not for PARIS,
+  // which this line named until Day 19. Ember settled the order on Day 18
+  // and it is why this could not have been done first: the auditors had to
+  // learn to recompute a row at the place the row names before the write
+  // was allowed to write a row from anywhere else, or every such row would
+  // have been DRIFTED forever by construction.
+  const entry = reckon(date, STANDING.place);
   entry.publishedAt = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
   entries.push(entry);
   writeLedger(entries);
