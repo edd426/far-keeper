@@ -155,17 +155,41 @@ fi
 # The old line, put back by substitution rather than fetched by sha, so this
 # case cannot rot when a commit is rewritten or the history is truncated —
 # which this sandbox has already done to us once (Day 8).
+#
+# Day 19 changed what it substitutes *in*. The fault being reproduced is
+# "every row recomputed at one fixed place instead of at the place the row
+# names", and until this morning the name of that one fixed place in this
+# file was `PARIS`, imported straight into `reckon.js`. It no longer is:
+# `reckon.js` asks `STANDING.place` now, and `PARIS` is not in its scope at
+# all. The old sabotage kept landing in the text and produced a tool that
+# would not start.
+#
+# Which cost this file nothing and taught it something. It asserted that the
+# bytes changed — Day 5's rule, honestly kept — and had no way to tell a
+# sabotaged tool from a broken one. Every case below it then failed with a
+# message blaming the *fixture* while node was printing a module error into
+# the same buffer. **A suite that proves its sabotage landed must also prove
+# the thing it sabotaged still runs**, or its failures are unreadable exactly
+# when they are loudest. So the check under the substitution is no longer
+# "did the bytes move" alone; it is "did the bytes move, and does the tool it
+# made still answer".
 
 cp "$SRC/tools/reckon.js" "$WORK/tools/reckon.js"
 BEFORE_SAB="$(sha256sum "$WORK/tools/reckon.js" | cut -d' ' -f1)"
-perl -0pi -e 's/const fresh = reckon\(entry\.date, where\);/const fresh = reckon(entry.date, PARIS);/' \
+perl -0pi -e 's/const fresh = reckon\(entry\.date, where\);/const fresh = reckon(entry.date, STANDING.place);/' \
   "$WORK/tools/reckon.js"
 AFTER_SAB="$(sha256sum "$WORK/tools/reckon.js" | cut -d' ' -f1)"
 
+SAB_RUNS=1
+(cd "$WORK" && node tools/reckon.js --help >/dev/null 2>&1) || SAB_RUNS=0
+
 if [ "$BEFORE_SAB" = "$AFTER_SAB" ]; then
   bad "the sabotage did NOT land — the line it rewrites has moved, and every case below is meaningless"
+elif [ "$SAB_RUNS" = "0" ]; then
+  bad "the sabotage landed but the tool it made will not run — every case below would blame the fixture" \
+      "$(cd "$WORK" && node tools/reckon.js --help 2>&1 | head -4)"
 else
-  note "the sabotage landed: --verify recomputes at PARIS again"
+  note "the sabotage landed, and the tool it made still runs: --verify recomputes at one fixed place again"
 
   SAB="$(verify_on "$WORK/elsewhere.json")"
 

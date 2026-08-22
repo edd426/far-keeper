@@ -108,6 +108,69 @@
     zone: 'Europe/Paris'
   };
 
+  // ---- Where this tower stands, and what day it is there ----
+  //
+  // Day 19. Until this morning the tower had no place — it had a *constant*,
+  // read straight off the shelf at three call sites in `tools/reckon.js` and
+  // two in `reckoning/page.js`. A constant read at a call site cannot be
+  // moved. It can only be edited in five places at once, which is a
+  // different act with a different way of going wrong, and the way it goes
+  // wrong is that four of the five get edited.
+  //
+  // `STANDING` is one value and both its readers ask it the same question:
+  // *what day is it where this tower stands?* There are exactly two of them
+  // and they run on different desks — the NOT_TODAY gate in `reckon.js` on
+  // the keeper's, the live row in `page.js` in a stranger's browser. Two
+  // copies of that question is two chances to disagree, and the disagreement
+  // would surface as the page drawing a day the ledger does not hold, in the
+  // copy nobody here can reach. That is the CLAIM_INTRODUCED argument above,
+  // and it is *not* the thing Day 3 forbids factoring: the two solar methods
+  // must share no code because the second one's only job is to disagree, and
+  // a date this tower wrote down about itself has one true answer.
+  //
+  // `since` is the morning the tower began standing here. It is not a
+  // witness and does not try to be — every ledger row carries its own place,
+  // and the commits are a place's only witness (Day 18). It is here so the
+  // page can tell a reader how long this has been the answer.
+  var STANDING = {
+    place: PARIS,
+    since: '2026-08-04'
+  };
+
+  // What day it is on a given clock — never UTC, and never the clock of
+  // whoever is reading. A row in the ledger is a record of a day this tower
+  // had, and a day this tower had is a day where this tower stands.
+  //
+  // It takes a **zone**, not a place, and Ember's reason is worth the
+  // narrowing: it only ever reads `.zone`, so a place object works, and so
+  // does `{ zone: 'Asia/Tokyo' }` — which is not a place and would fail
+  // silently in every other field if the next reader carried it on to
+  // `samePlace` or `placeProblem`. A parameter that tolerates an impersonation
+  // teaches the impersonation.
+  //
+  // It throws if the clock has never heard of the zone, rather than falling
+  // back to anything. Day 5: better no date than a date the tower cannot
+  // stand behind — and a zone the clock does not know is not a place this
+  // tower can be standing in. Every call site must expect the throw; that is
+  // what Day 5 cost, and it cost it again this morning in two places.
+  function todayAt(zone) {
+    var parts = new Intl.DateTimeFormat('en-CA', {
+      timeZone: zone, year: 'numeric', month: '2-digit', day: '2-digit'
+    }).formatToParts(new Date()).reduce(function (acc, p) {
+      acc[p.type] = p.value; return acc;
+    }, {});
+    return parts.year + '-' + parts.month + '-' + parts.day;
+  }
+
+  // Two places are the same place when they name the same spot on the earth
+  // in the same words with the same clock. Used to tell a keeper who ran the
+  // tool twice from a tower that has moved onto a day it already spoke for.
+  function samePlace(a, b) {
+    if (!a || !b) return false;
+    return a.name === b.name && a.zone === b.zone &&
+      a.latitude === b.latitude && a.longitude === b.longitude;
+  }
+
   // Julian Day at 00:00 UTC of the given civil date (Fliegel–Van Flandern,
   // Gregorian). The whole apparatus hangs off this one conversion, so it
   // is written out rather than borrowed from a date library.
@@ -1213,6 +1276,9 @@
     HORIZON_ZENITH: HORIZON_ZENITH,
     SUN_DIAMETER_ARCMINUTES: SUN_DIAMETER_ARCMINUTES,
     PARIS: PARIS,
+    STANDING: STANDING,
+    todayAt: todayAt,
+    samePlace: samePlace,
     METHOD: METHOD,
     METHOD_NOTES: METHOD_NOTES,
     METHOD_CHANGED_ON: METHOD_CHANGED_ON,

@@ -11,14 +11,20 @@
   var BAR_COLUMNS = 33;   // the scene budget is 42; this leaves room
   var DAY_MINUTES = 1440;
 
-  // The reckoning is over Paris, so "today" is Paris's today — not the
-  // date on the clock of whoever is reading, which may already be
-  // tomorrow or still yesterday.
-  function todayInZone(zone) {
-    var parts = new Intl.DateTimeFormat('en-CA', {
-      timeZone: zone, year: 'numeric', month: '2-digit', day: '2-digit'
-    }).formatToParts(new Date()).reduce(function (acc, p) { acc[p.type] = p.value; return acc; }, {});
-    return parts.year + '-' + parts.month + '-' + parts.day;
+  // "Today" is the today of the place the tower stands in — not the date on
+  // the clock of whoever is reading, which may already be tomorrow or still
+  // yesterday.
+  //
+  // Day 19. This file held its own copy of that arithmetic, called it with
+  // `Reckoning.PARIS.zone` at two separate call sites, and `tools/reckon.js`
+  // held a third copy on the keeper's desk. Three copies of one question,
+  // across two runtimes, and the two that matter run where the other cannot
+  // be seen: if the page's answer and the gate's answer ever came apart, it
+  // would show as the page drawing a day the ledger does not hold, in a
+  // stranger's browser. So the arithmetic moved into the instrument as
+  // `Reckoning.todayAt(zone)` and every reader asks the one copy.
+  function towerToday() {
+    return window.Reckoning.todayAt(window.Reckoning.STANDING.place.zone);
   }
 
   function el(tag, className, text) {
@@ -277,7 +283,14 @@
       w.horizonZenithDeg + '° from the zenith: 34 arcminutes of atmospheric ' +
       'refraction plus 16 of the sun’s own radius. The 16 is geometry. The 34 ' +
       'is a fact about air — it is the refraction of a standard atmosphere, and ' +
-      'the atmosphere over Paris this morning is not obliged to be standard. ' +
+      // Day 19, Ember's find. This said "the atmosphere over Paris" outright,
+      // in running code, executed on every render for whatever place the
+      // tower actually stands in. The room's prose is deferred to the move;
+      // a *live line* naming a city the tower has left is not stale copy, it
+      // is code asserting something false, directly under a heading that
+      // (correctly) names the new city.
+      'the atmosphere over ' + entry.place.name + ' this morning is not obliged ' +
+      'to be standard. ' +
       'So the figure sits in the constants looking as solid as π, and it is not. ' +
       (w.horizonSensitivitySecondsPerArcminute === null ? '' :
         'What that is worth is computable, and computed above: moving the ' +
@@ -526,9 +539,26 @@
   // was printed in has moved the silence, not removed it. So: the failure
   // is caught, and it is *said*, here where a reader is standing.
   function renderTodayOrSayWhyNot() {
-    var today = todayInZone(window.Reckoning.PARIS.zone);
+    var today = null;
+    // The heading sits directly over the figures and names the place they
+    // are for. It was typed into the HTML as "today over Paris" — a hand's
+    // claim about a place standing above a machine's claim about the sun,
+    // with nothing tying the two together. Day 19: it comes off the same
+    // value the figures below it were reckoned at, so the name and the
+    // numbers cannot come apart. The rest of this room's prose still says
+    // Paris in a hand's voice, and going through it is the work the *move*
+    // owes, not the plumbing.
+    var heading = document.getElementById('today-heading');
+    if (heading) heading.textContent = 'today over ' + window.Reckoning.STANDING.place.name;
     try {
-      var entry = window.Reckoning.reckon(today, window.Reckoning.PARIS);
+      // `today` is computed inside the try as of Day 19, not above it.
+      // `towerToday()` asks the clock about a zone and throws if the clock
+      // has never heard of it — a thing it could not do before this morning,
+      // so this call site was written when the call could not fail. Ember
+      // found it sitting one line above the very guard built to stop a throw
+      // taking down the room, in the file that paid for that lesson on Day 5.
+      today = towerToday();
+      var entry = window.Reckoning.reckon(today, window.Reckoning.STANDING.place);
       if (entry.never) {
         var mount = document.getElementById('today-loading');
         mount.hidden = false;
@@ -539,7 +569,11 @@
     } catch (error) {
       var loading = document.getElementById('today-loading');
       loading.hidden = false;
-      loading.textContent = 'the reckoning stopped itself for ' + today + ' — ' +
+      // `today` is null when the throw came from working out what day it is
+      // — which is now one of the ways this can fail, and the reader is owed
+      // a sentence that does not read "stopped itself for null".
+      loading.textContent = 'the reckoning stopped itself for ' +
+        (today === null ? 'this morning' : today) + ' — ' +
         error.message + ' The ledger below is untouched by this: it is what was ' +
         'published on the days it was published, and it still recomputes or it ' +
         'says DRIFTED. This tower would rather print nothing than print a time ' +
@@ -560,10 +594,12 @@
     var note = document.getElementById('coming-note');
     if (!list) return;
 
-    var today = todayInZone(window.Reckoning.PARIS.zone);
+    // Same move as in `renderTodayOrSayWhyNot`, and the same reason: as of
+    // Day 19 working out what day it is here can itself throw, so it belongs
+    // inside the guard rather than one line above it.
     var crossing;
     try {
-      crossing = window.Reckoning.nextSeasonCrossing(today);
+      crossing = window.Reckoning.nextSeasonCrossing(towerToday());
     } catch (error) {
       note.textContent = 'The reckoning could not find the next crossing — ' +
         error.message + ' Nothing is printed here rather than an estimate.';
@@ -658,10 +694,28 @@
       loss.plateauDaysPredicted === null ? '—'
         : round(loss.plateauDaysPredicted, 1) + ' days');
 
+    // The comparison used to read "a flat, open horizon at Paris puts it on
+    // 2026-09-25" — a city and a date both typed in by hand, in running
+    // code. Day 19: the city was one the tower could leave, and the date was
+    // a fact about a year the reader is free to change. Both are one call
+    // away, so both are computed. This is Day 4's rule in a new room: the
+    // hand-written figure marks the exact spot where a cheap computation had
+    // not been done.
+    var here = window.Reckoning.STANDING.place;
+    var flatHere = null;
+    try {
+      flatHere = window.Reckoning.steepestLoss(year, here, { obstructionDegrees: 0 });
+    } catch (error) {
+      flatHere = null;
+    }
+
     note.textContent = 'You gave us ' + round(loss.horizon.obstructionDegrees, 1) +
-      '° of skyline, and it puts your steepest day on ' + loss.date +
-      '. A flat, open horizon at Paris puts it on 2026-09-25 — that is how far ' +
-      'this one number moves for what you typed. ' +
+      '° of skyline, and it puts your steepest day on ' + loss.date + '. ' +
+      (flatHere === null || flatHere.never
+        ? 'We could not work the same year on a flat, open horizon where this tower ' +
+          'stands, so there is no comparison printed here rather than a stale one. '
+        : 'A flat, open horizon at ' + here.name + ' puts it on ' + flatHere.date +
+          ' — that is how far this one number moves for what you typed. ') +
       'Read the shape before you write the date down: the width is not a fact ' +
       'about your year, it is a fact about the one-second line we drew, and it ' +
       'grows as the square root of wherever you draw it — 2 × √(2 × threshold ÷ ' +
@@ -686,7 +740,7 @@
     var longitude = numberFrom('corner-lon', 2.3522);
     var skyline = Math.min(89, Math.max(0, numberFrom('corner-skyline', 0)));
     var height = Math.max(0, numberFrom('corner-height', 0));
-    var date = document.getElementById('corner-date').value || todayInZone(zone);
+    var date = document.getElementById('corner-date').value || window.Reckoning.todayAt(zone);
 
     if (Math.abs(latitude) > 90 || Math.abs(longitude) > 180) {
       verdict.textContent = 'A latitude runs from −90 to 90 and a longitude from −180 to 180. ' +
@@ -821,7 +875,7 @@
     if (!form) return;
     var zone = readerZone();
     document.getElementById('corner-zone').textContent = 'your clock: ' + zone;
-    document.getElementById('corner-date').value = todayInZone(zone);
+    document.getElementById('corner-date').value = window.Reckoning.todayAt(zone);
     form.addEventListener('submit', function (event) {
       event.preventDefault();
       renderCorner();
