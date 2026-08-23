@@ -141,6 +141,17 @@
         'tower would rather say so than invent one.';
   }
 
+  // The same fact, short, for the one line of a ledger row where a time
+  // would otherwise stand. Not a second wording of a claim — the paragraph
+  // above is for a reader meeting the dark for the first time, in the
+  // room's own voice; this stands in a column beside a date and has to be
+  // read at a glance. Day 20.
+  function neverBrief(never, placeName) {
+    return never === 'set'
+      ? 'the sun did not set at ' + placeName
+      : 'the sun did not rise at ' + placeName;
+  }
+
   // Degrees round from north through east, printed with the quarter of
   // the compass named in words. A reader who does not carry a compass
   // still knows which way east is, and "68.8°, east and a little north"
@@ -341,7 +352,18 @@
       round(Math.abs(entry.crossCheck.sunsetDifferenceMinutes) * 60, 1) + ' seconds');
   }
 
+  // Day 20. `never` leads this list because on a dark row it is the only
+  // thing on it. Above about 66 degrees `reckon()` returns `{ never:
+  // 'risen' }` or `{ never: 'set' }` and every numeric key below is
+  // undefined — so every comparison passed vacuously and this page printed
+  // the same green `unchanged` a full row earns. A published row forged
+  // from polar night to midnight sun was waved through by both auditors.
+  // The long note is in `tools/reckon.js`; the two lists must stay in step,
+  // because a claim audited in one place and not the other is a claim whose
+  // forgery is caught on the keeper's desk and not in the browser, or the
+  // other way round, and neither of them can see the other.
   var CLAIMS = [
+    ['never', 'whether the sun rose'],
     ['sunrise', 'sunrise'],
     ['sunset', 'sunset'],
     ['solarNoon', 'solar noon'],
@@ -366,8 +388,16 @@
       var row = el('div', 'ledger__entry');
       var head = el('div', 'ledger__head');
       head.appendChild(el('span', 'ledger__date', published.date));
+      // A dark row has no times to arrow between. This line read
+      // `undefined → undefined  (undefined)` for such a row until Day 20 —
+      // the same fault as the write tool's NaN, in the room a stranger
+      // actually stands in. The place name is the row's own, not the
+      // tower's: this is a record of where the tower *was*.
       head.appendChild(el('span', 'ledger__times',
-        published.sunrise + ' → ' + published.sunset + '  (' + published.dayLength + ')'));
+        published.never
+          ? neverBrief(published.never,
+              (published.place && published.place.name) ? published.place.name : 'that place')
+          : published.sunrise + ' → ' + published.sunset + '  (' + published.dayLength + ')'));
 
       // Day 18. This line read `window.Reckoning.PARIS` until this morning,
       // and every published row has carried its own `place` since the first
@@ -509,8 +539,23 @@
         // on the sun. Say the size of the claim on the row itself, so a
         // reader who never reaches the standing paragraph above still gets
         // it, and so the quiet row is not the one that looks best defended.
-        row.appendChild(el('p', 'ledger__note',
-          'published ' + published.publishedAt + ', and it recomputes here, now, ' +
+        // A dark row has no numbers, so the sentence below would be a
+        // false account of what just happened in this browser — it would
+        // promise a reader that eight figures were held against the
+        // arithmetic when one word was. Day 18 put the place inside the
+        // verdict because the badge's *power* had moved while its scope
+        // stood still; this is the same move for the same reason, one row
+        // further along. Day 20.
+        row.appendChild(el('p', 'ledger__note', published.never
+          ? 'published ' + published.publishedAt + ', and it recomputes here, now, ' +
+            'in your browser, at ' + placeName + ', to the same one word. That is ' +
+            'the whole of what this row claims and the whole of what was just ' +
+            'checked: on a day the sun does not clear the horizon there is no ' +
+            'sunrise, no day length and no drift to hold anyone to. It is a ' +
+            'lighter row than the ones above it with times on them, and it wears ' +
+            'the same green word, so the difference is said here rather than left ' +
+            'for you to notice.'
+          : 'published ' + published.publishedAt + ', and it recomputes here, now, ' +
           'in your browser, at ' + placeName + ', to exactly those numbers. That is ' +
           'the whole of what this row claims: nobody has moved those numbers since. ' +
           'The place is not part of that — it is the input this recompute was run ' +
