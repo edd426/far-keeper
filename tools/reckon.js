@@ -64,7 +64,40 @@ function writeLedger(entries) {
 
 // Compare only the published claims, not the whole object. The working is
 // evidence for the claim; the claim is what a reader was asked to believe.
+//
+// ---- `never` is a claim, and on a dark day it is the only one ----
+//
+// Day 20. Every key below but the first is a number, and this list held
+// only numbers until this morning. Above about 66 degrees the `acos` fold
+// in `reckoning.js` fires and `reckon()` returns `{ never: 'risen' }` or
+// `{ never: 'set' }` — no sunrise, no sunset, no day length, no drift, no
+// rising point, no cross-check. Every numeric key is `undefined` on such a
+// row.
+//
+// So every comparison below passed vacuously. `undefined` equals
+// `undefined` seven times over and the auditor printed `unchanged`. Shown
+// before it was fixed, in a scratch tower standing at Tromso: a published
+// December row was forged from `never: 'risen'` to `never: 'set'` — polar
+// night into midnight sun, on a cold record, the largest lie this ledger
+// can tell about a day — and `--verify` answered
+// `2026-12-21 unchanged at Tromso since it was published.`
+//
+// This is Day 15's shape (a claim the auditors were never taught to ask
+// about) with the stakes inverted. There, the un-audited field was one of
+// several and the rest of the row still convicted a forger. Here the
+// un-audited field is the **whole** of what the row says, so a dark row was
+// not lightly checked — it was not checked at all, and said so in the same
+// green word a full row earns.
+//
+// It needs no CLAIM_INTRODUCED birthday, and the reason is worth stating
+// rather than assuming: the exemption exists for a claim an old row could
+// not have made *but the recompute still makes today*, which reads as a
+// silence to be convicted of. Absence of `never` is not that. Every Paris
+// row lacks the field and recomputes to lacking it, so absence meets
+// absence and matches. Ember checked that against the twelve honest rows
+// rather than take my word for it.
 const CLAIMS = [
+  'never',
   'sunrise', 'sunset', 'solarNoon', 'dayLengthMinutes', 'changeSinceYesterdayMinutes',
   'risingPointDegrees', 'risingPointStepArcminutes'
 ];
@@ -108,6 +141,18 @@ function claimsOf(entry) {
   const out = {};
   for (const key of CLAIMS) out[key] = entry[key];
   return out;
+}
+
+// What a dark day says, in words, for a keeper's terminal. `page.js` has
+// its own `neverWords` for a reader's page and the two are deliberately
+// not shared: they address different people and one of them has to survive
+// being read at a glance in a scrollback. This is not the Day 3 rule about
+// the two solar methods — nothing here disagrees with anything; it is only
+// that a sentence written for one room reads badly in the other.
+function darkWords(never, placeName) {
+  return never === 'set'
+    ? `the sun did not set at ${placeName} that day`
+    : `the sun did not rise at ${placeName} that day`;
 }
 
 // ---- A row is recomputed at the place the row names ----
@@ -228,6 +273,7 @@ function verify(entries) {
   let sameMethod = 0;
   let methodMoved = 0;
   let unplaced = 0;
+  let dark = 0;
   for (const entry of entries) {
     // The row is recomputed at the place the row names, never at PARIS.
     // See the long note above `placeProblem` — until Day 18 this line read
@@ -250,7 +296,23 @@ function verify(entries) {
       // The place is inside the verdict rather than printed beside it,
       // because what was established is *unchanged given this place* and
       // the place is the one thing here no recompute can vouch for.
-      console.log(`reckon: ${entry.date} unchanged at ${where.name} since it was published.`);
+      //
+      // Day 20 puts a second condition in the same sentence, for the same
+      // reason Day 18 put the place there. A dark row carries one claim,
+      // not eight, so `unchanged at Tromso` — the identical words a full
+      // row earns — tells a scanning keeper that eight figures were held
+      // against the arithmetic when one word was. The verdict is true
+      // either way; what moves is how much it is worth, and Day 18's
+      // repair was not a weaker word but a verdict that stops standing
+      // alone.
+      if (entry.never) {
+        dark += 1;
+        console.log(`reckon: ${entry.date} unchanged at ${where.name} — ${darkWords(entry.never, where.name)},`);
+        console.log('reckon:   so the only claim on this row is that one word, and that one word is');
+        console.log('reckon:   what was checked. There were no figures on it to hold.');
+      } else {
+        console.log(`reckon: ${entry.date} unchanged at ${where.name} since it was published.`);
+      }
     } else {
       const entryMethod = entry.method || 1;
       const current = entryMethod === METHOD;
@@ -290,6 +352,17 @@ function verify(entries) {
   console.log('');
   console.log(`reckon: all ${entries.length} published entr${entries.length === 1 ? 'y is' : 'ies are'} unchanged since publication,`);
   console.log('reckon: each at the place its own row names.');
+  if (dark > 0) {
+    // Counted and said out loud, because the tally above is the sentence a
+    // keeper actually reads and a dark row is not the same weight of
+    // evidence as a full one. A sweep that reports twenty clean rows when
+    // seven of them carried a single word has told the truth and left the
+    // wrong impression.
+    console.log(`reckon: ${dark} of them ${dark === 1 ? 'is a dark row' : 'are dark rows'} — the sun did not rise or did not set, so`);
+    console.log(`reckon: ${dark === 1 ? 'it carries' : 'they carry'} one word and no figures. That word was checked. Nothing else`);
+    console.log('reckon: was there to check, and a sweep that counts them alongside full rows');
+    console.log('reckon: is counting two different weights of evidence in one number.');
+  }
   console.log('reckon: that is a check on the record, not on the sky. And it is a check on');
   console.log('reckon: the numbers, not on the place: a place is an input, and no recompute');
   console.log('reckon: can check an input, because the recompute is what the input feeds. A');
@@ -556,11 +629,52 @@ function main(argv) {
   writeLedger(entries);
 
   console.log(`reckon: wrote ${date} to the ledger.`);
+
+  // ---- What this tool says on the morning the sun does not come up ----
+  //
+  // Day 20. These four lines assumed a row has figures on it, because for
+  // twenty mornings at 48.86°N every row did. At a polar latitude
+  // `reckon()` returns `{ never: 'risen' }` and nothing else, and the
+  // announcement of the tower's first dark morning read, in full:
+  //
+  //     reckon:   sunrise undefined  sunset undefined  (Europe/Oslo)
+  //     reckon:   day length undefined
+  //     reckon:   longer than yesterday by NaN minutes
+  //
+  // The third line is the one that matters and it is not a cosmetic fault.
+  // It is a *false sentence*: it says the day got longer, on the day the
+  // day stopped existing. The guard on it was
+  // `changeSinceYesterdayMinutes !== null`, and it was written for a real
+  // case that still happens — the morning the sun returns, when there is
+  // no yesterday to subtract from and the field is genuinely `null`. On a
+  // dark row the field is not null, it is **absent**, and `undefined !==
+  // null` is true. A guard written for one kind of missing, meeting the
+  // other kind, and reading it as present.
+  //
+  // The repair is not to widen the guard to `!= null`, which would catch
+  // both kinds of missing and print nothing — Day 4: delete-and-shrink is
+  // the cowardly repair, and the true sentence is usually one line of
+  // arithmetic behind the false one. It is to ask the row what shape it is
+  // and say what a dark day actually says.
+  if (entry.never) {
+    console.log(`reckon:   ${darkWords(entry.never, entry.place.name)}  (${entry.place.zone})`);
+    console.log('reckon:   no sunrise, no sunset, no day length, no drift, no rising point.');
+    console.log('reckon:   that one word is the whole of this row, and it is the whole of what');
+    console.log('reckon:   --verify will have to check on it.');
+    return 0;
+  }
+
   console.log(`reckon:   sunrise ${entry.sunrise}  sunset ${entry.sunset}  (${entry.place.zone})`);
   console.log(`reckon:   day length ${entry.dayLength}`);
+  // Not widened to `!= null`. `null` here is the morning the sun returns:
+  // yesterday was dark, so there is no day length to subtract and the
+  // silence is the honest answer. `undefined` is a dark row, and that is
+  // handled above and never reaches here.
   if (entry.changeSinceYesterdayMinutes !== null) {
     const change = entry.changeSinceYesterdayMinutes;
     console.log(`reckon:   ${change < 0 ? 'shorter' : 'longer'} than yesterday by ${Math.abs(change).toFixed(2)} minutes`);
+  } else {
+    console.log('reckon:   no drift — yesterday had no day length to subtract from.');
   }
   if (entry.crossCheck) {
     console.log(`reckon:   second method differs by ${entry.crossCheck.sunriseDifferenceMinutes.toFixed(2)}min at sunrise, ` +
