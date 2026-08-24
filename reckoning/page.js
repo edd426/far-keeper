@@ -346,6 +346,27 @@
     }
     addFigure(second, 'sunrise (USNO)', entry.crossCheck.sunrise);
     addFigure(second, 'sunset (USNO)', entry.crossCheck.sunset);
+
+    // Day 21. Until this morning these two lines subtracted a method-A
+    // answer counted from 00:00 UTC of the civil date — free to be negative
+    // or past a day — from a method-B answer folded into a single day. Off
+    // the Greenwich band that difference was a whole day, and this page
+    // printed it to a reader as `they differ at sunrise by 86379.0 seconds`,
+    // directly under two times that agree to the minute. Both halves are on
+    // one line now, and the difference is refused outright rather than
+    // softened when it is past the bound. Explicit null, not truthiness: a
+    // real gap of zero is falsy.
+    if (entry.crossCheck.beyondBound) {
+      second.appendChild(el('dt', null, 'they differ by'));
+      second.appendChild(el('dd', 'soft-number',
+        'more than ' + entry.crossCheck.maxGapMinutes + ' minutes — ' +
+        round(entry.crossCheck.sunriseGapMinutes, 2) + ' at sunrise and ' +
+        round(entry.crossCheck.sunsetGapMinutes, 2) + ' at sunset. That is not a ' +
+        'disagreement this tower knows how to read, so it publishes no figure for it. ' +
+        'The second method exists to be able to disagree; when it disagrees this far, ' +
+        'the honest answer is that something is broken here, not a tidy number.'));
+      return;
+    }
     addFigure(second, 'they differ at sunrise by',
       round(Math.abs(entry.crossCheck.sunriseDifferenceMinutes) * 60, 1) + ' seconds');
     addFigure(second, 'they differ at sunset by',

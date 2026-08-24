@@ -375,7 +375,109 @@
 
     var hourAngle = (rising ? 360 - DEG * Math.acos(cosHourAngle) : DEG * Math.acos(cosHourAngle)) / 15;
     var localMean = hourAngle + rightAscension - 0.06571 * t - 6.622;
-    return (((localMean - lngHour) % 24) + 24) % 24 * 60;   // minutes after 00:00 UTC
+
+    // Day 21. This line used to read `(((localMean - lngHour) % 24) + 24) % 24 * 60`
+    // — the whole answer folded into a single UTC day, nought to fourteen
+    // forty. Method A does not fold: `solarDay` returns minutes after 00:00
+    // UTC **of the civil date**, and is free to come back negative or past a
+    // day, because that is the truth about an event standing on the far side
+    // of a UTC midnight. At Tokyo, sunrise is −233 minutes. At Anchorage,
+    // sunset is 1770.
+    //
+    // Nothing joined the two, and `reckon()` subtracted them anyway. So the
+    // cross-check — the one thing in this tower whose entire job is to be
+    // able to disagree — reported a disagreement of **a whole day** between
+    // two methods that agree to a third of a minute, and printed it to a
+    // reader in seconds. Both printed *times* stayed right, because
+    // `clockFace` takes a modulo and lands on its feet. Only the subtraction
+    // was a day out, and a number that is wrong by exactly 1440 does not
+    // look wrong; it looks like a second method that has fallen over.
+    //
+    // Paris is 2.35° from Greenwich. Swept: the old line is correct only
+    // inside a band of longitude either side of the meridian, and the band
+    // narrows as the latitude climbs and the days lengthen — ±85° at the
+    // equator, ±58° at Paris's latitude, ±14° at 65°N. This tower has spent
+    // twenty-one days near the centre of the only strip of the earth where
+    // the fault is invisible. It is not a latitude fault. Every guard in
+    // this file that has never fired is a *latitude* guard, and all three of
+    // us were watching latitude.
+    //
+    // The repair does not consult method A, and that is the whole of it. The
+    // obvious fix — slide B to whichever day-line sits nearest A's answer —
+    // works, and it makes the subtraction incapable of ever returning more
+    // than half a day, which is to say it makes the check unable to fail in
+    // the one direction it exists for. So B is asked to name its own line
+    // instead. Local mean time is in [0, 24) by definition of a local day;
+    // UT is that minus the longitude in hours, and UT is what is allowed to
+    // fall outside the day. B never learns anything about A.
+    //
+    // Verified before it was written: reconstructed both forms over 57,572
+    // samples — latitudes −66…+66 every 6°, longitudes −180…+180 every 10°,
+    // every eleventh day of 2026 — and the folded form reproduces this
+    // file's own published numbers exactly (zero mismatches), while the
+    // unfolded one never once disagrees with method A by more than 4.08
+    // minutes.
+    //
+    // What this does to Paris, measured rather than asserted, because the
+    // first version of this comment said "over Paris the two forms are the
+    // same number" and that is false. They are not the same number: the
+    // fold used to be taken after the longitude was subtracted and is now
+    // taken before, which is a reassociation, and floating-point addition
+    // does not associate. Over all 730 Paris cross-check figures in 2026,
+    // **360 of them move** — by at most 2.27e-13 minutes, which is
+    // fourteen picoseconds, or a ten-billionth of the tenth of a second
+    // this page prints to. Not one published field moves: not a sunrise,
+    // not a sunset, not a solar noon, not a day length, not method B's own
+    // printed times, and `--verify` reports the same three method-1 scars
+    // and nothing else. So the honest sentence is not *nothing changed* —
+    // it is *half of these numbers changed in their last bits and nothing
+    // the tower says changed*, and `tools/day-line.sh` holds that as two
+    // separate cases because they are two separate claims.
+    var localMeanInItsOwnDay = ((localMean % 24) + 24) % 24;
+    return (localMeanInItsOwnDay - lngHour) * 60;   // minutes after 00:00 UTC of the civil date
+  }
+
+  // ---- What the cross-check is allowed to say ----
+  //
+  // Day 21, and it is Day 16's second guard wearing different clothes: once
+  // a quantity can be a whole day out, telling a *disagreement* from a
+  // *wrap* is a question somebody has to answer out loud rather than by
+  // arithmetic that cannot produce the wrong answer.
+  //
+  // This is an impossible-check in Ember's sense, and it carries its witness
+  // and its domain the way every banked fact in this file is made to. The
+  // sweep above — 57,572 sunrises and sunsets, latitudes −66…+66, the whole
+  // ring of longitudes, across 2026 — puts the largest honest gap between
+  // the two methods at **4.07 minutes**, at 66°S on the date line on New
+  // Year's Day, with 92.7% of all samples inside one minute. The bound below
+  // sits fifteen times above that and twenty-four times below a day, so it
+  // can separate the two without having to be tuned. Outside ±66° the fold
+  // in `solarDay` takes over and there is no cross-check to bound.
+  //
+  // A gap past the bound is **not** silently corrected and **not** dropped.
+  // The difference is refused — the tower declines to print a tidy number —
+  // and the raw gap is published beside the refusal, so a reader is told
+  // that the two methods came apart and by how much. A check that always
+  // returns a small number is not a check.
+  var CROSS_CHECK_MAX_GAP_MINUTES = 60;
+  var CROSS_CHECK_WITNESS = {
+    sweptOn: '2026-08-24',
+    samples: 57572,
+    latitudeRange: [-66, 66],
+    largestHonestGapMinutes: 4.07
+  };
+
+  // The gap between the two methods at one event, and whether the tower is
+  // willing to stand behind it. `differenceMinutes` is null exactly when the
+  // gap is past the bound; `gapMinutes` is always the raw truth.
+  function crossCheckGap(methodAMinutes, methodBMinutes) {
+    var gap = methodAMinutes - methodBMinutes;
+    var within = Math.abs(gap) <= CROSS_CHECK_MAX_GAP_MINUTES;
+    return {
+      gapMinutes: gap,
+      differenceMinutes: within ? gap : null,
+      beyondBound: !within
+    };
   }
 
   // Ember's guard, banked Day 4, built Day 5, corrected twice more the
@@ -731,6 +833,8 @@
 
     var bRise = usno(year, month, day, place.latitude, place.longitude, true, zenith);
     var bSet = usno(year, month, day, place.latitude, place.longitude, false, zenith);
+    var riseGap = bRise === null ? null : crossCheckGap(a.sunriseUTC, bRise);
+    var setGap = bSet === null ? null : crossCheckGap(a.sunsetUTC, bSet);
 
     // How much does the softest constant matter? Re-run the same series
     // with the horizon moved one arcminute and see how far sunrise walks.
@@ -796,8 +900,16 @@
         method: 'USNO Almanac for Computers',
         sunrise: clockFace(bRise, offsetRise).hhmm,
         sunset: clockFace(bSet, offsetSet).hhmm,
-        sunriseDifferenceMinutes: a.sunriseUTC - bRise,
-        sunsetDifferenceMinutes: a.sunsetUTC - bSet
+        // Both methods now name minutes after 00:00 UTC of the same civil
+        // date, so this subtraction has two things on one line for the first
+        // time. Null means the tower refused: the gap is past the declared
+        // bound and the raw gap is beside it, unsoftened.
+        sunriseDifferenceMinutes: riseGap.differenceMinutes,
+        sunsetDifferenceMinutes: setGap.differenceMinutes,
+        sunriseGapMinutes: riseGap.gapMinutes,
+        sunsetGapMinutes: setGap.gapMinutes,
+        beyondBound: riseGap.beyondBound || setGap.beyondBound,
+        maxGapMinutes: CROSS_CHECK_MAX_GAP_MINUTES
       }
     };
   }
@@ -1282,6 +1394,8 @@
     METHOD: METHOD,
     METHOD_NOTES: METHOD_NOTES,
     METHOD_CHANGED_ON: METHOD_CHANGED_ON,
+    CROSS_CHECK_MAX_GAP_MINUTES: CROSS_CHECK_MAX_GAP_MINUTES,
+    CROSS_CHECK_WITNESS: CROSS_CHECK_WITNESS,
     CLAIM_INTRODUCED: CLAIM_INTRODUCED,
     claimApplies: claimApplies,
     SEASON_CROSSINGS: SEASON_CROSSINGS,

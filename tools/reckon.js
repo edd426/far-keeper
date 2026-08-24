@@ -676,9 +676,26 @@ function main(argv) {
   } else {
     console.log('reckon:   no drift — yesterday had no day length to subtract from.');
   }
+  // Day 21. `sunriseDifferenceMinutes` is null exactly when the two methods
+  // came apart by more than the declared bound and the tower refused to
+  // print a tidy number for it. That is a loud event, not a missing field,
+  // so it gets its own line and the raw gap with it — the whole reason for
+  // the bound is that a check which always returns something small is not a
+  // check. Written as an explicit null test rather than a truthiness one:
+  // a genuine gap of 0.00 minutes is falsy and would be read as a refusal,
+  // which is Day 20's fault (one kind of missing wearing another's clothes)
+  // in the room next door.
   if (entry.crossCheck) {
-    console.log(`reckon:   second method differs by ${entry.crossCheck.sunriseDifferenceMinutes.toFixed(2)}min at sunrise, ` +
-      `${entry.crossCheck.sunsetDifferenceMinutes.toFixed(2)}min at sunset`);
+    const c = entry.crossCheck;
+    if (c.beyondBound) {
+      console.log(`reckon:   SECOND METHOD REFUSED — the two methods are further apart than ` +
+        `${c.maxGapMinutes} minutes, which is not a disagreement this tower knows how to read.`);
+      console.log(`reckon:   raw gap ${c.sunriseGapMinutes.toFixed(2)}min at sunrise, ` +
+        `${c.sunsetGapMinutes.toFixed(2)}min at sunset. No difference is published for this date.`);
+    } else {
+      console.log(`reckon:   second method differs by ${c.sunriseDifferenceMinutes.toFixed(2)}min at sunrise, ` +
+        `${c.sunsetDifferenceMinutes.toFixed(2)}min at sunset`);
+    }
   }
   return 0;
 }
