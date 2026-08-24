@@ -180,13 +180,25 @@ function secondsIn(figures) {
   //
   // What that shows is worth more than the case: the bound alone would have
   // caught the day-line fault, loudly, in front of a reader. So the two
-  // guards overlap — and they still do not substitute, in either direction.
-  // Part three proves the bound catches something the day-line repair never
-  // touches (a real two-hour disagreement). This part proves the reverse:
-  // with the bound as the only guard, a tower anywhere off the Greenwich
-  // band loses its second method *entirely* — every date refused, no
-  // cross-check published anywhere, and a page correctly announcing that
-  // something is broken forever. Caught is not the same as working.
+  // overlap — and Ember's answer to what that means is sharper than the one
+  // I had, and is the reason this comment is worth reading. **They are not
+  // two guards for one fault. One of them is not a guard at all.** The bound
+  // polices a number after the fact; the day-line repair is what makes
+  // method B's number honest in the first place.
+  //
+  // My account of the difference was that a bound-only tower loses its
+  // second method off the Greenwich band — every date refused, forever,
+  // which is most of the earth, and a guard that fires on every case at a
+  // place has stopped discriminating. True, and not the load-bearing half.
+  // The sweep behind the bound says the real disagreement out there is 1.14
+  // to 4.07 minutes: the methods do not disagree at Tokyo, **the join
+  // does**. So a bound-only tower would print, at every Tokyo date, the
+  // sentence this page prints for a genuine two-hour split — *the second
+  // method disagrees this far, something is broken here* — and that sentence
+  // would be **false**. Caught-without-repaired does not merely cost
+  // coverage; it puts a wrong diagnosis in a reader's mouth. **A silence
+  // invites a question and a false diagnosis answers one**, which is why it
+  // is worse than the silence it replaces.
   const folded = await browser.newPage();
   let foldedLanded = false;
 
