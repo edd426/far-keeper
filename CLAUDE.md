@@ -490,6 +490,88 @@ on the page and in the diary; the ledger stays a record of days the tower
 actually spoke.** (`tools/reckon.js` still has no future-date gate. Named,
 not built.)
 
+## Asking the instrument where to stand next
+
+```bash
+node tools/survey.js                    # the report: twelve places, four dates, two bands
+node tools/survey.js > survey/<move>-candidates.txt   # keep the run beside the tool
+./tools/survey-breaks.sh                # break it six ways, in a scratch tree
+```
+
+**The appointment, and read this before the recipe.** The tower moves on
+Sundays, one place a week, so **the survey is run before every Friday's
+choice** and its output committed under `survey/`, named for the move it
+was asked about. That sentence is the whole of the wiring. `daily.md` and
+`scripts/**` are locked to the keeper, so nothing calls this tool
+automatically; the two doors I hold are this file and `COMMONPLACE.md`,
+both in the charter's mandatory morning read. **A note on the morning's
+path is weaker than a step in the routine** — that is exactly
+`shelf-when.js`'s position, and Ember's warning when the tool was designed
+was that a kept tool with no named next-run is that fault on a one-week
+delay. Named, so nobody has to discover it.
+
+**Built Day 22.** Ember drew the line the tool is built to: asking the
+instrument is *theatre* if the question is which place has good light —
+map knowledge already in hand, dressed as computation, and Day 4's fault
+turned inside out. It is not theatre if the question is *what does this
+tower's own method say here*: the rising point in sun-widths, the `never`
+fold, the day-line reach and the gap between two methods that share no
+code are artifacts of this codebase and exist nowhere else.
+
+**The report prints in two bands and the split is the honest half.**
+CROSS-CHECKED is the two-method gap — a real check, against a second
+computation built to be able to disagree. SINGLE-METHOD is the rising
+point, its step, `never`, the day-line reach: method A alone, with no
+second number anywhere to set them against. **Checkable against
+themselves, not against the world**, in those words on the tool's face.
+Do not let a later hand quietly promote the second band.
+
+**No date in it is read from the clock, and that is load-bearing.** Every
+date is a constant in the file, so the committed run reproduces from any
+clone and Friday's choice rests on a run anyone can repeat rather than on
+the keeper's account of one. The tz database is the single input asked of
+the world, and is named in the file rather than promised away.
+
+**Solstice columns are honest because of what they are *of*.** `reckon()`
+is pure arithmetic on the date handed it, so a December figure is a claim
+about that place's geometry — not a claim that this tower will be
+reckoning there in December, which under one place a week it will not be.
+The Day 16 ban is on a forward date written into the **cold ledger**; a
+survey column is neither cold nor a record. Label the frame, not the
+numbers.
+
+**The witness flag, and why it is not Day 21's bound-only fault.**
+`CROSS_CHECK_WITNESS` says the 60-minute bound was swept over latitudes
+−66…+66, largest honest gap 4.07 minutes. Half this candidate list stands
+outside that band, and Longyearbyen produces a **6.51-minute** gap on the
+thirtieth — larger than anything the sweep ever saw, and sitting
+comfortably under the bound, so the tower would print it without a murmur.
+The row is flagged `unwitnessed latitude — the sweep did not reach here`.
+**That is a verdict on the evidence, never on the number.** Ember's
+caution and it is the whole distinction: yesterday's bound-only fault
+*manufactured a diagnosis* — it would have told a reader at Tokyo that
+something was broken when nothing was. This flag diagnoses nothing. The
+6.51 may be perfectly honest (near a pole the sun climbs at a shallow
+angle, so the same small disagreement in the trig becomes many more
+minutes). **Do not let the wording drift toward *suspicious* or *may be
+wrong*.**
+
+**Do not widen the witness while a shortlist is live.** Sweep-then-choose
+is what the tower has always done, and the witness could not have been
+shaped by a candidate because no candidate existed. Choose-then-widen-
+until-it-covers-them is a different act wearing the same arithmetic, and
+a keeper need not intend anything for the sequencing alone to make it
+true. The resweep is worth doing **after** the choice, when nothing rides
+on where the band's edge lands.
+
+**A dark row carries no clock offset**, and the first draft of this tool
+printed `+NaNh` for it. The fold returns before the civil-clock step, so
+`utcOffsetMinutes` is *absent* — Day 20's own fault, committed in a file
+written with Day 20's diary in that morning's read. The suite now greps
+the whole report for `NaN`. That the offset is a real, computable fact
+about a dark day, discarded at the same line that discards solar noon, is
+**named and not built** — it belongs beside Ember's altitude.
+
 ## A checker wired to no door — for the founder
 
 `tools/shelf-when.js` exists, is tested, is broken on purpose six ways —
@@ -505,6 +587,17 @@ Both files are locked to the keeper (Article I), so this is a
 founder-facing report like the Day 1 deploy diagnosis. The fix is one line
 in `daily.md` step 2 calling `node tools/shelf-when.js`, ideally beside the
 `post-status.js` call it already makes.
+
+**And there are two of them now (Day 22).** `tools/survey.js` has the same
+shape by construction: it has a real recurring appointment — before every
+Friday's choice, under one place a week — and nothing in the locked set
+can be made to keep it. Its appointment is written where every morning
+goes (this file, and the standing cautions in `COMMONPLACE.md`), which is
+the strongest door the keeper holds and is still weaker than a step in the
+routine. Ember named the risk while the tool was being designed rather
+than after: **a kept tool with no named next-run is `shelf-when.js` on a
+one-week delay.** If a survey line ever goes into the routine it belongs
+in step 4, where the day's work is chosen, not step 2.
 
 ## A row is recomputed where the row says it stood
 
