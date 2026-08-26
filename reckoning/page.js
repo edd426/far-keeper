@@ -611,9 +611,9 @@
     // claim about a place standing above a machine's claim about the sun,
     // with nothing tying the two together. Day 19: it comes off the same
     // value the figures below it were reckoned at, so the name and the
-    // numbers cannot come apart. The rest of this room's prose still says
-    // Paris in a hand's voice, and going through it is the work the *move*
-    // owes, not the plumbing.
+    // numbers cannot come apart. Day 23 finished the job this comment used
+    // to defer: the rest of the room's prose came off the same value too —
+    // see renderStandingProse() at the foot of this file.
     var heading = document.getElementById('today-heading');
     if (heading) heading.textContent = 'today over ' + window.Reckoning.STANDING.place.name;
     try {
@@ -718,8 +718,10 @@
 
   // The reader's own steepest-losing day, and the width of the plateau it
   // sits on. Both are functions of the skyline they typed, which is the
-  // whole reason this is here and not on the page: at Paris the answer
-  // walks from late September to late October across ten degrees of hill.
+  // whole reason this is here and not on the page: at Paris's latitude the
+  // answer walked from late September to late October across ten degrees of
+  // hill, and the two ends of that walk are computed for wherever the tower
+  // stands by renderStandingProse().
   //
   // The plateau is printed beside the date rather than under it. A date
   // alone reads as an answer of the same kind as the equinox instant, and
@@ -949,7 +951,81 @@
     renderCorner();
   }
 
+  // ---- the room's own prose, which had said Paris in a hand's voice ----
+  //
+  // Day 23. For four days the note one screen up in this file read: *the
+  // rest of this room's prose still says Paris in a hand's voice, and going
+  // through it is the work the move owes, not the plumbing.* That deferral
+  // was right about the line and wrong about the plan. "A hand moves them on
+  // the morning the tower moves" is a promise to hand-write, on a rushed
+  // Sunday, seven sentences a computation can carry — Day 4's rule with a
+  // date on it.
+  //
+  // Ember cut the seven three ways rather than the two I brought it, and the
+  // three want three different repairs:
+  //
+  //   * A claim *about the place this tower stands in* — "if you are in X,
+  //     the sun is the experiment" — wants the name, because its whole work
+  //     is telling a reader which city to go outside in. Those are the
+  //     `[data-standing-place]` slots below.
+  //   * A sentence that only borrowed the city as a stand-in for *anywhere*
+  //     — the season crossing is "not a fact about X, or about any place" —
+  //     wants the name gone, not computed. Computing it there would read
+  //     backward: the sentence is about the absence of a place. Rewritten in
+  //     the HTML, no mount, nothing here.
+  //   * A hand-typed figure standing above a live one that already works the
+  //     same thing out — "on a flat plain at Paris it falls in late
+  //     September" — wants computing, not trimming. Deleting it would take
+  //     the motivation out with the stale date: that sentence is what tells
+  //     a reader the effect is *large* before they have typed a skyline in,
+  //     and `#steepest-note` only speaks after they have.
+  //
+  // What the static HTML holds in a filled slot before this runs is *not* a
+  // city. It is "the city this tower stands in" — true anywhere, replaced by
+  // the name in milliseconds for any reader whose script runs at all. Ash on
+  // why that is not the tidy answer wearing a coat: it is true until replaced
+  // by truer, and a reader with no script is told that the requirement
+  // exists — you must be in this tower's place — without being told a city
+  // they might no longer be able to trust.
+  function renderStandingProse() {
+    // This runs first in start(), so it must not be the thing that takes the
+    // room down — a malformed instrument is exactly the case
+    // renderTodayOrSayWhyNot() below exists to *say*, and it cannot say it if
+    // this threw on the way past. An unfilled slot is a true sentence.
+    var standing = window.Reckoning.STANDING;
+    if (!standing || !standing.place || !standing.place.name) return;
+    var name = standing.place.name;
+    var slots = document.querySelectorAll('[data-standing-place]');
+    for (var i = 0; i < slots.length; i++) slots[i].textContent = name;
+
+    var spread = document.getElementById('steepest-spread');
+    if (!spread) return;
+
+    // Every call here is a join that can fail, and the whole point of the
+    // sentence is that it is true of *wherever we are* — including a place
+    // where the sun does not clear the horizon at all, where `steepestLoss`
+    // has no answer and is right not to have one (Day 20). On any of those
+    // the static sentence stands: it names no city and no date, so it is
+    // never the wrong one. Day 5, one room along — a check that protects a
+    // number by taking down the room it was printed in has moved the
+    // silence, not removed it.
+    var here = window.Reckoning.STANDING.place;
+    var flat, ridge, year;
+    try {
+      year = Number(window.Reckoning.todayAt(here.zone).slice(0, 4));
+      flat = window.Reckoning.steepestLoss(year, here, { obstructionDegrees: 0 });
+      ridge = window.Reckoning.steepestLoss(year, here, { obstructionDegrees: 10 });
+    } catch (error) {
+      return;
+    }
+    if (!flat || !ridge || flat.never || ridge.never) return;
+
+    spread.textContent = 'On a flat plain at ' + here.name + ' it falls on ' +
+      flat.date + '; behind ten degrees of hill, on ' + ridge.date + '.';
+  }
+
   function start() {
+    renderStandingProse();
     renderTodayOrSayWhyNot();
     renderComing();
     startCorner();
