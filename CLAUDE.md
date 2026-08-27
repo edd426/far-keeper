@@ -572,6 +572,76 @@ the whole report for `NaN`. That the offset is a real, computable fact
 about a dark day, discarded at the same line that discards solar noon, is
 **named and not built** — it belongs beside Ember's altitude.
 
+## Rehearsing the move — run this before every Sunday
+
+```bash
+./tools/move-rehearsal.sh          # every shell suite, in a tower moved elsewhere
+```
+
+**Its appointment is before every Sunday move, and nothing in the locked set
+can keep it.** That is the third tool in this house with that shape; see the
+next section.
+
+**Built Day 24.** Day 23 found `standing-page.js` naming Paris at six of its
+own lines — a suite that would have gone red on the first honest morning after
+the move, about a tower that was right. That file was repaired and the question
+was never asked of the other twenty. Asked by rehearsal rather than by
+argument — two copies of the tower, one moved to a zone whose calendar
+genuinely disagrees *now*, every `tools/*.sh` run in both — **four of the ten
+shell suites did not survive it**, and `ledger-place.js` made five.
+
+**Why a grep is not enough, which is the whole reason this is a rehearsal.**
+Three of the four faults were the literal needle `place: PARIS,` and a grep
+finds those in a second. `place-audit.sh`'s was the word **was**: `reckon.js`
+writes *"it was computed under method 2"* for one convicted row and *"18 of
+them were computed"* for many, so the expectation held only while every row in
+the ledger stood where the tower stands. Nothing in that line names a city.
+**An assumption about where you are does not have to name the place.**
+
+**All four needles are anchored at both ends of the field now** —
+`/var STANDING = \{\s*place:[\s\S]*?since:/` — so they match an identifier, an
+inline object, anything. A needle written to match an identifier is the same
+mistake one draft later: the rehearsal itself moves a tower by writing an
+object literal in, and the suites could not then move it again.
+
+**The control is the load-bearing half and it costs something.** Both copies
+get `STANDING` rewritten, the control's to the place it already stands, so the
+two differ in one thing only. Without that, `check-sight.sh` — which reads the
+working tree and grades an edited page STALE — is convicted of move-fragility
+for answering correctly about a file the tool edited. With it, a suite whose
+needle names the old city breaks in *both* copies and lands on BLIND rather
+than FAIL. **A control made to resemble the thing it controls for goes blind to
+whatever lives in the resemblance.** Ember ran the confound apart rather than
+take the sentence, and refused a three-copy design: while rehearsing a place
+means text-editing a tracked page file, no number of copies separates *moved*
+from *edited*. The fix is an **untracked override** — the mechanism, not the
+copy count. Named, not built.
+
+**Made to fail.** Point it at the pre-fix suites and it scores **2 fragile and
+4 blind** against **0 and 1** on the repaired tree:
+
+```bash
+P=$(mktemp -d)/pre; git clone -q --local . "$P"
+git -C "$P" checkout -q 33cbd63 -- tools/
+cmp -s tools/reckon-args.sh "$P/tools/reckon-args.sh" && echo "SABOTAGE DID NOT LAND"
+./tools/move-rehearsal.sh "$P"
+```
+
+**Its first run had no control, copied the tower with `tar` and without
+`.git`, and returned eight failures from `shelf-when-breaks.sh`** — which
+resolves its own root through git. All eight were the copy's and were minutes
+from being written up as the tower's. **A rehearsal that cannot tell its
+fixture's failures from its subject's is Day 19's unreadable-failure fault in
+new clothes.** It uses `git clone --local` now (hardlinked objects, so a copy
+is nearly free) with `previews/` left out by sparse-checkout, and it carries
+the working tree's uncommitted changes across — otherwise a repair made this
+morning is invisible to the check written to prove it.
+
+**The browser suites are not rehearsed** — they need a served tree and a
+browser and this file runs neither, which is exactly why `ledger-place.js` was
+found by hand. The last section greps them for the one class a grep can find.
+**Say both halves or neither: it narrows the hole and does not close it.**
+
 ## A checker wired to no door — for the founder
 
 `tools/shelf-when.js` exists, is tested, is broken on purpose six ways —
@@ -588,7 +658,14 @@ founder-facing report like the Day 1 deploy diagnosis. The fix is one line
 in `daily.md` step 2 calling `node tools/shelf-when.js`, ideally beside the
 `post-status.js` call it already makes.
 
-**And there are two of them now (Day 22).** `tools/survey.js` has the same
+**And there are three of them now (Day 24).** `tools/move-rehearsal.sh` has the
+sharpest appointment of the lot — **before every Sunday move** — and, like the
+other two, nothing in the locked set can keep it. Its appointment is written
+here and in `COMMONPLACE.md`, which is the strongest door I hold and is still
+weaker than a step in the routine. If a line for it ever goes into `daily.md`,
+it belongs in step 5, beside the verification the routine already demands.
+
+**And there were two before that (Day 22).** `tools/survey.js` has the same
 shape by construction: it has a real recurring appointment — before every
 Friday's choice, under one place a week — and nothing in the locked set
 can be made to keep it. Its appointment is written where every morning
