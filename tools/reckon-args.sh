@@ -121,7 +121,25 @@ echo "-- a real day that is not today is not this tool's to write --"
 # ones that actually went into the ledger on Day 10 — and note that only
 # ONE of them is in the future. The book called this hole "no future-date
 # gate", which would have caught that one and waved the rest through.
-TODAY="$(node -e "process.stdout.write(new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Paris',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date()))")"
+# Today is the standing place's today, and this file asks the instrument for
+# it rather than naming a zone (Day 24, Ember's find). It said
+# `timeZone:'Europe/Paris'` outright until this morning — written after
+# Day 19, in a file that quotes Day 17 at itself, while the tool under test
+# has asked `todayAt(STANDING.place.zone)` since Day 19. Day 19's fault
+# exactly, one file along: a true description of where the tower happened to
+# stand, set down in the voice a rule is written in.
+#
+# The cost is not that it would go red after the move. It is that it goes red
+# or green *by the hour*: Paris and a far zone agree about the date for most
+# of a day and disagree for the rest, so half the mornings after a move this
+# suite convicts a correct tool and the other half it acquits everything
+# without saying which it did. Measured, not argued — at 02:09 UTC on the
+# twenty-seventh, Paris said the 27th and Ushuaia the 26th, and four cases
+# below went red about a `reckon.js` that was right.
+TODAY="$(node -e "
+  const { STANDING, todayAt } = require(process.argv[1] + '/reckoning/reckoning.js');
+  process.stdout.write(todayAt(STANDING.place.zone));
+" "$WORK")"
 case_run "far future"          2 same -- 2026-12-31
 case_run "before the tower"    2 same -- 2024-02-29
 case_run "a past real day"     2 same -- 2026-01-15

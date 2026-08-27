@@ -101,7 +101,31 @@ build() {
   # substitution, and an unmoved tower — caught immediately, and only
   # because the assertion below asks whether the fixture was BUILT and not
   # merely whether perl was called (Day 17).
-  perl -0pi -e "s|place: PARIS,|place: $TROMSO,|" "$work/reckoning/reckoning.js"
+  #
+  # The needle is anchored to the STANDING literal and names no city
+  # (Day 24). `place: PARIS,` was the old one, and it stops matching on the
+  # first morning this tower stands anywhere else: the substitution silently
+  # fails, the fixture is an unmoved tower, and every case below blames the
+  # fixture for it. Rehearsed rather than argued — `tools/move-rehearsal.sh`
+  # ran this file in a tower standing at Ushuaia and got three FAILs reading
+  # *the tower was NOT moved to Tromso*, about a suite that was right.
+  # `standing-page.js` was given this repair on Day 23 and the other three
+  # needles in the house were never asked the same question.
+  # The needle is anchored at BOTH ends of the field — `place:` on one side
+  # and the key after it on the other — so it matches whatever expression a
+  # keeper has put there: an identifier, an inline object, anything. A
+  # needle written to match an identifier is a third draft of the same
+  # mistake: `tools/move-rehearsal.sh` moves a tower by writing an object
+  # literal in, and this suite could not then move it again.
+  #
+  # No capture group and no `$` inside a character class. `${1}{` reads as a
+  # hash subscript to perl, and `[A-Za-z_$]` interpolates `$]` — perl's own
+  # version number — which is an unmatched-bracket error, no substitution,
+  # and an unmoved tower. Both were written here this morning and both were
+  # caught on the first run by the assertion below, which is now the third
+  # time in the life of this one line that that assertion has earned itself.
+  perl -0pi -e "s|var STANDING = \{\s*place:.*?since:|var STANDING = { place: $TROMSO, since:|s" \
+    "$work/reckoning/reckoning.js"
   # Pin the morning. The gate only ever writes today, correctly (Day 17), so
   # a fixture about a December morning has to be standing on one.
   perl -0pi -e "s|  return todayAt\(STANDING\.place\.zone\);|  return '$pinned';|" "$work/tools/reckon.js"

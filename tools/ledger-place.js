@@ -33,12 +33,38 @@ const { chromium } = require('playwright');
 const URL = process.env.FAR_KEEPER_URL;
 const EXECUTABLE = process.env.FAR_KEEPER_CHROMIUM_PATH || undefined;
 
-// Far enough from Paris in both latitude and longitude that no figure on
-// the row could agree by rounding. Deliberately short of the polar fold:
-// that is a live branch nobody has exercised yet and it is not today's.
-const ELSEWHERE = {
-  name: 'Reykjavik', latitude: 64.1466, longitude: -21.9426, zone: 'Atlantic/Reykjavik'
-};
+// The places the ledger actually names, read off the cold record rather
+// than typed (Day 24). This file said `Paris` at four of its own lines
+// until this morning, which is Day 23's finding in a second suite: on the
+// first honest morning after a move, the first non-Paris row lands and
+// every one of them goes red about a tower that is right — in the file
+// whose entire subject is *the place a row is recomputed at*. It fails
+// precisely on the morning it was built for.
+const fs = require('fs');
+const path = require('path');
+const LEDGER = JSON.parse(
+  fs.readFileSync(path.join(__dirname, '..', 'reckoning', 'ledger.json'), 'utf8')
+);
+const NAMED = [...new Set(LEDGER.map((e) => e.place && e.place.name).filter(Boolean))];
+const AT_A_NAMED_PLACE = new RegExp(
+  ' at (' + NAMED.map((n) => n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')$'
+);
+
+// Far enough from the ledger's places in both latitude and longitude that no
+// figure on the row could agree by rounding. Deliberately short of the polar
+// fold: that is a live branch nobody has exercised yet and it is not today's.
+//
+// Chosen at run time as the first candidate the ledger does not already
+// name, for the same reason `standing-clock.sh` searches for its far zone
+// at run time: a hardcoded Reykjavik is a fixture that silently stops
+// biting on the morning this tower stands in Reykjavik — and Reykjavik is
+// on the candidate list in `survey/`.
+const ELSEWHERE_CANDIDATES = [
+  { name: 'Reykjavik', latitude: 64.1466, longitude: -21.9426, zone: 'Atlantic/Reykjavik' },
+  { name: 'Quito', latitude: -0.1807, longitude: -78.4678, zone: 'America/Guayaquil' },
+  { name: 'Nairobi', latitude: -1.2921, longitude: 36.8219, zone: 'Africa/Nairobi' }
+];
+const ELSEWHERE = ELSEWHERE_CANDIDATES.find((p) => !NAMED.includes(p.name));
 
 const problems = [];
 function check(ok, message) {
@@ -59,10 +85,15 @@ async function readRows(page) {
 
   // ---- Part one: the tower as it stands -------------------------------
   //
-  // Every row here is a Paris row, so every verdict must name Paris. This
-  // is also the half that makes the forged case mean something: if the
-  // page already said Reykjavik anywhere, part two would pass without the
-  // substitution.
+  // Every verdict must name the place its own row was reckoned at, and the
+  // set of those is read from the ledger, not typed. This is also the half
+  // that makes the forged case mean something: if the page already said
+  // ELSEWHERE anywhere, part two would pass without the substitution.
+  if (!ELSEWHERE) {
+    check(false, 'no candidate place is absent from the ledger — nothing below is a test of anything');
+    await browser.close();
+    process.exit(1);
+  }
   const page = await browser.newPage({ viewport: { width: 390, height: 900 } });
   await page.goto(`${URL}reckoning/`, { waitUntil: 'networkidle' });
   await page.waitForSelector('.ledger__entry');
@@ -70,12 +101,12 @@ async function readRows(page) {
 
   check(rows.length > 0, `the ledger drew ${rows.length} rows`);
   check(
-    rows.every((r) => / at Paris$/.test(r.verdict ?? '')),
-    'every verdict on the real ledger names the place it was recomputed at, and it is Paris'
+    rows.every((r) => AT_A_NAMED_PLACE.test(r.verdict ?? '')),
+    `every verdict on the real ledger names the place its row was reckoned at (${NAMED.join(', ')})`
   );
   check(
-    !rows.some((r) => /Reykjavik/.test(r.verdict ?? '')),
-    'no row on the real ledger names Reykjavik — so part two cannot pass without the substitution'
+    !rows.some((r) => new RegExp(ELSEWHERE.name).test(r.verdict ?? '')),
+    `no row on the real ledger names ${ELSEWHERE.name} — so part two cannot pass without the substitution`
   );
   // A bare verdict is the thing Day 18 took away: `unchanged` alone claims
   // the row is unchanged, and the place on it was never checked.
@@ -118,16 +149,16 @@ async function readRows(page) {
   const movedRow = movedRows.find((r) => r.date === target.date);
   check(!!movedRow, `${target.date} is still on the page after the move`);
   check(
-    /Reykjavik/.test(movedRow?.verdict ?? ''),
-    `${target.date}: the page recomputed it at the place the row names, not at Paris`
+    new RegExp(ELSEWHERE.name).test(movedRow?.verdict ?? ''),
+    `${target.date}: the page recomputed it at the place the row names, not at the tower's own`
   );
   check(
     /^DRIFTED/.test(movedRow?.verdict ?? ''),
-    `${target.date}: Paris numbers under a Reykjavik place drift, which is the page reading the place and not ignoring it`
+    `${target.date}: its published numbers under a ${ELSEWHERE.name} place drift, which is the page reading the place and not ignoring it`
   );
   check(
-    movedRows.filter((r) => r.date !== target.date).every((r) => / at Paris$/.test(r.verdict ?? '')),
-    'every other row is still recomputed at Paris — the place is read per row, not once for the page'
+    movedRows.filter((r) => r.date !== target.date).every((r) => AT_A_NAMED_PLACE.test(r.verdict ?? '')),
+    'every other row is still recomputed at the place it names — the place is read per row, not once for the page'
   );
   await moved.close();
 
