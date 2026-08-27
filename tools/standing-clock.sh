@@ -104,11 +104,22 @@ node -e '
   const fs = require("fs");
   const file = process.argv[1] + "/reckoning/reckoning.js";
   const before = fs.readFileSync(file, "utf8");
-  const from = "var STANDING = {\n    place: PARIS,";
+  // The needle is anchored to the STANDING literal and names no city
+  // (Day 24). `place: PARIS,` was the old one, and the first morning this
+  // tower stands anywhere else it stops matching — the fixture is then an
+  // unmoved tower and every case below is meaningless. Rehearsed rather
+  // than argued: `tools/move-rehearsal.sh` ran this file in a tower moved
+  // to Ushuaia and it refused, correctly, with *the fixture tower was NOT
+  // moved*. Honest, and it tests nothing on the day it says that.
+  // Anchored at BOTH ends of the field — `place:` on one side and the key
+  // after it on the other — so it matches whatever expression stands there:
+  // an identifier, an inline object, anything. A needle that matches only an
+  // identifier is the same mistake one draft later.
+  const NEEDLE = /var STANDING = \{\s*place:[\s\S]*?since:/;
   const to = "var STANDING = {\n    place: { name: " + JSON.stringify(process.argv[2]) +
-    ", latitude: 0, longitude: 0, zone: " + JSON.stringify(process.argv[3]) + " },";
-  if (!before.includes(from)) process.exit(1);
-  fs.writeFileSync(file, before.replace(from, to));
+    ", latitude: 0, longitude: 0, zone: " + JSON.stringify(process.argv[3]) + " },\n    since:";
+  if (!NEEDLE.test(before)) process.exit(1);
+  fs.writeFileSync(file, before.replace(NEEDLE, to));
 ' "$WORK" "$FAR_NAME" "$FAR_ZONE" || true
 
 if node -e '

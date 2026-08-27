@@ -88,13 +88,24 @@ function secondsIn(figures) {
   await here.close();
 
   // ---- Part two: the tower standing east of the day ------------------
+  //
+  // The needle names no city and is anchored at BOTH ends of the field —
+  // `place:` on one side, the key after it on the other — so it matches
+  // whatever expression stands there: an identifier, an inline object,
+  // anything (Day 24). `place: PARIS,` was the old one, and it stops
+  // matching on the first morning this tower stands anywhere else: the
+  // forgery silently fails to land and every case under it blames the
+  // fixture. `standing-page.js` was given this repair on Day 23 and the
+  // other three needles in the house were never asked the same question.
+  const NEEDLE = /var STANDING = \{\s*place:[\s\S]*?since:/;
+  const stand = (place) => 'var STANDING = { place: ' + JSON.stringify(place) + ', since:';
   const moved = await browser.newPage();
   let landed = false;
 
   await moved.route('**/reckoning.js*', async (route) => {
     const response = await route.fetch();
     const before = await response.text();
-    const body = before.replace('place: PARIS,', 'place: ' + JSON.stringify(FAR) + ',');
+    const body = before.replace(NEEDLE, stand(FAR));
     landed = body !== before;
     await route.fulfill({ response, body });
   });
@@ -206,7 +217,7 @@ function secondsIn(figures) {
     const response = await route.fetch();
     const before = await response.text();
     const body = before
-      .replace('place: PARIS,', 'place: ' + JSON.stringify(FAR) + ',')
+      .replace(NEEDLE, stand(FAR))
       .replace(
         'return (localMeanInItsOwnDay - lngHour) * 60;',
         'return (((localMean - lngHour) % 24) + 24) % 24 * 60;'

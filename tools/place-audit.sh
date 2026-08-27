@@ -203,7 +203,15 @@ else
   # running now, so it lands in the sameMethod branch and is told a hand
   # moved a number. That sentence is the cost of the fault, and it is what
   # a stranger would have read.
-  if echo "$SAB" | grep -q "was computed under method .*, which is the method running now"; then
+  # `was` was in this pattern until Day 24, and it is a row *count* wearing
+  # a grammar. `reckon.js` writes "it was computed under method 2" for one
+  # convicted row and "18 of them were computed under method 2" for many, so
+  # the singular matched only while every row in the ledger stood where the
+  # tower stands. Rehearsed: in a tower moved to Ushuaia the pinned auditor
+  # convicts all 18 method-2 rows, the sentence pluralises, and this case
+  # convicts a suite that is right. Day 16's caution, which I wrote: count
+  # what the case is actually about, never the container it sits in.
+  if echo "$SAB" | grep -qE "computed under method .*, which is the method running now"; then
     note "and hands it the forgery fork — 'there is no method change to blame'"
   else
     bad "the old tool convicted it through the wrong fork" \
