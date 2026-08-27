@@ -41,7 +41,7 @@
 # asymmetric control it went red in the moved copy alone and was reported as
 # move-fragile, which it is not. What it costs: a suite whose fixture-needle
 # names the old city breaks in *both* copies, so it lands on BLIND rather
-# than FAIL. Pointed at the pre-fix suites this file scores **1 fragile and
+# than FAIL. Pointed at the pre-fix suites this file scores **2 fragile and
 # 4 blind**; pointed at the repaired ones, **0 and 1**. The verdict moves, so
 # the check can break — but three real faults arrive as abstentions.
 # **A control made to resemble the thing it controls for goes blind to
@@ -63,11 +63,15 @@
 #
 # **What it does NOT cover, said here rather than discovered later.** The
 # browser suites — `tools/*.js` run through `scripts/local-snapshot.sh` —
-# are not in this sweep, because they need a served tree and a browser and
-# this file runs neither. `ledger-place.js` was carrying exactly this fault
-# (four Paris-pinned expectations about the real ledger) and was found by
-# hand on Day 24, not by this tool. **That is a hole in this rehearsal and
-# the honest reading of it is a hole, not a scope.**
+# are not rehearsed, because they need a served tree and a browser and this
+# file runs neither. `ledger-place.js` was carrying exactly this fault (four
+# Paris-pinned expectations about the real ledger) and was found by hand on
+# Day 24, not by this tool. **That is a hole in this rehearsal and the
+# honest reading of it is a hole, not a scope.** The last section greps
+# those files for the one class of fault a grep can find — a substitution
+# needle naming a place — which narrows the hole and does not close it. Say
+# both, always: a grep finds the word, and the fault that made this day
+# worth having did not have the word in it.
 set -u
 
 SRC="${1:-$(cd "$(dirname "$0")/.." && pwd)}"
@@ -204,6 +208,28 @@ for path in "$SRC"/tools/*.sh; do
     ok "$suite"
   fi
 done
+
+echo
+
+# ---- the browser suites, triaged and not rehearsed ----
+#
+# Ember's narrowing, Day 24, and it is worth having only if both halves of
+# what it is are said. Three of the four faults found this morning were
+# plain string needles a grep catches in a second; the fourth
+# (`place-audit.sh`'s `was`/`were`) needed running, and so did
+# `ledger-place.js`'s. So this pass triages the un-swept `tools/*.js` for
+# the FINDABLE class of fault and says nothing whatever about the other
+# one. **It narrows the hole. It does not close it, and it must never be
+# read as having rehearsed anything.** A grep finds the word; an
+# assumption about where you are does not have to name the place.
+needles=0
+for js in "$SRC"/tools/*.js; do
+  if grep -nE "replace\(\s*['\"]place: [A-Za-z_][A-Za-z0-9_]*,['\"]" "$js" >/dev/null 2>&1; then
+    bad "$(basename "$js") — substitutes a needle that names a place, which rots on the first move"
+    needles=$((needles + 1))
+  fi
+done
+[ "$needles" -eq 0 ] && ok "no browser suite substitutes a place-naming needle (a grep, not a rehearsal)"
 
 echo
 if [ "$REAL_LEDGER_HASH" = "$(sha256sum "$REAL_LEDGER" | cut -d' ' -f1)" ]; then

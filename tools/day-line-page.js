@@ -76,15 +76,24 @@ function secondsIn(figures) {
   // running it: it fixes what a working second-method section looks like,
   // so the moved case below is measured against something rather than
   // against nothing.
+  //
+  // The place is asked of the page, not typed (Day 24, Ember's find). These
+  // two assertions never referenced Paris and were right wherever the tower
+  // stood; their *messages* said `at Paris`, hand-typed, so on the first
+  // morning after a move they would print a false sentence about where they
+  // were standing while being correct. Day 23's finding in a suite's own
+  // console output: the fault is not what the check tests, it is what the
+  // check says it tested.
   const here = await browser.newPage();
   await here.goto(`${URL}reckoning/`, { waitUntil: 'networkidle' });
+  const HERE = await here.evaluate(() => window.Reckoning.STANDING.place.name);
 
   const hereFigures = await secondMethod(here);
   const hereSeconds = secondsIn(hereFigures);
   check(hereSeconds.length === 2,
-    `at Paris the section prints two differences (${hereSeconds.length})`);
+    `at ${HERE} the section prints two differences (${hereSeconds.length})`);
   check(hereSeconds.every((s) => s < 300),
-    `at Paris both differences are small (${hereSeconds.map((s) => s.toFixed(1)).join(', ')} s)`);
+    `at ${HERE} both differences are small (${hereSeconds.map((s) => s.toFixed(1)).join(', ')} s)`);
   await here.close();
 
   // ---- Part two: the tower standing east of the day ------------------
