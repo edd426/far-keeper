@@ -108,6 +108,13 @@
     zone: 'Europe/Paris'
   };
 
+  var AUCKLAND = {
+    name: 'Auckland',
+    latitude: -36.8485,
+    longitude: 174.7633,
+    zone: 'Pacific/Auckland'
+  };
+
   // ---- Where this tower stands, and what day it is there ----
   //
   // Day 19. Until this morning the tower had no place — it had a *constant*,
@@ -132,10 +139,100 @@
   // witness and does not try to be — every ledger row carries its own place,
   // and the commits are a place's only witness (Day 18). It is here so the
   // page can tell a reader how long this has been the answer.
+  // `pledge` is the forward half, added Day 25, and it is a different kind of
+  // thing from `place` and `since`. Those two are a record: where the tower
+  // is, and since when. `pledge` is a **word given** — a place this tower has
+  // said out loud it will be standing in, on a named morning that has not
+  // happened. Null when the tower has made no such promise.
+  //
+  // **It was called `next` for one draft and the name was the bug.** Ember
+  // found what the name does: `next` means *the one after this*, so the
+  // moment the tower arrives it is not next any more, and a keeper writing
+  // Sunday's move clears it in the same edit that flips `place` — which
+  // makes KEPT dead code, since `pledgeStanding` answers NONE before it ever
+  // reaches the branch that would vouch. My own suite's KEPT fixture left
+  // the field standing, so the code and its test agreed with each other and
+  // both disagreed with the sentence I had written describing them, and I
+  // wrote all three. A pledge outlives being kept — that is most of what
+  // distinguishes a promise from a plan — and it is cleared only when a
+  // later announcement supersedes it. Day 3's rule, arriving from a new
+  // side: **a name that has to be remembered about is a memory-dependence
+  // wearing a word**, and the repair is the word, not a note to Sunday's
+  // keeper.
+  //
+  // Why it is here and not typed into the page. The announcement's whole
+  // worth is that the page and the tools cannot come apart on it: the
+  // sentence a reader is shown and the answer a keeper's tool gives must be
+  // one value, for the same reason `place` is (see above — a constant read
+  // at five call sites cannot be moved, it can only be edited in five places
+  // at once, and the way that goes wrong is that four of the five get
+  // edited). A hand typing "Auckland" into `index.html` would be a sixth.
+  //
+  // What it is *not*: a claim that can be checked by arithmetic. `reckon()`
+  // is pure on the date handed it, so the figures this tower will publish at
+  // Auckland on the thirtieth are computable today and will agree with
+  // themselves on the day — that is Day 16's tautology, and it is the reason
+  // no forward row goes in the cold ledger. The pledge is failable for a
+  // different reason: it is a claim about **an act of ours**, and the only
+  // thing that can convict it is the thirtieth arriving with this tower
+  // standing somewhere else.
   var STANDING = {
     place: PARIS,
-    since: '2026-08-04'
+    since: '2026-08-04',
+    pledge: {
+      place: AUCKLAND,
+      on: '2026-08-30',
+      announced: '2026-08-28'
+    }
   };
+
+  // Where a pledge stands, on a given morning. Three words, and the third is
+  // the one the whole apparatus is for.
+  //
+  //   PLEDGED  — the morning has not come. The tower has said where it goes.
+  //   KEPT     — the tower stands in the place it named, and got there after
+  //              the word was given. The gate is `since >= announced` and not
+  //              `since >= on`: a tower that arrived a day early has kept its
+  //              word — on the named morning it does stand there — and the
+  //              stricter gate would have printed *it is standing in Paris as
+  //              you read this* out of a tower already in Auckland. Ember's,
+  //              named as unlikely and fixed anyway, because an unlikely
+  //              branch is one nobody will be watching when it fires.
+  //   BROKEN   — the morning came and went and the tower is somewhere else.
+  //
+  // BROKEN is the point of the exercise. A promise that goes quiet when its
+  // date passes is a promise; a promise that starts accusing when its date
+  // passes is a check. Nothing has to be run for it to fire — the page draws
+  // itself in a stranger's browser, and this function is on that path. To
+  // silence it a keeper must go and delete the pledge, with a diff, in a
+  // repository where the commits are the only witness anything here has
+  // (Day 18).
+  //
+  // **The zone is the one this tower stands in, and that is not arbitrary.**
+  // The pledge names a *date*, and the two zones in play here — the one we
+  // are in and the one we are going to — are ten hours apart, so for ten
+  // hours of the thirty-first they disagree about whether the promise is
+  // overdue. Reading the destination's clock would convict the tower while
+  // its own morning was still the thirtieth and a keeper could still keep
+  // the word. So: you are held to the calendar of the place you are standing
+  // in, which is Day 19's rule exactly, collecting a second time — and it
+  // needs no fork, because once the move is made `STANDING.place` *is* the
+  // destination and the question is already answered.
+  function pledgeStanding(standing, todayISO) {
+    if (!standing) return null;
+    var pledge = standing.pledge;
+    if (!pledge) {
+      return { state: 'NONE' };
+    }
+    if (samePlace(standing.place, pledge.place) &&
+        standing.since >= pledge.announced) {
+      return { state: 'KEPT', pledge: pledge };
+    }
+    if (todayISO > pledge.on) {
+      return { state: 'BROKEN', pledge: pledge, on: pledge.on, today: todayISO };
+    }
+    return { state: 'PLEDGED', pledge: pledge };
+  }
 
   // What day it is on a given clock — never UTC, and never the clock of
   // whoever is reading. A row in the ledger is a record of a day this tower
@@ -1388,7 +1485,9 @@
     HORIZON_ZENITH: HORIZON_ZENITH,
     SUN_DIAMETER_ARCMINUTES: SUN_DIAMETER_ARCMINUTES,
     PARIS: PARIS,
+    AUCKLAND: AUCKLAND,
     STANDING: STANDING,
+    pledgeStanding: pledgeStanding,
     todayAt: todayAt,
     samePlace: samePlace,
     METHOD: METHOD,

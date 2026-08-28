@@ -1024,8 +1024,135 @@
       flat.date + '; behind ten degrees of hill, on ' + ridge.date + '.';
   }
 
+  // ---- the pledge ----
+  //
+  // Day 25. Everything else on this page is a claim about the sun, and the
+  // whole design of this room is that a stranger with a watch can convict it.
+  // This one cannot be convicted that way and the section says so on its own
+  // face: `reckon()` is pure arithmetic on the date handed it, so the figures
+  // below are computable today and will agree with themselves on the morning
+  // — Day 16's tautology, which is why no forward row goes in the cold
+  // ledger. They are printed anyway, and for a reason that is not the wager:
+  // a reader is owed what this tower expects to be saying from there, so that
+  // the first morning at the new place is a *continuation* of a published
+  // sentence rather than a fresh start nobody can line up against anything.
+  //
+  // What is genuinely failable here is the pledge itself, and it fails only
+  // by our act. So BROKEN is not a rendering of an error; it is the page
+  // accusing the house, unprompted, on every load, in a browser we cannot
+  // reach. Guarded like the rest of the room (Day 5): a throw here must not
+  // take down the figures below it.
+  function renderPledge() {
+    var section = document.getElementById('pledge-section');
+    if (!section) return;
+    var standing = window.Reckoning.STANDING;
+    var verdict;
+    try {
+      verdict = window.Reckoning.pledgeStanding(
+        standing, window.Reckoning.todayAt(standing.place.zone));
+    } catch (error) {
+      return;
+    }
+    if (!verdict || verdict.state === 'NONE') return;
+
+    var pledge = verdict.pledge;
+    var to = pledge.place.name;
+    var said = document.getElementById('pledge-said');
+    var note = document.getElementById('pledge-note');
+    var figures = document.getElementById('pledge-figures');
+
+    if (verdict.state === 'PLEDGED') {
+      said.innerHTML = 'On <strong>' + pledge.on + '</strong> this tower ' +
+        'stands in <strong>' + to + '</strong>. It is standing in ' +
+        standing.place.name + ' as you read this, and it said so on ' +
+        pledge.announced + ' — before going, so that the going can be wrong.';
+    } else if (verdict.state === 'KEPT') {
+      said.innerHTML = 'It said on ' + pledge.announced + ' that it would ' +
+        'stand in <strong>' + to + '</strong> from ' + pledge.on +
+        '. It does, and has since ' + standing.since + '.';
+    } else {
+      section.className += ' reckoning--broken';
+      said.innerHTML = '<strong>BROKEN.</strong> This tower said on ' +
+        pledge.announced + ' that it would stand in ' + to + ' on ' +
+        pledge.on + '. It is ' + verdict.today + ' here and it stands in ' +
+        standing.place.name + '. It did not keep its word. Nothing is ' +
+        'broken in the arithmetic; this sentence is about the keeper, and ' +
+        'it will stay here until a hand goes and mends what it names.';
+    }
+
+    // The figures are the destination's, not this place's, and they are
+    // labelled with the place they belong to for the reason Day 18 made the
+    // ledger say `unchanged at Paris`: a number and the place it is about
+    // must arrive in a reader's eye together or the reader supplies the
+    // wrong one.
+    var entry;
+    try {
+      entry = window.Reckoning.reckon(pledge.on, pledge.place);
+    } catch (error) {
+      note.textContent = 'The instrument will not reckon ' + to + ' on ' +
+        pledge.on + ' — ' + error.message + ' The pledge above stands ' +
+        'regardless: it is a promise about where this tower will be, not ' +
+        'about what it will be able to compute there.';
+      section.hidden = false;
+      return;
+    }
+
+    if (entry.never) {
+      addFigure(figures, 'first morning there', pledge.on);
+      note.textContent = 'At ' + to + ' on ' + pledge.on + ' the sun ' +
+        neverWords(entry.never, to).toLowerCase() + ' — so there are no ' +
+        'times to print, and that is a true thing about the place rather ' +
+        'than a fault.';
+      section.hidden = false;
+      return;
+    }
+
+    addFigure(figures, 'first morning there', pledge.on);
+    addFigure(figures, 'sunrise at ' + to, entry.sunrise, 'big');
+    addFigure(figures, 'sunset at ' + to, entry.sunset, 'big');
+    addFigure(figures, 'length of day', entry.dayLength, 'big');
+    if (entry.changeSinceYesterdayMinutes !== null &&
+        entry.changeSinceYesterdayMinutes !== undefined) {
+      var d = minutesToHM(entry.changeSinceYesterdayMinutes);
+      addFigure(figures, 'the drift there',
+        (d.sign < 0 ? '−' : '+') + d.minutes + 'm ' +
+        (d.seconds < 10 ? '0' : '') + d.seconds + 's — ' +
+        (d.sign < 0 ? 'shorter' : 'longer') + ' than the day before', 'big');
+    }
+
+    // Why this place and not another, in the tower's own terms. Both halves
+    // are read off the entry rather than typed, so a hand changing the
+    // destination cannot leave a stale reason standing under a new city.
+    var reasons = [];
+    if (entry.changeSinceYesterdayMinutes > 0) {
+      reasons.push('the drift there runs the other way — this tower has ' +
+        'published twenty-five days of shortening, and every sentence it ' +
+        'has written about the drift quietly assumed that sign');
+    }
+    // The same test `tools/survey.js` prints in its day-line column, and it
+    // is read off `working` rather than invented: method A counts minutes
+    // from 00:00 UTC of the civil date and is free to run outside [0, 1440)
+    // when an event falls on the far side of a UTC midnight (Day 21). The
+    // first draft of this clause asked `entry.working.dayLineShift`, which
+    // does not exist and never has — a condition that is `undefined` is
+    // falsy, so the reason would simply never have printed and nothing would
+    // have said why.
+    var w = entry.working;
+    if (w && (w.sunriseUTCMinutes < 0 || w.sunriseUTCMinutes >= 1440 ||
+              w.sunsetUTCMinutes < 0 || w.sunsetUTCMinutes >= 1440)) {
+      reasons.push('its events fall on the far side of a UTC midnight, so ' +
+        'the join between the two methods is load-bearing there rather ' +
+        'than merely exercised');
+    }
+    note.textContent = reasons.length
+      ? 'Why there: ' + reasons.join('; ') + '.'
+      : '';
+    section.hidden = false;
+  }
+
   function start() {
     renderStandingProse();
+    renderPledge();
     renderTodayOrSayWhyNot();
     renderComing();
     startCorner();

@@ -34,6 +34,21 @@ main { min-width: 0; }
 
 .lintel-line--who { margin-bottom: 1.75rem; }
 
+/* The pledge. Day 25. This page has no colour in it and is not gaining any
+   for this: a promise kept and a promise broken are told apart by what the
+   sentence says, and a reader who cannot see colour must not be the last to
+   know. The broken state is louder only in weight — it comes up to full
+   opacity while every other lintel line sits at 0.7, and takes a rule above
+   it, so it reads as an interruption rather than as more of the frontage. */
+.lintel-line--pledge { margin-top: 0.6rem; }
+
+.lintel-line--broken {
+  opacity: 1;
+  font-weight: 600;
+  padding-top: 0.6rem;
+  border-top: 1px solid currentColor;
+}
+
 pre.scene {
   margin: 0 0 1.5rem;
   overflow-x: auto; /* wide scenes scroll rather than break the page */
