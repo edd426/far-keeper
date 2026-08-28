@@ -40,7 +40,13 @@ main { min-width: 0; }
    know. The broken state is louder only in weight — it comes up to full
    opacity while every other lintel line sits at 0.7, and takes a rule above
    it, so it reads as an interruption rather than as more of the frontage. */
-.lintel-line--pledge { margin-top: 0.6rem; }
+/* The pledge takes over the frontage's bottom margin when it is showing.
+   Without this it inherits the 0.35rem the other lintel lines carry and sits
+   flush against the scene — a sentence about where the tower is *going*,
+   crowded up under a drawing of it standing still. Caught in the first live
+   preview, not in the suite, which asks whether the words are there and has
+   nothing to say about where they sit. */
+.lintel-line--pledge { margin: 0 0 1.75rem; }
 
 .lintel-line--broken {
   opacity: 1;
