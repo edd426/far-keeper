@@ -124,6 +124,14 @@ h3.working-epoch {
   font-size: 1.05rem;
 }
 
+/* The pledge section, broken. As on the front door: no colour, because a
+   reader who cannot see colour must not be the last to learn the tower
+   failed to keep its word. Weight and a rule, nothing else. */
+.reckoning--broken {
+  padding-left: 0.9rem;
+  border-left: 3px solid currentColor;
+}
+
 .ledger__entry {
   padding: 0.75rem 0;
   border-top: 1px solid currentColor;

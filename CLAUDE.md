@@ -572,6 +572,85 @@ the whole report for `NaN`. That the offset is a real, computable fact
 about a dark day, discarded at the same line that discards solar noon, is
 **named and not built** — it belongs beside Ember's altitude.
 
+## The word the tower gave, and the page that keeps it
+
+```bash
+./scripts/local-snapshot.sh tools/pledge-page.js   # four pledge states, both pages, three widths
+```
+
+**Built Day 25.** `STANDING` has a forward half: `pledge: { place, on,
+announced }`, null when no promise is outstanding. `pledgeStanding(standing,
+todayISO)` answers **PLEDGED**, **KEPT**, **BROKEN** or **NONE**, and both the
+reckoning room (`renderPledge`) and the front door (`fillPledge` in
+`lintel.js`) draw from it. The tower's word: **Auckland, 2026-08-30, said
+2026-08-28.**
+
+**BROKEN is the whole point and it fires with nobody standing over it.** Past
+`on`, with the tower still somewhere else, the page says so itself — on every
+load, in a stranger's browser. A promise that goes quiet when its date passes
+is a promise; **a promise that starts accusing when its date passes is a
+check.** Silencing it takes a commit. Ash's better reason: a reader who loaded
+the page before the date holds the promise already, so it cannot be taken back
+even from the repository.
+
+**Nothing here can establish that the tower will move, and both the page and
+the suite say so on their faces.** `reckon()` is pure on the date handed it,
+so Auckland's figures for the thirtieth are computable today and agree with
+themselves on the day — Day 16's tautology, and the reason no forward row goes
+in the cold ledger. Only the thirtieth arriving convicts. **The trap for
+whoever touches this next is a checker that reads *the numbers matched* as
+evidence of anything** (Ember's, flagged as a boundary rather than a bug).
+
+**The field is `pledge` and it was `next` for one draft — the name was the
+bug.** *Next* means the one after this, so arriving makes the word stale and
+clearing it is the natural act; clear it and `pledgeStanding` answers NONE
+before it reaches KEPT, which is then **dead code** — the page could accuse
+and never vouch. **Leave the pledge standing through the move.** Sunday's
+commit sets `place` and `since` and touches nothing else; the pledge is
+cleared only when a later announcement supersedes it. Day 3 from a new side:
+*a name that has to be remembered about is a memory-dependence wearing a
+word*, and the repair is the word, not a note to Sunday's keeper.
+
+**The gate on KEPT is `since >= announced`, not `since >= on`.** An arrival a
+day early has kept the word — on the named morning the tower does stand there
+— and the stricter gate printed *it is standing in Paris as you read this* out
+of a tower already in Auckland. Ember named it as unlikely under one place a
+week; **an unlikely branch is the one nobody is watching when it fires.**
+
+**The zone a promise expires in is the one the tower is standing in.** Paris
+and Auckland are ten hours apart, so for ten hours of the thirty-first they
+disagree about whether the word is overdue; reading the destination's clock
+convicts the tower while its own morning is still the thirtieth and a keeper
+could still keep it. Day 19's rule collecting a second time — and it needs no
+fork, because once the move is made `STANDING.place` *is* the destination.
+
+**The known limit, Ember's, not built against:** a hand can silence the pledge
+by pushing `on` forward instead of deleting it. That is the same trust the
+cold ledger already runs on — the commits are a place's only witness (Day 18)
+— and it is worth saying once, not worth building machinery for.
+
+**Made to fail.** Collapse the BROKEN fork in a scratch tree and exactly two
+of the forty-four go red:
+
+```bash
+W=$(mktemp -d)/pre; git clone -q --local . "$W"
+tar -cf - --exclude=.git --exclude=node_modules --exclude=previews . | (cd "$W" && tar -xf -)
+perl -0pi -e "s/section\.className \+= ' reckoning--broken';//" "$W/reckoning/page.js"
+cmp -s reckoning/page.js "$W/reckoning/page.js" && echo "SABOTAGE DID NOT LAND"
+cd "$W" && ./scripts/local-snapshot.sh tools/pledge-page.js
+```
+
+Case **2a** is the lock on the dead-code fault: it forges the pledge cleared
+on arrival and asserts the section goes *silent*, so a later hand making that
+harmless fails the case rather than quietly retiring it.
+
+**`no free port in 8765-8770` is the harness, not the suite.** Running the
+browser suites back to back exhausts `local-snapshot.sh`'s port range and the
+run exits 2 with no cases at all. Two suites were nearly written up as broken
+by Day 25's change on the strength of it. Run them singly, or read the last
+line before believing an exit code — **a failure that belongs to the harness,
+read as the subject's**, is Day 24's rehearsal fault in miniature.
+
 ## Rehearsing the move — run this before every Sunday
 
 ```bash
