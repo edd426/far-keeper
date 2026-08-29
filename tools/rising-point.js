@@ -68,7 +68,20 @@ function numberIn(text) {
 async function bothFormulas(page, date) {
   return page.evaluate((d) => {
     const RAD = Math.PI / 180, DEG = 180 / Math.PI;
-    const r = window.Reckoning.reckon(d);
+    // The place is asked of the instrument, not left to the default.
+    // `reckon(dateISO, place)` falls back to `PARIS` when no place is
+    // handed to it, and this line said `reckon(d)` — so it computed Paris's
+    // rising point and set it against a page that draws wherever the tower
+    // stands. In Paris the two are the same number and the case was green
+    // for eleven days. Day 26's browser rehearsal stood the suite in a copy
+    // of the tower moved elsewhere and it printed `21.26′ vs 33.11′`.
+    //
+    // **Nothing in this line ever named a city** — that is the whole reason
+    // it survived Day 23's hunt for typed place-names and Day 24's grep. It
+    // is `place-audit.sh`'s was/were one room along: an assumption about
+    // where you are does not have to name the place, and only standing
+    // somewhere else finds it.
+    const r = window.Reckoning.reckon(d, window.Reckoning.STANDING.place);
     const phi = r.place.latitude;
     // Azimuth from the hour angle, measured from south and turned to
     // north — a different identity from the one reckoning.js uses, which

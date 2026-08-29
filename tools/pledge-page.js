@@ -88,11 +88,25 @@ async function run() {
     check('the pledge section is shown at all', !hidden,
       'it is hidden — a promise nobody walks past is the fault this was built against');
 
+    // Where the tower stands is *asked*, never typed. This line read
+    // `/Paris/` until Day 26, when the browser half of `move-rehearsal.sh`
+    // ran for the first time and this suite — written on Day 25, the morning
+    // after Day 24 found four suites that thought they lived in Paris —
+    // went red in a moved copy about a page that was right. It is the file
+    // whose whole subject is the promise to leave Paris.
+    const standingName = await page.evaluate(() => {
+      const s = window.Reckoning && window.Reckoning.STANDING;
+      return s && s.place ? s.place.name : null;
+    });
+    check('the instrument hands back a standing place to check against',
+      typeof standingName === 'string' && standingName.length > 0, String(standingName));
+
     const said = (await page.locator('#pledge-said').textContent()) || '';
     check('the page names the place the tower goes to', /Auckland/.test(said), said.slice(0, 90));
     check('the page names the morning it goes', /2026-08-30/.test(said), said.slice(0, 90));
     check('the page says when the promise was made', /2026-08-28/.test(said), said.slice(0, 90));
-    check('the page says where the tower is meanwhile', /Paris/.test(said), said.slice(0, 90));
+    check('the page says where the tower is meanwhile',
+      said.includes(standingName), said.slice(0, 90));
     check('an unbroken pledge does not say BROKEN', !/BROKEN/.test(said), said.slice(0, 90));
 
     // The figures are the destination's. A page that printed the *current*
