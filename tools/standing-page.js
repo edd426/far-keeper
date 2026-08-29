@@ -139,11 +139,23 @@ function check(ok, message) {
   // silently fail to land and every case under it would blame the fixture
   // (Day 19: a suite must prove the tool its sabotage made still runs, and
   // a needle that rots is the same fault arriving by a different road).
-  const NEEDLE = /(var STANDING = \{\s*place:\s*)([A-Za-z_$][\w$]*)/;
+  //
+  // **Anchored at BOTH ends as of Day 26, and the first anchoring was not
+  // enough.** `([A-Za-z_$][\w$]*)` matches an *identifier*, so it moves a
+  // tower whose place is the word `PARIS` and cannot move one whose place is
+  // an inline object — which is precisely what `move-rehearsal.sh` writes
+  // when it stands a copy of this tower somewhere else. So every case below
+  // failed on `the forgery landed`, in both copies, and the rehearsal could
+  // only report BLIND. Day 24 found and fixed exactly this in three shell
+  // suites and never asked it here, because the browser half was not swept
+  // then. A needle that matches an identifier is a needle that assumes a
+  // hand wrote the place; the ends of the field are the thing that does not
+  // move.
+  const NEEDLE = /(var STANDING = \{\s*place:\s*)([\s\S]*?)(,\s*\n\s*since:)/;
   await moved.route('**/reckoning.js*', async (route) => {
     const response = await route.fetch();
     const before = await response.text();
-    const body = before.replace(NEEDLE, (m, head) => head + JSON.stringify(far));
+    const body = before.replace(NEEDLE, (m, head, _old, tail) => head + JSON.stringify(far) + tail);
     landed = body !== before;
     await route.fulfill({ response, body });
   });
@@ -225,12 +237,37 @@ function check(ok, message) {
     // would pass because the thing it exempts had gone quiet. Day 5, in the
     // shape it keeps arriving in: write the pass rule so that a broken world
     // fails it.
-    const ledgerNamesHome = await moved.evaluate((city) => {
-      const ledger = document.querySelector('#ledger-list');
-      return !!ledger && (ledger.innerText || ledger.textContent || '').includes(city);
-    }, home.name);
-    check(ledgerNamesHome,
-      `the exemption is load-bearing: the ledger below still names ${home.name} on its rows`);
+    //
+    // **It asks the ledger's own rows, and until Day 26 it asked the tower**
+    // — `ledger.innerText.includes(home.name)`, which is true only while
+    // every row in the book stands where the tower stands. That is
+    // `place-audit.sh`'s was/were fault (Day 24) in a browser suite, and
+    // the browser half of `move-rehearsal.sh` found it on the first morning
+    // it could. It matters beyond the fixture: the morning after a move the
+    // book is full of rows from the old city and holds none from the new
+    // one until the day's own row lands, and this line would have convicted
+    // a page that was right. The place a row was reckoned at is the row's
+    // fact, never the tower's (Day 18) — so the question put here is
+    // whether the rows still say where they were reckoned.
+    const ledgerRowPlaces = await moved.evaluate(() =>
+      fetch('ledger.json', { cache: 'no-cache' })
+        .then((r) => r.json())
+        .then((rows) => Array.from(new Set(rows.map((e) => e && e.place && e.place.name).filter(Boolean))))
+        .catch(() => null));
+    check(Array.isArray(ledgerRowPlaces) && ledgerRowPlaces.length > 0,
+      `the ledger's rows carry places to check against (${(ledgerRowPlaces || []).join(', ')})`);
+
+    if (Array.isArray(ledgerRowPlaces) && ledgerRowPlaces.length > 0) {
+      const ledgerText = await moved.evaluate(() => {
+        const ledger = document.querySelector('#ledger-list');
+        return ledger ? (ledger.innerText || ledger.textContent || '') : '';
+      });
+      const unnamed = ledgerRowPlaces.filter((name) => !ledgerText.includes(name));
+      check(unnamed.length === 0,
+        unnamed.length === 0
+          ? `the exemption is load-bearing: the ledger names every place its rows were reckoned at (${ledgerRowPlaces.join(', ')})`
+          : `the ledger does not name ${unnamed.join(', ')}, so lifting it out of the sweep exempts nothing`);
+    }
   }
 
   await moved.close();
@@ -246,7 +283,7 @@ function check(ok, message) {
   await door.route('**/reckoning.js*', async (route) => {
     const response = await route.fetch();
     const before = await response.text();
-    const body = before.replace(NEEDLE, (m, head) => head + JSON.stringify(far));
+    const body = before.replace(NEEDLE, (m, head, _old, tail) => head + JSON.stringify(far) + tail);
     doorLanded = body !== before;
     await route.fulfill({ response, body });
   });
@@ -281,7 +318,7 @@ function check(ok, message) {
   await broken.route('**/reckoning.js*', async (route) => {
     const response = await route.fetch();
     const before = await response.text();
-    const body = before.replace(NEEDLE, (m, head) => head + JSON.stringify(NOWHERE));
+    const body = before.replace(NEEDLE, (m, head, _old, tail) => head + JSON.stringify(NOWHERE) + tail);
     brokenLanded = body !== before;
     await route.fulfill({ response, body });
   });
@@ -321,7 +358,7 @@ function check(ok, message) {
   await sabotaged.route('**/reckoning.js*', async (route) => {
     const response = await route.fetch();
     const before = await response.text();
-    const body = before.replace(NEEDLE, (m, head) => head + JSON.stringify(far));
+    const body = before.replace(NEEDLE, (m, head, _old, tail) => head + JSON.stringify(far) + tail);
     instrumentBack = body !== before;
     await route.fulfill({ response, body });
   });
