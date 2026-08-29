@@ -716,10 +716,72 @@ is nearly free) with `previews/` left out by sparse-checkout, and it carries
 the working tree's uncommitted changes across — otherwise a repair made this
 morning is invisible to the check written to prove it.
 
-**The browser suites are not rehearsed** — they need a served tree and a
-browser and this file runs neither, which is exactly why `ledger-place.js` was
-found by hand. The last section greps them for the one class a grep can find.
-**Say both halves or neither: it narrows the hole and does not close it.**
+**The browser suites went into the sweep on Day 26 and the hole is closed.**
+A copy of the tower is a git clone with `scripts/` in it, so it can serve and
+shoot itself: each `tools/*.js` that reads `FAR_KEEPER_URL` is run through
+`./scripts/local-snapshot.sh` in both copies, under the same control and the
+same three verdicts. Ten seconds a suite a copy; the whole battery is about
+five minutes. **The case list is the directory here too** — the browser/node
+line is drawn by asking each file whether it reads `FAR_KEEPER_URL`, never by
+a list kept in the tool, because a hand-kept list goes blind to the next suite
+written and reports that as clean.
+
+**It waits for a port, and the wait is the tool's job and not the keeper's.**
+`local-snapshot.sh` takes one of 8765-8770 and a port whose server just exited
+is not free — the closed listener leaves connections in TIME_WAIT and the next
+plain `bind()` fails for about a minute. The first run of this pass got three
+suites in and returned **six BLIND at exit 2**, which is `no free port` and is
+nothing to do with any of them. Day 25's harness fault arriving exactly where
+Day 25 said it would, and the shape is the lesson: the symmetric control turned
+it into BLIND rather than FAIL, so nothing was accused — but **a rehearsal that
+abstains on two-thirds of its subject has rehearsed nothing**, and it exited 2
+under a line that reads like a caveat.
+
+**The control is rewritten to the tower's own place, field for field.** It used
+to become `{ name: "Control", latitude: 0, longitude: 0, zone: <the real
+zone> }` — three differences from the tower where only the *bytes* needed to
+move. Any suite saying *Paris*, or wanting Paris's sunrise, was then red in the
+control too and landed on BLIND: `pledge-page.js`, `rising-point.js` and
+`standing-page.js` all did, on the first honest run. **The needle a rehearsal
+exists to find was inside the resemblance.** `check-sight.sh` still grades the
+control STALE and still lands BLIND, which is what the control was for.
+
+**Made to fail**, and the pre-fix tree scores **2 FAIL and 1 BLIND** against
+the repaired tree's 0 and 1:
+
+```bash
+P=$(mktemp -d)/pre; git clone -q --local . "$P"
+ln -s "$PWD/node_modules" "$P/node_modules"
+cmp -s tools/standing-page.js "$P/tools/standing-page.js" && echo "SABOTAGE DID NOT LAND"
+./tools/move-rehearsal.sh "$P"
+```
+
+**`since` and `pledge` are deliberately not moved.** Ember found the gap while
+it was still inert (no *shell* suite reads either field) and the browser half
+made it live within the hour. They stay put: a moved copy carrying the real
+tower's word is what a Sunday half-way through looks like, it is the state that
+exposed `pledge-page.js`'s `/Paris/` line, and moving them would give the two
+copies a **second** difference — the one thing the control exists to prevent.
+
+**What the browser half found, and two of the three name no place.**
+`pledge-page.js` asserted `/Paris/` of the sentence saying where the tower
+stands meanwhile. `rising-point.js` called `reckon(d)` with no place, and
+`reckon(dateISO, place)` falls back to `PARIS` — so it computed one city's
+rising point against a page drawing another's, green for eleven days because in
+Paris the two are the same number. `standing-page.js` forged with a needle
+matching an *identifier*, which cannot move a tower whose place is already an
+inline object — Day 24's fix, made in three shell suites and never asked here.
+And under it: its ledger exemption asked whether the ledger names **the
+tower's** place, when a row's place is the row's fact (Day 18); on the first
+morning in Auckland the book holds only Paris rows until the day's row lands.
+**Do not repair the `reckon()` default by pointing it at `STANDING.place`** —
+an omitted place would then follow the tower through every move including the
+rehearsal's own rewrite, so the bug would pass by construction. Ember's name
+for it: *a required argument wearing an optional one's syntax.* Drop the `||`
+and throw.
+
+**What is still outside it:** `check-sight.sh` reads the working tree, so
+moving a copy dirties it and it abstains every run. BLIND is not an all-clear.
 
 ## A checker wired to no door — for the founder
 
