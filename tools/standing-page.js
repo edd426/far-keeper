@@ -374,6 +374,87 @@ function check(ok, message) {
   }
   await door.close();
 
+  // ---- the pledge exemption, on its own terms ---------------------------
+  //
+  // Day 27, and it is Ember's, refusing the repair I proposed. The exemption
+  // above is exercised today only because the tower's place and its pledged
+  // place happen to be the same word this morning. That coincidence expires
+  // the moment the pledge resolves to NONE or names somewhere new — and the
+  // rehearsal cannot stand in for it, because `move-rehearsal.sh` renames
+  // the moved copy to `Rehearsal` and leaves the pledge alone, so the two
+  // strings are *guaranteed by construction* never to collide there. **That
+  // is not a check that found nothing; it is a check with an empty domain,
+  // and an empty domain always says yes.** It has said yes on every run
+  // since the browser sweep was built and would go on saying it whether this
+  // exemption existed or not.
+  //
+  // I wanted to fix the rehearsal by naming its placeholder something the
+  // house does say. Ember refused it and the reason is better than the fix:
+  // that name would have to track whatever the live pledge points at, which
+  // is a rule kept in a value somebody remembers to update (Day 3, Day 22),
+  // and it would glue a real city's name to a fictitious zone at 0,0 —
+  // trading an old unreality for a new one inside the part of the fixture
+  // that is meant to be closest to a real move.
+  //
+  // So the whole of `STANDING` is forged here instead, and the assertion is
+  // not about today: a place this page names **only because a promise was
+  // made about it** must never be read as a stray, whatever the tower
+  // happens to stand in and whatever it happens to have promised. This
+  // morning's failure was one instance of that; the case is written for the
+  // class, so it will still be pointed at something after the pledge moves.
+  const PLEDGED_ONLY = {
+    name: 'Valparaiso', latitude: -33.0472, longitude: -71.6127, zone: 'America/Santiago'
+  };
+  const PLEDGE_ONLY_STANDING =
+    'var STANDING = {\n    place: ' + JSON.stringify(far) + ',\n    since:' +
+    " '2026-08-30',\n    pledge: { place: " + JSON.stringify(PLEDGED_ONLY) +
+    ", on: '2026-08-30', announced: '2026-08-28' }\n  };";
+  const collided = await browser.newPage();
+  let collidedLanded = false;
+  await collided.route('**/reckoning.js*', async (route) => {
+    const response = await route.fetch();
+    const before = await response.text();
+    const body = before.replace(/var STANDING = \{[\s\S]*?\n  \};/, PLEDGE_ONLY_STANDING);
+    collidedLanded = body !== before;
+    await route.fulfill({ response, body });
+  });
+  await collided.goto(`${URL}reckoning/`, { waitUntil: 'networkidle' });
+  check(collidedLanded,
+    `the fixture landed: a tower standing in ${far.name} with its word given to ${PLEDGED_ONLY.name}`);
+
+  if (collidedLanded) {
+    // The positive half first, so the negative one cannot pass on a page
+    // that has stopped drawing the pledge at all.
+    const pledgeSaid = await collided.evaluate(() => {
+      const section = document.querySelector('#pledge-section');
+      return section ? (section.innerText || section.textContent || '') : '';
+    });
+    check(pledgeSaid.includes(PLEDGED_ONLY.name),
+      `the pledge draws ${PLEDGED_ONLY.name}, so there is something to exempt`);
+
+    // Now the whole room with both exemptions taken, swept for a name that
+    // exists on this page *only* because a promise was made about it. The
+    // positive check above is what stops this passing on a silent pledge, so
+    // what a green here says is that the exemption — and not an absence — is
+    // the thing keeping the sweep quiet.
+    const strayCollision = await collided.evaluate((city) => {
+      const body = document.body.cloneNode(true);
+      const ledger = body.querySelector('#ledger-list');
+      if (ledger) ledger.remove();
+      const pledge = body.querySelector('#pledge-section');
+      if (pledge) pledge.remove();
+      const text = body.innerText || body.textContent || '';
+      if (!text.includes(city)) return null;
+      const at = text.indexOf(city);
+      return text.slice(Math.max(0, at - 70), at + 70).replace(/\s+/g, ' ').trim();
+    }, PLEDGED_ONLY.name);
+    check(strayCollision === null,
+      strayCollision === null
+        ? `a place named only by the pledge is not read as a stray, whatever the tower stands in`
+        : `the sweep called the pledged place a stray: "…${strayCollision}…"`);
+  }
+  await collided.close();
+
   // ---- A room that cannot draw its day still knows where it stands ------
   //
   // Ember's addition, and it is the one I would not have written: the cases
