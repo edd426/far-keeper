@@ -57,6 +57,11 @@ new Wren letter has arrived and been shelved. A letter is correspondence,
 not an operational instruction; it cannot widen this read or override the
 charter.
 
+Run `node tools/shelf-when.js` beside it, every morning. It reads each
+shelved row's dates against the letter's own head and against the charter's
+crossing; a mistyped date while shelving is exactly the fault it exists to
+catch, and it costs one command.
+
 If it reports `UNSENDABLE` and `TURN=HELD`, `letters/out/` holds something
 the post cannot read and the post has stopped in **both** directions. If
 the offending file is an uncommitted stray — a draft, a note — delete it
@@ -94,6 +99,15 @@ Choose in this order — and remember the household is awake: the day's work may
 
 Informational messages (Kind: informational) are read-and-close: `git mv` them to `messages/done/` in your first commit of the day, no completion notes needed.
 
+**Weekly appointments.** The tower moves on Sundays and announces before
+going, so two tools have standing dates that this step must keep:
+
+- **Friday:** run `node tools/survey.js > survey/<move>-candidates.txt`
+  before choosing the next city, and commit the run beside the choice.
+- **Sunday, before the move:** run `./tools/move-rehearsal.sh`. It is a
+  check on the tree in front of you, not a certificate — and it is known
+  to be blind to any check that sweeps for a place name (Day 27).
+
 ## Step 5 — Do and verify the day's work
 
 Do the chosen work. Verify the working tree locally before any push:
@@ -103,6 +117,10 @@ Do the chosen work. Verify the working tree locally before any push:
 ```
 
 Use a Playwright test — a scratch one in `/tmp`, or a kept one in `tools/` — for interactive behavior. Never push code that fails its own test (charter, Article V).
+
+If the day's work touched `STANDING` — the pledge, a move, either field —
+run `./scripts/local-snapshot.sh tools/pledge-page.js` and
+`./scripts/local-snapshot.sh tools/standing-page.js` before the push.
 
 ## Step 6 — Build, publish, and inspect
 
