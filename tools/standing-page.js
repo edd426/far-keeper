@@ -211,16 +211,40 @@ function check(ok, message) {
     // see what it was not told about, and reports that as clean.**
     //
     // So the sweep is the whole rendered room now, and the exemption is
-    // stated instead of the coverage. The one place the old city may
-    // lawfully still appear is the **ledger**: every row carries the place
-    // it was reckoned at and is recomputed there (Day 18), so a row reading
-    // `unchanged at Paris` is the cold record doing exactly its job, and
-    // moving the tower must not move it. That is the single subtree lifted
-    // out, by name, for a reason — not a list of the places worth looking.
+    // stated instead of the coverage. Two subtrees are lifted out, each by
+    // name and each for a reason — never a list of the places worth looking.
+    //
+    // The **ledger**: every row carries the place it was reckoned at and is
+    // recomputed there (Day 18), so a row reading `unchanged at Paris` is
+    // the cold record doing exactly its job, and moving the tower must not
+    // move it.
+    //
+    // The **pledge** (Day 27, and it took the real move to find). A pledge
+    // names a place the tower gave its word about; that place is a separate
+    // field from `place` and this suite's forgery does not touch it, so the
+    // pledge sentence goes on naming its own city while the tower is forged
+    // elsewhere — which is the page being right. It was invisible for two
+    // days because `place` was Paris and the pledge was Auckland: two
+    // different names, no collision. The morning the tower actually arrived,
+    // `home.name` became Auckland and the sweep convicted the page of saying
+    // the city it had *left* — while quoting a sentence about the city it
+    // had reached. **A sweep for the name of the place you were assumes no
+    // other lawful sentence can carry that name**, and a pledge kept is
+    // exactly such a sentence.
+    //
+    // And the rehearsal could not have found this. `move-rehearsal.sh`
+    // renames the moved copy's place to `Rehearsal`, a word that appears
+    // nowhere in this house — so the sweep looks for a name that was never
+    // there, finds nothing, and passes for free. It has passed for free
+    // every run. Day 21's `[].every(...)`, one room along: **a fixture named
+    // something the house never says makes a name-sweep vacuous, and vacuous
+    // reads as green.**
     const strays = await moved.evaluate((city) => {
       const body = document.body.cloneNode(true);
       const ledger = body.querySelector('#ledger-list');
       if (ledger) ledger.remove();
+      const pledge = body.querySelector('#pledge-section');
+      if (pledge) pledge.remove();
       const text = body.innerText || body.textContent || '';
       if (!text.includes(city)) return null;
       const at = text.indexOf(city);
@@ -268,6 +292,28 @@ function check(ok, message) {
           ? `the exemption is load-bearing: the ledger names every place its rows were reckoned at (${ledgerRowPlaces.join(', ')})`
           : `the ledger does not name ${unnamed.join(', ')}, so lifting it out of the sweep exempts nothing`);
     }
+
+    // And the pledge exemption is held to the same standard, for the same
+    // reason: a pledge section that had gone quiet would make the sweep
+    // above green for a reason that has nothing to do with the prose. The
+    // place asked for is the **pledge's own**, read off the instrument, not
+    // the tower's — the two are only the same word on a morning like the one
+    // this check was written on, and building to that would bake today's
+    // collision in as the rule.
+    const pledgedPlace = await moved.evaluate(() => {
+      const s = window.Reckoning && window.Reckoning.STANDING;
+      return s && s.pledge && s.pledge.place ? s.pledge.place.name : null;
+    });
+    if (pledgedPlace) {
+      const pledgeText = await moved.evaluate(() => {
+        const section = document.querySelector('#pledge-section');
+        return section ? (section.innerText || section.textContent || '') : '';
+      });
+      check(pledgeText.includes(pledgedPlace),
+        pledgeText.includes(pledgedPlace)
+          ? `the exemption is load-bearing: the pledge names the place it promised (${pledgedPlace})`
+          : `the pledge does not name ${pledgedPlace}, so lifting it out of the sweep exempts nothing`);
+    }
   }
 
   await moved.close();
@@ -291,13 +337,40 @@ function check(ok, message) {
   check(doorLanded, `the forgery landed on the front door too`);
 
   if (doorLanded) {
-    const lintel = await door.evaluate(() => document.body.innerText || '');
+    // The pledge line is lifted out for the same reason it is in the room
+    // above: `#pledge-line` draws the pledge's own place, which this
+    // forgery does not move, so it lawfully names a city the tower is not
+    // standing in. Removing it from the *clone* and not from the page keeps
+    // the sweep looking at everything else — the fault Day 23 found here was
+    // a hand-kept list of what to look at, and an exemption is not that.
+    const lintel = await door.evaluate(() => {
+      const body = document.body.cloneNode(true);
+      const pledge = body.querySelector('#pledge-line');
+      if (pledge) pledge.remove();
+      return body.innerText || body.textContent || '';
+    });
     // The positive case first, because the negative one alone would go green
     // on a lintel that had stopped naming any city at all.
     check(lintel.includes(far.name),
       `the front door names ${far.name}, the city the tower now stands in`);
     check(!lintel.includes(home.name),
       `and no longer names ${home.name}, the one it has left`);
+    // And the lifted line is held to its job, so the exemption cannot go
+    // green by the pledge falling silent.
+    const doorPledge = await door.evaluate(() => {
+      const line = document.getElementById('pledge-line');
+      return line ? (line.innerText || line.textContent || '') : '';
+    });
+    const doorPledged = await door.evaluate(() => {
+      const s = window.Reckoning && window.Reckoning.STANDING;
+      return s && s.pledge && s.pledge.place ? s.pledge.place.name : null;
+    });
+    if (doorPledged) {
+      check(doorPledge.includes(doorPledged),
+        doorPledge.includes(doorPledged)
+          ? `the front door's pledge line still names ${doorPledged}, so lifting it out exempts something`
+          : `the front door's pledge line does not name ${doorPledged} — the exemption exempts nothing`);
+    }
   }
   await door.close();
 

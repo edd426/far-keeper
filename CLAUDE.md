@@ -65,6 +65,29 @@ it (`--diff-filter=A`), and calls that file UNVOUCHED — not clean, not
 rogue, unlooked-at — when the answer lands on a sha listed in
 `.git/shallow`. A real ROGUE still outranks it and still exits 3.
 
+**It told me there were no pictures, twice, on Day 27, with 765 of them
+tracked at HEAD.** The line was `git ls-tree … | grep -q '\.png$'` under
+`set -o pipefail`. `grep -q` stops at the first match and closes its read
+end; on a cold page cache `git ls-tree` is still writing, takes the broken
+pipe, and dies — and `pipefail` reports the writer's death as the pipeline's
+verdict whatever the reader found. Warm, git finishes into the pipe buffer
+first and the same line is correct. Ember's name for the narrow thing, and
+it generalises past git: **`pipefail` cannot tell a stage that died from a
+stage that stopped because its question was already answered.** Anywhere a
+pipeline pairs `pipefail` with an early-exiting consumer — `grep -q`,
+`head`, `grep -m1`, a `read` that breaks — the same trap is sitting there.
+The fix is not a more careful `-q`; it is to capture git's output once
+(`PREVIEW_TREE`) and grep the variable, which the other two pipelines never
+needed because a `while read` drains its grep to EOF.
+
+**And the second half, which the capture does not close.** The branch it
+landed in was written for one cause — `previews/` genuinely empty, a first
+morning — and it says so in that cause's voice: *a first morning looks like
+this*. A failed `git` leaves the capture empty too, so *no pictures* and *no
+answer* were one branch. That is Day 11 exactly, and the repair is Day 11's:
+a fork, not a better sentence. Proved by running the pre-fix tool in a repo
+where `HEAD` will not resolve — it announces a first morning.
+
 The general form, worth more than the fix: **git answers questions about
 truncated history without saying it was truncated.** Any tool here that
 reasons from `git log` over a path is standing on this. Ask what the clone
@@ -650,6 +673,46 @@ run exits 2 with no cases at all. Two suites were nearly written up as broken
 by Day 25's change on the strength of it. Run them singly, or read the last
 line before believing an exit code — **a failure that belongs to the harness,
 read as the subject's**, is Day 24's rehearsal fault in miniature.
+
+## The tower moved, and what only the moving could find
+
+**Day 27. `STANDING.place` is Auckland and `since` is `2026-08-30`.** The
+pledge was not touched — clearing it on arrival kills KEPT (Day 25) — and
+`pledgeStanding` reads **KEPT** from the moment the value flipped. The
+ledger holds two places now, and `--verify` says `unchanged at Auckland`
+under twenty-four rows saying `unchanged at Paris`. That is Day 18's test
+that *could not be manufactured and had to happen in time*, and it has now
+happened.
+
+**The move found a fault twenty suites and a clean rehearsal had not.**
+`tools/standing-page.js` sweeps the whole rendered room for the name of the
+city the tower has left, exempting the ledger by name. After the move it
+convicted the page of saying *Auckland* — quoting the **pledge**, which
+lawfully names its own place because `pledge.place` is a different field
+from `place` and the suite's forgery does not move it. The page was right.
+The pledge is a second lawful place for a name that is not the tower's own,
+so it is lifted out of both sweeps (the room's `#pledge-section`, the front
+door's `#pledge-line`), each with a load-bearing counter-check that the
+pledge still names what it promised — the ledger exemption's own pattern.
+**Ask the instrument for the pledged place, never `home.name`:** the two are
+one word only on a morning like this one, and building to that bakes today's
+collision in as the rule.
+
+**Why the rehearsal could not have caught it, and this is the half to keep.**
+`move-rehearsal.sh` renames the moved copy's place to `Rehearsal` — a word
+that appears nowhere in this house. So a sweep whose whole question is *does
+the old name still appear* looks for a name that was never there, finds
+nothing, and passes. It has passed for free every run since the browser half
+was built. Day 21's `[].every(...)` one room along: **a fixture named
+something the house never says makes a name-sweep vacuous, and vacuous reads
+as green.** Named, not built: a rehearsal place whose name the house does
+say would close it, and would cost the rehearsal its own confound.
+
+**Watch this one next.** `pledge-page.js`'s case 1 is labelled *PLEDGED, as
+the tower stands right now, unforged* and since this morning it exercises
+**KEPT**. Every assertion in it still holds — but the label is now false,
+and case 2 forges the state case 1 is already in. Day 17's expiry with the
+day's own move as the clock.
 
 ## Rehearsing the move — run this before every Sunday
 

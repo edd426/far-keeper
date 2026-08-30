@@ -114,8 +114,40 @@ at_the_floor() {
 }
 
 # --- which set is newest, and what does it show? -------------------------
-
-if ! git ls-tree --name-only HEAD previews/ | grep -q '\.png$'; then
+#
+# Day 27. `git ls-tree ... | grep -q '\.png$'` looked like the same shape as
+# every other pipeline in this file and was not. `-q` exits the instant it
+# sees a match and closes its read end; git, mid-write on a cold page cache,
+# takes the broken pipe and dies with it. Under `set -o pipefail` that death
+# outranks grep's own 0, so the whole pipeline reads non-zero — a real match
+# reported as a real failure. Warm cache, git finishes first, no signal, no
+# fault: the same line is correct on a hot morning and wrong on a cold one,
+# which is exactly the shape of bug this tool exists to refuse elsewhere.
+# The other two pipelines below survive because nothing downstream of them
+# exits early — a `while read` drains a `grep` with no `-q` to completion,
+# so git is never holding a pen when the paper is taken away. The fix is not
+# `-q` done more carefully; it is not racing a live writer at all — git's
+# full output is captured first, so the read it feeds is already finished
+# before anything gets to ask a question of it.
+# And the other half of the same fault, which the capture above does not
+# close. This branch was written for one cause — `previews/` genuinely empty,
+# a first morning — and it narrates that cause in that cause's voice. The
+# race handed it a second cause with the identical exit code, and it reached
+# for the only story it had: *a first morning looks like this*, about a tree
+# holding 765 pictures. That is Day 11 exactly — a check that has only ever
+# fired for one cause will explain the next cause as that cause — and the
+# repair is Day 11's repair, a fork, not a better sentence. A failed `git`
+# leaves the capture empty too, so *no pictures* and *no answer* are still
+# one branch until they are told apart here. The first is a fact about the
+# tower. The second is a fact about this tool, and it must not be spoken in
+# the first one's voice.
+if ! PREVIEW_TREE="$(git ls-tree --name-only HEAD previews/)"; then
+  say "git could not list previews/ at HEAD."
+  say "UNCLEAR — this tool did not look and will not guess what is there."
+  say "Nothing above is a verdict on the pictures; it is a verdict on the ask."
+  exit 2
+fi
+if ! grep -q '\.png$' <<<"$PREVIEW_TREE"; then
   say "previews/ holds no pictures at all."
   say "UNCLEAR — nothing to date. A first morning looks like this."
   exit 2
@@ -150,7 +182,7 @@ fi
 SET_FILES=()
 while IFS= read -r file; do
   [[ -n "$file" ]] && SET_FILES+=("$file")
-done < <(git ls-tree --name-only HEAD previews/ | grep -- "-${SHOWN_SHA}[-.]" || true)
+done < <(grep -- "-${SHOWN_SHA}[-.]" <<<"$PREVIEW_TREE" || true)
 
 if [[ ${#SET_FILES[@]} -eq 0 ]]; then
   say "no file in previews/ carries that sha."
@@ -188,7 +220,7 @@ while IFS= read -r file; do
     say "ROGUE — $file (committed by ${author})"
     ROGUE_FOUND=1
   fi
-done < <(git ls-tree --name-only HEAD previews/ | grep '\.png$' || true)
+done < <(grep '\.png$' <<<"$PREVIEW_TREE" || true)
 
 if [[ $ROGUE_FOUND -eq 1 ]]; then
   say "previews/ holds a picture no deploy vouches for. That breaks the one"
