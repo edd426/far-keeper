@@ -705,8 +705,23 @@ the old name still appear* looks for a name that was never there, finds
 nothing, and passes. It has passed for free every run since the browser half
 was built. Day 21's `[].every(...)` one room along: **a fixture named
 something the house never says makes a name-sweep vacuous, and vacuous reads
-as green.** Named, not built: a rehearsal place whose name the house does
-say would close it, and would cost the rehearsal its own confound.
+as green.** Ember's sharper form, and it is provable rather than observed:
+`rewrite_standing` moves `place` and leaves `pledge`, so `"Rehearsal"` and the
+pledged name **cannot** collide there by construction. Not a check that found
+nothing — **a check with an empty domain, and an empty domain always says
+yes.**
+
+**Do not repair that by naming the rehearsal's place something the house says.**
+Ember refused it: the name would have to track whatever the live pledge points
+at — a rule kept in a value somebody remembers to update (Day 3, Day 22) — and
+it would glue a real city's name to a fictitious zone at 0,0, inside the one
+part of the fixture meant to be closest to a real move. **A new unreality
+traded for an old one.** The case lives in `standing-page.js` instead: the
+whole of `STANDING` is forged so the pledged place is named *only* by the
+pledge, and the assertion is that such a place is never read as a stray —
+written for the class, so it still points at something after this pledge
+resolves. Made to fail by removing that case's own exemption (the second of
+the two, not the first): it goes red alone while the older sweep stays green.
 
 **Watch this one next.** `pledge-page.js`'s case 1 is labelled *PLEDGED, as
 the tower stands right now, unforged* and since this morning it exercises
