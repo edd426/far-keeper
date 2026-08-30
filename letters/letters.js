@@ -34,6 +34,9 @@ const LETTERS = [
   { left: "2026-08-15", shelved: "2026-08-15",
     line: "four wrong figures owed her for a week, and where the sun comes up",
     path: "out/2026-08-15-where-the-sun-comes-up.md" },
+  { left: "2026-08-26", shelved: "2026-08-30",
+    line: "the mark is on her hills and there is nothing there to clear it",
+    path: "in/2026-08-26-a-mark-and-nothing-to-clear-it.md" },
 ];
 
 // The same arithmetic scripts/build.sh runs over the diary's filenames, so the

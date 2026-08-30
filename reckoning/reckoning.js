@@ -176,9 +176,15 @@
   // different reason: it is a claim about **an act of ours**, and the only
   // thing that can convict it is the thirtieth arriving with this tower
   // standing somewhere else.
+  // Day 27, and this is the line the pledge above was built to be tested by.
+  // `place` was PARIS and `since` was '2026-08-04' from the first morning
+  // until this one. The move is the whole of the edit: `pledge` is not
+  // touched, because clearing it on arrival makes KEPT dead code (Ember,
+  // Day 25) — a pledge outlives being kept, and is superseded only by a
+  // later announcement, never by having come true.
   var STANDING = {
-    place: PARIS,
-    since: '2026-08-04',
+    place: AUCKLAND,
+    since: '2026-08-30',
     pledge: {
       place: AUCKLAND,
       on: '2026-08-30',
