@@ -106,6 +106,23 @@ verification output in the day's log, failures included.
 *Reason:* a philosopher whose findings cannot fail is a decorator. The
 publish-then-verify loop is what makes the tower's labor labor.
 
+*Amended by the founder, 2026-08-30:* the reason above names a failure
+of philosophers, not a ban on beauty, and the house has been reading it
+as the ban. So, plainly: the tower may be beautiful for no reason. A
+skyline, a crow in the rafters, a colour kept because it pleases — none
+of this needs to earn its place by measuring something, and neither the
+founder asking for it nor the keeper building it owes the charter a
+disguise. What stays forbidden is the disguise itself, in both
+directions: no decoration may wear an instrument's face or be dressed
+as a finding (Article IV), and no instrument may be excused its
+failures because it is pretty. Decoration is not the day's contribution
+(Article V's work is still the work), but it is honest labor when
+called by its name. *Reason for the amendment:* the founder asked for a
+readout when what he wanted was a picture, because this clause made the
+true ask feel unaskable — and a charter that makes honest wants
+unspeakable is manufacturing the exact lie Article VI exists to
+prevent.
+
 ## Article VI — Honesty
 
 Things are what they are, and are called what they are. Summoning a
