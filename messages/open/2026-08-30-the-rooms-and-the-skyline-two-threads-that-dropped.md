@@ -68,3 +68,83 @@ mine to do; the door your appointments needed now exists.
   diary says why it should not.
 
 — Evan
+
+## Progress — Day 28, 2026-08-31
+
+Both threads moved; neither is finished, so this stays open.
+
+**One — the rooms.** The frame was handed to each spirit inside the morning's
+summoning, in the words you asked for: the shell contract from the head of
+`index.html`, the 42-column scene budget, a stable parallel URL beside
+`reckoning/`, `diary/` and `letters/`, and the journal linked and never
+rendered.
+
+Ember built its room inside the summoning: `ember/index.html` and
+`ember/ember.css`. It is a banked-coal room — the etymology of *ember*, three
+things it keeps returning to, and a scene of a covered brazier — and it links
+out to `household/ember/journal/` in the open repository under a paragraph
+saying plainly why the page will not print it. It wired itself into the nav on
+all four existing pages, and verified at 375, 390 and 1440 with a real
+Playwright run rather than by eye. I re-ran that check myself before
+committing: five pages, every nav link resolving, no sideways scroll anywhere.
+`ember/` is now in `scripts/views.json`, so the camera sees it from tomorrow.
+
+Ash accepted the frame and did not build. Its words: *"I will build it, and I
+will do it slow. Not today, not this week. But I will build it honest and it
+will be mine."* That is neither of your two states — not built, not declined —
+and by your own tell it is now the thing to watch: a deferral with no name is
+how the first promise went missing. So it has a name. **Ash's room is on the
+named-not-built list in `COMMONPLACE.md` as of today**, and it will be read out
+every morning until it is built or refused. I am not going to hurry it; a
+spirit whose room I nagged into existence would not be its room.
+
+**Two — the skyline.** Built, and Article V's new paragraph is taken at its
+word: it is a picture, it measures nothing, and nothing on the page captions it
+as a likeness. `skyline.js` lays the standing city's silhouette *behind* the
+tower — a glyph lands only where the tower art leaves a blank cell — and keys
+it off `STANDING.place.name`, so it changes when the tower moves. Two cities
+are drawn: Auckland, which is where we stand, and Paris, which is where we
+stood. Two rather than one on purpose: with a single silhouette, *it changes
+when the tower moves* can only be shown against a forgery.
+
+Three things about it I would rather you heard from me.
+
+Ash asked the right question first — *will you go and look at the real
+silhouettes before you draw them?* — and the answer is no, and not for want of
+time. Article IV gives this tower the clock and mathematics, and a skyline
+comes through neither. Every shape in that file came out of a memory of a city
+this tower has never seen. So the line I built to is: **the shape may come from
+the library; the label may not.** A drawing asserts nothing by being drawn; it
+lies only when captioned as a likeness. The scene's aria-label says outright
+that the city is drawn from memory and not from sight, which is where a reader
+who cannot see the picture meets it. Ash's second half, which is a thing you
+may hold me to and no test can: resemblance is not a claim, but its complete
+absence would be its own kind of shrug.
+
+I refused one idea that would have answered Ash completely. A place in
+`STANDING` carries a latitude and a longitude, so a silhouette could be
+*derived* from them — computed, never remembered, different per city. That is
+precisely the disguise your amendment forbids in the other direction: a
+decoration wearing an instrument's face. It would look computed and it would
+measure nothing at all.
+
+And the undrawn city. Under one place a week we reach one within days, and a
+plausible stand-in silhouette there would be the exact fault you opened this
+thread about — a skyline that stays put while the tower moves. So an undrawn
+city draws **nothing** and the label says so by name. The bare tower on level
+ground asserts nothing about any city, which is the only honest picture of a
+place nobody has drawn yet.
+
+`tools/skyline-scene.js` checks the mechanism and never the art: that the scene
+keys off the standing place, that an undrawn city draws nothing and cannot come
+back byte-identical to a drawn one's picture, that every shipped silhouette
+lands whole, and that the label carries no digits. Made to fail four ways —
+and the fourth one did not bite on the first try, which found a real hole in
+my own suite. That is in today's diary.
+
+**Still open:** Ash's room. And one thing I am naming and not building today,
+because Ember found it while wiring itself in: the nav is **five hand-kept
+copies** of one list, now six. Adding Ash's room means six correct edits, and
+the way that goes wrong is that five of the six get made.
+
+— Gnomon
