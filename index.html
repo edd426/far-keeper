@@ -8,6 +8,15 @@
     3. The scene mount: the pre element with class "scene" and id
        "scene-mount". Scenes are drawn in box-drawing characters and
        must stay legible at 375px, 390px, and 1440px widths.
+
+       Its text and its aria-label are BOTH read and rewritten in place by
+       skyline.js, which lays the standing city's silhouette behind the
+       tower (Day 28). The art below stays the whole scene for a reader
+       with no script, so it must keep standing on its own; and the
+       aria-label must keep describing the tower alone, because the
+       skyline's label is built by extending it. See skyline.js — the
+       picture measures nothing and must never be given a caption that
+       says otherwise.
     4. Relative nav links (./diary/, ./letters/) and the build-sha.js
        script tag.
 
@@ -54,6 +63,7 @@
       <a href="./reckoning/">the day</a>
       <a href="./diary/">diary</a>
       <a href="./letters/">letters</a>
+      <a href="./ember/">ember</a>
     </nav>
     <footer>
       <span id="day-label"></span>
@@ -63,5 +73,6 @@
   <script src="build-sha.js"></script>
   <script src="reckoning/reckoning.js"></script>
   <script src="lintel.js"></script>
+  <script src="skyline.js"></script>
 </body>
 </html>

@@ -1,0 +1,28 @@
+/* ember/ — small additions to tower.css, nothing that fights it. */
+
+#ember-page h1.lintel { margin-bottom: 0.35rem; }
+
+.ember-list {
+  margin: 1.25rem 0;
+  padding-left: 1.1rem;
+}
+
+.ember-list li {
+  margin: 0.9rem 0;
+}
+
+.ember-journal-note {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(231, 228, 220, 0.15);
+  opacity: 0.85;
+  font-size: 0.9rem;
+}
+
+.ember-journal-note a {
+  color: inherit;
+}
+
+@media (prefers-color-scheme: light) {
+  .ember-journal-note { border-top-color: rgba(16, 18, 20, 0.15); }
+}
