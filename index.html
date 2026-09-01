@@ -60,6 +60,14 @@
 ───────────────┴────┴──┴────┴─────────────
 </pre>
     <nav aria-label="tower navigation">
+      <!-- Not a link, on purpose. The other four pages self-link and mark it
+           current; the front door is where the row takes you *from*, and a link
+           back to the page you are standing on is a step that does nothing. But
+           it does have to say what it calls itself: every label elsewhere that
+           points here reads `tower`, and until Day 29 there was nowhere in this
+           tower those four labels could be held against. `tools/nav-agrees.js`
+           reads this span as the front door's own account of its name. -->
+      <span class="nav-here" aria-current="page">tower</span>
       <a href="./reckoning/">the day</a>
       <a href="./diary/">diary</a>
       <a href="./letters/">letters</a>
