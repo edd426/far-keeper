@@ -89,3 +89,10 @@ a:focus-visible { text-decoration-thickness: 2px; }
     color: #202326;
   }
 }
+
+/* The front door's own name in its nav — a span and not a link, because you
+   cannot walk to the page you are standing on. Dimmed so the row still reads
+   as a row of ways out, with the name of where you are at the head of it. */
+.nav-here {
+  opacity: 0.55;
+}
