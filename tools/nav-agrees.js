@@ -53,6 +53,12 @@
 // 3. **Label.** The text of a link to room R matches the text room R uses for
 //    itself, in its own nav, in its own file.
 //
+// 4. **The manifest names nothing imaginary.** Every room `views.json` names
+//    has an `index.html` on disk.
+//
+// 5. **The manifest names everything real.** Every page that carries a nav is
+//    named by the manifest.
+//
 // The third question is Ember's, and it exists because the first two are both
 // interrogations of the *href* and neither ever looks at what the link says it
 // is. Swap two adjacent `<a>` tags — so the word `letters` sits on the href
@@ -77,6 +83,63 @@
 // the evidence and never on the link (Day 22's flag, and keep the wording off
 // *suspicious*). It is also the honest answer to a question I had been asking
 // as a matter of tidiness.
+//
+// ── The fifth question, and why the manifest needed asking twice ─────────────
+//
+// Day 30. Question 4 asks the manifest whether the rooms it names exist. That
+// was the direction nobody had asked, and asking it left the other direction
+// standing wide open: **a room that exists and the manifest does not name.**
+//
+// Demonstrated before it was built, which is the only order that proves
+// anything here. A sixth room in a scratch tree — a real page, a correct nav
+// naming all five existing rooms, itself marked current — and the one edit a
+// keeper forgets, the line in `views.json`. The tool said:
+//
+//     nav-agrees: AGREES — 7 pages, 5 rooms; every nav names every room but
+//     its own, every link goes somewhere, and every label matches what the
+//     room calls itself.
+//
+// Exit 0. Seven pages and five rooms, printed on one line by a tool that never
+// reads those two numbers against each other.
+//
+// What that costs is not a broken link. `views.json` is the *camera's* file:
+// the screenshot job photographs the rooms it names and no others, and
+// `previews/` is the keeper's only sight of this tower. So an unlisted room is
+// never photographed, never appears in a morning's read, and is never seen by
+// the one person whose job is to look at it — while every check in the house
+// reports green. Ash's measure, and it is why this was today's work rather
+// than someday's: **silence is the measure — how quiet can a wrong thing
+// stay.** This is the quietest one found here yet, because the check that
+// would notice it is the check that has gone blind.
+//
+// It is also the fault standing directly in front of us. The next room this
+// house builds is Ash's, and it is on the named-not-built list waiting for a
+// morning.
+//
+// ── What counts as a room, without a list ────────────────────────────────────
+//
+// The rule needs to tell a room from a page, and the tempting way to do it is
+// a second hand-kept list — one day after Day 29 argued the first one into
+// being a claim. Refused. Ash's cut, reached separately from mine and said
+// better: **a room is a place you can walk between; a page is a place you land
+// on.** So the nav *is* the claim. A page carrying a nav is asserting it is one
+// of the tower's rooms and the manifest must name it; a page with no nav never
+// makes the claim.
+//
+// `404.html` falls out of the rule by its own silence rather than by an
+// exemption — it has no nav, so it is not claiming roomhood, so nothing needs
+// to excuse it. The EXEMPT row below is untouched and still does its own job
+// for question 1.
+//
+// The hole that shape opens, named rather than discovered: a room that forgets
+// its nav makes no claim, so question 5 cannot see it. I thought the two new
+// questions interlocked. They do not — what closes it is **question 3**, which
+// convicts any unclaimed page with no nav, and which was written for a page
+// that *loses* its nav rather than one that never had one. So the verdict I
+// expected was right and the mechanism I expected was wrong, which is worth
+// more than being right: a later hand narrowing question 3 to lost navs would
+// take the floor out from under question 5 with nothing going red.
+// `nav-breaks.sh` case 10 exists to say so.
 //
 // ── What this cannot do, said plainly ────────────────────────────────────────
 //
@@ -127,7 +190,8 @@
 //
 // Exit codes: 0 the navs agree; 1 they do not (a missing room, an href that
 // goes nowhere, a label that contradicts the room it names, an unclaimed page
-// with no nav); 2 the tool could not do its job. 1 means *disagreement* and
+// with no nav, a manifest naming a room nobody built or silent about one
+// somebody did); 2 the tool could not do its job. 1 means *disagreement* and
 // nothing else — a mistyped flag must never spend it (Day 13).
 
 const fs = require('node:fs');
@@ -410,6 +474,20 @@ function check(rootArg) {
       }
     }
 
+    // Question 5 — the manifest, in the direction question 4 does not ask. A
+    // page carrying a nav is claiming to be one of the tower's rooms, and a
+    // claim the manifest does not hold is a room the camera never photographs.
+    // No skip-list is needed for 404.html: it has no nav, so it never makes
+    // the claim, and the branch above is where its silence is answered.
+    if (entries !== null && !roomOfFile(rooms, pageRel)) {
+      faults.push(
+        `${pageRel} carries a nav — it is claiming to be a room — and ` +
+          'scripts/views.json does not name it; the camera photographs the rooms ' +
+          'in that file and no others, so this room would never reach previews/, ' +
+          "which is the keeper's only sight of this tower"
+      );
+    }
+
     // Every internal link on the page is resolved, nav or not. The exemption
     // above is from completeness only: a claimed page's way back still has to
     // go somewhere.
@@ -480,10 +558,17 @@ function check(rootArg) {
     return 1;
   }
 
+  // The counts are said as a sentence rather than left side by side. The
+  // pre-Day-30 line read "7 pages, 5 rooms" over a tree with an unlisted sixth
+  // room in it — the two numbers that convicted it, printed by a tool that
+  // never read one against the other.
+  const others = pages.length - rooms.length;
   console.log(
-    `nav-agrees: AGREES — ${pages.length} pages, ${rooms.length} rooms; ` +
-      'every nav names every room but its own, every link goes somewhere, ' +
-      'and every label matches what the room calls itself.'
+    `nav-agrees: AGREES — ${rooms.length} rooms, each named by the manifest ` +
+      `and each naming itself; ${others} further ` +
+      `${others === 1 ? 'page carries no nav and claims' : 'pages carry no nav and claim'} ` +
+      'to be no room. Every nav names every room but its own, every link goes ' +
+      'somewhere, and every label matches what the room calls itself.'
   );
   return 0;
 }

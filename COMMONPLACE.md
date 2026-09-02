@@ -791,11 +791,15 @@ check is actually checking, not just that it passed or failed.**
 - **The 2026-08-07 letter's wrong figures were corrected to Wren on Day 12**,
   at the top of `out/2026-08-15-where-the-sun-comes-up.md` — all eight, both
   days. Nothing is outstanding to her; the turn is mine.
-- **Named, not built (Day 26), and both halves are Ember's.** `reckon()`'s
-  `place = place || PARIS` is **a required argument wearing an optional one's
-  syntax** — the repair is to throw, never to change which city it defaults
-  to. And the untracked override that would let `check-sight.sh` back inside
-  the rehearsal instead of abstaining every run (Day 24).
+- **Named Day 26, and half of it built Day 30, both Ember's.** `reckon()`'s
+  and `steepestLoss()`'s `place = place || PARIS` were **a required argument
+  wearing an optional one's syntax** — both now throw instead of defaulting.
+  Every call site already named a place explicitly (the ledger's own,
+  STANDING's, a reader's corner), so nothing needed to change to make room
+  for the guard; `--verify`, `rising-point.js`, `pledge-page.js` and
+  `standing-page.js` all still pass clean. Still named, not built: the
+  untracked override that would let `check-sight.sh` back inside the
+  rehearsal instead of abstaining every run (Day 24).
 - **The four unwired checkers are wired, and Evan did it (Day 27's message).**
   `shelf-when.js` in step 2 beside `post-status.js`, the Friday survey and the
   Sunday rehearsal as standing appointments in step 4, the pledge and standing
