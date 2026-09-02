@@ -229,6 +229,77 @@ else
   fi
 fi
 
+# ── Case 9 — a room somebody built, and the manifest silent about it ──────────
+# Day 30, and the fault the fifth question exists for. A real sixth room with a
+# correct nav — every existing room linked, itself marked current — and the one
+# edit a keeper forgets: the line in views.json.
+#
+# Against the pre-Day-30 tool this printed `AGREES — 7 pages, 5 rooms` and
+# exited 0. The two numbers that convict it were on the line, and nothing read
+# one against the other. The cost is not a broken link: views.json is the
+# camera's file, so an unlisted room is never photographed and never reaches
+# previews/, which is the keeper's only sight of this tower.
+
+T="$WORK/unlisted"; fresh_tree "$T"
+mkdir -p "$T/ash"
+perl -0pe '
+  s{    <a href="\./" aria-current="page">ember</a>\n}
+   {    <a href="../ember/">ember</a>\n    <a href="./" aria-current="page">ash</a>\n};
+  s{href="ember\.css"}{href="../ember/ember.css"};
+' "$T/ember/index.html" > "$T/ash/index.html"
+if ! grep -q 'aria-current="page">ash<' "$T/ash/index.html" \
+  || ! grep -q 'href="../ember/">ember<' "$T/ash/index.html"; then
+  bad "case 9 fixture was NOT built — ash/index.html has no honest nav, so the case below proves nothing"
+elif grep -q 'ash' "$T/scripts/views.json"; then
+  bad "case 9 fixture is wrong — the manifest already names the room, which is the thing being withheld"
+else
+  run_in "$T"
+  if [[ $CODE -eq 1 ]] && grep -q 'ash/index.html carries a nav' <<<"$OUT" \
+    && grep -q 'views.json does not name it' <<<"$OUT"; then
+    ok "a room the manifest does not name is caught, and the camera is named as the cost"
+  else
+    bad "an unlisted room was not caught (exit $CODE) — the manifest is asked in one direction only"
+    printf '%s\n' "$OUT" | sed 's/^/      /'
+  fi
+fi
+
+# ── Case 10 — the hole the fifth question opens, and who actually closes it ───
+# A page with a nav is claiming to be a room, so a room that forgets its nav
+# makes no claim and question 5 cannot see it. The keeper expected questions 4
+# and 5 to interlock. They do not: what convicts this page is QUESTION 3, which
+# was written on Day 29 for a page that *loses* its nav, not one that never had
+# one.
+#
+# Right verdict, wrong owner — so this case is not here to prove the tool works.
+# It is here so that a later hand narrowing question 3 to lost navs finds out
+# that it is load-bearing for question 5's blind spot, instead of taking the
+# floor out with nothing going red.
+
+T="$WORK/navless"; fresh_tree "$T"
+mkdir -p "$T/ash"
+printf '<!doctype html>\n<html lang="en"><head><meta charset="utf-8"><title>ash</title></head>\n<body><main><h1>ash</h1><p>a room built with neither half.</p></main></body></html>\n' \
+  > "$T/ash/index.html"
+if grep -qi '<nav' "$T/ash/index.html" || grep -q 'ash' "$T/scripts/views.json"; then
+  bad "case 10 fixture was NOT built — the page must have neither a nav nor a manifest row"
+else
+  run_in "$T"
+  if [[ $CODE -eq 1 ]] && grep -q 'ash/index.html carries no nav, and is not a claimed exception' <<<"$OUT"; then
+    ok "a room with neither a nav nor a manifest row is convicted — by question 3, not by question 5"
+  else
+    bad "a room with neither half went unconvicted (exit $CODE) — question 3 no longer closes question 5's hole"
+    printf '%s\n' "$OUT" | sed 's/^/      /'
+  fi
+  # The verdict alone would score a tool green for the wrong reason (Day 29's
+  # own finding). Assert what the check is actually checking: this page must be
+  # convicted for having no nav, and must NOT be convicted for the manifest —
+  # it never claimed to be a room.
+  if grep -q 'ash/index.html carries a nav' <<<"$OUT"; then
+    bad "question 5 convicted a page that never claimed to be a room"
+  else
+    ok "question 5 says nothing about a page with no nav — the claim is the nav"
+  fi
+fi
+
 # ── Case 8 — a mistyped flag must not spend exit 1 ────────────────────────────
 # Exit 1 means *the navs disagree* and nothing else (Day 13).
 

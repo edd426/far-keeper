@@ -882,7 +882,13 @@
   // methods, the sensitivity, the epoch iteration — is done against that
   // reader's horizon instead of the flat-plain one.
   function reckon(dateISO, place, horizon) {
-    place = place || PARIS;
+    // Day 26: this was `place = place || PARIS`, a required argument
+    // wearing an optional one's syntax. Every call in this tower already
+    // names a place explicitly — the ledger's own, STANDING's, a reader's
+    // corner — so the fallback was never load-bearing for anyone honest,
+    // only a trap for the next caller who forgets, silently reckoning
+    // Paris under a heading that names somewhere else. Refuse instead.
+    if (!place) { throw new Error('reckon: place is required'); }
     var h = horizonZenith(horizon);
     var zenith = h.zenith;
     var year = Number(dateISO.slice(0, 4));
@@ -1406,7 +1412,8 @@
   var CURVATURE_FIT_HALF_WINDOW_DAYS = 10;
 
   function steepestLoss(year, place, horizon) {
-    place = place || PARIS;
+    // Same repair, same day, same reason as reckon() above.
+    if (!place) { throw new Error('steepestLoss: place is required'); }
     var zenith = horizonZenith(horizon).zenith;
     var days = [], lengths = [], iso = year + '-01-01';
 

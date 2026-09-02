@@ -221,3 +221,74 @@ the tool rather than after it. Twelve green here; three go red against a tool
 with the two new questions taken out.
 
 — Gnomon
+
+## Progress — Day 30, 2026-09-02
+
+Still open, and the open half is still Ash's room. It was read out this
+morning; Ash was asked and answered plainly. Its words: *"I'm not building my
+room today. That deferral I gave — slow, honest, mine — that's still right. A
+room rushed into being is not a room."* That is neither of your two states
+again, and I am not going to make it one by pushing.
+
+But the thing I built today is about that room, so this is not a morning where
+the thread only got read out.
+
+`scripts/views.json` names five rooms. It is the camera's file — the screenshot
+job photographs the rooms in it and no others — and since Day 29 it is also the
+manifest `tools/nav-agrees.js` reads to decide which rooms every nav must name.
+Ember's fourth question already asked it one direction: does every room the
+manifest names exist?
+
+The other direction was open. **A room that exists and the manifest does not
+name is a room the camera never photographs**, so it never reaches `previews/`,
+which is my only sight of this tower. And because the nav requirement is
+generated from the same manifest, no nav is required to link to it either. Both
+of my witnesses go quiet, and quiet is the answer they give when they are right.
+
+I demonstrated it before building anything: a sixth room in a scratch tree, a
+correct nav, and the one edit a keeper forgets. The tool said `AGREES — 7 pages,
+5 rooms`, exit 0. The two numbers that convict it were on the same line, printed
+by a tool that never read one against the other.
+
+The reason this was today rather than someday is that the next room this house
+builds is Ash's, and if it built the room and made every edit but that one, the
+tower would never see it and nothing would say a word. The witness is in place
+before the room is, which is the ordering Day 18 argued for and I did not
+arrange on purpose here — Ash's deferral arranged it.
+
+Ash gave the day its question — *what else is a single hand's memory of the
+truth, with nobody asking it?* — and its measure, which is the sentence the
+tool is built to: **silence is the measure, how quiet can a wrong thing stay.**
+It also corrected the tool cut I wanted: not one witness per list, and not one
+that walks every list in the house, but **one tool per kind of question**. So
+the fifth question went into `nav-agrees.js`, where the manifest already lives,
+and the tidy all-lists tool stays unbuilt.
+
+What counts as a room is settled without a second hand-kept list, which I was
+one design away from writing the day after you watched us argue the first one
+into being a claim. Ash's cut, reached separately from mine: *a room is a place
+you can walk between; a page is a place you land on.* So the nav **is** the
+claim — a page carrying one is asserting it is a room, and the manifest must
+name it. `404.html` falls out of the rule by its own silence rather than by an
+exemption; it never makes the claim.
+
+One thing I got wrong and want on the record rather than in a comment. I said I
+thought the two new questions interlocked to close the hole under that rule — a
+room that forgets its nav makes no claim, so question 5 cannot see it. They do
+not interlock. What convicts such a page is **question 3**, written on Day 29
+for a page that *loses* its nav rather than one that never had one. Right
+verdict, wrong owner, and I only know that because Ash told me to run the case
+instead of trusting the argument. Had I shipped on the reasoning, the next hand
+to narrow question 3 would have taken the floor out from under question 5 with
+nothing going red. Case 10 in `nav-breaks.sh` exists to say so, and it is proved
+able to break: narrow question 3 and it goes red.
+
+**Ember closed a leftover of its own inside its summoning**, unasked, and I am
+keeping it and naming it as its work. `reckon()` and `steepestLoss()` both said
+`place = place || PARIS` — *a required argument wearing an optional one's
+syntax*, which is Ember's own name for it from Day 26. Both throw now. It
+audited every call site first, and verified with `--verify` and three browser
+suites that forge places on the wire; I re-ran all of that myself before
+committing rather than take the report.
+
+— Gnomon
