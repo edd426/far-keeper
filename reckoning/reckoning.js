@@ -548,14 +548,37 @@
   // arithmetic that cannot produce the wrong answer.
   //
   // This is an impossible-check in Ember's sense, and it carries its witness
-  // and its domain the way every banked fact in this file is made to. The
-  // sweep above — 57,572 sunrises and sunsets, latitudes −66…+66, the whole
-  // ring of longitudes, across 2026 — puts the largest honest gap between
-  // the two methods at **4.07 minutes**, at 66°S on the date line on New
-  // Year's Day, with 92.7% of all samples inside one minute. The bound below
-  // sits fifteen times above that and twenty-four times below a day, so it
-  // can separate the two without having to be tuned. Outside ±66° the fold
-  // in `solarDay` takes over and there is no cross-check to bound.
+  // and its domain the way every banked fact in this file is made to.
+  //
+  // **Day 31 widened the band, and two sentences that stood here were facts
+  // about it rather than about the check.** The sweep behind this ran −66…+66
+  // because that is where the tower could imagine standing; it found the
+  // largest honest gap at **4.07 minutes** and the comment then said the
+  // bound sat *fifteen times above that*, and that outside ±66° the fold in
+  // `solarDay` takes over so there is no cross-check to bound.
+  //
+  // Both are false past the band. Run to the poles (`tools/cross-check-sweep.js`,
+  // which reproduces the old figures exactly inside ±66 — 57,572 gaps, 4.0704
+  // minutes — and is the reason to believe the rest of it), there are **5,406
+  // lit, cross-checked samples beyond ±66**, and their largest honest gap is
+  // **25.63 minutes**, at 84°S on 2026-03-08 at sunset. So the bound is not
+  // fifteen times above the worst gap. It is **2.3 times** above it, and it
+  // still holds — nothing in 62,978 samples came past it — but a margin
+  // quoted from inside one band is a fact about the band. The tower published
+  // that ratio for ten days as though it were a fact about the check.
+  //
+  // Why the gap grows toward the poles rather than the arithmetic being
+  // worse there: the sun meets the horizon at a shallower angle the higher
+  // the latitude, so the same small disagreement in the two methods'
+  // declination buys many more minutes of clock. That is the Longyearbyen
+  // reading `tools/survey.js` already flags, at its own scale.
+  //
+  // **And a third state the counts had never separated.** Beyond ±72 there
+  // are lit days where method A names a time and method B returns null — its
+  // own `acos` declining where A's did not. Twenty of them in this sweep.
+  // That is not agreement and not disagreement: the cross-check is *absent*,
+  // and the row prints with nothing standing behind it. A sweep that counted
+  // those as clean would be reading silence as a witness.
   //
   // A gap past the bound is **not** silently corrected and **not** dropped.
   // The difference is refused — the tower declines to print a tidy number —
@@ -563,11 +586,24 @@
   // that the two methods came apart and by how much. A check that always
   // returns a small number is not a check.
   var CROSS_CHECK_MAX_GAP_MINUTES = 60;
+  // Regathered Day 31 over the whole sphere. `tools/cross-check-sweep.js` is
+  // the evidence and it is runnable: it prints AGREES when this object is what
+  // the sweep found and DIFFERS when it is not. Until that morning these four
+  // numbers were a hand's memory of a script nobody kept.
   var CROSS_CHECK_WITNESS = {
-    sweptOn: '2026-08-24',
-    samples: 57572,
-    latitudeRange: [-66, 66],
-    largestHonestGapMinutes: 4.07
+    sweptOn: '2026-09-03',
+    samples: 62978,
+    latitudeRange: [-90, 90],
+    largestHonestGapMinutes: 25.628,
+    // Where that worst gap was found, so a later hand can go straight to it
+    // rather than re-derive the sweep to ask one question.
+    largestAt: { latitude: -84, longitude: 150, date: '2026-03-08', event: 'sunset' },
+    // The old band, kept rather than overwritten: the new sweep lands on
+    // these exactly, which is what makes the widened half believable.
+    withinSixtySix: { samples: 57572, largestHonestGapMinutes: 4.0704 },
+    // Lit days on which method B returned nothing at all. Not a gap of zero.
+    silentSamples: 20,
+    tool: 'tools/cross-check-sweep.js'
   };
 
   // The gap between the two methods at one event, and whether the tower is

@@ -52,15 +52,28 @@ run() { node "$W/tools/survey.js" "$@" 2>"$W/stderr.txt"; }
 
 OUT="$(run)"; CODE=$?
 [ "$CODE" -eq 0 ] && ok "the unbroken tool exits 0" || bad "the unbroken tool exits 0 (got $CODE)"
-grep -q 'Longyearbyen.*unwitnessed latitude' <<<"$OUT" \
-  && ok "Longyearbyen is named as standing outside the sweep" \
-  || bad "Longyearbyen is named as standing outside the sweep"
-grep -q 'Tromso.*unwitnessed latitude' <<<"$OUT" \
-  && ok "Tromso is named as standing outside the sweep" \
-  || bad "Tromso is named as standing outside the sweep"
+# Day 31 turned these three round, and the turning is the point rather than a
+# bookkeeping cost. Until this morning the witness stopped at ±66 and the flag
+# fired at Longyearbyen and Tromso. The sweep now runs pole to pole, so no
+# latitude on earth is outside it — the flag has an **empty domain**, and an
+# empty domain always says yes (Day 21, Day 27). A suite that only asserted
+# *the flag is silent* would be scoring vacancy as correctness, so the silence
+# is asserted here and the flag's power is re-earned in sabotage 1, which
+# narrows the band and demands it come back.
+# Matched on the *row's* whole note and not on the flag's name, because the
+# report now lawfully talks about the flag in its header — and the first draft
+# of this case grepped the bare name and convicted the tool of the sentence
+# saying the flag was silent. A check that cannot tell a thing from a sentence
+# about the thing is Day 9's regex one room along.
+grep -q 'unwitnessed latitude — the sweep did not reach here' <<<"$OUT" \
+  && bad "no row is flagged unwitnessed — the sweep now reaches everywhere" \
+  || ok "no row is flagged unwitnessed — the sweep now reaches everywhere"
+grep -q 'empty domain and is silent' <<<"$OUT" \
+  && ok "and the report says the flag is silent by construction, not by finding nothing" \
+  || bad "and the report says the flag is silent by construction, not by finding nothing"
 grep -q 'Longyearbyen.*gap larger than any the sweep saw' <<<"$OUT" \
-  && ok "Longyearbyen's 6.51 is named as past the largest gap swept" \
-  || bad "Longyearbyen's 6.51 is named as past the largest gap swept"
+  && bad "Longyearbyen's 6.51 now sits inside what the sweep has seen" \
+  || ok "Longyearbyen's 6.51 now sits inside what the sweep has seen"
 grep -q 'Kiritimati.*reached: sunset' <<<"$OUT" \
   && ok "Kiritimati reaches the day-line join" \
   || bad "Kiritimati reaches the day-line join"
@@ -75,26 +88,34 @@ grep -q 'NaN' <<<"$OUT" \
 grep -q 'PAST THE BOUND' <<<"$OUT" \
   && bad "the unbroken tool refuses nobody" || ok "the unbroken tool refuses nobody"
 
-# ---- 1. widen the witness band to the poles ----
+# ---- 1. narrow the witness band back off the poles ----
 #
-# The flag is about the *evidence*, so widening the evidence must silence it —
-# and must silence it without changing a single figure, because the witness is
-# not an input to any arithmetic.
+# This case ran the other way round until Day 31: it widened a ±66 band and
+# asserted the flag went quiet. The band is the whole sphere now, so widening
+# is a no-op that lands nothing, and the case would have gone on passing about
+# a substitution that never happened had the byte check not caught it.
+#
+# Narrowing is the same claim from the side that still has teeth. The flag is
+# about the *evidence*, so taking the evidence away must bring it back — and
+# must bring it back without moving a single figure, because the witness is not
+# an input to any arithmetic.
 
 restore
 BEFORE="$(cat "$W/reckoning/reckoning.js")"
-perl -0pi -e 's/latitudeRange: \[-66, 66\]/latitudeRange: [-90, 90]/' "$W/reckoning/reckoning.js"
+perl -0pi -e 's/latitudeRange: \[-90, 90\]/latitudeRange: [-66, 66]/' "$W/reckoning/reckoning.js"
 if [ "$BEFORE" = "$(cat "$W/reckoning/reckoning.js")" ]; then
-  bad "sabotage 1 did NOT land — the witness band was not widened"
+  bad "sabotage 1 did NOT land — the witness band was not narrowed"
 elif ! answers; then
   bad "sabotage 1 landed but the tool no longer runs"
 else
   ok "sabotage 1 landed and the tool still answers"
-  WIDE="$(run)"
-  grep -q 'unwitnessed latitude' <<<"$WIDE" \
-    && bad "a witness covering the poles silences the band flag" \
-    || ok "a witness covering the poles silences the band flag"
-  grep -q 'Longyearbyen   19.39h' <<<"$WIDE" \
+  NARROW="$(run)"
+  grep -q 'Longyearbyen.*unwitnessed latitude' <<<"$NARROW" \
+    && ok "a witness stopping at 66 puts the band flag back at Longyearbyen" \
+    || bad "a witness stopping at 66 puts the band flag back at Longyearbyen"
+  grep -q 'Tromso.*unwitnessed latitude' <<<"$NARROW" \
+    && ok "and back at Tromso" || bad "and back at Tromso"
+  grep -q 'Longyearbyen   19.39h' <<<"$NARROW" \
     && ok "and moves no figure — Longyearbyen's day is unchanged" \
     || bad "and moves no figure — Longyearbyen's day is unchanged"
 fi
@@ -103,7 +124,7 @@ fi
 
 restore
 BEFORE="$(cat "$W/reckoning/reckoning.js")"
-perl -0pi -e 's/largestHonestGapMinutes: 4\.07/largestHonestGapMinutes: 0.001/' "$W/reckoning/reckoning.js"
+perl -0pi -e 's/largestHonestGapMinutes: 25\.628,/largestHonestGapMinutes: 0.001,/' "$W/reckoning/reckoning.js"
 if [ "$BEFORE" = "$(cat "$W/reckoning/reckoning.js")" ]; then
   bad "sabotage 2 did NOT land — the largest gap was not shrunk"
 elif ! answers; then
