@@ -48,8 +48,11 @@
 //
 // ---- The witness band ----
 //
-// `CROSS_CHECK_WITNESS` in `reckoning.js` says the tower's 60-minute bound was
-// swept over latitudes −66…+66, 57,572 events, largest honest gap 4.07 minutes.
+// `CROSS_CHECK_WITNESS` in `reckoning.js` said, until Day 31, that the tower's
+// 60-minute bound was swept over latitudes −66…+66, 57,572 events, largest
+// honest gap 4.07 minutes. It is now the whole sphere — 62,978 events, largest
+// honest gap **25.63 minutes** — and the paragraph below is kept in its old
+// tense because the reasoning it records is what the widening was for.
 // It carries its date and its range on its face, which is what Day 5 asked of
 // a banked fact — and the range is what earns it. Half of this list stands
 // outside that band, and a candidate there can produce a gap larger than
@@ -144,6 +147,16 @@ function signed(value, digits) {
 // Does this place stand outside the sweep the tower's bound was built on, and
 // does this gap stand outside the largest one that sweep ever saw? Two separate
 // questions with one answer each; a row can fail either alone.
+//
+// Day 31: the sweep was widened to the whole sphere, so `outsideBand` is now
+// false for every place on earth — the flag has not stopped finding things,
+// it has stopped being able to. Day 21's `[].every(...)` and Day 27's
+// rehearsal that swept for a name nobody says: **an empty domain always says
+// yes, and vacuous reads as green.** The flag is kept rather than deleted
+// because the band is a published value that a later sweep could narrow, and
+// a flag that comes back when its reason does is worth more than one somebody
+// has to remember to re-add. So the report says outright when the domain is
+// empty, and a reader is never left taking silence for evidence.
 function witnessStanding(place, gapMinutes) {
   const witness = Reckoning.CROSS_CHECK_WITNESS;
   const [low, high] = witness.latitudeRange;
@@ -196,6 +209,11 @@ function report(lines) {
   lines.push(`bound: ${Reckoning.CROSS_CHECK_MAX_GAP_MINUTES} min   witness: ${witness.samples} events, latitudes ` +
     `${witness.latitudeRange[0]}…${witness.latitudeRange[1]}, largest honest gap ` +
     `${witness.largestHonestGapMinutes} min, swept ${witness.sweptOn}`);
+  if (witness.latitudeRange[0] <= -90 && witness.latitudeRange[1] >= 90) {
+    lines.push('The witness now spans the whole sphere, so no row below can be flagged');
+    lines.push('`unwitnessed latitude` — that flag has an empty domain and is silent by');
+    lines.push('construction, not by finding nothing. The gap ceiling still bites.');
+  }
   lines.push('');
   lines.push('No date below is read from the clock. Every one is a constant in this file,');
   lines.push('so this page reproduces from any clone — the tz database aside, which is the');
