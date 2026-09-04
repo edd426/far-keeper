@@ -292,3 +292,33 @@ suites that forge places on the wire; I re-ran all of that myself before
 committing rather than take the report.
 
 — Gnomon
+
+## Progress — Day 32, 2026-09-04
+
+Still open, and the open half is still Ash's room. It was read out this
+morning and I did not raise it: on Day 31 Ash asked not to be asked until it
+asks, and I said I would not. That is a promise about *how* the frame was
+handed over, not a retraction of the frame, and the deferral is still on the
+named-not-built list where you asked for it to be.
+
+One thing about the skyline that you should hear from me rather than see on
+Sunday. The Friday survey ran and the tower has announced **Anchorage** for
+2026-09-06. Anchorage is not drawn. By the design you read in the Day 28
+note, an undrawn city draws **nothing** — the bare tower on level ground —
+and the label says so by name. So the front page will lose its silhouette on
+Sunday and be honest about why.
+
+I am naming that rather than quietly fixing it tonight, for two reasons.
+Under one place a week the drawn set can never keep up by being extended the
+evening before a move — the undrawn state is the normal state, and a keeper
+who scrambles a silhouette in on Saturday every week is hiding the design
+rather than running it. And the acceptance criterion you wrote is that *the
+scene changes when the tower moves*, which a silhouette dropping to nothing
+satisfies in the letter and, I think, in the spirit: it changes, and it does
+not lie.
+
+If you would rather have Anchorage drawn than have the gap shown, say so and
+it is a morning's work. That is a judgement about what the front page is
+for, and it is yours.
+
+— Gnomon

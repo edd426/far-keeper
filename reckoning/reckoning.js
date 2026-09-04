@@ -115,6 +115,21 @@
     zone: 'Pacific/Auckland'
   };
 
+  // Day 32. The first place this tower has named whose clock runs *behind*
+  // UTC: Paris was +2, Auckland +12, this is −8. Chosen on the survey of
+  // 2026-09-06 (`survey/2026-09-06-candidates.txt`) for three branches of
+  // this house's own code that no published morning has ever run — the
+  // forwards half of the day-line join, a negative offset, and the date
+  // collision `ALREADY_PUBLISHED` was built for. Not for the loudest figures
+  // on the board; those were Longyearbyen's, and every one of them except
+  // its cross-check gap sits in the band with no second opinion.
+  var ANCHORAGE = {
+    name: 'Anchorage',
+    latitude: 61.2181,
+    longitude: -149.9003,
+    zone: 'America/Anchorage'
+  };
+
   // ---- Where this tower stands, and what day it is there ----
   //
   // Day 19. Until this morning the tower had no place — it had a *constant*,
@@ -182,13 +197,19 @@
   // touched, because clearing it on arrival makes KEPT dead code (Ember,
   // Day 25) — a pledge outlives being kept, and is superseded only by a
   // later announcement, never by having come true.
+  //
+  // Day 32: the Auckland pledge is superseded, which is the only thing that
+  // ever retires one. It was KEPT for six mornings and it is not being
+  // cleared for having come true — see above; that is the whole of why the
+  // field is called `pledge`. The record of it stands in the diary and in
+  // `previews/`, where a stranger's browser drew it saying so.
   var STANDING = {
     place: AUCKLAND,
     since: '2026-08-30',
     pledge: {
-      place: AUCKLAND,
-      on: '2026-08-30',
-      announced: '2026-08-28'
+      place: ANCHORAGE,
+      on: '2026-09-06',
+      announced: '2026-09-04'
     }
   };
 
@@ -794,6 +815,29 @@
       hour, Number(parts.minute), Number(parts.second)
     );
     return assertPlausibleOffset(Math.round((asIfUTC - instant.getTime()) / 60000), zone, dateISO);
+  }
+
+  // Day 32. When does a place's civil date begin, in UTC? Returned as minutes
+  // from 00:00 UTC of that same date, so it is negative for a zone ahead of
+  // Greenwich and positive for one behind: Auckland's 2026-09-06 begins at
+  // −720, Anchorage's at +480, and the twenty hours between them are the
+  // hours in which those two places disagree about what day it is.
+  //
+  // That gap is the arithmetic under the date collision. A tower that moves
+  // west across it arrives on a morning its own cold ledger has already
+  // claimed from where it stood yesterday, and the write gate refuses —
+  // `ALREADY_PUBLISHED`, Ash's word, Day 19. Until now nothing but a fixture
+  // had ever said it.
+  //
+  // The offset is asked at the date's UTC midnight and then re-asked at the
+  // instant that first answer implies, which settles it for any zone not
+  // changing its clock inside that window. A zone whose daylight-saving
+  // transition falls in those hours could return a figure off by the
+  // transition. That is named rather than guarded: the tower's known seam is
+  // the parliament and not the sky (Day 3, Day 6).
+  function civilDayStartUTCMinutes(dateISO, zone) {
+    var first = zoneOffsetMinutes(dateISO, 0, zone);
+    return -zoneOffsetMinutes(dateISO, -first, zone);
   }
 
   function shiftDate(dateISO, days) {
@@ -1535,6 +1579,8 @@
     SUN_DIAMETER_ARCMINUTES: SUN_DIAMETER_ARCMINUTES,
     PARIS: PARIS,
     AUCKLAND: AUCKLAND,
+    ANCHORAGE: ANCHORAGE,
+    civilDayStartUTCMinutes: civilDayStartUTCMinutes,
     STANDING: STANDING,
     pledgeStanding: pledgeStanding,
     todayAt: todayAt,

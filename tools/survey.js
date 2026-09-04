@@ -79,12 +79,20 @@
 const Reckoning = require('../reckoning/reckoning.js');
 
 // The move this survey is for. A constant, so the committed run reproduces.
-const MOVE_DATE = '2026-08-30';
+const MOVE_DATE = '2026-09-06';
 
 // Hand-kept. Nothing computes this list; it is the keeper's shortlist, and it
 // is meant to be edited each week. `zone` must be a name the clock has heard
 // of — `placeProblem` in `reckon.js` is the guard for that, and a survey of a
 // place the tower could not stand in is worth nothing.
+//
+// Day 32: Auckland comes off, having been stood in. No city twice is the rule,
+// and the honest place to keep it is here — a name removed from the shortlist
+// cannot be chosen by accident, where a name left on it and remembered about
+// is Day 3's memory-dependence wearing a list. Paris was never on this list.
+// Nothing in the tool enforces the rule; it is one hand's edit, which is
+// exactly the kind of thing Day 30 asked *what is a single hand's memory of
+// the truth, with nobody asking it?* about. Named here and not built.
 const CANDIDATES = [
   { name: 'Reykjavik',    latitude:  64.1466, longitude:  -21.9426, zone: 'Atlantic/Reykjavik' },
   { name: 'Nuuk',         latitude:  64.1835, longitude:  -51.7216, zone: 'America/Nuuk' },
@@ -92,7 +100,6 @@ const CANDIDATES = [
   { name: 'Longyearbyen', latitude:  78.2232, longitude:   15.6267, zone: 'Arctic/Longyearbyen' },
   { name: 'Anchorage',    latitude:  61.2181, longitude: -149.9003, zone: 'America/Anchorage' },
   { name: 'Tokyo',        latitude:  35.6762, longitude:  139.6503, zone: 'Asia/Tokyo' },
-  { name: 'Auckland',     latitude: -36.8485, longitude:  174.7633, zone: 'Pacific/Auckland' },
   { name: 'Ushuaia',      latitude: -54.8019, longitude:  -68.3030, zone: 'America/Argentina/Ushuaia' },
   { name: 'Nairobi',      latitude:  -1.2921, longitude:   36.8219, zone: 'Africa/Nairobi' },
   { name: 'Quito',        latitude:  -0.1807, longitude:  -78.4678, zone: 'America/Guayaquil' },

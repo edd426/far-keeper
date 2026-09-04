@@ -1147,7 +1147,69 @@
     note.textContent = reasons.length
       ? 'Why there: ' + reasons.join('; ') + '.'
       : '';
+
+    renderCollision(pledge, standing);
     section.hidden = false;
+  }
+
+  // Day 32. A second forward claim, and a different kind from the pledge
+  // above it. The pledge says where this tower will be; this says what its
+  // own machinery will do when it gets there, and it is failable in the one
+  // way the figures are not — `reckon()` is pure on the date handed it, so a
+  // destination's sunrise computed today is guaranteed to agree with itself
+  // on the day (Day 16's tautology). This is not that. It is a claim about an
+  // *instant*, and whether it comes true depends on an hour nobody here
+  // controls.
+  //
+  // Both halves are computed. Nothing below is typed, so a hand moving the
+  // pledge cannot leave a stale window standing under a new city.
+  function renderCollision(pledge, standing) {
+    var host = document.getElementById('pledge-collision');
+    if (!host) return;
+    host.textContent = '';
+    var here, there;
+    try {
+      here = window.Reckoning.civilDayStartUTCMinutes(pledge.on, standing.place.zone);
+      there = window.Reckoning.civilDayStartUTCMinutes(pledge.on, pledge.place.zone);
+    } catch (error) {
+      return;
+    }
+    // Moving east, or to a zone that starts its day no later than this one,
+    // cannot collide: the arriving morning is a day the ledger has not
+    // reached. Say nothing rather than manufacture a claim — a check with an
+    // empty domain that speaks anyway is worse than one that is silent
+    // (Day 21, Day 27, Day 31).
+    if (!(there > here)) return;
+
+    var gapHours = (there - here) / 60;
+    var opens = clockFromUTCMinutes(there);
+    var closes = clockFromUTCMinutes(here + 1440);
+
+    host.innerHTML =
+      'And one more thing that can fail, of a different kind from the ' +
+      'figures. The clock in <strong>' + pledge.place.name + '</strong> ' +
+      'runs ' + gapHours.toFixed(0) + ' hours behind the clock here, so ' +
+      pledge.on + ' begins there at <strong>' + opens + ' UTC</strong> and ' +
+      'had already begun here at ' + clockFromUTCMinutes(here) + ' UTC the ' +
+      'day before. In the hours between, the two places disagree about what ' +
+      'day it is. This tower writes one row a morning and refuses to rewrite ' +
+      'a published one, so if the keeper\'s morning lands in that stretch, ' +
+      'the tower arrives, asks what day it is where it now stands, and is ' +
+      'handed a date its own ledger already holds — written from ' +
+      standing.place.name + '. It will publish <strong>nothing that ' +
+      'morning</strong>, and the record will carry a gap with a different ' +
+      'place on either side of it. The two agree again from ' + opens +
+      ' to ' + closes + ' UTC; a morning there writes a row as usual. ' +
+      'Every recorded morning of this tower has run between about 02:15 and ' +
+      '02:35 UTC. Read the ledger after ' + pledge.on + ' and see which ' +
+      'happened. We do not know which yet, and we have said so before ' +
+      'finding out.';
+  }
+
+  function clockFromUTCMinutes(minutes) {
+    var m = ((Math.round(minutes) % 1440) + 1440) % 1440;
+    var h = Math.floor(m / 60);
+    return (h < 10 ? '0' : '') + h + ':' + (m % 60 < 10 ? '0' : '') + (m % 60);
   }
 
   function start() {

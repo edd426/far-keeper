@@ -73,6 +73,12 @@ async function forgeStanding(page, replacement) {
 
 const AUCKLAND =
   "{ name: 'Auckland', latitude: -36.8485, longitude: 174.7633, zone: 'Pacific/Auckland' }";
+// Day 32. A place east of everywhere: Kiritimati keeps UTC+14, so its civil
+// day opens before any other on earth. It is on the survey's shortlist and is
+// used here only as a fixture — a destination a westward collision cannot
+// happen to.
+const KIRITIMATI =
+  "{ name: 'Kiritimati', latitude: 1.8721, longitude: -157.4278, zone: 'Pacific/Kiritimati' }";
 const PLEDGE_TO_AUCKLAND =
   "{ place: " + AUCKLAND + ", on: '2026-08-30', announced: '2026-08-28' }";
 
@@ -101,10 +107,61 @@ async function run() {
     check('the instrument hands back a standing place to check against',
       typeof standingName === 'string' && standingName.length > 0, String(standingName));
 
+    // Day 32. Everything below used to be typed: `/Auckland/`, `2026-08-30`,
+    // `2026-08-28`, `06:45`, `11h 13m 26s`, `+2m 12s`. All six were true of
+    // the pledge that was live the morning this file was written, and all six
+    // went red the first morning a different pledge stood — about a page that
+    // was correct. Day 31 saw it coming and named it: *case 1 is labelled
+    // "as the tower stands right now, unforged", and the label is now false.*
+    //
+    // The repair was already in this file, two lines up, and had been since
+    // Day 26: `standingName` is **asked of the instrument** rather than typed,
+    // because a suite that names where you are carries an expiry with no date
+    // on it (Day 24). That lesson was applied to `place` and never once to
+    // `pledge` — the same file, the same case, the same fault, four fields
+    // along. So the live pledge and the destination's own figures are asked
+    // for here, and the page is held against what the instrument says rather
+    // than against what was true in August.
+    //
+    // Guarded, because a forge that came back empty would make every regex
+    // below match nothing and pass vacuously — Day 21's `[].every(...)`, and
+    // Day 17's rule that a suite must watch its own *building* as hard as its
+    // own breaking.
+    const live = await page.evaluate(() => {
+      const R = window.Reckoning;
+      const p = R && R.STANDING && R.STANDING.pledge;
+      if (!p) return null;
+      const e = R.reckon(p.on, p.place);
+      return {
+        to: p.place.name, on: p.on, announced: p.announced,
+        sunrise: e.sunrise, sunset: e.sunset, dayLength: e.dayLength,
+        drift: e.changeSinceYesterdayMinutes,
+        crossesDayLine: !!(e.working && (
+          e.working.sunriseUTCMinutes < 0 || e.working.sunriseUTCMinutes >= 1440 ||
+          e.working.sunsetUTCMinutes < 0 || e.working.sunsetUTCMinutes >= 1440)),
+      };
+    });
+    check('the instrument hands back a live pledge to check the page against',
+      !!(live && live.to && live.on && live.announced && live.sunrise && live.dayLength),
+      JSON.stringify(live));
+    // Day 19's rule, one room along: a suite must be able to tell its own
+    // fixture failing from its subject failing. Without this the lines below
+    // would throw a bare TypeError out of `run()` and print a message about
+    // reading a property of null, which blames nothing legible.
+    if (!live) {
+      await page.close();
+      await browser.close();
+      throw new Error('the instrument returned no live pledge — nothing under ' +
+        'case 1 can mean anything, so it is not being read');
+    }
+
     const said = (await page.locator('#pledge-said').textContent()) || '';
-    check('the page names the place the tower goes to', /Auckland/.test(said), said.slice(0, 90));
-    check('the page names the morning it goes', /2026-08-30/.test(said), said.slice(0, 90));
-    check('the page says when the promise was made', /2026-08-28/.test(said), said.slice(0, 90));
+    check('the page names the place the tower goes to',
+      said.includes(live.to), said.slice(0, 90));
+    check('the page names the morning it goes',
+      said.includes(live.on), said.slice(0, 90));
+    check('the page says when the promise was made',
+      said.includes(live.announced), said.slice(0, 90));
     check('the page says where the tower is meanwhile',
       said.includes(standingName), said.slice(0, 90));
     check('an unbroken pledge does not say BROKEN', !/BROKEN/.test(said), said.slice(0, 90));
@@ -114,25 +171,104 @@ async function run() {
     // 18's fault one room along: a number and its place must arrive
     // together.
     const figures = (await page.locator('#pledge-figures').textContent()) || '';
-    check('the figures name the destination', /Auckland/.test(figures), figures.slice(0, 120));
-    check('the figures are Auckland\'s sunrise, not this place\'s',
-      /06:45/.test(figures), figures.slice(0, 200));
+    check('the figures name the destination',
+      figures.includes(live.to), figures.slice(0, 120));
+    check('the figures are the destination\'s sunrise, not this place\'s',
+      figures.includes(live.sunrise), figures.slice(0, 200));
     check('the figures carry the day length there',
-      /11h 13m 26s/.test(figures), figures.slice(0, 200));
+      figures.includes(live.dayLength), figures.slice(0, 200));
 
-    // The reason the drift matters: it is the first day in this tower's life
-    // that it publishes as having grown. If that sign is wrong the whole
-    // reason for choosing the place is wrong.
-    check('the drift there is published as growing',
-      /\+2m 12s/.test(figures) && /longer than the day before/.test(figures),
-      figures.slice(0, 260));
+    // The sign of the drift is not asserted, it is *matched*. Auckland's ran
+    // the other way and that was the day's news; Anchorage's does not, and a
+    // case asserting `longer` would be convicting the page of being right
+    // about a different city. What must hold at every destination is that the
+    // word and the number agree.
+    check('the drift there is published with the sign the instrument gives it',
+      /(longer|shorter) than the day before/.test(figures) &&
+      (live.drift > 0) === /longer than the day before/.test(figures),
+      'instrument says ' + live.drift + ' — ' + figures.slice(0, 260));
 
     const note = (await page.locator('#pledge-note').textContent()) || '';
-    check('the page says why there — the reversed drift',
-      /drift there runs the other way/.test(note), note.slice(0, 160));
-    check('the page says why there — the day-line join',
-      /far side of a UTC midnight/.test(note), note.slice(0, 200));
+    check('the page says why there — the drift reason iff the drift has reversed',
+      (live.drift > 0) === /drift there runs the other way/.test(note),
+      'instrument says ' + live.drift + ' — ' + note.slice(0, 160));
+    check('the page says why there — the day-line reason iff the events cross it',
+      live.crossesDayLine === /far side of a UTC midnight/.test(note),
+      'instrument says ' + live.crossesDayLine + ' — ' + note.slice(0, 200));
 
+    // Day 32 — the collision paragraph. A forward claim of a different kind
+    // from the figures: those are pure arithmetic on a date and are
+    // guaranteed to agree with themselves on the day (Day 16), where this
+    // one turns on an hour nobody here controls. Held against the instrument
+    // both ways, so the case convicts a page that stays silent when the
+    // clocks *do* collide as readily as one that invents a collision where
+    // there is none — an empty domain always says yes (Day 21, 27, 31), and
+    // a one-directional check is how it stays empty unnoticed.
+    const clocks = await page.evaluate(() => {
+      const R = window.Reckoning;
+      const s = R.STANDING;
+      return {
+        here: R.civilDayStartUTCMinutes(s.pledge.on, s.place.zone),
+        there: R.civilDayStartUTCMinutes(s.pledge.on, s.pledge.place.zone),
+      };
+    });
+    const collides = clocks.there > clocks.here;
+    const collision = (await page.locator('#pledge-collision').textContent()) || '';
+    check('the collision paragraph appears iff the destination starts its day later',
+      collides === (collision.length > 0),
+      'here ' + clocks.here + ', there ' + clocks.there + ' — ' + collision.slice(0, 120));
+    if (collides) {
+      const gapHours = ((clocks.there - clocks.here) / 60).toFixed(0);
+      check('it names the gap the instrument computes, not one that was typed',
+        collision.includes(gapHours + ' hours behind'),
+        'instrument says ' + gapHours + ' — ' + collision.slice(0, 200));
+      check('it says the tower will publish nothing that morning',
+        /publish/.test(collision) && /nothing that\s+morning/.test(collision),
+        collision.slice(0, 400));
+      check('it says outright that we do not yet know which happened',
+        /do not know which yet/.test(collision), collision.slice(0, 400));
+    }
+
+    await page.close();
+  }
+
+  // ---- 1b. a move that cannot collide, forged ----
+  //
+  // Written the same hour as the check above and for the hole in it. The live
+  // pledge collides, so the *other* half of that `iff` — no paragraph when
+  // the clocks do not disagree — has nothing to exercise it and would pass
+  // vacuously whatever the guard did. That is the fault this file's own
+  // comment two screens up warns about, sitting inside the check written to
+  // warn about it, which is Day 28's shape exactly. So the tower is forged
+  // eastward: Kiritimati keeps UTC+14 and starts its day two hours *before*
+  // Auckland does, and a promise to go there cannot land on a published day.
+  {
+    const page = await browser.newPage();
+    const landed = await forgeStanding(page,
+      "{ place: " + AUCKLAND + ", since: '2026-08-30', pledge: { place: " +
+      KIRITIMATI + ", on: '2026-09-06', announced: '2026-09-04' } }");
+    await page.goto(URL + 'reckoning/', { waitUntil: 'networkidle' });
+    check('eastward fixture: the substitution landed', landed(),
+      'STANDING was not rewritten — the case below proves nothing');
+
+    const clocks = await page.evaluate(() => {
+      const R = window.Reckoning;
+      const s = R.STANDING;
+      return {
+        here: R.civilDayStartUTCMinutes(s.pledge.on, s.place.zone),
+        there: R.civilDayStartUTCMinutes(s.pledge.on, s.pledge.place.zone),
+      };
+    });
+    check('the fixture really is a move that cannot collide',
+      clocks.there < clocks.here,
+      'here ' + clocks.here + ', there ' + clocks.there);
+
+    const said = (await page.locator('#pledge-said').textContent()) || '';
+    check('the eastward pledge is still announced', /Kiritimati/.test(said),
+      said.slice(0, 120));
+    check('and no collision is invented where the clocks agree',
+      ((await page.locator('#pledge-collision').textContent()) || '') === '',
+      await page.locator('#pledge-collision').textContent());
     await page.close();
   }
 
@@ -273,9 +409,21 @@ async function run() {
   {
     const page = await browser.newPage();
     await page.goto(URL, { waitUntil: 'networkidle' });
+    // Asked, not typed — same repair as case 1, and for the same reason: this
+    // is the *live* pledge, so any literal here expires the next time a hand
+    // announces a move.
+    const doorPledge = await page.evaluate(() => {
+      const p = window.Reckoning && window.Reckoning.STANDING &&
+        window.Reckoning.STANDING.pledge;
+      return p ? { to: p.place.name, on: p.on } : null;
+    });
+    check('the front door has a live pledge to be held against',
+      !!(doorPledge && doorPledge.to && doorPledge.on), JSON.stringify(doorPledge));
     const line = (await page.locator('#pledge-line').textContent()) || '';
-    check('the front door announces the move', /Auckland/.test(line), line.slice(0, 140));
-    check('the front door names the morning', /2026-08-30/.test(line), line.slice(0, 140));
+    check('the front door announces the move',
+      !!doorPledge && line.includes(doorPledge.to), line.slice(0, 140));
+    check('the front door names the morning',
+      !!doorPledge && line.includes(doorPledge.on), line.slice(0, 140));
     check('the front door does not cry BROKEN over a live promise',
       !/BROKEN/.test(line), line.slice(0, 140));
     await page.close();

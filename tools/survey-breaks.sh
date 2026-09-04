@@ -115,9 +115,24 @@ else
     || bad "a witness stopping at 66 puts the band flag back at Longyearbyen"
   grep -q 'Tromso.*unwitnessed latitude' <<<"$NARROW" \
     && ok "and back at Tromso" || bad "and back at Tromso"
-  grep -q 'Longyearbyen   19.39h' <<<"$NARROW" \
-    && ok "and moves no figure — Longyearbyen's day is unchanged" \
-    || bad "and moves no figure — Longyearbyen's day is unchanged"
+  # Day 32: this read `grep -q 'Longyearbyen   19.39h'` — a figure typed in on
+  # the morning the case was written, against a move date the tool's own
+  # comment says is edited every week. It went red the first time the
+  # shortlist moved, about a tool that was right, which is the failure mode
+  # the book has recorded four times under *my expectations get less scrutiny
+  # than my code*. The claim was never about 19.39: it is that narrowing the
+  # *evidence* moves the flag and not the number. So the number is read off
+  # the unbroken run and held against the narrowed one, and the case now says
+  # what it always meant. Guarded, because a `grep -o` that finds nothing
+  # would make this compare two empty strings and pass vacuously (Day 21).
+  LY_DAY="$(grep -oE 'Longyearbyen +[0-9]+\.[0-9]+h' <<<"$OUT" | head -1)"
+  if [ -z "$LY_DAY" ]; then
+    bad "the fixture was not built — no Longyearbyen day figure in the unbroken run"
+  else
+    grep -qF "$LY_DAY" <<<"$NARROW" \
+      && ok "and moves no figure — Longyearbyen's day is unchanged ($LY_DAY)" \
+      || bad "and moves no figure — Longyearbyen's day is unchanged ($LY_DAY)"
+  fi
 fi
 
 # ---- 2. shrink the largest honest gap ----
@@ -173,10 +188,18 @@ grep -q '^usage' "$W/out.txt" && ok "and prints the usage line only" || bad "and
 
 # ---- 5. the other door (Day 10) ----
 
+# Day 32: the expectation here was the literal `candidates=12`, so importing
+# the module and printing nothing at all still failed the case the week the
+# shortlist changed — and the case is not about how many candidates there are.
+# What `require()` must not do is run the report or exit the importing
+# process. So: the output must be exactly the one line this probe printed,
+# and the count must be a plain positive number rather than a chosen one.
 REQ="$(node -e "const m=require('$W/tools/survey.js'); process.stdout.write('candidates='+m.CANDIDATES.length)" 2>&1)"
-[ "$REQ" = "candidates=12" ] \
-  && ok "require() neither prints a report nor exits" \
-  || bad "require() neither prints a report nor exits (got: $REQ)"
+if [[ "$REQ" =~ ^candidates=([0-9]+)$ ]] && [ "${BASH_REMATCH[1]}" -gt 0 ]; then
+  ok "require() neither prints a report nor exits ($REQ)"
+else
+  bad "require() neither prints a report nor exits (got: $REQ)"
+fi
 
 # ---- 6. a read tool that writes is a different tool (Day 10) ----
 
