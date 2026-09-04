@@ -140,6 +140,40 @@ if sabotage 'return bisectCrossing(f, jd - 1, jd);' 'prev = here; continue;'; th
 fi
 
 echo
+# Day 32. Three of the probes below called `reckon()` and `steepestLoss()`
+# with no place, or with `undefined` for one, back when both fell through to
+# PARIS. Ember closed that on Day 30 — *a required argument wearing an
+# optional one's syntax* — and both throw now. So these three probes have
+# been dying on their first line since the second of September, printing
+# nothing, and the cases under them have reported the *claim* failing:
+#
+#   FAIL  the steepest day did not move with the skyline:
+#
+# — a true failure with a false account in it, with the real message on
+# stderr where nothing was looking. Day 19's rule, which this house has now
+# met from three sides: a suite must be able to tell its own fixture failing
+# from its subject failing. `probe` below is that guard, and it is why the
+# empty string is never read as an answer again.
+#
+# The place is named rather than defaulted, and PARIS is the right constant
+# here for a reason that is not habit: these are claims about the *shape* of
+# the arithmetic — that a plateau follows its curvature, that the steepest
+# day moves with a skyline — first measured over Paris and quoted in the
+# corner's own prose. Pinning the place is what makes the case reproducible
+# after this tower has moved again, which it does every Sunday.
+#
+# It went four mornings unseen because nothing in the daily routine runs the
+# shell suites; the only thing that walks them is `move-rehearsal.sh`, whose
+# appointment is Sundays, and no Sunday fell between.
+probe() {
+  local label="$1" value="$2"
+  if [ -z "$value" ]; then
+    bad "$label — the probe printed nothing, so it did not run (see stderr)"
+    return 1
+  fi
+  return 0
+}
+
 echo "--- case 4: method B's longitude, shared with its own sunrises"
 # The extraction on Day 16 pulled method B's longitude series out of
 # usno() so the crossing could ask it directly. If the two ever came
@@ -152,12 +186,14 @@ if sabotage 'return wrap360(meanAnomaly + 1.916 * sin(meanAnomaly)' \
     const a = require(process.argv[1]), b = require(process.argv[2]);
     const ca = a.seasonCrossing(2026, "septemberEquinox").instantUTCMethodB;
     const cb = b.seasonCrossing(2026, "septemberEquinox").instantUTCMethodB;
-    const sa = a.reckon("2026-08-19").crossCheck.sunrise;
-    const sb = b.reckon("2026-08-19").crossCheck.sunrise;
+    const sa = a.reckon("2026-08-19", a.PARIS).crossCheck.sunrise;
+    const sb = b.reckon("2026-08-19", b.PARIS).crossCheck.sunrise;
     console.log((ca !== cb ? "crossing-moved" : "crossing-stuck") + " " +
                 (sa !== sb ? "sunrise-moved" : "sunrise-stuck"));
   ' "$work/pristine.js" "$work/broken.js")"
-  if [ "$moved" = "crossing-moved sunrise-moved" ]; then
+  if ! probe "method B's crossing and sunrises did not move together" "$moved"; then
+    :
+  elif [ "$moved" = "crossing-moved sunrise-moved" ]; then
     ok "breaking method B's longitude moves both its crossing and its sunrises — one copy, not two"
   else
     bad "method B's crossing and sunrises did not move together ($moved)"
@@ -173,13 +209,15 @@ cp "$work/pristine.js" "$work/broken.js"
 agreement="$(node -e '
   const r = require(process.argv[1]);
   for (const deg of [0, 2, 5, 10]) {
-    const s = r.steepestLoss(2026, undefined, { obstructionDegrees: deg });
+    const s = r.steepestLoss(2026, r.PARIS, { obstructionDegrees: deg });
     const off = Math.abs(s.plateauDays - s.plateauDaysPredicted);
     if (off > 1.5) { console.log("APART " + deg + "deg " + s.plateauDays + " vs " + s.plateauDaysPredicted.toFixed(1)); process.exit(0); }
   }
   console.log("AGREE");
 ' "$work/broken.js")"
-if [ "$agreement" = "AGREE" ]; then
+if ! probe "the published rule does not generate the published width" "$agreement"; then
+  :
+elif [ "$agreement" = "AGREE" ]; then
   ok "measured and predicted plateau widths agree at 0, 2, 5 and 10 degrees of skyline"
 else
   bad "the published rule does not generate the published width: $agreement"
@@ -192,10 +230,12 @@ echo "--- case 6: the steepest-losing day must actually move with the skyline"
 # lie about where things live.
 spread="$(node -e '
   const r = require(process.argv[1]);
-  const dates = [0, 2, 5, 10].map((d) => r.steepestLoss(2026, undefined, { obstructionDegrees: d }).date);
+  const dates = [0, 2, 5, 10].map((d) => r.steepestLoss(2026, r.PARIS, { obstructionDegrees: d }).date);
   console.log(new Set(dates).size + " " + dates.join(" "));
 ' "$work/broken.js")"
-if [ "${spread%% *}" = "4" ]; then
+if ! probe "the steepest day did not move with the skyline" "$spread"; then
+  :
+elif [ "${spread%% *}" = "4" ]; then
   ok "four skylines give four different steepest days — ${spread#* }"
 else
   bad "the steepest day did not move with the skyline: $spread"
