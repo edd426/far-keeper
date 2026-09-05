@@ -2576,5 +2576,100 @@
       "maxGapMinutes": 60
     },
     "publishedAt": "2026-09-04T02:03:53Z"
+  },
+  {
+    "date": "2026-09-05",
+    "method": 2,
+    "place": {
+      "name": "Auckland",
+      "latitude": -36.8485,
+      "longitude": 174.7633,
+      "zone": "Pacific/Auckland"
+    },
+    "sunrise": "06:37",
+    "sunset": "18:03",
+    "solarNoon": "12:20",
+    "utcOffsetMinutes": 720,
+    "dayLengthMinutes": 686.7706452258872,
+    "dayLength": "11h 26m 46s",
+    "changeSinceYesterdayMinutes": 2.244944042892712,
+    "risingPointDegrees": 81.91369580476011,
+    "settingPointDegrees": 277.8650375054454,
+    "risingPointTomorrowDegrees": 82.37773213069947,
+    "risingPointStepArcminutes": 27.842179556361657,
+    "risingPointStepSunWidths": 0.8700681111363018,
+    "horizon": {
+      "zenith": 90.833,
+      "obstructionDegrees": 0,
+      "dipDegrees": 0
+    },
+    "working": {
+      "julianDay": 2461288.5,
+      "julianCentury": 0.26676249144421627,
+      "eccentricity": 0.01669741108889302,
+      "horizonZenithDeg": 90.833,
+      "horizonSensitivitySecondsPerArcminute": -5.043618244075105,
+      "epochCorrectionSecondsSunrise": 19.63482694839513,
+      "epochCorrectionSecondsSunset": 12.010933393738696,
+      "sunriseUTCMinutes": -323.2937502831624,
+      "sunsetUTCMinutes": 363.4768949427248,
+      "atSunrise": {
+        "julianDay": 2461288.275490451,
+        "julianCentury": 0.2667563447077656,
+        "meanLongitudeDeg": 163.90024809180068,
+        "meanAnomalyDeg": 240.50416737429805,
+        "equationOfCentreDeg": -1.6482136515805244,
+        "apparentLongitudeDeg": 162.2487993857037,
+        "obliquityDeg": 23.438018741225964,
+        "declinationDeg": 6.9653908689423645,
+        "equationOfTimeMinutes": 1.044348974117193,
+        "hourAngleDeg": 85.79905032726131,
+        "solarNoonUTCMinutes": 19.90245102588286,
+        "passes": 4,
+        "lastMoveSeconds": 0
+      },
+      "atSunset": {
+        "julianDay": 2461288.7524145106,
+        "julianCentury": 0.26676940217686845,
+        "meanLongitudeDeg": 164.3703270336464,
+        "meanAnomalyDeg": 240.97422386012113,
+        "equationOfCentreDeg": -1.6560499596727272,
+        "apparentLongitudeDeg": 162.71104382704857,
+        "obliquityDeg": 23.438017991679512,
+        "declinationDeg": 6.788788636358556,
+        "equationOfTimeMinutes": 1.2030400419843919,
+        "hourAngleDeg": 85.93328374617728,
+        "solarNoonUTCMinutes": 19.743759958015662,
+        "passes": 3,
+        "lastMoveSeconds": 0.000003633897449617507
+      },
+      "atSolarNoon": {
+        "julianDay": 2461288.513766165,
+        "julianCentury": 0.2667628683412701,
+        "meanLongitudeDeg": 164.13510392110584,
+        "meanAnomalyDeg": 240.7390119843658,
+        "equationOfCentreDeg": -1.6521422137310189,
+        "apparentLongitudeDeg": 162.47972755600756,
+        "obliquityDeg": 23.438018366798893,
+        "declinationDeg": 6.877211904924819,
+        "equationOfTimeMinutes": 1.1235225363714638,
+        "hourAngleDeg": 85.86608825821125,
+        "solarNoonUTCMinutes": 19.82327746362859,
+        "passes": 3,
+        "lastMoveSeconds": 1.8575647686702723e-8
+      }
+    },
+    "crossCheck": {
+      "method": "USNO Almanac for Computers",
+      "sunrise": "06:37",
+      "sunset": "18:03",
+      "sunriseDifferenceMinutes": -0.4736062086461743,
+      "sunsetDifferenceMinutes": 0.35989189685193423,
+      "sunriseGapMinutes": -0.4736062086461743,
+      "sunsetGapMinutes": 0.35989189685193423,
+      "beyondBound": false,
+      "maxGapMinutes": 60
+    },
+    "publishedAt": "2026-09-05T02:04:23Z"
   }
 ]
