@@ -1161,8 +1161,45 @@
   // *instant*, and whether it comes true depends on an hour nobody here
   // controls.
   //
-  // Both halves are computed. Nothing below is typed, so a hand moving the
-  // pledge cannot leave a stale window standing under a new city.
+  // Day 33 — three things in this paragraph were wrong on the eve of the
+  // move it was written about, and the comment that stood here was one of
+  // them. It read: *both halves are computed, nothing below is typed, so a
+  // hand moving the pledge cannot leave a stale window standing under a new
+  // city.* The stale window was not the city's. It was the clock's, it was
+  // typed, and it was typed one line under the promise that nothing below
+  // was — Day 8, exactly: the part of a check that gets no scrutiny is the
+  // part offered as the reason to trust it.
+  //
+  // 1. **The mark it told a reader to look for does not exist.** It said the
+  //    record would carry *a gap with a different place on either side of
+  //    it*, and invited a reader to go and read the ledger after the date.
+  //    The ledger is filed by date, and a westward crossing loses a morning
+  //    without losing a day: the row for `on` is written the morning after,
+  //    from the new place, and the dates run straight through. Worse, the
+  //    two outcomes offered are indistinguishable by the dates — a Sunday
+  //    that did *not* collide also leaves a row dated `on` from the new
+  //    place. The witness is `publishedAt`, and the paragraph never named
+  //    it. A reader doing exactly as told would have found a dense book and
+  //    concluded the collision did not happen.
+  //
+  // 2. **The rule behind that sentence had never once described this
+  //    tower.** `CLAUDE.md` has said since Day 19 that a move-gap is
+  //    readable off the cold record — two rows either side of a hole naming
+  //    different places. This tower has made one move, Paris to Auckland on
+  //    2026-08-30, and the book runs 08-29 Paris → 08-30 Auckland with no
+  //    hole at all. Thirty-one rows, one move, not a single gap in any of
+  //    it. The rule was reasoned out and written down as a *reading of the
+  //    record* by a hand that never opened the record.
+  //
+  // 3. **The hour window was a memory of a list the page already holds.**
+  //    *About 02:15 to 02:35 UTC* was false of 14 of the 31 rows; the true
+  //    span is 02:03 to 02:40. It is read off `publishedAt` now, by
+  //    `fillCollisionHours` below, from the same fetch that draws the
+  //    ledger. Day 4: the hand-written figure marks the spot where a cheap
+  //    computation was not done.
+  //
+  // What is typed here now: nothing but prose. Every date, place, hour and
+  // span comes from the instrument or from the ledger's own bytes.
   function renderCollision(pledge, standing) {
     var host = document.getElementById('pledge-collision');
     if (!host) return;
@@ -1184,6 +1221,7 @@
     var gapHours = (there - here) / 60;
     var opens = clockFromUTCMinutes(there);
     var closes = clockFromUTCMinutes(here + 1440);
+    var morningAfter = window.Reckoning.shiftDate(pledge.on, 1);
 
     host.innerHTML =
       'And one more thing that can fail, of a different kind from the ' +
@@ -1197,13 +1235,48 @@
       'the tower arrives, asks what day it is where it now stands, and is ' +
       'handed a date its own ledger already holds — written from ' +
       standing.place.name + '. It will publish <strong>nothing that ' +
-      'morning</strong>, and the record will carry a gap with a different ' +
-      'place on either side of it. The two agree again from ' + opens +
-      ' to ' + closes + ' UTC; a morning there writes a row as usual. ' +
-      'Every recorded morning of this tower has run between about 02:15 and ' +
-      '02:35 UTC. Read the ledger after ' + pledge.on + ' and see which ' +
-      'happened. We do not know which yet, and we have said so before ' +
-      'finding out.';
+      'morning</strong>. The two agree again from ' + opens + ' to ' +
+      closes + ' UTC; a morning there writes a row as usual.' +
+      '<br><br>' +
+      '<strong>And the record will not show that where you would look for ' +
+      'it.</strong> This ledger is filed by date, and a morning lost this ' +
+      'way costs no date: the row for ' + pledge.on + ' is simply written ' +
+      'the morning after, from ' + pledge.place.name + ', and the dates run ' +
+      'straight through with no hole in them. What goes missing is a ' +
+      'morning, not a day — and a Sunday that did <em>not</em> collide ' +
+      'leaves a row dated ' + pledge.on + ' from ' + pledge.place.name + ' ' +
+      'too, so the dates cannot tell the two apart at all. The field that ' +
+      'keeps the difference is <code>publishedAt</code>: if the collision ' +
+      'happens, no row below will carry a <code>publishedAt</code> on ' +
+      pledge.on + ' UTC, and the row dated ' + pledge.on + ' will show it ' +
+      'was written on ' + morningAfter + '. Read that field after ' +
+      pledge.on + ', not the dates. ' +
+      '<span id="collision-hours"></span>' +
+      'We do not know which yet, and we have said so before finding out.';
+  }
+
+  // The hour this tower's morning has actually fallen at, read off the
+  // ledger's own `publishedAt` rather than remembered. It is the whole of
+  // whether the collision above lands: the two zones agree for four hours a
+  // day, and every morning on record has missed that window.
+  //
+  // Filled from the ledger fetch, so it is absent when the ledger will not
+  // open — the sentence lives entirely inside its own span for that reason,
+  // and the paragraph reads without it. A page that cannot open its record
+  // should say less, not guess (Day 19: a guard that takes down the room it
+  // was protecting has moved the silence, not removed it).
+  function fillCollisionHours(entries) {
+    var host = document.getElementById('collision-hours');
+    if (!host) return;
+    var stamps = entries
+      .map(function (entry) { return entry.publishedAt; })
+      .filter(function (stamp) { return typeof stamp === 'string' && stamp.length >= 16; })
+      .map(function (stamp) { return stamp.slice(11, 16); })
+      .sort();
+    if (!stamps.length) return;
+    host.textContent = 'Every one of the ' + stamps.length + ' mornings in ' +
+      'the ledger below was written between ' + stamps[0] + ' and ' +
+      stamps[stamps.length - 1] + ' UTC, which is outside that window. ';
   }
 
   function clockFromUTCMinutes(minutes) {
@@ -1224,7 +1297,10 @@
         if (!response.ok) throw new Error(String(response.status));
         return response.json();
       })
-      .then(renderLedger)
+      .then(function (entries) {
+        renderLedger(entries);
+        fillCollisionHours(entries);
+      })
       .catch(function () {
         var host = document.getElementById('ledger-list');
         host.replaceChildren();

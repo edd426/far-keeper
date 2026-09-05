@@ -213,7 +213,7 @@ async function run() {
       };
     });
     const collides = clocks.there > clocks.here;
-    const collision = (await page.locator('#pledge-collision').textContent()) || '';
+    let collision = (await page.locator('#pledge-collision').textContent()) || '';
     check('the collision paragraph appears iff the destination starts its day later',
       collides === (collision.length > 0),
       'here ' + clocks.here + ', there ' + clocks.there + ' — ' + collision.slice(0, 120));
@@ -227,6 +227,79 @@ async function run() {
         collision.slice(0, 400));
       check('it says outright that we do not yet know which happened',
         /do not know which yet/.test(collision), collision.slice(0, 400));
+
+      // Day 33 — the three below are the eve's repair, and each one convicts
+      // the paragraph as it stood on the morning of the move it describes.
+      //
+      // The first is a negative and I would normally distrust one: a check
+      // that a string is absent goes green the moment somebody rewords the
+      // thing it was pointed at (Day 31, where a grep for a flag's name
+      // convicted the sentence *about* the flag). It is paired with a
+      // positive naming the true witness for exactly that reason — the pair
+      // is the case, and the negative alone is not.
+      check('it does not promise a hole in the dates, because there will not be one',
+        !/gap with a different place/.test(collision) &&
+        !/carry a gap/.test(collision),
+        collision.slice(0, 400));
+      // The morning after is asked of the instrument, never computed here:
+      // a second implementation of date arithmetic in a test is a second
+      // thing that can be wrong, and it would agree with the page for the
+      // wrong reason on every day that is not a month boundary.
+      const morningAfter = await page.evaluate(
+        (on) => window.Reckoning.shiftDate(on, 1), live.on);
+      check('the instrument hands back the morning after, for the case to use',
+        /^\d{4}-\d{2}-\d{2}$/.test(morningAfter || ''), String(morningAfter));
+      check('it names publishedAt as the witness and the morning the row lands',
+        /publishedAt/.test(collision) && collision.includes(morningAfter),
+        'expected the morning after ' + live.on + ' — ' + collision.slice(-400));
+
+      // The hour span the paragraph prints must be the ledger's own, not a
+      // figure typed beside it. `about 02:15 to 02:35 UTC` stood there for a
+      // day and was false of 14 of the 31 rows — and false from the second
+      // row this tower ever wrote, four weeks before it was typed. So the
+      // case recomputes from the fetched bytes rather than holding the page
+      // against a constant, which would only freeze a new one (Day 32).
+      // The span is filled from the ledger *fetch*, not from `start()`, so
+      // reading the paragraph the instant the page settles is a race — and
+      // it is a race this suite lost on its first run and won on the next
+      // two, which is the worst way for a case to behave. Wait for the span
+      // to carry something, and let the wait time out into a real failure
+      // rather than a silent empty string that every regex below would then
+      // pass over vacuously (Day 21).
+      let hoursFilled = true;
+      try {
+        await page.waitForFunction(() => {
+          const span = document.getElementById('collision-hours');
+          return !!(span && span.textContent.trim().length);
+        }, null, { timeout: 5000 });
+      } catch (error) {
+        hoursFilled = false;
+      }
+      check('the hour span is filled from the ledger fetch, within the wait',
+        hoursFilled, 'span still empty after 5s');
+      collision = (await page.locator('#pledge-collision').textContent()) || '';
+
+      const ledger = await page.evaluate(
+        () => fetch('ledger.json', { cache: 'no-cache' }).then((r) => r.json()));
+      check('the ledger opens, so the span has bytes to be read off',
+        Array.isArray(ledger) && ledger.length > 0,
+        Array.isArray(ledger) ? String(ledger.length) : String(ledger));
+      const stamps = (ledger || [])
+        .map((entry) => entry.publishedAt)
+        .filter((s) => typeof s === 'string' && s.length >= 16)
+        .map((s) => s.slice(11, 16))
+        .sort();
+      check('every row carries publishedAt, so the span is of all the mornings',
+        stamps.length === (ledger || []).length,
+        stamps.length + ' of ' + (ledger || []).length);
+      check('the hour span is the ledger\'s own, recomputed here from its bytes',
+        stamps.length > 0 &&
+        collision.includes(stamps[0] + ' and ' + stamps[stamps.length - 1] + ' UTC'),
+        'ledger says ' + stamps[0] + '..' + stamps[stamps.length - 1] +
+        ' — ' + collision.slice(-300));
+      check('and it counts the mornings rather than naming a remembered number',
+        collision.includes('the ' + stamps.length + ' mornings'),
+        'ledger holds ' + stamps.length + ' rows — ' + collision.slice(-300));
     }
 
     await page.close();

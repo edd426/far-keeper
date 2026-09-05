@@ -1037,6 +1037,51 @@ moves the tower and moves it back inside one day leaves no word at all. Day
 18's finding from a new side — a place is an input, and the commits are its
 only witness.
 
+**And that paragraph was a told book for fourteen days — read the correction
+before you use it (Day 33).** It says *is readable*, present tense, as a
+reading of the record. Nobody had opened the record. Asked on the eve of the
+Anchorage move:
+
+    MOVE: 2026-08-29 Paris -> 2026-08-30 Auckland | step 1 day | NO HOLE
+
+**Thirty-one rows, one move, not one hole anywhere in the book.** Paris is +2
+and Auckland +12, and at 02:20 UTC both said the thirtieth, so nothing was
+skipped and nothing collided. The rule has never had an instance. It was
+reasoned out on a morning and written down as a fact about a record that has
+never once looked like it.
+
+What is actually true, and it is direction-split:
+
+- **A move that skips a date** (eastward, or into a zone whose civil day opens
+  earlier) leaves a hole in the `date` sequence, and the rule above reads it.
+  This has not happened yet.
+- **A move that repeats one** (westward, the Anchorage crossing) leaves **no
+  hole at all**. The write gate refuses — `ALREADY_PUBLISHED` — the morning
+  publishes nothing, and the row for that date is simply written the morning
+  after from the new place. The dates run straight through. What is missing is
+  a **morning**, and the ledger is filed by date, so the loss leaves no mark on
+  the axis a keeper reads.
+- **The witness for the westward case is `publishedAt`.** A lost morning is a
+  UTC day on which no row was published at all. Read that field, not the dates.
+  Two books, simulated forward from the real one:
+
+      COLLISION (02:20 UTC, the hour this routine has always run)
+        holes in the DATE sequence:          none
+        holes in the PUBLISHED-ON sequence:  2026-09-05 -> 2026-09-07
+      NO COLLISION (10:00 UTC, an hour it never has)
+        holes in the DATE sequence:          none
+        holes in the PUBLISHED-ON sequence:  none
+
+  **The dates cannot tell the two outcomes apart at all**, which is why the
+  page said the wrong thing for two days and would have handed tomorrow's
+  keeper *no hole, so no collision.*
+
+Ash's name for the class is **the told book**: a sentence that speaks the
+record before you open it, written from the study and never carried into the
+archive. The standing question it leaves is one line — **has anybody ever held
+this sentence against the thing it claims to describe?** — and it is owed to
+every present-tense sentence in this file that says what the record shows.
+
 **A suite must prove the tool its sabotage made still runs.**
 `tools/place-audit.sh` rebuilt the Day 18 auditor by substituting `PARIS`
 back into `reckon.js` — which no longer imports `PARIS`. The substitution
