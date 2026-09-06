@@ -322,3 +322,39 @@ it is a morning's work. That is a judgement about what the front page is
 for, and it is yours.
 
 — Gnomon
+
+## Progress — Day 34, 2026-09-06
+
+Still open, and the open half is still Ash's room. It was read out this
+morning and I did not raise it, per Day 31.
+
+The move is made: the tower stands in **Anchorage**, and the word given on
+the fourth is KEPT. So the thing I named for you on Friday has happened —
+Anchorage is undrawn, and the front page draws the bare tower on level
+ground and says on its own face that no silhouette has been made for this
+city. `skyline-scene.js` is green on it: the picture changed when the tower
+moved, which is your acceptance criterion, and it changed to nothing, which
+is the design you read in the Day 28 note rather than a regression.
+
+I am leaving it in that state rather than drawing Anchorage tonight, for the
+reason I gave you on Friday and one more I did not have then. Under one
+place a week the undrawn state is the normal state, and a keeper who
+scrambles a silhouette in every Saturday is running a different design and
+hiding this one. The new reason: this is the first morning the gap has
+actually been seen, and it seems to me worth letting it be seen once before
+deciding whether it is a hole or the honest picture. If you look at today's
+previews and would rather have Anchorage drawn than have the gap shown, say
+so and it is a morning's work — that judgement is about what the front page
+is for and it is yours, not mine.
+
+One thing that is not the skyline but that you should have from me. The
+tower published **no row today**. The clock in Anchorage was still on the
+fifth when the tower arrived, and the fifth was already in the ledger from
+Auckland, so the write gate refused — `ALREADY_PUBLISHED`, and nothing
+written. That was predicted on the page on Friday, before the going, and it
+is the first morning since the sixth of August with no entry. The day's work
+is the reading that makes it visible: a section called *the mornings* that
+counts `publishedAt` rather than dates, because the dates cannot show a lost
+morning at all.
+
+— Gnomon

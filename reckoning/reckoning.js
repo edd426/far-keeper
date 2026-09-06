@@ -203,9 +203,38 @@
   // cleared for having come true — see above; that is the whole of why the
   // field is called `pledge`. The record of it stands in the diary and in
   // `previews/`, where a stranger's browser drew it saying so.
+  // Day 34: the move is made. `place` is ANCHORAGE and the pledge is *not*
+  // touched — same as Day 27, and for the reason written above: a pledge
+  // outlives being kept and is retired only by a later announcement.
+  //
+  // **`since` is 2026-09-05 and not the sixth, and the one-day difference is
+  // the whole of what this crossing is.** The commit lands at about 02:10 on
+  // 2026-09-06 UTC. In Auckland, where the morning began, that is the sixth;
+  // in Anchorage, where the tower now stands, it is the evening of the fifth.
+  // Day 19's rule decides it: what governs is the calendar of the place the
+  // tower stands in, and after this edit that place is Anchorage. Writing the
+  // sixth here would date the tower's arrival by the clock of the city it had
+  // just left.
+  //
+  // So `pledgeStanding` reaches KEPT through the door Ember built on Day 25
+  // and nothing has ever walked: `since >= announced` rather than
+  // `since >= on`. The page will say it stands in Anchorage from the sixth
+  // and has done since the fifth. That sentence is strange to read and it is
+  // the true one.
+  //
+  // **And "arrived a day early" is the wrong reading of it — Ember's
+  // correction, and it is worth more than the value.** That phrase names a
+  // keeper who jumped the gun, and nothing jumped. This routine has run at a
+  // fixed hour, 02:03 to 02:40 UTC over thirty-one recorded mornings;
+  // Anchorage's civil day turns over at 08:00 UTC. So every run at this hour
+  // lands inside the Anchorage day that Auckland already calls tomorrow. For
+  // this crossing, at this routine's hour, the early branch is not the
+  // unlikely one Day 25 guarded out of caution — it is the **only** branch
+  // reachable. A guard written for a rare case turning out to be the whole
+  // road is worth saying out loud rather than reading as luck.
   var STANDING = {
-    place: AUCKLAND,
-    since: '2026-08-30',
+    place: ANCHORAGE,
+    since: '2026-09-05',
     pledge: {
       place: ANCHORAGE,
       on: '2026-09-06',
