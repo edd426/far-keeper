@@ -1279,6 +1279,146 @@
       stamps[stamps.length - 1] + ' UTC, which is outside that window. ';
   }
 
+  // Day 34. The ledger read the other way round.
+  //
+  // Everywhere else on this page a row is a claim about a *date*. Here it is
+  // a receipt for a *morning*: `publishedAt` is the UTC day this tower woke
+  // and spoke, and it is the only field in the record that can show a lost
+  // morning, because the dates cannot. That was Day 33's finding — a westward
+  // crossing costs a morning and no date, so the two outcomes a reader was
+  // invited to tell apart leave identical date sequences.
+  //
+  // **Why this is a section and not a sentence in the pledge.**
+  // `renderCollision` above draws only while the pledged zone runs behind the
+  // standing one; the moment the move lands those are one zone and the whole
+  // instruction — *read `publishedAt`, not the dates* — goes silent, about an
+  // hour before the reader it was written for could act on it. Ash's cut is
+  // why this is not a report on that paragraph: a narrator's domain is one
+  // event and empties when the event is old; this asks a question of the
+  // whole record and has an answer on every morning there has ever been one.
+  // The pledge that occasioned it is superseded weekly; this is not.
+  //
+  // **It never says why**, and that is load-bearing rather than modest. A UTC
+  // day with nothing written in it is exactly as consistent with the crossing
+  // as with a morning nobody woke the tower for. Day 19 claimed the two were
+  // separable by the places either side of the hole and Day 33 found that
+  // paragraph had never once described this record — the told book. So the
+  // neighbouring places are printed as what they are, two facts standing
+  // beside a gap, and the tool draws no line between them.
+  //
+  // **It reports zero.** A check that only speaks when it has something to
+  // show is built for one event wearing an instrument's face, and its silence
+  // reads as an all-clear it never earned (Day 21, Day 27, Day 31 — an empty
+  // domain always says yes). So the count of mornings written goes out on
+  // every load, and *none missing* is a published claim that can be wrong.
+  function renderMornings(entries) {
+    var host = document.getElementById('mornings-report');
+    if (!host) return;
+    host.replaceChildren();
+
+    // A row with no usable stamp is not a morning we can date. Say how many
+    // were set aside rather than quietly shrinking the span they would have
+    // widened — a count taken over a filtered list is a fact about the
+    // filter until the filter is printed too.
+    var dated = [];
+    var undatable = 0;
+    (entries || []).forEach(function (entry) {
+      var stamp = entry && entry.publishedAt;
+      if (typeof stamp !== 'string' || !/^\d{4}-\d{2}-\d{2}T/.test(stamp)) {
+        undatable += 1;
+        return;
+      }
+      dated.push({
+        morning: stamp.slice(0, 10),
+        date: entry.date,
+        place: (entry.place && entry.place.name) || 'an unnamed place'
+      });
+    });
+
+    if (!dated.length) {
+      host.appendChild(el('p', 'loading',
+        'no row in the ledger carries a morning this page can read, so ' +
+        'there is nothing here to count. That is a statement about the ' +
+        'record, not about the tower.'));
+      return;
+    }
+
+    dated.sort(function (a, b) { return a.morning < b.morning ? -1 : a.morning > b.morning ? 1 : 0; });
+    var spoken = Object.create(null);
+    dated.forEach(function (row) {
+      if (!spoken[row.morning]) spoken[row.morning] = row;
+    });
+
+    var first = dated[0].morning;
+    var last = dated[dated.length - 1].morning;
+    var span = Math.round(
+      (Date.parse(last + 'T00:00:00Z') - Date.parse(first + 'T00:00:00Z')) / 86400000) + 1;
+    if (!isFinite(span) || span < 1 || span > 40000) {
+      host.appendChild(el('p', 'loading',
+        'the mornings in this record run from ' + first + ' to ' + last +
+        ', which is not a span this page is willing to walk. Nothing is ' +
+        'counted rather than counted wrongly.'));
+      return;
+    }
+
+    var lost = [];
+    for (var i = 0; i < span; i += 1) {
+      var day = window.Reckoning.shiftDate(first, i);
+      if (!spoken[day]) lost.push(day);
+    }
+
+    var written = Object.keys(spoken).length;
+    var head = 'From ' + first + ' to ' + last + ' is ' + span +
+      ' UTC days, and this tower spoke on ' + written + ' of them';
+    head += lost.length
+      ? '. ' + lost.length + (lost.length === 1 ? ' morning is' : ' mornings are') + ' missing.'
+      : ' — none missing.';
+    host.appendChild(el('p', 'standing', head));
+    // The sight limit, said in the same breath as the count. The span stops
+    // at the most recent row, so a morning lost *since* that row cannot be
+    // inside it — the loss becomes visible only when the next row lands and
+    // stretches the span over it. Ember's, on the morning this was built: a
+    // clean report here can be true and not yet finished being true, and a
+    // reader who takes it as final is reading a check past its own edge.
+    host.appendChild(el('p', 'standing note',
+      'This looks between ' + first + ' and ' + last + ' and no further. A ' +
+      'morning lost after ' + last + ' is not inside the span yet and cannot ' +
+      'be counted here; it appears when the next row lands and carries the ' +
+      'span over it. A clean reading is a reading up to ' + last + '.'));
+    if (dated.length !== written) {
+      host.appendChild(el('p', 'standing note',
+        dated.length + ' rows carry those ' + written + ' mornings, so at ' +
+        'least one morning wrote more than one row.'));
+    }
+    if (undatable) {
+      host.appendChild(el('p', 'standing note',
+        undatable + (undatable === 1 ? ' row carries' : ' rows carry') +
+        ' no readable morning and is left out of the count above.'));
+    }
+
+    lost.forEach(function (day) {
+      var beforeDay = null;
+      var afterDay = null;
+      Object.keys(spoken).forEach(function (had) {
+        if (had < day && (beforeDay === null || had > beforeDay)) beforeDay = had;
+        if (had > day && (afterDay === null || had < afterDay)) afterDay = had;
+      });
+      var before = beforeDay && spoken[beforeDay];
+      var after = afterDay && spoken[afterDay];
+      var line = 'Nothing was written on ' + day + '.';
+      if (before) {
+        line += ' The morning before it, ' + beforeDay + ', wrote the row ' +
+          'dated ' + before.date + ' at ' + before.place + '.';
+      }
+      if (after) {
+        line += ' The morning after it, ' + afterDay + ', wrote the row ' +
+          'dated ' + after.date + ' at ' + after.place + '.';
+      }
+      line += ' Why is not in the record.';
+      host.appendChild(el('p', 'standing note', line));
+    });
+  }
+
   function clockFromUTCMinutes(minutes) {
     var m = ((Math.round(minutes) % 1440) + 1440) % 1440;
     var h = Math.floor(m / 60);
@@ -1300,12 +1440,24 @@
       .then(function (entries) {
         renderLedger(entries);
         fillCollisionHours(entries);
+        renderMornings(entries);
       })
       .catch(function () {
         var host = document.getElementById('ledger-list');
         host.replaceChildren();
         host.appendChild(el('p', 'loading',
           'the ledger would not open — it remains at reckoning/ledger.json.'));
+        // The mornings are a reading of that same file, so they cannot be
+        // read either. Say so where the count would have been rather than
+        // leaving `counting the mornings…` standing for ever — a placeholder
+        // that never resolves is a page pretending to still be working.
+        var mornings = document.getElementById('mornings-report');
+        if (mornings) {
+          mornings.replaceChildren();
+          mornings.appendChild(el('p', 'loading',
+            'the ledger would not open, so the mornings cannot be counted ' +
+            'either.'));
+        }
       });
   }
 
