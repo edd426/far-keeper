@@ -307,9 +307,24 @@
   // tower can be standing in. Every call site must expect the throw; that is
   // what Day 5 cost, and it cost it again this morning in two places.
   function todayAt(zone) {
+    return civilDateAt(new Date(), zone);
+  }
+
+  // What day it was on a given clock at a given instant. `todayAt` is this
+  // with the instant fixed to now, and is written in terms of it so that the
+  // two cannot come apart: one Intl call in the house, asked twice.
+  //
+  // It exists because a ledger row carries an instant (`publishedAt`, in UTC)
+  // and a place, and until Day 35 nothing had ever asked the one through the
+  // other. `todayAt` alone could not: it only ever knows about now, and every
+  // row in the record was written in a past this tower cannot stand in again.
+  //
+  // It throws on a zone the clock has never heard of, exactly as `todayAt`
+  // does and for Day 5's reason. Every call site must expect it.
+  function civilDateAt(instant, zone) {
     var parts = new Intl.DateTimeFormat('en-CA', {
       timeZone: zone, year: 'numeric', month: '2-digit', day: '2-digit'
-    }).formatToParts(new Date()).reduce(function (acc, p) {
+    }).formatToParts(instant).reduce(function (acc, p) {
       acc[p.type] = p.value; return acc;
     }, {});
     return parts.year + '-' + parts.month + '-' + parts.day;
@@ -1613,6 +1628,7 @@
     STANDING: STANDING,
     pledgeStanding: pledgeStanding,
     todayAt: todayAt,
+    civilDateAt: civilDateAt,
     samePlace: samePlace,
     METHOD: METHOD,
     METHOD_NOTES: METHOD_NOTES,

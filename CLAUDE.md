@@ -326,13 +326,36 @@ one shelved a month late. It is kept anyway because its witness is the charter
 — dated, locked, in this tree — rather than a commit date, which is an
 unauthenticated field (the `%an` ceiling, one storey along) reached through a
 clone that has already lied to us once about its own floor. **Do not wire
-`git blame` into this tool.** It was considered and refused for a third reason
-worth keeping: commit timestamps read naturally in UTC, the tower's day-count is
-a Paris-day, and the two disagree exactly at the boundary hours — Wren's second
-letter was delivered at 22:42 UTC, which is already the next day in Paris. A
-blame check would misjudge precisely the rows that land near midnight, silently.
-Run blame by hand on a named question, like the archive; do not put it in the
-pipeline.
+`git blame` into this tool.** Run blame by hand on a named question, like the
+archive; do not put it in the pipeline.
+
+**A third reason was given here and it was false — corrected Day 35.** It read:
+*commit timestamps read naturally in UTC, the tower's day-count is a Paris-day,
+and the two disagree exactly at the boundary hours.* The day-count is not and
+never was a Paris-day. It is a **UTC** day: `date -u` in `scripts/build.sh`,
+UTC arithmetic in `letters/letters.js`, UTC arithmetic in `shelf-when.js`
+itself. Commit timestamps and the day-count are therefore both UTC and cannot
+disagree at any hour. The hazard as written was imaginary, and it was reasoned
+out in the study about a file one directory away that nobody opened — Day 33's
+**told book**, in its second confirmed instance.
+
+The hazard is real and it lives at a different seam, and it is wider than the
+sentence claimed. The disagreement is between the **day-count (UTC)** and the
+**reckoning's today**, which since Day 19 is the calendar of the place the
+tower stands in. That band is the standing place's offset from UTC: two hours a
+day at Paris, twelve at Auckland, eight at Anchorage. It has never been narrow.
+What is narrow is the hour this routine runs, which fell outside the band at
+the first two places and inside it at the third. **The day-count is a UTC day
+and the ledger's date is a standing-place day, and on any morning those two
+name different days.** See *the two clocks*, below.
+
+Two things follow for a future hand. The `22:42 UTC` figure is real — that is
+when Wren's second letter landed, and it is already the next day in Paris — but
+it was doing an argument's work in a sentence whose premise was wrong, which is
+how a true figure launders a false claim. And a blame check is still refused,
+on the two reasons that survive: the charter is a dated locked witness where a
+commit date is not, and this sandbox has lied to us about its own floor once
+already.
 
 **And the humbling half: the convention was written down the whole time**, in
 `letters/README.md`, one file from the array. Three of us reconstructed it from
@@ -860,6 +883,102 @@ and throw.
 
 **What is still outside it:** `check-sight.sh` reads the working tree, so
 moving a copy dirties it and it abstains every run. BLIND is not an all-clear.
+
+## The two clocks, and the one half that is locked
+
+```bash
+./scripts/local-snapshot.sh tools/two-clocks.js   # both counts, four forgeries on the wire
+```
+
+**Built Day 35, the first morning the footer of every room named a day this
+tower was not standing in.**
+
+    UTC today            2026-09-07   -> Day 35
+    standing today       2026-09-06   -> Day 34   (Anchorage)
+    newest ledger row    2026-09-06   -> Day 34
+
+`scripts/build.sh` works out `Day N` with `date -u`. It is a UTC count, it
+always has been, and it goes in the footer of every page. `tools/reckon.js`
+dates its row from `standingToday()` — Day 19's finding, the calendar of the
+place the tower stands in. **Those are two questions and they part for the
+standing place's offset out of every twenty-four hours: two at Paris, twelve
+at Auckland, eight at Anchorage.** The band has never been narrow. What is
+narrow is the hour this routine runs, which fell outside the band at the first
+two places and inside it at the third — so thirty-one rows agreed, and the
+agreement was a fact about a routine wearing a calendar's face.
+
+**The second question is the one worth having, and Day 17 said it could not be
+asked.** The write gate refuses a row that is not today's, and the note under
+it reads: *what is false about such a row is never its arithmetic… no recompute
+can ever catch that, because the numbers in it are right.* That is true of a
+**recompute** and it was carried for eighteen days as though it were true of
+the record. It is not. A row carries `publishedAt` (an instant, UTC) and a
+`place` (a zone); the place's clock at that instant is a fact, so **the row's
+own date can be held against the day it actually was where the row was
+written.** Nothing is recomputed. Two fields that have been in every row since
+2026-08-06 are read together for the first time — Day 18's shape exactly, and
+the second time a field pair in this ledger has turned out to have gone
+unread.
+
+**The two verdicts must stay forked, and one of them is not a fault.** `split`
+— the tower's calendar and UTC named different days when the row was stamped —
+is a reading; it will be true of every row written west of the meridian at this
+hour, forever. `unaccounted` — the row's date is not what its own clock said —
+is the fault. Collapse them (`var unaccounted = split;`) and four cases go red,
+one of which convicts an innocent row.
+
+**Its limit is Day 18's limit and it is printed, not implied:** a hand that
+moves the date *and* the stamp together leaves a row that accounts for itself
+perfectly. And every offset is asked of the machine's tz database, so a row can
+become unaccounted years later with nobody here touching it — the parliament,
+not the sky.
+
+**`civilDateAt(instant, zone)` is new in `reckoning.js` and `todayAt` is
+written in terms of it**, so the two cannot come apart: one Intl call in the
+house, asked twice. It throws on an unknown zone, like `todayAt`, for Day 5's
+reason — every call site must expect it, and the page counts such a row as
+*unopenable* rather than convicting it.
+
+**Made to fail, four ways.** Sabotage 1, never ask the unaccounted question
+(`var unaccounted = [];`) — **5 red**. Sabotage 2, collapse the verdicts
+(`= split;`) — **4 red**. Sabotage 3, type the run-hour window instead of
+reading it off the stamps — **1 red**, and it is the Day 33 lock. Sabotage 4,
+delete the `renderTwoClocks(entries)` call site — **24 red**, the wiring proof.
+
+**Two of the four convicted my own suite before they convicted the page, and
+both are the same fault in different clothes: a case whose domain was not what
+its name said.**
+
+Sabotage 1 left *the unaccounted row is named with its date and its stamp*
+**green** under a tool that never called anything unaccounted. Backdating a row
+by one day also **splits** it, so the split sentence names that same date and
+that same stamp, and the case — which swept the whole report — was answered by
+the other verdict's words. Day 11 reflected into a test: **a case that sweeps
+the whole report cannot tell which verdict answered it.** It reads the
+`UNACCOUNTED.` sentence alone now, and asserts that sentence exists first.
+
+Sabotage 4 left exactly one tick green out of the twelve survivors, and it was
+the zero-report case: `head.unaccounted !== 0 || /none unaccounted/`. With
+nothing rendered the count parses as `null`, `null !== 0` is true, and the
+whole case short-circuits to ok about a page that had drawn nothing at all.
+**An empty domain always says yes, in the voice of a check that worked** —
+fifth instance in this house, second one inside a file written to watch for it.
+The count must be a number before its branch is judged.
+
+### The locked half — for the founder
+
+`scripts/build.sh` is locked (Article I), so I cannot make the footer's
+day-count ask the standing place, and **I am not sure it should.** Both numbers
+are honest answers to different questions and the page now says so. The report
+is that the choice was never made — the day-count was UTC from the founding
+commit because `date -u` is what a build script reaches for, and Day 19's
+argument about whose calendar governs was applied to `reckon.js` and to
+`page.js` and never carried to the one number printed on every page in the
+house. If the footer ought to count the tower's own mornings rather than UTC's,
+that is one line in a locked file (`TODAY_ISO="$(date -u ...)"`), and the cost
+of changing it is that every `Day N` in every past preview becomes a count
+nobody can reproduce. My own view: leave it, now that the page names it. But
+the choice is yours and until Day 35 nobody had made it.
 
 ## A checker wired to no door — for the founder
 
