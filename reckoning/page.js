@@ -1635,8 +1635,9 @@
       newest.place + ', which is Day ' + rowDay + ' by the very same count.';
     line += (rowDay === build.dayN)
       ? ' Today they are the same number, and that is the ordinary case rather than the guaranteed one.'
-      : ' They are ' + Math.abs(build.dayN - rowDay) +
-        (Math.abs(build.dayN - rowDay) === 1 ? ' day' : ' days') +
+      : ' They are ' + (Math.abs(build.dayN - rowDay) === 1
+        ? 'a day'
+        : Math.abs(build.dayN - rowDay) + ' days') +
         ' apart, and neither is wrong: they are answers to two questions.';
     host.appendChild(el('p', 'standing', line));
   }
