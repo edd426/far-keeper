@@ -239,12 +239,27 @@ function check(ok, message) {
     // every run. Day 21's `[].every(...)`, one room along: **a fixture named
     // something the house never says makes a name-sweep vacuous, and vacuous
     // reads as green.**
+    //
+    // And two more, added Day 35, for the ledger's own reason rather than a
+    // new one. `#mornings-report` and `#two-clocks-report` are *readings of
+    // the ledger*: the first names the places standing either side of a lost
+    // morning, the second names the place a split row was written at. Those
+    // are rows' facts, not the tower's (Day 18), so they must not move when
+    // the tower is forged elsewhere — and on the morning a gap first appeared
+    // in this record, the mornings section began naming the city the tower
+    // stands in and this sweep convicted a page that was right. Day 27 for
+    // the third time: **a sweep for the name of the place you were assumes no
+    // other lawful sentence can carry that name**, and every reading of the
+    // cold record is such a sentence. The exemptions below are held to the
+    // same standard as the ledger's: a name in either section is lawful only
+    // if some row in the book carries it.
     const strays = await moved.evaluate((city) => {
       const body = document.body.cloneNode(true);
-      const ledger = body.querySelector('#ledger-list');
-      if (ledger) ledger.remove();
-      const pledge = body.querySelector('#pledge-section');
-      if (pledge) pledge.remove();
+      ['#ledger-list', '#pledge-section', '#mornings-report', '#two-clocks-report']
+        .forEach((id) => {
+          const node = body.querySelector(id);
+          if (node) node.remove();
+        });
       const text = body.innerText || body.textContent || '';
       if (!text.includes(city)) return null;
       const at = text.indexOf(city);
@@ -313,6 +328,51 @@ function check(ok, message) {
         pledgeText.includes(pledgedPlace)
           ? `the exemption is load-bearing: the pledge names the place it promised (${pledgedPlace})`
           : `the pledge does not name ${pledgedPlace}, so lifting it out of the sweep exempts nothing`);
+    }
+
+    // And the two readings of the ledger, held to the same standard again.
+    //
+    // **The first draft of this check was written as a general subset test** —
+    // collect the section's place names, require every one to be a place the
+    // book's rows carry — and it did not survive its own sabotage. A stray
+    // `Reykjavik` spliced into the two-clocks band passed it green, because
+    // the "collect the section's place names" step could only collect names it
+    // already had a list of. **A sweep that enumerates what to look at cannot
+    // see what it was not told about, and reports that as clean** — Day 23 and
+    // Day 29, in the file whose own header quotes them, written the same hour.
+    // A general detector of city names is not available here and pretending to
+    // one is worse than not having it.
+    //
+    // So this is the narrow conditional it can actually stand behind, and it
+    // is complete for the question this suite asks. The sweep above looks for
+    // exactly one string: the name of the city the tower has left. An
+    // exemption can only harm that sweep by hiding *that* name. So: if either
+    // section names it, the book must account for it. A stray city that is not
+    // the one the tower left is a real fault and it is **not this suite's** —
+    // said here rather than covered over.
+    if (Array.isArray(ledgerRowPlaces) && ledgerRowPlaces.length > 0) {
+      for (const id of ['#mornings-report', '#two-clocks-report']) {
+        const text = await moved.evaluate((sel) => {
+          const node = document.querySelector(sel);
+          return node ? (node.innerText || node.textContent || '') : '';
+        }, id);
+        // The domain, asserted before it is judged. A section that had gone
+        // silent satisfies the conditional below for free — the fifth time
+        // this house has met an empty domain answering yes in the voice of a
+        // check that worked, and the second time today.
+        const drew = text.trim().length > 0 &&
+          !/counting the mornings|reading the two clocks/.test(text);
+        check(drew, `${id} drew something to check (the test below is vacuous without it)`);
+        if (!drew) continue;
+        const namesLeft = text.includes(home.name);
+        const lawful = !namesLeft || ledgerRowPlaces.includes(home.name);
+        check(lawful,
+          namesLeft
+            ? (lawful
+              ? `${id} names ${home.name}, and the book carries rows written there — a row's place is the row's fact`
+              : `${id} names ${home.name} and no row in the book was written there — the exemption is covering a stray`)
+            : `${id} does not name ${home.name} at all, so the exemption is not what makes the sweep green here`);
+      }
     }
   }
 

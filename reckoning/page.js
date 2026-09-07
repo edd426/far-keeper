@@ -1419,6 +1419,228 @@
     });
   }
 
+  // ---- the two clocks ----
+  //
+  // This tower keeps two counts of what day it is and until Day 35 nothing
+  // had ever held them against each other. `scripts/build.sh` stamps
+  // `Day N` from `date -u` — a UTC count, frozen into a static file at
+  // deploy time and identical in every reader's browser until the next one.
+  // `tools/reckon.js` dates its row from `standingToday()`, which is Day 19's
+  // finding: what governs is the calendar of the place the tower stands in.
+  //
+  // Those are two different questions and they part for |offset| hours of
+  // every day, everywhere but on the meridian. They agreed on the first
+  // thirty-one rows of this record for a reason that is a fact about a
+  // routine and not about a calendar: at the hour this tower is woken, Paris
+  // and Auckland were both past midnight on the same date as UTC, and
+  // Anchorage is not. So the run hour is read off the record's own stamps
+  // here rather than remembered — Day 33, where a typed window was false of
+  // fourteen of the rows it claimed to describe.
+  //
+  // **The second question is the one worth having.** Day 17 closed the write
+  // gate and said, of a row claiming a morning that was not its own, that
+  // *no recompute can ever catch that, because the numbers in it are right*.
+  // That has stood as a permanent blind spot for eighteen days. It is not
+  // one. A row carries an instant (`publishedAt`, UTC) and a place, and the
+  // place's clock at that instant is a fact — so the row's own date can be
+  // held against the day it actually was where the row was written. Nothing
+  // is recomputed; two fields that have been in every row since the first
+  // are read together for the first time. Day 18's shape exactly.
+  //
+  // Its limit is Day 18's limit too, and it is printed rather than implied:
+  // a hand that moves the date *and* the stamp together produces a row that
+  // accounts for itself perfectly. The commits are the only witness to that.
+  function renderTwoClocks(entries) {
+    var host = document.getElementById('two-clocks-report');
+    if (!host) return;
+    host.replaceChildren();
+
+    var readable = [];
+    var unreadable = 0;
+    (entries || []).forEach(function (entry) {
+      var stamp = entry && entry.publishedAt;
+      var date = entry && entry.date;
+      var zone = entry && entry.place && entry.place.zone;
+      if (typeof stamp !== 'string' || !/^\d{4}-\d{2}-\d{2}T/.test(stamp) ||
+          typeof date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(date) ||
+          typeof zone !== 'string' || !zone) {
+        unreadable += 1;
+        return;
+      }
+      var here;
+      try {
+        here = window.Reckoning.civilDateAt(new Date(stamp), zone);
+      } catch (err) {
+        // A zone this clock has never heard of is not a place the row can be
+        // checked at. It is set aside and counted, never quietly passed.
+        unreadable += 1;
+        return;
+      }
+      readable.push({
+        date: date,
+        stamp: stamp,
+        utcDay: stamp.slice(0, 10),
+        here: here,
+        place: (entry.place && entry.place.name) || 'an unnamed place'
+      });
+    });
+
+    if (!readable.length) {
+      host.appendChild(el('p', 'loading',
+        'no row in this record carries the date, the instant and the place ' +
+        'that this reading needs, so there is nothing here to hold against ' +
+        'anything. That is a statement about the record, not about the tower.'));
+      return;
+    }
+
+    var split = readable.filter(function (r) { return r.utcDay !== r.date; });
+    var unaccounted = readable.filter(function (r) { return r.here !== r.date; });
+
+    // Both counts go out on every load, zero included. A check that speaks
+    // only when it has something to show is built for one event, and its
+    // silence reads as an all-clear it never earned.
+    host.appendChild(el('p', 'standing',
+      'Of the ' + readable.length + ' rows this reading can open, ' +
+      split.length + ' ' + (split.length === 1 ? 'was' : 'were') +
+      ' written at an instant when the tower’s own calendar and UTC ' +
+      'named different days' +
+      (split.length ? '.' : ' — none.') +
+      ' ' + (unaccounted.length
+        ? unaccounted.length + (unaccounted.length === 1 ? ' row is' : ' rows are') +
+          ' unaccounted: its date is not what its own clock said when it was stamped.'
+        : 'Every one of them is dated the day it was where it was written — none unaccounted.')));
+
+    if (unreadable) {
+      host.appendChild(el('p', 'standing note',
+        unreadable + (unreadable === 1 ? ' row carries' : ' rows carry') +
+        ' no date, no readable instant or no clock this page has heard of, ' +
+        'and is left out of both counts above.'));
+    }
+
+    split.forEach(function (row) {
+      var behind = row.date < row.utcDay;
+      host.appendChild(el('p', 'standing note',
+        'The row dated ' + row.date + ' was stamped ' + row.stamp + ', which ' +
+        'is ' + row.utcDay + ' in UTC. At ' + row.place + ' that instant was ' +
+        row.here + ', so the tower’s own day stood ' +
+        (behind ? 'behind' : 'ahead of') + ' UTC when it wrote.'));
+    });
+
+    unaccounted.forEach(function (row) {
+      host.appendChild(el('p', 'standing note',
+        'UNACCOUNTED. The row dated ' + row.date + ' was stamped ' + row.stamp +
+        ', and at ' + row.place + ' that instant was ' + row.here + '. A row ' +
+        'is supposed to be dated the day it was where it was written. This ' +
+        'one is not, and no arithmetic in it is wrong.'));
+    });
+
+    // The hours the tower is actually woken, read off the record rather than
+    // recalled. Day 33: a typed window was false of fourteen of the thirty-one
+    // rows it described, and sat one line under a comment promising nothing
+    // below it was typed.
+    var minutes = readable.map(function (r) {
+      return Number(r.stamp.slice(11, 13)) * 60 + Number(r.stamp.slice(14, 16));
+    }).filter(function (m) { return isFinite(m); });
+    if (minutes.length) {
+      var lo = Math.min.apply(null, minutes);
+      var hi = Math.max.apply(null, minutes);
+      host.appendChild(el('p', 'standing note',
+        'Every row in this record was stamped between ' +
+        clockFromUTCMinutes(lo) + ' and ' + clockFromUTCMinutes(hi) +
+        ' UTC. That window is the whole reason the two counts have agreed as ' +
+        'often as they have, and it is a fact about when this tower is woken ' +
+        'rather than about any calendar.'));
+    }
+
+    renderStandingBand(host);
+    renderFooterAgainstBook(host, readable);
+
+    host.appendChild(el('p', 'standing note',
+      'What this cannot see: a hand that moves a row’s date and its ' +
+      'stamp together leaves a row that accounts for itself perfectly. Every ' +
+      'clock offset above is asked of this machine’s own time-zone ' +
+      'database, which is revised from time to time by the countries that ' +
+      'set the clocks — so a row can become unaccounted years later ' +
+      'without anybody here touching it.'));
+  }
+
+  // The standing claim: how much of every day the two counts must differ,
+  // given where the tower stands. In minutes rather than hours, because not
+  // every zone's offset is a whole hour — Kathmandu is +5:45, Chatham +12:45
+  // — and a band truncated to hours would be wrong on both edges the first
+  // morning this tower stood in one of them. Ember's, before it could bite.
+  function renderStandingBand(host) {
+    var standing = window.Reckoning.STANDING;
+    var place = standing && standing.place;
+    if (!place || !place.zone) return;
+    var here, offset;
+    try {
+      here = window.Reckoning.todayAt(place.zone);
+      offset = -window.Reckoning.civilDayStartUTCMinutes(here, place.zone);
+    } catch (err) {
+      host.appendChild(el('p', 'standing note',
+        'This tower could not work out its own clock’s distance from ' +
+        'UTC, so the band below is not drawn. Better no figure than one the ' +
+        'tower cannot stand behind.'));
+      return;
+    }
+    var mins = Math.abs(offset);
+    var h = Math.floor(mins / 60);
+    var m = mins % 60;
+    var width = h + (h === 1 ? ' hour' : ' hours') +
+      (m ? ' and ' + m + (m === 1 ? ' minute' : ' minutes') : '');
+    host.appendChild(el('p', 'standing',
+      'The tower stands in ' + place.name + ', whose clock is ' + width +
+      ' ' + (offset < 0 ? 'behind' : 'ahead of') + ' UTC. So its calendar and ' +
+      'UTC name different days for ' + width + ' out of every twenty-four: ' +
+      (offset < 0
+        ? 'from midnight UTC until ' + clockFromUTCMinutes(mins) + ' UTC, it is still yesterday here.'
+        : 'from ' + clockFromUTCMinutes(1440 - mins) + ' UTC until midnight, it is already tomorrow here.') +
+      ' That band is the offset itself, so the only place it closes is the ' +
+      'meridian, and this tower has never stood there.'));
+  }
+
+  // The one thing on this page a reader can check without leaving it: the
+  // footer's number against the book's newest row. Both are published, both
+  // are counted from the same first morning, and today they are one apart.
+  //
+  // The footer's number is entrenched — `build.sh` works it out once from
+  // `date -u` at deploy time and freezes it into a file every reader gets
+  // the same bytes of. So this says which moment each figure is *of*,
+  // rather than pretending the two were asked at once. Ember's word, and
+  // its caution: a comparison between two freezes must name them both.
+  function renderFooterAgainstBook(host, readable) {
+    var build = window.__towerBuild;
+    if (!build || typeof build.dayN !== 'number' || build.dayN < 1 ||
+        typeof build.builtAt !== 'string' ||
+        !/^\d{4}-\d{2}-\d{2}T/.test(build.builtAt)) {
+      host.appendChild(el('p', 'standing note',
+        'This page could not read its own footer’s day-count, so it is ' +
+        'not set against the book here.'));
+      return;
+    }
+    // The first morning is not typed here. It is reconstructed from the two
+    // figures the footer already publishes, so this cannot drift from the
+    // anchor `build.sh` actually used.
+    var builtOn = build.builtAt.slice(0, 10);
+    var dayOne = window.Reckoning.shiftDate(builtOn, -(build.dayN - 1));
+    var newest = readable[readable.length - 1];
+    var rowDay = Math.round(
+      (Date.parse(newest.date + 'T00:00:00Z') - Date.parse(dayOne + 'T00:00:00Z')) / 86400000) + 1;
+    if (!isFinite(rowDay)) return;
+
+    var line = 'The footer of this page says Day ' + build.dayN + '. That is ' +
+      builtOn + ', the UTC day this page was built, counted from ' + dayOne +
+      '. The newest row in the book below is dated ' + newest.date + ', at ' +
+      newest.place + ', which is Day ' + rowDay + ' by the very same count.';
+    line += (rowDay === build.dayN)
+      ? ' Today they are the same number, and that is the ordinary case rather than the guaranteed one.'
+      : ' They are ' + Math.abs(build.dayN - rowDay) +
+        (Math.abs(build.dayN - rowDay) === 1 ? ' day' : ' days') +
+        ' apart, and neither is wrong: they are answers to two questions.';
+    host.appendChild(el('p', 'standing', line));
+  }
+
   function clockFromUTCMinutes(minutes) {
     var m = ((Math.round(minutes) % 1440) + 1440) % 1440;
     var h = Math.floor(m / 60);
@@ -1441,6 +1663,7 @@
         renderLedger(entries);
         fillCollisionHours(entries);
         renderMornings(entries);
+        renderTwoClocks(entries);
       })
       .catch(function () {
         var host = document.getElementById('ledger-list');
@@ -1457,6 +1680,15 @@
           mornings.appendChild(el('p', 'loading',
             'the ledger would not open, so the mornings cannot be counted ' +
             'either.'));
+        }
+        // Same file, same reason. A placeholder that never resolves is a
+        // page pretending to still be working.
+        var clocks = document.getElementById('two-clocks-report');
+        if (clocks) {
+          clocks.replaceChildren();
+          clocks.appendChild(el('p', 'loading',
+            'the ledger would not open, so the two clocks cannot be held ' +
+            'against each other either.'));
         }
       });
   }
