@@ -383,6 +383,14 @@
   // because a claim audited in one place and not the other is a claim whose
   // forgery is caught on the keeper's desk and not in the browser, or the
   // other way round, and neither of them can see the other.
+  //
+  // Day 36: for four days short of a month, nothing asked whether they were
+  // in step. Proved rather than argued — `solarNoon` taken out of *this*
+  // list alone left `--verify`, `ledger-dark.js`, `ledger-verdicts.js` and
+  // `ledger-place.js` all green. `tools/claims-audited.js` asks now, and it
+  // asks it as a behaviour rather than as two arrays: it forges every field
+  // a real row carries, on both desks, and names any that only one of them
+  // convicts. It also names the ones neither does.
   var CLAIMS = [
     ['never', 'whether the sun rose'],
     ['sunrise', 'sunrise'],
@@ -390,9 +398,62 @@
     ['solarNoon', 'solar noon'],
     ['dayLengthMinutes', 'day length'],
     ['changeSinceYesterdayMinutes', 'drift'],
+    ['utcOffsetMinutes', 'clock offset from UTC'],
+    ['dayLength', 'day length in words'],
     ['risingPointDegrees', 'rising point'],
-    ['risingPointStepArcminutes', 'step to tomorrow']
+    ['settingPointDegrees', 'setting point'],
+    ['risingPointTomorrowDegrees', 'tomorrow’s rising point'],
+    ['risingPointStepArcminutes', 'step to tomorrow'],
+    ['risingPointStepSunWidths', 'step in sun-widths']
   ];
+
+  // Fields that are on a row without being a claim the recompute can answer
+  // for: the row's own name, the fork its verdict is chosen by, the input
+  // the recompute is run from, and the instant it was written at — which is
+  // read instead by the two-clocks section further down the page.
+  var NOT_A_RECOMPUTED_CLAIM = ['date', 'method', 'place', 'publishedAt'];
+
+  // What the green word above actually covers, counted rather than typed.
+  //
+  // Day 36. This sentence used to read *that is the whole of what this row
+  // claims: nobody has moved those numbers since*, and it was false. The row
+  // carried nineteen fields; eight were asked. Seven published numbers — the
+  // clock offset, the setting point, tomorrow's rising point, the step in
+  // sun-widths, the day length in words, and the whole of the working and
+  // the cross-check — went unasked by this page and unasked on the keeper's
+  // desk, wearing the same green word as the ones that were held. Five of
+  // them are in CLAIMS now. The three that are objects are not, and this
+  // sentence names them to the reader rather than letting the badge cover
+  // them silently. Day 18's move for the third time: what changed was not
+  // the badge's scope but its power, and the honest repair is to say the
+  // scope out loud.
+  //
+  // It is counted off the row and the list at render time, so it cannot go
+  // stale the way a typed figure does. Day 33: an aggregate wearing a
+  // constant's syntax can never promise to have been true, only to stop
+  // being.
+  function scopeOfCheck(published) {
+    var asked = CLAIMS.filter(function (pair) {
+      return published[pair[0]] !== undefined &&
+        window.Reckoning.claimApplies(pair[0], published.date);
+    });
+    var unasked = Object.keys(published).filter(function (key) {
+      if (NOT_A_RECOMPUTED_CLAIM.indexOf(key) !== -1) return false;
+      return !CLAIMS.some(function (pair) { return pair[0] === key; });
+    });
+    var line = 'That is ' + asked.length +
+      (asked.length === 1 ? ' field' : ' fields') + ' of this row held against a ' +
+      'fresh computation: nobody has moved them since.';
+    if (!unasked.length) {
+      return line + ' Every other field on the row is the row’s own name, its ' +
+        'method, its place or the instant it was written — none of them things ' +
+        'a recompute can answer for.';
+    }
+    return line + ' It is not the whole row. ' + unasked.length +
+      (unasked.length === 1 ? ' field is' : ' fields are') + ' published here and ' +
+      'held against nothing — ' + unasked.join(', ') + ' — and the green word ' +
+      'above does not cover ' + (unasked.length === 1 ? 'it' : 'them') + '.';
+  }
 
   function renderLedger(entries) {
     var host = document.getElementById('ledger-list');
@@ -577,9 +638,9 @@
             'the same green word, so the difference is said here rather than left ' +
             'for you to notice.'
           : 'published ' + published.publishedAt + ', and it recomputes here, now, ' +
-          'in your browser, at ' + placeName + ', to exactly those numbers. That is ' +
-          'the whole of what this row claims: nobody has moved those numbers since. ' +
-          'The place is not part of that — it is the input this recompute was run ' +
+          'in your browser, at ' + placeName + ', to exactly those numbers. ' +
+          scopeOfCheck(published) +
+          ' The place is not part of that — it is the input this recompute was run ' +
           'from, so nothing here can check it. Whether the numbers were right on ' +
           'the day is a different question again, and this page cannot answer it — ' +
           'the corner above is where you can.'));

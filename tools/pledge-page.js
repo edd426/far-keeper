@@ -134,6 +134,15 @@ async function run() {
       const e = R.reckon(p.on, p.place);
       return {
         to: p.place.name, on: p.on, announced: p.announced,
+        // Day 36. The one field of the pledge still typed here was its
+        // *state*: the line below asserted flatly that the page must not say
+        // BROKEN. That is true of the tower as it stands and false of a moved
+        // copy carrying a word whose morning has passed — which is what
+        // `move-rehearsal.sh` builds on purpose, since it moves `place` and
+        // leaves `pledge` (Day 26). So the rehearsal convicted a page that
+        // was accusing itself correctly, which is the whole design of BROKEN.
+        // Day 32's repair, four fields along and now five: ask the instrument.
+        state: R.pledgeStanding(R.STANDING, R.todayAt(R.STANDING.place.zone)).state,
         sunrise: e.sunrise, sunset: e.sunset, dayLength: e.dayLength,
         drift: e.changeSinceYesterdayMinutes,
         crossesDayLine: !!(e.working && (
@@ -164,7 +173,12 @@ async function run() {
       said.includes(live.announced), said.slice(0, 90));
     check('the page says where the tower is meanwhile',
       said.includes(standingName), said.slice(0, 90));
-    check('an unbroken pledge does not say BROKEN', !/BROKEN/.test(said), said.slice(0, 90));
+    // The page must say BROKEN exactly when the instrument says BROKEN, and
+    // never on any other reading. Both directions matter: a page that never
+    // accuses has retired the check (case 2 is the lock on that), and a page
+    // that accuses a live promise is a false alarm a reader cannot dismiss.
+    check(`the page says BROKEN if and only if the instrument does (${live.state})`,
+      /BROKEN/.test(said) === (live.state === 'BROKEN'), said.slice(0, 90));
 
     // The figures are the destination's. A page that printed the *current*
     // place's numbers under a heading naming the destination would be Day
@@ -486,9 +500,15 @@ async function run() {
     // is the *live* pledge, so any literal here expires the next time a hand
     // announces a move.
     const doorPledge = await page.evaluate(() => {
-      const p = window.Reckoning && window.Reckoning.STANDING &&
-        window.Reckoning.STANDING.pledge;
-      return p ? { to: p.place.name, on: p.on } : null;
+      const R = window.Reckoning;
+      const p = R && R.STANDING && R.STANDING.pledge;
+      // The state is asked here for the same reason as in case 1, Day 36:
+      // it was the last typed field of the pledge in this file, and a typed
+      // state is a claim that expires the morning after the pledged one.
+      return p ? {
+        to: p.place.name, on: p.on,
+        state: R.pledgeStanding(R.STANDING, R.todayAt(R.STANDING.place.zone)).state
+      } : null;
     });
     check('the front door has a live pledge to be held against',
       !!(doorPledge && doorPledge.to && doorPledge.on), JSON.stringify(doorPledge));
@@ -497,8 +517,8 @@ async function run() {
       !!doorPledge && line.includes(doorPledge.to), line.slice(0, 140));
     check('the front door names the morning',
       !!doorPledge && line.includes(doorPledge.on), line.slice(0, 140));
-    check('the front door does not cry BROKEN over a live promise',
-      !/BROKEN/.test(line), line.slice(0, 140));
+    check(`the front door cries BROKEN if and only if the instrument does (${doorPledge && doorPledge.state})`,
+      /BROKEN/.test(line) === (!!doorPledge && doorPledge.state === 'BROKEN'), line.slice(0, 140));
     await page.close();
   }
 

@@ -68,10 +68,22 @@ async function readRows(page) {
     'no row wears the old word "holds", which was heard as holds-true and only ever meant holds-in-place'
   );
 
+  // Day 36. This needle used to be `nobody has moved those numbers since`,
+  // in a sentence that went on to say *that is the whole of what this row
+  // claims*. It was not the whole row: nineteen fields, eight asked. The
+  // sentence now counts both halves off the row at render time, so the
+  // needle counts them too — a check that only asked for the reassuring
+  // clause would have gone green through the entire fault it was written
+  // to watch.
   for (const row of clean) {
+    const scope = row.notes.find((n) => /held against a fresh computation/.test(n));
+    check(!!scope, `${row.date}: the clean row names the size of its own claim`);
+    const held = scope ? Number((scope.match(/That is (\d+) fields?/) || [])[1]) : NaN;
+    check(Number.isFinite(held) && held > 0,
+      `${row.date}: and that size is a real count (${held}), not a phrase`);
     check(
-      row.notes.some((n) => /nobody has moved those numbers since/.test(n)),
-      `${row.date}: the clean row names the size of its own claim`
+      !!scope && /nobody has moved them since/.test(scope),
+      `${row.date}: and it says what the count establishes — that they have not moved`
     );
     check(
       row.notes.some((n) => /this page cannot answer it/.test(n)),
