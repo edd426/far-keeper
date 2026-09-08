@@ -91,9 +91,22 @@
   // wrote down about itself, and there is only one true answer to it.
   //
   // A key absent from this map is a claim the tower has always published.
+  // Day 36. The three added here were published on the same morning as the
+  // two already listed — the rising point arrived as a group of five and
+  // only two of them were ever audited, so only two ever needed a birthday.
+  // The date is the *row's* date and not the keeper's morning: since Day 35
+  // those are two different questions, and a row is dated in the calendar of
+  // the place the tower stands in. A birthday typed from the UTC morning
+  // would sit one day ahead of the first row carrying the claim, and that
+  // row would then be excused from being asked for a field it does carry —
+  // the graft half of the symmetric rule, opened by a date rather than by a
+  // hand.
   var CLAIM_INTRODUCED = {
     risingPointDegrees: '2026-08-18',
-    risingPointStepArcminutes: '2026-08-18'
+    settingPointDegrees: '2026-08-18',
+    risingPointTomorrowDegrees: '2026-08-18',
+    risingPointStepArcminutes: '2026-08-18',
+    risingPointStepSunWidths: '2026-08-18'
   };
 
   function claimApplies(key, entryDateISO) {

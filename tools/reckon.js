@@ -96,10 +96,27 @@ function writeLedger(entries) {
 // row lacks the field and recomputes to lacking it, so absence meets
 // absence and matches. Ember checked that against the twelve honest rows
 // rather than take my word for it.
+// Day 36. This list held eight keys and the row carried nineteen. Seven of
+// the eleven the tower actually publishes as numbers were asked by nobody —
+// not here, not in the browser — under a green word whose own sentence said
+// *that is the whole of what this row claims*. Day 20's finding, which was
+// about `never` alone, asked of the rest of the row for the first time:
+// **the un-audited field is the whole of what the row said.**
+//
+// Five are added below. Each is a pure function of the date, the place and
+// the horizon, exactly like the seven that were already here, so each
+// recomputes or it does not. `horizon`, `working` and `crossCheck` are
+// objects and are still unasked: a deep compare is a different kind of
+// check, not a longer version of this one, and calling it done by adding
+// three more strings here is how a hole gets closed on paper. Named, not
+// built — and `tools/claims-audited.js` prints them as UNAUDITED every run,
+// so the name is not kept anywhere a morning does not go.
 const CLAIMS = [
   'never',
   'sunrise', 'sunset', 'solarNoon', 'dayLengthMinutes', 'changeSinceYesterdayMinutes',
-  'risingPointDegrees', 'risingPointStepArcminutes'
+  'utcOffsetMinutes', 'dayLength',
+  'risingPointDegrees', 'settingPointDegrees', 'risingPointTomorrowDegrees',
+  'risingPointStepArcminutes', 'risingPointStepSunWidths'
 ];
 
 // ---- Claims have birthdays, and the ledger is cold ----
@@ -418,8 +435,15 @@ function standingToday() {
 // Day 17. The reckoning page has said this in its own standing words since
 // the ledger existed: *"Each day's reckoning is written down when it is made
 // and never rewritten."* Every one of the fourteen published rows obeys it —
-// each `publishedAt` falls on the same Paris day as the `date` it claims —
-// and until now nothing enforced it but sixteen mornings of habit.
+// each `publishedAt` falls on the same day, in the standing place's own
+// zone, as the `date` it claims — and until now nothing enforced it but
+// sixteen mornings of habit. On Day 17 the standing place was Paris and
+// nowhere else, which is the only reason this comment ever said "Paris day"
+// instead — a fact about the fourteen rows then, not about the gate, and it
+// stopped being true of the gate's *documentation* the first morning the
+// tower stood somewhere else, even though the gate's own logic
+// (`standingToday()`, below) was already written in terms of the standing
+// place and never Paris by name.
 //
 // The book called this hole "no future-date gate", and that name is too
 // small. On Day 10 four rows went into the ledger that were not the tower's:
