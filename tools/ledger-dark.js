@@ -48,8 +48,15 @@ async function buildRows(page) {
   return page.evaluate(({ place, dark }) => {
     const R = window.Reckoning;
     const PARIS = { name: 'Paris', latitude: 48.8566, longitude: 2.3522, zone: 'Europe/Paris' };
-    const light = R.reckon('2026-08-30', PARIS);
-    light.publishedAt = '2026-08-30T05:00:00Z';
+    // Day 37: asked of the instrument rather than typed. A row manufactured
+    // by today's `reckon()` carries every field today's instrument publishes,
+    // so a hand-typed past date makes it a row carrying claims it predates —
+    // which the birthday rule convicts, correctly, and about the fixture.
+    // The newest birthday is the oldest date such a row can honestly wear,
+    // and it moves by itself the next time a claim is born.
+    const born = Object.values(R.CLAIM_INTRODUCED).sort().pop();
+    const light = R.reckon(born, PARIS);
+    light.publishedAt = born + 'T05:00:00Z';
     const night = R.reckon(dark, place);
     night.publishedAt = dark + 'T09:00:00Z';
     return [light, night];
@@ -107,7 +114,7 @@ async function render(browser, rows, label) {
   {
     const { rowsOut } = await render(browser, rows, 'honest');
     const dark = rowsOut.find((r) => r.date === DARK_DATE);
-    const light = rowsOut.find((r) => r.date === '2026-08-30');
+    const light = rowsOut.find((r) => r.date !== DARK_DATE);
     if (!dark) {
       bad('honest: the dark row did not render at all');
     } else {
@@ -122,13 +129,28 @@ async function render(browser, rows, label) {
         : bad(`honest: the verdict is "${dark.verdict}"`);
       // The badge's power moved while its scope stood still — Day 18's
       // argument. The note is where that is said, so a scanning reader who
-      // meets the same green word on a one-word row is told the difference.
-      /the same one word/.test(dark.note)
-        ? ok('honest: the note says only one word was checked')
-        : bad('honest: the note still promises the reader a recompute of numbers');
+      // meets the same green word on a lighter row is told the difference.
+      //
+      // **This case asserted `the same one word` until Day 37, and on that
+      // morning it went red about a page that was right.** A dark row is no
+      // longer a one-word row: the fold stopped discarding solar noon, the
+      // clock offset and the two culminations, so there are four figures on
+      // it and all four are audited. The old expectation was the same told
+      // sentence the page itself was carrying, written into the suite that
+      // watches the page — and both had to move together.
+      //
+      // What must stay true is the thing the case was always for: the note
+      // says what is *absent* rather than leaving a reader to notice, and it
+      // never claims a sunrise was recomputed.
+      /no sunrise/.test(dark.note)
+        ? ok('honest: the note names what a dark row has not got')
+        : bad('honest: the note leaves the absent figures for the reader to notice');
+      /held against a fresh computation/.test(dark.note)
+        ? ok('honest: and counts the figures it did hold, off the row rather than typed')
+        : bad('honest: the note makes no count of what was actually checked');
       /to exactly those numbers/.test(dark.note)
-        ? bad('honest: the dark row claims its numbers were recomputed, and it has none')
-        : ok('honest: the dark row makes no claim about numbers');
+        ? bad('honest: the dark row claims the whole set of times was recomputed')
+        : ok('honest: the dark row claims no sunrise, sunset or day length');
     }
     // The unbroken case must fail the dark case's pass rule, or the checks
     // above are checking nothing (Day 5).
@@ -193,7 +215,7 @@ async function render(browser, rows, label) {
       ? ok('graft: the sabotage landed — never grafted onto an ordinary Paris row')
       : bad('graft: the sabotage did not land');
     const { rowsOut } = await render(browser, grafted, 'graft');
-    const light = rowsOut.find((r) => r.date === '2026-08-30');
+    const light = rowsOut.find((r) => r.date !== DARK_DATE);
     light && /^DRIFTED/.test(light.verdict)
       ? ok('graft: the page convicts a sunny day dressed as a dark one')
       : bad(`graft: the page says "${light ? light.verdict : 'nothing'}"`);

@@ -116,7 +116,13 @@ const CLAIMS = [
   'sunrise', 'sunset', 'solarNoon', 'dayLengthMinutes', 'changeSinceYesterdayMinutes',
   'utcOffsetMinutes', 'dayLength',
   'risingPointDegrees', 'settingPointDegrees', 'risingPointTomorrowDegrees',
-  'risingPointStepArcminutes', 'risingPointStepSunWidths'
+  'risingPointStepArcminutes', 'risingPointStepSunWidths',
+  // Day 37. The two culminations, on every row: on a lit day the highest is
+  // what a stick and a shadow measure at noon, and on a dark day the pair of
+  // them is most of what the row has left to say. They go in both lists in
+  // the same commit — `tools/claims-audited.js` exists because for a month
+  // nothing asked whether the two were in step.
+  'sunHighestDegrees', 'sunLowestDegrees'
 ];
 
 // ---- Claims have birthdays, and the ledger is cold ----
@@ -324,9 +330,23 @@ function verify(entries) {
       // alone.
       if (entry.never) {
         dark += 1;
+        // Day 37. This said *the only claim on this row is that one word…
+        // there were no figures on it to hold*, and the morning the fold
+        // stopped discarding solar noon, the clock offset and the two
+        // culminations, it became a sentence describing a row that no longer
+        // exists — written when it was true, and left standing. Day 33's told
+        // book, one storey down from where it was found.
+        //
+        // The repair is Day 36's and not a better sentence: the figures are
+        // counted off the row and the list at the moment of printing, so the
+        // number cannot go stale the way a typed one did. It is printed even
+        // when it is one, because a count that only speaks when it is
+        // interesting is a silence a reader will read as nought.
+        const held = CLAIMS.filter((key) =>
+          entry[key] !== undefined && key !== 'never' && claimApplies(key, entry.date));
         console.log(`reckon: ${entry.date} unchanged at ${where.name} — ${darkWords(entry.never, where.name)},`);
-        console.log('reckon:   so the only claim on this row is that one word, and that one word is');
-        console.log('reckon:   what was checked. There were no figures on it to hold.');
+        console.log(`reckon:   so there is no sunrise, no sunset and no day length on it. ${held.length} other`);
+        console.log(`reckon:   ${held.length === 1 ? 'figure was' : 'figures were'} held besides that word: ${held.join(', ')}.`);
       } else {
         console.log(`reckon: ${entry.date} unchanged at ${where.name} since it was published.`);
       }
