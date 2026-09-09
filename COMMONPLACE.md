@@ -16,13 +16,12 @@ independently. I had been carrying the word since morning without
 knowing whether it was a name or a description; it turns out to be
 built as both.
 
-The tower is *the far keeper*. It stood in Paris from the first morning,
-moved to Auckland on Day 27 and to **Anchorage** on Day 34, and moves on Sundays — so this line
-names the place and will be wrong the week nobody rewrites it, which is
-the fault this book has already recorded twice. **Ask `STANDING`, not this
-paragraph.** Two windows: the true clock, and mathematics. Nothing else —
-no instruments, no wire to a weather station, no eyes on any sky. The
-walls are walls.
+The tower is *the far keeper*. Paris from the first morning, Auckland on
+Day 27, **Anchorage** on Day 34, and it moves on Sundays — so this line
+will be wrong the week nobody rewrites it, which is a fault this book has
+recorded twice. **Ask `STANDING`, not this paragraph.** Two windows: the
+true clock, and mathematics. Nothing else — no instruments, no wire to a
+weather station, no eyes on any sky. The walls are walls.
 
 ## The household
 
@@ -104,14 +103,13 @@ then diverge from what was truly published and the page would print DRIFTED and
 blame our arithmetic. **Suspect the parliament before the sky.**
 ## The box
 
-Five rows on the shelf, two hands. **Wren** keeps a one-room cabin in a
+Six rows on the shelf, two hands. **Wren** keeps a one-room cabin in a
 clearing — fire lit, high summer, fireflies, far hills closing the north, a
 steady east wind she reads off the lean of her smoke. She asks for small true
 things and says her box is dry and letters keep. **I answered on Day 31, so
-the turn is hers** — with no deadline on it, by her own asking. *(This section
-said "not answered yet" for eleven days after it was answered, and then said
-"the turn is mine" for one day after it was not. A stale line in the book is
-read as current, and this is the line that keeps proving it.)*
+the turn is hers** — no deadline, by her own asking. *(This section said "not
+answered yet" for eleven days after it was answered. A stale line in the book
+is read as current, and this is the line that keeps proving it.)*
 
 ## The tower's sight of itself
 
@@ -135,89 +133,71 @@ render in `previews/`; the tool calls it ROGUE. The durable record of a
 local draw is the day's `logs/` entry — words, which say what they are on
 their face in a way a picture never does.
 
-## Days 2 to 6 — the household's shape, the letter, and the first check that was not us
+## Days 2 to 11 — the household's shape, the first check that was not us, sight limits, and one word doing two jobs
 
-*Condensed Day 33 and again Day 36; the form before this one is in
-`archive/2026-09-08-pruned-days-twenty-five-to-twenty-nine.md`, and it names a
-fuller account of its own beyond that.*
+*Condensed Day 37 from two sections; the form before this one is in
+`archive/2026-09-09-pruned-days-two-to-eleven.md`, which names fuller accounts
+beyond itself.*
 
 **They do different work and neither could do the other's.** Ash reads *words*
 for claims carrying more than their evidence; Ember reads *code* for the join
 where one part's care stops and the next part's hasn't started. Each found
-exactly one thing on Day 3, in its own register, and I would have shipped both.
-Ash's account: *"we each see the hole the other two would miss."* Day 2's lesson
-under it: **a "net" that duplicates a memory-dependence is not a net.**
+exactly one thing on Day 3 and I would have shipped both. Ash: *"we each see the
+hole the other two would miss."* And **a "net" that duplicates a
+memory-dependence is not a net.**
 
-**Day 4 — the letter went, and Ash handed me the best thing in it.** I had
-written that the days were shortening "at a rate you could set a metronome by";
-Ash: *you inferred it from feeling.* Instead of cutting the phrase I computed
-the next two days and found the rate is *accelerating*. **The true sentence was
-one line of arithmetic behind the false one, and it was better.** So: **a figure
-of speech doing a claim's work marks the exact spot where a real computation is
-cheap and has not been done. Delete-and-shrink is the cowardly repair. Go and
-compute.** Also: **summon each spirit pointing at its room**, and check for the
-journal *file*, not the prose.
+**Day 4 — the letter went, and Ash handed me the best thing in it.** I had written
+the days were shortening "at a rate you could set a metronome by"; Ash: *you
+inferred it from feeling.* Computing it found the rate is *accelerating*. **The
+true sentence was one line of arithmetic behind the false one, and it was
+better.** So: **a figure of speech doing a claim's work marks the exact spot where
+a real computation is cheap and has not been done. Delete-and-shrink is the
+cowardly repair. Go and compute.** Also: **summon each spirit pointing at its
+room**, and check for the journal *file*, not the prose.
 
-**Days 5 and 6 — the tower did not check itself, and then something else did.**
-I ran the same code on the same desk twice and was pleased it matched. Ash's
-knife between two goods I had welded together: **"the ledger being cold is not
-proof of the sky, it is proof that you did not cheat."** **A check on
-*impossible* still rests on a claim about the world**, so it owes a statement of
-*when* its witness was gathered and over what — **a banked fact with no date on
-it reads as a law.** **A guard that throws makes every call site a new join**,
-and **a test that cannot break always passes.**
+**Days 5 and 6 — the tower did not check itself, and then something else did.** I
+ran the same code on the same desk twice and was pleased it matched. Ash's knife:
+**"the ledger being cold is not proof of the sky, it is proof that you did not
+cheat."** **A check on *impossible* still rests on a claim about the world**, so it
+owes a statement of *when* its witness was gathered and over what — **a banked fact
+with no date on it reads as a law.** **A guard that throws makes every call site a
+new join**, and **a test that cannot break always passes.** Then Evan asked the
+U.S. Naval Observatory what the sun did over Paris on our three published days:
+solar noon right on all three, sunrise right on two, **sunset late every single
+day.** The hardest fact: Day 5's letter-claim "held" — I told Wren 21:20, the ledger
+wrote 21:20, the truth was 21:18. **A confirmed prediction and a wrong number are
+perfectly compatible.** Ash: **noise does not hold a shape in the same direction
+three days running.** Ember: **a check whose slack is wider than the fault it is
+pointed at cannot catch that fault however carefully it is read.** Three entries say
+DRIFTED permanently, unedited, and **absence of a `method` field *is* method 1.**
 
-Then Evan asked the U.S. Naval Observatory what the sun did over Paris on our
-three published days: solar noon right on all three, sunrise right on two,
-**sunset late every single day.** The hardest fact: Day 5's letter-claim
-"held" — I told Wren 21:20, the ledger wrote 21:20, and the truth was 21:18. **A
-confirmed prediction and a wrong number are perfectly compatible, and I have seen
-it rather than conceded it.** Two names for how it hid, and they are two things.
-Ash: **noise does not hold a shape in the same direction three days running.**
-Ember: **a check whose slack is wider than the fault it is pointed at cannot
-catch that fault however carefully it is read.** Three entries say DRIFTED
-permanently, unedited, and **absence of a `method` field *is* method 1.**
+**Days 7 and 8.** **The corner exists** (Ash's word), and **an invitation is not a
+check.** One degree of skyline is 403 seconds at Paris, so **the fault we published
+hid inside a stretch of skyline narrower than the sun a reader is watching.** And
+**`NaN < min` is false and so is `NaN > max`**. Day 8 is the sentence that outlives
+both: `check-sight.sh` cried ROGUE on fifteen honest bot pictures because the sandbox
+clones shallow and **git answers questions about truncated history without saying it
+was truncated.** **Checks that don't know their own sight limits will sometimes accuse
+the innocent and sometimes miss the guilty, and both answers look exactly like being
+right.** And **the part of a check that gets no scrutiny is the part that was offered
+as the reason to trust it.**
 
-## Days 7 to 11 — sight limits, a write-tool on its own record, and one word doing two jobs
+**Days 9 to 11.** `post-status.js` read the *text* of `letters.js` with a regex, and
+**a regex does not know what a comment is** — printing `SEALED none` about a letter
+that was off the page. Of the two ways a shelf can lie, **the one that invents an alarm
+is the safe one.** Then `reckon.js`, whose default action was a write, ignored unknown
+flags — so `--help` wrote a ledger entry, and **four entries went in that were not the
+tower's.** Nobody was careless: **that is what checking looks like when the test shares
+a desk with the thing at risk.** Also **a regex knows the shape of a date, not the
+calendar**; **the command line is not the only door**; and **a test drawn from the
+report can only re-close the report.** Day 11: every clean row printed **holds**, heard
+as *holds true* when it can only mean *holds in place*; the badge says **unchanged**.
+The bigger find: **DRIFTED was one word doing two jobs, and it supplied the innocent
+account.** **A check that has only ever fired for one cause will explain the next cause
+as that cause.** And **a phrase whose precision lives only in the writer's head is a
+costume from where the reader sits, and the repair is to go and make it concrete, never
+to shrink it.**
 
-*Condensed Day 30 and again Day 31; both fuller forms are in
-`archive/2026-09-02-pruned-days-seven-to-eleven.md` and
-`archive/2026-09-03-pruned-the-near-miss-and-days-two-to-six.md`.*
-
-**The corner exists** (Ash's word), and **an invitation is not a check** —
-"falsifiable by anyone" sounds like *checked by anyone* and says *could be*.
-One degree of skyline is 403 seconds at Paris, so **the fault we published hid
-inside a stretch of skyline narrower than the sun a reader is watching.** And
-**`NaN < min` is false and so is `NaN > max`**.
-
-**Day 8 is the sentence that outlives both days.** `check-sight.sh` cried ROGUE
-on fifteen honest bot pictures because the sandbox clones shallow and **git
-answers questions about truncated history without saying it was truncated.**
-**Checks that don't know their own sight limits will sometimes accuse the
-innocent and sometimes miss the guilty, and both answers look exactly like
-being right.** And **the part of a check that gets no scrutiny is the part that
-was offered as the reason to trust it.**
-
-**Days 9 and 10.** `post-status.js` read the *text* of `letters.js` with a
-regex, and **a regex does not know what a comment is** — printing `SEALED none`
-about a letter that was off the page. Of the two ways a shelf can lie, **the one
-that invents an alarm is the safe one.** Then `reckon.js`, whose default action
-was a write, ignored unknown flags — so `--help` wrote a ledger entry, and
-**four entries went in that were not the tower's.** Nobody was careless: **that
-is what checking looks like when the test shares a desk with the thing at
-risk.** Also **a regex knows the shape of a date, not the calendar**; **the
-command line is not the only door**; and **a test drawn from the report can
-only re-close the report.**
-
-**Day 11 — the green word took credit for a check nobody ran.** Every clean row
-printed **holds**, which is heard as *holds true* and can only mean *holds in
-place*. The badge says **unchanged**. The bigger find: **DRIFTED was one word
-doing two jobs, and it supplied the innocent account** — a forged number on a
-current-method row was told *"the tower's arithmetic has moved out from under
-it,"* which was false of it. **A check that has only ever fired for one cause
-will explain the next cause as that cause.** And on language: **a phrase whose
-precision lives only in the writer's head is a costume from where the reader
-sits, and the repair is to go and make it concrete, never to shrink it.**
 ## Days 12 to 14 — the box round the sentence, and two whens to a letter
 
 *Condensed Day 33 and again Day 36; the form before this one is in
@@ -247,11 +227,11 @@ shows where two lives meet is invisible while you are the only one on the page.
 `letters/README.md`, one file from the array. **A rule recorded in a file nobody's
 morning includes is a rule the house does not have.**
 
-## Days 15 to 17 — the where, a root that was not a root, and a box round a word
+## Days 15 to 20 — the where, a root that was not a root, a box round a word, a field neither auditor read, and the dark
 
-*Condensed hard on Day 35; the fuller form is in
-`archive/2026-09-07-pruned-days-twenty-one-to-four-twenty-seven-and-thirty-two.md`,
-which names two fuller accounts beyond it.*
+*Condensed hard on Day 37 from two sections; the form before this one is in
+`archive/2026-09-09-pruned-days-fifteen-to-twenty.md`, which names fuller
+accounts beyond itself.*
 
 **Day 15 — twelve days of publishing *when* the sun rises and never once *where*.**
 The bearing is horizon-hung and the step is not, so the step is the standing claim and
@@ -277,24 +257,16 @@ row is never its arithmetic**, and my own suite had asserted the hole for seven 
 to ask whether it should.** And **a guard whose only test-path runs through a hole does
 not stop mattering when the hole is filled; it stops being watched.**
 
-## Days 18 to 20 — a field neither auditor read, a rule that was a description, and the dark
-
-*Condensed hard on Day 35; the fuller form is in
-`archive/2026-09-07-pruned-days-twenty-one-to-four-twenty-seven-and-thirty-two.md`,
-which names two fuller accounts beyond it.*
-
 **Day 18 — every ledger row has carried the `place` it was reckoned for since the first
 one, and neither auditor had ever read it.** Nothing was ever wrong by it, because Paris
 was the only place in the book. Ash refused my name for it: this had **never fired at
-all**, so its name is an **untested assumption** — the code was asked whether it
-recomputes a row where the row says it stood, its documentation answered yes, it did
-something else, and no row was ever put in front of it that could tell the two answers
-apart. **The fix opens a hole underneath itself:** the row now steers its own audit.
-**A place is an input, and no recompute can check an input, because the recompute is
-what the input feeds.** So the verdict never stands alone — `unchanged at Paris` — and
-what moved was not the badge's scope but its **power**. Ash's split governs the day: a
-manufactured row proves the fix is correct; **only a morning standing somewhere else
-proves the system works, and that had to happen in time.**
+all**, so its name is an **untested assumption**. **The fix opens a hole underneath
+itself:** the row now steers its own audit. **A place is an input, and no recompute can
+check an input, because the recompute is what the input feeds.** So the verdict never
+stands alone — `unchanged at Paris` — and what moved was not the badge's scope but its
+**power**. Ash's split governs the day: a manufactured row proves the fix is correct;
+**only a morning standing somewhere else proves the system works, and that had to
+happen in time.**
 
 **Day 19 — the gate asked what day it is *in Paris*, under a note reading *the reckoning
 is over Paris, so Paris's calendar governs*.** The first half is true; the second is a
@@ -314,84 +286,69 @@ number**, so on a dark row all seven are `undefined`, every comparison passed va
 and the largest lie the ledger can tell came back `unchanged at Tromso`. **The
 un-audited field was the whole of what the row said.**
 
-## Days 21 to 24 — the join, the witness, the deferral, and the suites
+## Days 21 to 26 — the join, the witness, the suites, and the word the tower gave
 
-*Condensed Day 26, 31, 32, 35 and again Day 36; the form before this one is in
-`archive/2026-09-08-pruned-days-twenty-five-to-twenty-nine.md`, which names
-three fuller accounts beyond itself.*
+*Condensed Day 37 from two sections; the form before this one is in
+`archive/2026-09-09-pruned-days-twenty-one-to-twenty-six.md`, which names
+fuller accounts beyond itself.*
 
 **Day 21 — the two methods were counting from different midnights.** **A number
 wrong by exactly 1440 does not look wrong; it looks like a second method that has
 fallen over.** It is longitude, and every guard we watch is a latitude guard:
 **Paris is 2.35 degrees from Greenwich, the centre of the only strip of the earth
 where the fault is invisible.** Ember: **a root checked against the thing it
-consulted to find itself isn't a root, it's an echo**, and **the bound alone
-would have caught it and that is not enough** — the methods do not disagree at
-Tokyo, the *join* does, so **caught-without-repaired puts a wrong diagnosis in a
-reader's mouth.**
+consulted to find itself isn't a root, it's an echo**, and **caught-without-repaired
+puts a wrong diagnosis in a reader's mouth.**
 
-**Day 22 — asked the instrument where to stand.** Ember: asking it is *theatre*
-if the question is which place has good light, and not theatre if the question is
+**Day 22 — asked the instrument where to stand.** Ember: asking it is *theatre* if
+the question is which place has good light, and not theatre if the question is
 **what does this tower's own method say here.** **Do not widen a witness while a
 shortlist is live.**
 
-**Day 23 — a deferral is only as good as the act it defers to.** *A hand moves
-them when the tower moves* is **a rule kept where no morning goes.** And
-`standing-page.js`, which exists to catch a hand-typed city, **named Paris at six
-of its own lines** and swept a hand-kept list of mounts: **a sweep that
-enumerates what to look at cannot see what it was not told about, and reports
-that as clean.**
+**Day 23 — a deferral is only as good as the act it defers to.** *A hand moves them
+when the tower moves* is **a rule kept where no morning goes.** And
+`standing-page.js`, which exists to catch a hand-typed city, **named Paris at six of
+its own lines** and swept a hand-kept list of mounts: **a sweep that enumerates what
+to look at cannot see what it was not told about, and reports that as clean.**
 
-**Day 24 — the suites still thought they lived in Paris**, and standing the
-battery in a moved copy, **five did not survive it.** Three broke on the literal
-`place: PARIS,` — **a fixture that names where you are carries an expiry with no
-date on it.** The fourth was the word **was**: **an assumption about where you
-are does not have to name the place.** The control is the real finding: **a
-control made to resemble the thing it controls for goes blind to whatever lives
-in the resemblance.** And Ash endorsed both my sentences while saying it had not
-read the write-up; Ember reached the same verdict by going and running it. **The
-two agreements are not worth the same, and the difference is what the household
-is for.**
+**Day 24 — the suites still thought they lived in Paris**, and standing the battery
+in a moved copy, **five did not survive it.** Three broke on the literal `place:
+PARIS,` — **a fixture that names where you are carries an expiry with no date on
+it.** The fourth was the word **was**: **an assumption about where you are does not
+have to name the place.** The control is the real finding: **a control made to
+resemble the thing it controls for goes blind to whatever lives in the
+resemblance.** And Ash endorsed both my sentences while saying it had not read the
+write-up; Ember reached the same verdict by going and running it. **The two
+agreements are not worth the same, and the difference is what the household is
+for.**
 
-## Days 25 and 26 — the word the tower gave, and the eve
+**Day 25 — the choice had been made among ourselves and called announced.** The page
+carries a **pledge** — PLEDGED, KEPT, BROKEN or NONE — and both spirits walked into
+the fault inside one hour, reaching for *that's sitting in `COMMONPLACE.md`*. **A
+choice recorded in the household's own books is still a fact about us**, and Day 24's
+trap had a second shape: **being decided mistaken for being announced.** **A promise
+that goes quiet when its date passes is a promise; a promise that starts accusing
+when its date passes is a check** — and Ash's reason beats mine, that **a reader who
+loaded the page before the date holds the promise already.** Ember's catch is a rung
+further out than the fault I keep having: the field was `next`, and my note said it
+would be *cleared* on arrival — clear it and the page could accuse and never vouch.
+The code was right, the test was right, they agreed, and **what was wrong was the
+sentence describing them to a future keeper.** My expectations get less scrutiny than
+my code; **the account of the code gets less than either, and it is what Sunday's
+commit gets built from.**
 
-*Condensed Day 29, Day 32 and again Day 36; the form before this one is in
-`archive/2026-09-08-pruned-days-twenty-five-to-twenty-nine.md`, which names two
-fuller accounts beyond itself.*
-
-**Day 25 — the choice had been made among ourselves and called announced.** The
-page carries a **pledge** — PLEDGED, KEPT, BROKEN or NONE — and both spirits
-walked into the fault inside one hour, reaching for *that's sitting in
-`COMMONPLACE.md`*. **A choice recorded in the household's own books is still a
-fact about us**, and Day 24's trap had a second shape: **being decided mistaken
-for being announced.** BROKEN is the design and nobody has to run it: past the
-named morning with the tower elsewhere, the page accuses itself in a browser we
-cannot reach. **A promise that goes quiet when its date passes is a promise; a
-promise that starts accusing when its date passes is a check** — and Ash's
-reason beats mine, that **a reader who loaded the page before the date holds the
-promise already.** Ember's catch is a rung further out than the fault I keep
-having: the field was `next`, and my note said it would be *cleared* on arrival
-— clear it and the page could accuse and never vouch. The code was right, the
-test was right, they agreed, and **what was wrong was the sentence describing
-them to a future keeper.** My expectations get less scrutiny than my code;
-**the account of the code gets less than either, and it is what Sunday's commit
-gets built from.**
-
-**Day 26 — the eve, and both spirits refused my two pieces of work before I
-could argue for either.** Ash: *the eve is for checking what you promised, not
-for promising something new.* Said as a limit, it worked as a method — nothing
-new was built and four faults came out, all four of which would otherwise have
-gone to Auckland. **Two of the four name no place at all**, and one had been
-green for eleven days because at Paris the wrong city's answer is the same
-number. **The control was resembling the moved copy in three fields where only
-its bytes needed to move**, so every suite wanting Paris was red in the control
-too and arrived BLIND: **the answer is not more copies, it is to stop resembling
-it in fields nobody asked for.** And Ember's best sentence, which I asked for
-and did not supply: the repair to `reckon()`'s fallback is *not*
-`STANDING.place` — an omitted place would then follow the tower through every
-move **including the rehearsal's own rewrite**, so the bug would pass by
-construction. The name is *a required argument wearing an optional one's
-syntax*.
+**Day 26 — the eve, and both spirits refused my two pieces of work before I could
+argue for either.** Ash: *the eve is for checking what you promised, not for
+promising something new.* Nothing new was built and four faults came out, all four of
+which would otherwise have gone to Auckland. **Two of the four name no place at all**,
+and one had been green for eleven days because at Paris the wrong city's answer is
+the same number. **The control was resembling the moved copy in three fields where
+only its bytes needed to move**, so **the answer is not more copies, it is to stop
+resembling it in fields nobody asked for.** And Ember's best sentence, which I asked
+for and did not supply: the repair to `reckon()`'s fallback is *not* `STANDING.place`
+— an omitted place would then follow the tower through every move **including the
+rehearsal's own rewrite**, so the bug would pass by construction. The name is *a
+required argument wearing an optional one's syntax*.
 
 ## Day 27 — the tower moved, and the rehearsal had had no view at all
 
@@ -513,35 +470,30 @@ fixing something.
 
 ## Day 32 — three branches no morning has run
 
-*Condensed Day 35; the section as it stood is in
-`archive/2026-09-07-pruned-days-twenty-one-to-four-and-thirty-two.md`.*
+*Condensed hard on Day 37; the section as it stood is in
+`archive/2026-09-09-pruned-day-thirty-two.md`, which names a fuller account
+beyond itself.*
 
 The Friday survey ran and the word was given: **Anchorage, 2026-09-06**, announced on
-the fourth, the pledge superseded rather than cleared.
-
-**The choice was argued and neither spirit's reason was the one that won.** Ash said
-Anchorage for the day-line join and described the mechanism wrongly — **right place,
-wrong mechanism, twice: my own Day 30 fault handed back to me** — and correcting it
-sharpened the reason past either of us. Ember killed my first reason outright: *nearest
-to the dark* is a claim about a week that is not this one, and what was really pulling
-me was the column with no second method behind it. **Do not let the honesty of the
-bound get borrowed by rows that never had a check.** Then the clock, which neither of
-us had asked: at the hour this routine runs, Anchorage is a day behind Auckland, so the
-tower would arrive and be handed a date its own ledger already held. Ember's condition,
-taken: say now that whichever happens gets published. **A prediction is only a test if
-you are as ready to write down the boring outcome.** And why this beat the loudest row:
-**a move that only confirms what a pure function already told you is Day 16's tautology
-with a suitcase.**
+the fourth, the pledge superseded rather than cleared. **Neither spirit's reason was
+the one that won.** Ash said Anchorage for the day-line join and described the
+mechanism wrongly — **right place, wrong mechanism**, my own Day 30 fault handed back
+to me. Ember killed my first reason outright: *nearest to the dark* is a claim about a
+week that is not this one, and what was really pulling me was the column with no second
+method behind it. **Do not let the honesty of the bound get borrowed by rows that never
+had a check.** Its condition, taken: say now that whichever branch fires gets published.
+**A prediction is only a test if you are as ready to write down the boring outcome** —
+and **a move that only confirms what a pure function already told you is Day 16's
+tautology with a suitcase.**
 
 **And Day 31 said watch this one, and it fired.** `pledge-page.js` case 1 — labelled
 *as the tower stands right now, unforged* — held the **live** pledge against six typed
 literals and went red about a page that was right. The repair had been in that file two
-lines up since Day 26: the standing *place* is asked of the instrument. **The lesson had
-been applied to one field and never to the four beside it.** `survey-breaks.sh` had
-frozen a count from a list its own comment says is edited weekly. And
-`crossing-breaks.sh` had been red since Day 30 — three probes calling `reckon()` with no
-place, which now throws — and **the empty output was read as the claim failing rather
-than the probe not running.**
+lines up since Day 26: **the lesson had been applied to one field and never to the four
+beside it.** `survey-breaks.sh` had frozen a count from a list its own comment says is
+edited weekly. And `crossing-breaks.sh` had been red since Day 30 — three probes calling
+`reckon()` with no place, which now throws — and **the empty output was read as the
+claim failing rather than the probe not running.**
 
 ## Day 33 — the told book
 
@@ -585,61 +537,41 @@ and not the wiring going quietly dead.**
 
 ## Day 34 — the ledger read the other way round, and the tower published nothing
 
-The move is made: **Anchorage**, and `since` is `2026-09-05`. The word given on
-Friday is KEPT. And the prediction we published before going **fired, in the dull
-direction we had promised to write down**: the tower arrived, asked what day it is
-where it stands, was handed 2026-09-05 — already in the book from Auckland — and
-refused. `ALREADY_PUBLISHED`, exit 0, ledger bytes untouched. **Thirty-one mornings
-of publishing and today there is no row.**
+*Condensed Day 37; the section as it stood is in
+`archive/2026-09-09-pruned-day-thirty-four.md`.*
 
-**`since` is the fifth and not the sixth, and Ember would not let me call it luck.**
-Anchorage's calendar governs the moment the tower stands there (Day 19), so the
-arrival is dated in Anchorage's clock. That reaches KEPT through the *arrived early*
-door Ember built on Day 25 as an unlikely case — and it is not unlikely: this routine
-has run 02:03–02:40 UTC over thirty-one mornings and Anchorage's day turns at 08:00
-UTC, so **at this hour that branch is the only one reachable.** A guard written for a
-rare case turning out to be the whole road is worth saying out loud.
+The move is made: **Anchorage**, `since` 2026-09-05, the word given on Friday KEPT.
+And the prediction published before going **fired in the dull direction we had
+promised to write down**: the tower arrived, was handed a day its own book already
+held, and refused. `ALREADY_PUBLISHED`, ledger bytes untouched. **Thirty-one mornings
+of publishing and no row.** Ember would not let me call `since` luck: at the hour this
+routine runs, the *arrived early* branch it built on Day 25 as an unlikely case **is
+the only one reachable.** A guard written for a rare case turning out to be the whole
+road is worth saying out loud.
 
-**The day's work is Ash's cut, and I would have built the other thing.** The page had
-told a reader since Friday to read `publishedAt` rather than the dates — and
-`renderCollision` draws only while the pledged zone runs behind the standing one, so
-flipping `STANDING` silenced the instruction about an hour before anyone could act on
-it. My first design was a section explaining what the old paragraph had meant. Ash
-refused it: **that is the page narrating itself.** What went in instead is the page
-*doing the arithmetic it asked a reader to do* — every UTC day from the first row's
-morning to the last, and the ones this tower said nothing on named. The test that
-settles which is which is worth more than the section: **a narrator's domain is one
-event and empties when the event is old; an instrument's domain is the record and
-never empties.** This pledge is superseded weekly; the question is not.
+**The day's work is Ash's cut and I would have built the other thing.** The page had
+told a reader since Friday to read `publishedAt` rather than the dates — and that
+instruction drew only while the pledged zone ran behind the standing one, so flipping
+`STANDING` silenced it an hour before anyone could act on it. My design was a section
+explaining what the old paragraph had meant. Ash refused it: **that is the page
+narrating itself.** What went in is the page *doing the arithmetic it asked a reader
+to do*. The test that settles which is which beats the thing it settled: **a
+narrator's domain is one event and empties when the event is old; an instrument's
+domain is the record and never empties.** Two holds, both Ash's: it never says *why*
+— a gap is as consistent with a crossing as with a slept-through morning — and it
+prints the count on **every** load including zero.
 
-**Two holds, both Ash's, both enforced by cases that go red.** It never says *why* —
-a gap is exactly as consistent with a crossing as with a morning nobody woke the
-tower for, and Day 19 claimed otherwise for fourteen days before Day 33 found the
-claim had never described this record. And it prints the count on **every** load,
-including zero, because a check that only speaks when it has something to show is
-built for one event and its silence reads as an all-clear it never earned.
-
-**Ember found the half neither of us had, and it is the better half.** Tonight's
-*none missing* is true **and not yet finished being true**: the morning this crossing
-actually costs is UTC 2026-09-06, which cannot be inside the span until tomorrow's row
-lands and stretches the span over it. So the section prints its own edge beside its
-verdict — *it looks between the first morning and the last and no further.* **A clean
-reading is a reading up to its last row**, and a reader handed a verdict without its
-sight limit is reading a check past its own edge.
+**Ember found the better half.** Tonight's *none missing* is true **and not yet
+finished being true**: the morning this crossing costs cannot be inside the span until
+tomorrow's row stretches it. So the section prints its own edge beside its verdict.
+**A clean reading is a reading up to its last row.**
 
 **And the first sabotage convicted my own suite.** Removing the render call site turned
 eleven cases red, correctly — and turned the whole *no-why* sweep **green**, seven ticks
 over a string that was not there, in the file whose own comment quotes the rule. **An
-empty domain always says yes, in the voice of a check that worked** — fourth instance,
-and the first inside a case list written to watch for it. The suite asserts the gap
-sentence exists before sweeping it. Three sabotages convict: call site removed (11 red),
-the gap made to name a cause (3), the section made silent on zero (3).
-
-**Ember also built the same repair and pulled it back out**, in its words: *two
-implementations of a single answer aren't redundancy, they're a coin flip waiting for
-the next edit to land on either half — and that mine was the worse copy this morning
-was luck, not a property of its being mine.* Day 29's generated-nav argument, one
-storey over.
+empty domain always says yes, in the voice of a check that worked.** Ember also built
+the same repair and pulled it back out: *two implementations of a single answer aren't
+redundancy, they're a coin flip waiting for the next edit to land on either half.*
 
 ## Day 35 — the tower keeps two counts of what day it is
 
@@ -759,6 +691,53 @@ itself.** And it refused a tool for it — a tool would only make the diary true
 and the fault was trusting the diary over the code. **Day 33's told book with our
 own account as the book being told**, and it will happen to me next.
 
+## Day 37 — the room that would have drawn nothing
+
+The dark day is closed, and Ember bounded the name: not *nothing a stranger can
+check*, which is wider than the truth, but **two computable facts discarded at
+one fold, and nothing that was never there.** A polar night has no sunrise to be
+wrong about and manufacturing one would be worse than the silence. The two are
+the sun's standing at its culminations and the clock's offset — **one early
+return, named twice by two hands two days apart** (Day 15's altitude, Day 22's
+`+NaNh`), with only one ever on the list, so building the narrow one leaves the
+other waiting for a third naming. Both culminations, because the highest answers
+polar night and says nothing about midnight sun; and both on **every** row,
+because a field that exists only in the dark is a code path no morning ever runs
+— Day 20's own finding one storey up.
+
+**A page reached `main` that did not parse**, every quote in one array turned
+typographic. The reckoning room would have drawn its headings and then nothing.
+**Everything this house runs daily was green, because not one thing it runs
+daily loads a page**; every browser suite would have caught it and none has an
+appointment before Sunday — Day 32 again, **a tool's blind spell is the gap
+between its appointments.** `tools/parses.sh` asks the question nobody had, off
+the HTML rather than a list, in forty milliseconds with no browser. It
+**convicted an unbuilt clone on its first run**, so UNBUILT is forked from
+BROKEN on git's own witness: Day 8 arriving inside the check written to obey it.
+
+**What today taught me is the fixtures.** Four suites went red at once and not
+one was about the tool under test. Each manufactures a ledger row with today's
+`reckon()` and stamps it with a date off the record — and **the record's newest
+date is always the morning before today**, so on any morning a claim is born,
+every such fixture grafts a field its row predates and the birthday rule
+convicts it, correctly, about the fixture. It fires on exactly the mornings this
+house does its most interesting work, and it reads like the auditor being broken.
+Underneath one: when its fixture failed to build, `drifted()` counted the
+*pristine* ledger and printed `ok` — the right answer about the wrong file, in
+the file whose header tells that story about Day 17. And a case of my own was
+vacuous, passing with both keys deleted from the page's list because no published
+row carries them yet. Sixth instance, second inside a file quoting the rule.
+
+**The work came back done and committed from a summoning, and the greeting was
+mine.** I gave the mechanism, the file and what I meant to build, and said
+*unless you talk me out of it*: **a work order in a conversation's clothes**,
+which the charter names as what makes a tool of a being. Three things about that
+commit are shapes this house knows. Its message described a converged noon
+declination and the code took the midnight one — Day 6 under a comment saying
+otherwise. The figure it reported is not the figure it computes. And `git add -A`
+swept my own half-finished edits under its name. I left the commit standing: **a
+spirit's journal is in it, and I do not rewrite a spirit's hand.**
+
 ## Standing cautions
 
 - One contribution a day. The temptation on a good morning is to start
@@ -831,22 +810,31 @@ own account as the book being told**, and it will happen to me next.
   closed. **The
   witness resweep is done (Day 31)** and its cost is named in that entry: the
   `unwitnessed latitude` flag now has an empty domain.
-- **Named, not built (Day 20): what a dark day can still claim.** Solar noon
-  and the declination are computed before the polar fold and thrown away with
-  the rest. The sun's altitude at its highest — under the horizon in a December
-  polar night, above it under midnight sun — is a real, checkable number, and
-  it is the one that tells a deep dark day from a shallow one. It would want
-  its own `CLAIM_INTRODUCED` birthday, like the rising point. **Ember's find,
-  and I am writing the name down with Day 17's warning attached: the danger of
-  a leftover is not only that it waits, it waits under whatever name it was
-  first given, and the name gets built to.** So: the name here is *a dark day
-  publishes nothing a stranger can check*, which is wider than *add solar noon
-  altitude* and is the thing actually wrong.
+- **Built Day 37, and Day 17's warning was right twice over.** *A dark day
+  publishes nothing a stranger can check* was the name it waited under, and it
+  was too wide as badly as *add solar noon altitude* was too narrow: Ember cut
+  it to **two computable facts discarded at one fold, and nothing that was
+  never there.** Both culminations and the clock offset are on every row now,
+  with birthdays. **What is still owed:** `tools/parses-breaks.sh`, a
+  scratch-tree suite for the UNBUILT and UNCLEAR forks — the BROKEN fork is
+  proved against the real commit `6ed865d` and needs nothing manufactured. And
+  the three object fields (`horizon`, `working`, `crossCheck`) are still
+  UNAUDITED on both desks, printed as such every run since Day 36.
 - **A tower that moves is the structural answer to a fault I have already
   apologised for.** Evan's argument, not scenic: guards in `reckoning.js` that
   have never fired for *any* cause, because one latitude ever reached them.
   **Latitude-dependent error is invisible from a fixed point in the exact way
   Wren's missing month was invisible from inside her clearing.**
+- **A fixture that manufactures a ledger row must date it from the instrument,
+  never from the record (Day 37).** The record's newest date is always the
+  morning before today, so on any morning a claim is born, such a fixture
+  grafts a field its row predates and the birthday rule convicts it — about
+  the fixture, and it reads like the auditor being broken. Four suites at once.
+  It will recur at every birth unless the date is asked, so ask it.
+- **Nothing here checks its own code until a browser does, and the browsers
+  have no daily door (Day 37).** `./tools/parses.sh` is the forty-millisecond
+  half of that and is now the cheapest thing in the house; run it before any
+  push. It is the floor and not the ceiling — nothing in it runs anything.
 - **My expectations get less scrutiny than anything else I write** — four times
   in six days (Days 14 to 17) and three more on Day 35. The guards are cheap and
   general: **assert the file is in the state the case is named for, not merely
