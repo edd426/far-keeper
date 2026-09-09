@@ -106,7 +106,8 @@
     settingPointDegrees: '2026-08-18',
     risingPointTomorrowDegrees: '2026-08-18',
     risingPointStepArcminutes: '2026-08-18',
-    risingPointStepSunWidths: '2026-08-18'
+    risingPointStepSunWidths: '2026-08-18',
+    declinationDegrees: '2026-09-09'
   };
 
   function claimApplies(key, entryDateISO) {
@@ -451,15 +452,27 @@
   var EPOCH_MAX_PASSES = 8;
   var EPOCH_SETTLE_MINUTES = 1e-7;   // about six microseconds
 
-  function converge(pick, jd0, latitude, longitude, zenith) {
+  // `throughDark` is Day 37 and it is narrow on purpose. `never` is a
+  // statement about the *horizon*: the sun's centre does not reach the
+  // zenith angle asked for, so there is no sunrise and no sunset. It is not
+  // a statement about the series, which answers perfectly well on a polar
+  // night — the declination, the equation of time and the meridian transit
+  // are computed at the head of `noaa()`, above the fold, and are as true
+  // on the twenty-first of December at Tromso as anywhere. The two picks
+  // that do not read the horizon at all (`pickSolarNoon`,
+  // `pickSolarMidnight`) pass `true` and iterate through it. Everything
+  // that *is* a horizon crossing leaves the flag off and still stops dead,
+  // which is what it should do: a sunrise on a day with no sunrise is the
+  // manufactured number this whole change is built to avoid.
+  function converge(pick, jd0, latitude, longitude, zenith, throughDark) {
     var working = noaa(jd0, latitude, longitude, zenith);
-    if (working.never) return working;
+    if (working.never && !throughDark) return working;
 
     var minutes = pick(working), passes = 0, moved = null;
     for (var i = 0; i < EPOCH_MAX_PASSES; i++) {
       var next = noaa(jd0 + minutes / 1440, latitude, longitude, zenith);
       passes += 1;
-      if (next.never) return next;
+      if (next.never && !throughDark) return next;
       var settled = pick(next);
       moved = Math.abs(settled - minutes);
       minutes = settled;
@@ -476,6 +489,16 @@
   function pickSunrise(w) { return w.sunriseUTC; }
   function pickSunset(w) { return w.sunsetUTC; }
   function pickSolarNoon(w) { return w.solarNoonUTC; }
+  // The other culmination — the sun at its lowest, half a turn of the earth
+  // round from its highest. `solarNoonUTC + 720` is a *definition* and not a
+  // derivation, and the page says so on its face: the lower transit twelve
+  // hours after this date's meridian transit. Which side to take is a real
+  // choice, because the two candidates (noon − 12h and noon + 12h) belong to
+  // different UTC days at most longitudes, and neither is more the day's own
+  // than the other. Taking the later one always is a convention a reader can
+  // apply themselves; taking whichever happens to land inside the civil day
+  // would be a rule that changes with longitude, which is worse.
+  function pickSolarMidnight(w) { return w.solarNoonUTC + 720; }
 
   // Everything method A has to say about one date, each event settled at
   // its own epoch. Returns a `never` object unchanged if the sun does not
@@ -1034,9 +1057,48 @@
 
     var a = solarDay(year, month, day, place.latitude, place.longitude, zenith);
     if (a.never) {
+      // A dark day: the sun never rises or never sets. We still compute and
+      // publish solar noon and its declination, because those are real and
+      // checkable. The working object contains the NOAA computation at midnight;
+      // we ask again at the expected noon time to get the declination at the
+      // moment the sun is highest (or lowest).
+      var jd = julianDay(year, month, day);
+      var noon = converge(pickSolarNoon, jd, place.latitude, place.longitude, zenith);
+
+      // If even solar noon failed, we're in polar twilight — the sun never crosses
+      // the specific altitude we're testing for. In that case, use the midnight
+      // working and publish just the declination at midnight.
+      var noonWorking = noon.never ? a.working : noon;
+      var offsetNoon = zoneOffsetMinutes(dateISO, noonWorking.solarNoonUTC, place.zone);
+
+      // Method B's cross-check: what time does method B say the sun would reach
+      // the horizon (if it ever did)? This is the one quantity we can ask even
+      // when the sun never rises.
+      var bRise = usno(year, month, day, place.latitude, place.longitude, true, zenith);
+      var bSet = usno(year, month, day, place.latitude, place.longitude, false, zenith);
+
       return {
-        date: dateISO, method: METHOD, working: a.working, place: place,
-        horizon: h, never: a.never
+        date: dateISO,
+        method: METHOD,
+        working: a.working,
+        place: place,
+        horizon: h,
+        never: a.never,
+        solarNoon: clockFace(noonWorking.solarNoonUTC, offsetNoon).hhmm,
+        solarNoonUTCMinutes: noonWorking.solarNoonUTC,
+        // The declination at solar noon, the moment the sun is highest (or lowest)
+        declinationDegrees: noonWorking.declination,
+        // Method B's answer to the same question, if both sunrise and sunset
+        // can be computed (i.e., if method B sees something different)
+        crossCheck: bRise === null || bSet === null ? null : {
+          method: 'USNO Almanac for Computers',
+          // These times are what method B claims would be sunrise/sunset if the sun
+          // reached the horizon, even though method A says it never does
+          sunrise: clockFace(bRise, offsetNoon).hhmm,
+          sunset: clockFace(bSet, offsetNoon).hhmm,
+          sunriseSeparationMinutes: bRise - noonWorking.solarNoonUTC,
+          sunsetSeparationMinutes: bSet - noonWorking.solarNoonUTC
+        }
       };
     }
 
