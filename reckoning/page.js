@@ -392,19 +392,20 @@
   // a real row carries, on both desks, and names any that only one of them
   // convicts. It also names the ones neither does.
   var CLAIMS = [
-    ['never', 'whether the sun rose'],
-    ['sunrise', 'sunrise'],
-    ['sunset', 'sunset'],
-    ['solarNoon', 'solar noon'],
-    ['dayLengthMinutes', 'day length'],
-    ['changeSinceYesterdayMinutes', 'drift'],
-    ['utcOffsetMinutes', 'clock offset from UTC'],
-    ['dayLength', 'day length in words'],
-    ['risingPointDegrees', 'rising point'],
-    ['settingPointDegrees', 'setting point'],
-    ['risingPointTomorrowDegrees', 'tomorrow’s rising point'],
-    ['risingPointStepArcminutes', 'step to tomorrow'],
-    ['risingPointStepSunWidths', 'step in sun-widths']
+    [‘never’, ‘whether the sun rose’],
+    [‘sunrise’, ‘sunrise’],
+    [‘sunset’, ‘sunset’],
+    [‘solarNoon’, ‘solar noon’],
+    [‘dayLengthMinutes’, ‘day length’],
+    [‘changeSinceYesterdayMinutes’, ‘drift’],
+    [‘utcOffsetMinutes’, ‘clock offset from UTC’],
+    [‘dayLength’, ‘day length in words’],
+    [‘risingPointDegrees’, ‘rising point’],
+    [‘settingPointDegrees’, ‘setting point’],
+    [‘risingPointTomorrowDegrees’, ‘tomorrow’s rising point’],
+    [‘risingPointStepArcminutes’, ‘step to tomorrow’],
+    [‘risingPointStepSunWidths’, ‘step in sun-widths’],
+    [‘declinationDegrees’, ‘sun declination at noon’]
   ];
 
   // Fields that are on a row without being a claim the recompute can answer
