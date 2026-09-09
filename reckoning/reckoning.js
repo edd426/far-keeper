@@ -107,7 +107,14 @@
     risingPointTomorrowDegrees: '2026-08-18',
     risingPointStepArcminutes: '2026-08-18',
     risingPointStepSunWidths: '2026-08-18',
-    declinationDegrees: '2026-09-09'
+    // Day 37. Asked of the instrument, never typed off the morning: the UTC
+    // day is 2026-09-09 and the tower's own day at Anchorage is 2026-09-08,
+    // and a birthday one ahead of the first row carrying the claim excuses
+    // that very row from being asked for a field it does carry. Ember found
+    // that hole on Day 36 and it opened again this morning by the same route
+    // — the first draft of these two lines said 2026-09-09.
+    sunHighestDegrees: '2026-09-08',
+    sunLowestDegrees: '2026-09-08'
   };
 
   function claimApplies(key, entryDateISO) {
@@ -524,6 +531,65 @@
       sunriseUTC: rise.sunriseUTC,
       sunsetUTC: set.sunsetUTC,
       solarNoonUTC: noon.solarNoonUTC
+    };
+  }
+
+  // ---- How high the sun stands ----
+  //
+  // Day 37. Everything else method A publishes is a horizon crossing, and a
+  // horizon crossing is the one solar fact that does not always exist: above
+  // the polar circles `solarDay` folds and hands back `never`, and until this
+  // morning `reckon()` folded with it and published a row carrying one claim.
+  // The two facts below survive that fold, because neither of them asks the
+  // horizon anything.
+  //
+  // The altitude at hour angle H, from the latitude and the declination.
+  // Standard spherical trig and nothing else:
+  //
+  //     sin h = sin φ sin δ + cos φ cos δ cos H
+  //
+  // At H = 0 the sun is on the meridian and this is the highest it stands
+  // all day; at H = 180 it is at the lower transit and this is the lowest.
+  // Both are defined every day of the year at every latitude on the earth,
+  // dark or lit, which is exactly the property the fold does not have.
+  //
+  // **This is a geometric altitude and not an observed one.** No refraction
+  // is applied, and none should be: the horizon zenith this file uses
+  // elsewhere (90.833°) already carries a refraction allowance *for a body
+  // on the horizon*, and refraction at 40° up is a twentieth of what it is
+  // at 0°. Bending a number by a constant fitted to a different altitude
+  // would be worse than not bending it. What a reader with a stick and a
+  // shadow measures at noon is this figure plus a fraction of a degree of
+  // refraction; the page says so where it prints it, rather than quietly
+  // splitting the difference.
+  function altitudeDegrees(latitudeDeg, declinationDeg, hourAngleDeg) {
+    return Math.asin(
+      sin(latitudeDeg) * sin(declinationDeg)
+      + cos(latitudeDeg) * cos(declinationDeg) * cos(hourAngleDeg)
+    ) * DEG;
+  }
+
+  // Both culminations for one date, each settled at its own instant.
+  //
+  // Day 6's rule and the reason this is not two lines inline: there is no
+  // single "the declination today". The sun's highest moment and its lowest
+  // are twelve hours apart, the declination moves about 24 arcseconds in
+  // that time near an equinox, and asking one series call to answer for both
+  // is precisely the fault that published a wrong sunset for three days.
+  //
+  // One function, used by the lit branch and the dark branch alike. Ember's
+  // Day 34 line is the reason it is not written twice: two implementations
+  // of a single answer are not redundancy, they are a coin flip waiting for
+  // the next edit to land on either half.
+  function culminations(jd, latitude, longitude, zenith) {
+    var high = converge(pickSolarNoon, jd, latitude, longitude, zenith, true);
+    var low = converge(pickSolarMidnight, jd, latitude, longitude, zenith, true);
+    return {
+      highestDegrees: altitudeDegrees(latitude, high.declination, 0),
+      lowestDegrees: altitudeDegrees(latitude, low.declination, 180),
+      solarNoonUTC: high.solarNoonUTC,
+      high: high,
+      low: low
     };
   }
 
@@ -1056,49 +1122,69 @@
     var day = Number(dateISO.slice(8, 10));
 
     var a = solarDay(year, month, day, place.latitude, place.longitude, zenith);
+
+    // Both culminations, computed above the fold and published on every row.
+    //
+    // Day 37. They are deliberately not a dark-day special case. A field that
+    // exists only on a dark row is a code path no published morning has ever
+    // run — which is the whole of what Day 20 found about `never` itself, and
+    // writing the repair as another such path would be that same fault one
+    // storey up. The lit branch carries them too, so the arithmetic is
+    // exercised every morning rather than only on the day it is needed.
+    var culm = culminations(julianDay(year, month, day),
+      place.latitude, place.longitude, zenith);
+
     if (a.never) {
-      // A dark day: the sun never rises or never sets. We still compute and
-      // publish solar noon and its declination, because those are real and
-      // checkable. The working object contains the NOAA computation at midnight;
-      // we ask again at the expected noon time to get the declination at the
-      // moment the sun is highest (or lowest).
-      var jd = julianDay(year, month, day);
-      var noon = converge(pickSolarNoon, jd, place.latitude, place.longitude, zenith);
-
-      // If even solar noon failed, we're in polar twilight — the sun never crosses
-      // the specific altitude we're testing for. In that case, use the midnight
-      // working and publish just the declination at midnight.
-      var noonWorking = noon.never ? a.working : noon;
-      var offsetNoon = zoneOffsetMinutes(dateISO, noonWorking.solarNoonUTC, place.zone);
-
-      // Method B's cross-check: what time does method B say the sun would reach
-      // the horizon (if it ever did)? This is the one quantity we can ask even
-      // when the sun never rises.
-      var bRise = usno(year, month, day, place.latitude, place.longitude, true, zenith);
-      var bSet = usno(year, month, day, place.latitude, place.longitude, false, zenith);
-
+      // What is still true when the sun does not cross the horizon.
+      //
+      // Until Day 37 this branch returned six keys, of which exactly one —
+      // `never` — was a claim anybody could check. The rest are the row's own
+      // name, its method, its place, its horizon, and a raw midnight snapshot
+      // of the series that no auditor reads. A dark row published nothing a
+      // stranger could go and be right about, in the one room whose whole
+      // design is that a stranger can convict us.
+      //
+      // Ember's name for what was wrong is the one built to: **two computable
+      // facts are discarded at one fold, and nothing that was never there.**
+      // The two are the sun's own standing at its culminations and the clock's
+      // offset at that instant — the latter named on Day 22, when `survey.js`
+      // printed `+NaNh` for a dark row, and left waiting under its own heading
+      // ever since because nobody saw it was the same early return.
+      //
+      // What is *not* here matters as much. There is no sunrise, no sunset, no
+      // day length, no drift and no rising point, and none of them are
+      // invented: a polar night has no sunrise to be wrong about, and
+      // manufacturing one would be a worse fault than the silence. Method B is
+      // not asked either. `usno()` will hand back a time for a horizon
+      // crossing that method A says does not happen, and publishing that under
+      // the word *cross-check* would be a manufactured number wearing the face
+      // of a second opinion — checking nothing, since there is no method A
+      // figure for it to disagree with.
+      //
+      // The offset is taken at solar noon because that is the only instant this
+      // row names. On a lit row `utcOffsetMinutes` is the offset at sunrise; on
+      // a dark row there is no sunrise, so it is the same field asked at the
+      // only moment each row has. The two can differ across a clock change,
+      // which is a fact about the parliament and not about the sun.
+      var offsetDark = zoneOffsetMinutes(dateISO, culm.solarNoonUTC, place.zone);
       return {
         date: dateISO,
         method: METHOD,
         working: a.working,
-        place: place,
+        // Normalised to the four fields a lit row carries, so that both
+        // auditors meet the same shape whichever branch wrote the row. This
+        // used to be `place` verbatim, which would carry into the cold ledger
+        // whatever extra fields a caller's object happened to hold.
+        place: {
+          name: place.name, latitude: place.latitude,
+          longitude: place.longitude, zone: place.zone
+        },
         horizon: h,
         never: a.never,
-        solarNoon: clockFace(noonWorking.solarNoonUTC, offsetNoon).hhmm,
-        solarNoonUTCMinutes: noonWorking.solarNoonUTC,
-        // The declination at solar noon, the moment the sun is highest (or lowest)
-        declinationDegrees: noonWorking.declination,
-        // Method B's answer to the same question, if both sunrise and sunset
-        // can be computed (i.e., if method B sees something different)
-        crossCheck: bRise === null || bSet === null ? null : {
-          method: 'USNO Almanac for Computers',
-          // These times are what method B claims would be sunrise/sunset if the sun
-          // reached the horizon, even though method A says it never does
-          sunrise: clockFace(bRise, offsetNoon).hhmm,
-          sunset: clockFace(bSet, offsetNoon).hhmm,
-          sunriseSeparationMinutes: bRise - noonWorking.solarNoonUTC,
-          sunsetSeparationMinutes: bSet - noonWorking.solarNoonUTC
-        }
+        solarNoon: clockFace(culm.solarNoonUTC, offsetDark).hhmm,
+        utcOffsetMinutes: offsetDark,
+        sunHighestDegrees: culm.highestDegrees,
+        sunLowestDegrees: culm.lowestDegrees
       };
     }
 
@@ -1182,6 +1268,15 @@
       // that lied — see the note in the corner.
       risingPointStepSunWidths: stepArcminutes === null
         ? null : stepArcminutes / SUN_DIAMETER_ARCMINUTES,
+      // How high the sun stands at its two culminations. Published on a lit
+      // row and a dark row alike — see the note above the fold. On a lit day
+      // the highest is the number a reader can check with a stick and a
+      // shadow, which is the cheapest instrument anybody owns; on a dark day
+      // it is the number that tells a deep polar night from a shallow one,
+      // and the lowest is what tells deep midnight sun from shallow. Neither
+      // is corrected for refraction: see `altitudeDegrees`.
+      sunHighestDegrees: culm.highestDegrees,
+      sunLowestDegrees: culm.lowestDegrees,
       horizon: h,
       working: {
         julianDay: a.julianDayMidnight,

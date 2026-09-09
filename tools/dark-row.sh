@@ -263,8 +263,26 @@ verify_case() {
     const PARIS = { name: 'Paris', latitude: 48.8566, longitude: 2.3522, zone: 'Europe/Paris' };
     const dark = R.reckon('$DARK_DATE', TROMSO);
     dark.publishedAt = '${DARK_DATE}T09:00:00Z';
-    const light = R.reckon('2026-08-30', PARIS);
-    light.publishedAt = '2026-08-30T05:00:00Z';
+    // The lit companion row's date is asked of the instrument, not typed.
+    //
+    // Day 37, and this cost two suites a red morning before it was
+    // understood. It read '2026-08-30'. A manufactured row is built by
+    // *today's* \`reckon()\`, so it carries every field today's instrument
+    // publishes — and a row stamped with a date older than the newest
+    // CLAIM_INTRODUCED is a row carrying a claim its own date predates,
+    // which the symmetric half of the birthday rule convicts, correctly and
+    // about the fixture rather than the tool. That is not a one-morning
+    // collision: **any** fixture in this house that manufactures a row and
+    // dates it from the past reopens it the next time a claim is born, and
+    // it will read as the auditor being broken.
+    //
+    // So the date is the newest birthday the instrument holds, taken from
+    // the instrument. A row on that date is the oldest row that can honestly
+    // carry everything today's \`reckon()\` emits, and it moves by itself the
+    // next time a claim is introduced.
+    const born = Object.values(R.CLAIM_INTRODUCED).sort().pop();
+    const light = R.reckon(born, PARIS);
+    light.publishedAt = born + 'T05:00:00Z';
     const rows = [light, dark];
     ($mutate)(rows);
     fs.writeFileSync('$work/reckoning/ledger.json', JSON.stringify(rows, null, 2) + '\n');

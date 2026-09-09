@@ -75,7 +75,37 @@ bad()  { fails=$((fails + 1)); echo "FAIL  $1"; [ -n "${2:-}" ] && echo "$2" | s
 # would have this file testing two things and proving neither.
 
 ELSEWHERE_NAME="Reykjavik"
+# The date the manufactured row claims, and it is the tower's own today
+# rather than the newest date in the book. Day 37, and the change was forced
+# by a failure this file reported honestly.
+#
+# It used to take the ledger's last date. That is the newest row the tower
+# has *published*, which is always the morning before the one being written —
+# so on any morning a claim is born, `reckon()` emits a field whose birthday
+# is today and the fixture stamps it with yesterday. The symmetric half of
+# the birthday rule then fires exactly as designed: *this entry carries it,
+# but 2026-09-07 predates 2026-09-08*. Two cases went red about a fixture,
+# not about the auditor they were pointed at.
+#
+# That is not a one-morning collision. It is a standing hazard for **any**
+# fixture in this house that rebuilds a ledger row with today's instrument
+# and dates it from the record: the record's newest date can never be a date
+# whose claims are all born yet. An honest row written now is dated now, so
+# the fixture is dated now, and the next claim this tower introduces cannot
+# reopen this.
+#
+# The two dates below were one variable until this morning, and the second
+# failure this change produced was that conflation coming apart: the
+# UNPLACED cases do not manufacture anything, they take the *real* newest row
+# and break its place, so they must grep for the date that row actually
+# carries. One name over two questions is this house's oldest fault in its
+# smallest clothes.
 LAST_DATE="$(node -e '
+const path = require("path");
+const R = require(path.join(process.argv[1], "reckoning/reckoning.js"));
+process.stdout.write(R.todayAt(R.STANDING.place.zone));
+' "$WORK")"
+PRISTINE_LAST_DATE="$(node -e '
 const led = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8"));
 process.stdout.write(led[led.length - 1].date);
 ' "$PRISTINE")"
@@ -244,10 +274,10 @@ fs.writeFileSync(out, JSON.stringify(led, null, 2) + "\n");
   fi
   local out
   out="$(verify_on "$WORK/unplaced.json")"
-  if echo "$out" | grep -q "^reckon: $LAST_DATE UNPLACED"; then
+  if echo "$out" | grep -q "^reckon: $PRISTINE_LAST_DATE UNPLACED"; then
     note "$1"
   else
-    bad "$1 — not reported UNPLACED" "$(echo "$out" | grep "$LAST_DATE")"
+    bad "$1 — not reported UNPLACED" "$(echo "$out" | grep "$PRISTINE_LAST_DATE")"
   fi
 }
 

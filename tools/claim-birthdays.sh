@@ -66,7 +66,20 @@ note "the rising point's birthday, read from the tool: $BORN"
 
 # drifted <ledger-file> -> prints the number of DRIFTED rows, exit code aside
 drifted() {
-  cp "$1" "$WORK/reckoning/ledger.json"
+  # Day 37, and this is Day 17's own fault sitting in the file that tells
+  # Day 17's story. When the fixture above failed to build, `fresh.json` did
+  # not exist, `cp` printed to stderr and carried on, the ledger in $WORK was
+  # still the pristine copy — and this function dutifully counted **3**, the
+  # right answer to a question about the wrong file. The case under it printed
+  # `ok` about a fixture that was never made. An empty domain says yes in the
+  # voice of a check that worked, and the voice here was a correct count.
+  #
+  # So the ledger a case is about must arrive before the case is judged. A
+  # count of -1 can match no expectation this file holds.
+  if ! cp "$1" "$WORK/reckoning/ledger.json" 2>/dev/null; then
+    echo "-1"
+    return
+  fi
   (cd "$WORK" && node tools/reckon.js --verify 2>&1) | grep -c 'HAS DRIFTED'
 }
 verify_out() {
@@ -176,6 +189,22 @@ if (typeof fresh.risingPointDegrees !== "number") {
   console.error("reckon() itself returned no rising point for " + born);
   process.exit(1);
 }
+// A row of that age carries what the tower published THEN, and the
+// instrument running today publishes more. Day 37: the two culminations were
+// introduced this morning, so a row manufactured for 2026-08-18 by the
+// current reckon() carries two fields its own date predates — and the
+// symmetric half of the birthday rule convicts it, correctly, for a graft
+// this fixture committed. It arrived as a fourth DRIFTED row where three
+// were expected, which reads exactly like the auditor being broken.
+//
+// So the manufactured row is aged to its date: every claim born after the
+// row is taken back off it. The list comes from CLAIM_INTRODUCED and not
+// from here, so the next claim this tower introduces cannot reopen this, and
+// what is spliced is what a row of that age could honestly have said.
+const { CLAIM_INTRODUCED } = require(path.resolve(process.argv[1], "reckoning/reckoning.js"));
+Object.keys(CLAIM_INTRODUCED).forEach((key) => {
+  if (born < CLAIM_INTRODUCED[key]) delete fresh[key];
+});
 const at = l.findIndex((x) => x.date === born);
 if (at < 0) { console.error("no " + born + " row to replace"); process.exit(1); }
 fresh.publishedAt = l[at].publishedAt;

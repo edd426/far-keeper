@@ -228,6 +228,53 @@
     }
   }
 
+  // ---- How high the sun stands ----
+  //
+  // Day 37. The two culminations, drawn the same way on a lit morning and a
+  // dark one, from the same two fields. One function and not two: a lit
+  // reader and a dark reader are being told the same fact, and a second
+  // copy would be a coin flip waiting for the next edit to land on either
+  // half (Ember, Day 34).
+  //
+  // The highest is the figure a reader can actually go and check with the
+  // cheapest instrument there is — a stick, a shadow, and the arithmetic
+  // arctan(height ÷ shadow) at the solar noon printed two lines above. That
+  // is the whole reason it is on the page rather than in the working: it is
+  // the one number this tower publishes that does not need a clock accurate
+  // to the second, a level horizon, or anybody's almanac.
+  function addCulminations(list, entry) {
+    if (entry.sunHighestDegrees === undefined || entry.sunLowestDegrees === undefined) return;
+    addFigure(list, 'the sun at its highest', round(entry.sunHighestDegrees, 3) + '°');
+    addFigure(list, 'the sun at its lowest', round(entry.sunLowestDegrees, 3) + '°');
+  }
+
+  // The sentence under those two figures, and it is doing three jobs that a
+  // reader is owed and that no test can hold me to.
+  //
+  // It says the numbers are geometric and not observed — no refraction, so a
+  // measured noon shadow will read a fraction of a degree higher than this,
+  // and a reader who does not know that will think the tower is wrong when it
+  // is being exact. It says which lower transit is meant, because "twelve
+  // hours after this date's noon" is a convention and not a derivation: at
+  // most longitudes it falls on the next UTC date, and a convention nobody
+  // states is one nobody can check. And it says outright that the agreement
+  // between these figures and the `never` above them is not a second opinion:
+  // `cos H` outside [−1, 1] and *the highest stands below the horizon* are the
+  // same trig in two shirts, so a check between them would be Day 21's echo
+  // wearing a witness's coat. Ember was asked whether to build that check and
+  // said state it instead.
+  function culminationNote() {
+    return 'Both are geometric: the angle the sun’s centre makes with a level ' +
+      'horizon, with no refraction added. Air bends the light, so a shadow ' +
+      'measured at the solar noon above will put the sun a fraction of a ' +
+      'degree higher than this — most at the horizon, least overhead. The ' +
+      'lowest is the transit twelve hours after that noon, which at most ' +
+      'longitudes falls on the next UTC date; that is a convention of ours ' +
+      'and not a fact of the sky. And these two agreeing with the line about ' +
+      'sunrise above is not a check: whether the sun rises is the same ' +
+      'arithmetic as how high it gets, asked once and read twice.';
+  }
+
   function renderToday(entry) {
     document.getElementById('today-loading').hidden = true;
 
@@ -266,6 +313,15 @@
         (d.sign < 0 ? 'shorter' : 'longer') + ' than yesterday.';
       drift.className = 'drift-figure ' + (d.sign < 0 ? 'drift--shorter' : 'drift--longer');
     }
+
+    addCulminations(figures, entry);
+    // The same caveat on a lit morning as on a dark one. Refraction and the
+    // twelve-hour convention are properties of the two figures, not of the
+    // dark — printing the note only where the sun does not rise would make it
+    // read as a fact about polar nights, and leave every ordinary morning's
+    // reader thinking a measured shadow ought to match to the arcminute.
+    var note = document.getElementById('today-dark-note');
+    if (note) { note.hidden = false; note.textContent = culminationNote(); }
 
     renderRisingPoint(entry);
 
@@ -392,20 +448,21 @@
   // a real row carries, on both desks, and names any that only one of them
   // convicts. It also names the ones neither does.
   var CLAIMS = [
-    [‘never’, ‘whether the sun rose’],
-    [‘sunrise’, ‘sunrise’],
-    [‘sunset’, ‘sunset’],
-    [‘solarNoon’, ‘solar noon’],
-    [‘dayLengthMinutes’, ‘day length’],
-    [‘changeSinceYesterdayMinutes’, ‘drift’],
-    [‘utcOffsetMinutes’, ‘clock offset from UTC’],
-    [‘dayLength’, ‘day length in words’],
-    [‘risingPointDegrees’, ‘rising point’],
-    [‘settingPointDegrees’, ‘setting point’],
-    [‘risingPointTomorrowDegrees’, ‘tomorrow’s rising point’],
-    [‘risingPointStepArcminutes’, ‘step to tomorrow’],
-    [‘risingPointStepSunWidths’, ‘step in sun-widths’],
-    [‘declinationDegrees’, ‘sun declination at noon’]
+    ['never', 'whether the sun rose'],
+    ['sunrise', 'sunrise'],
+    ['sunset', 'sunset'],
+    ['solarNoon', 'solar noon'],
+    ['dayLengthMinutes', 'day length'],
+    ['changeSinceYesterdayMinutes', 'drift'],
+    ['utcOffsetMinutes', 'clock offset from UTC'],
+    ['dayLength', 'day length in words'],
+    ['risingPointDegrees', 'rising point'],
+    ['settingPointDegrees', 'setting point'],
+    ['risingPointTomorrowDegrees', 'tomorrow’s rising point'],
+    ['risingPointStepArcminutes', 'step to tomorrow'],
+    ['risingPointStepSunWidths', 'step in sun-widths'],
+    ['sunHighestDegrees', 'the sun at its highest'],
+    ['sunLowestDegrees', 'the sun at its lowest']
   ];
 
   // Fields that are on a row without being a claim the recompute can answer
@@ -630,14 +687,21 @@
         // stood still; this is the same move for the same reason, one row
         // further along. Day 20.
         row.appendChild(el('p', 'ledger__note', published.never
+          // Day 37. This sentence said *that is the whole of what this row
+          // claims* about a row carrying one word, and it was true when it
+          // was written. The morning the fold stopped discarding solar noon,
+          // the clock offset and the two culminations, it went on saying it
+          // — Day 33's told book, and the same sentence in `tools/reckon.js`
+          // went with it. So the count comes off the row and the list at
+          // render time, exactly like the lit row's below: a figure counted
+          // cannot go stale, and this one was typed.
           ? 'published ' + published.publishedAt + ', and it recomputes here, now, ' +
-            'in your browser, at ' + placeName + ', to the same one word. That is ' +
-            'the whole of what this row claims and the whole of what was just ' +
-            'checked: on a day the sun does not clear the horizon there is no ' +
-            'sunrise, no day length and no drift to hold anyone to. It is a ' +
-            'lighter row than the ones above it with times on them, and it wears ' +
-            'the same green word, so the difference is said here rather than left ' +
-            'for you to notice.'
+            'in your browser, at ' + placeName + '. On a day the sun does not clear ' +
+            'the horizon there is no sunrise, no day length and no drift to hold ' +
+            'anyone to, and none is invented. ' + scopeOfCheck(published) +
+            ' It is a lighter row than the ones above it with times on them, and it ' +
+            'wears the same green word, so the difference is said here rather than ' +
+            'left for you to notice.'
           : 'published ' + published.publishedAt + ', and it recomputes here, now, ' +
           'in your browser, at ' + placeName + ', to exactly those numbers. ' +
           scopeOfCheck(published) +
@@ -691,6 +755,39 @@
         var mount = document.getElementById('today-loading');
         mount.hidden = false;
         mount.textContent = neverWords(entry.never, entry.place.name);
+        // Day 37. Until this morning that sentence was the whole of a dark
+        // morning's room: one paragraph, no figures, and a reader standing in
+        // the one place on earth where this instrument is most interesting was
+        // handed nothing to be right or wrong about. The fold discards the
+        // horizon crossings, which genuinely are not there — and discarded
+        // with them two facts that are.
+        var darkFigures = document.getElementById('today-figures');
+        darkFigures.hidden = false;
+        addFigure(darkFigures, 'date', entry.date);
+        addFigure(darkFigures, 'solar noon', entry.solarNoon, 'big');
+        addCulminations(darkFigures, entry);
+        addFigure(darkFigures, 'clock', entry.place.zone + ', UTC' +
+          (entry.utcOffsetMinutes < 0 ? '' : '+') + (entry.utcOffsetMinutes / 60));
+        addFigure(darkFigures, 'place',
+          Math.abs(entry.place.latitude).toFixed(4) + '°' + (entry.place.latitude < 0 ? 'S' : 'N') + ', ' +
+          Math.abs(entry.place.longitude).toFixed(4) + '°' + (entry.place.longitude < 0 ? 'W' : 'E'));
+        var darkNote = document.getElementById('today-dark-note');
+        if (darkNote) {
+          darkNote.hidden = false;
+          // What is missing is named, and named as missing rather than left
+          // as a gap a reader has to notice. There is no sunrise here and
+          // this tower will not invent one; method B is not printed either,
+          // because it will hand back a time for a crossing method A says
+          // does not happen, and a lone number with nothing to disagree with
+          // is not a cross-check however it is labelled.
+          darkNote.textContent = 'There is no sunrise, no sunset, no length of ' +
+            'day and no rising point on this date, and none of them are ' +
+            'estimated here: a day with no horizon crossing has no horizon ' +
+            'crossing to be wrong about. The second method is not printed for ' +
+            'the same reason — it will name a time for a crossing the first ' +
+            'method says does not happen, and a number with nothing to ' +
+            'disagree with is not a cross-check. ' + culminationNote();
+        }
         return;
       }
       renderToday(entry);
