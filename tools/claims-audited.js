@@ -59,6 +59,13 @@
 // is outside its sight, and it says so on its own face. Day 34's rule: a
 // reader handed a verdict without its sight limit is reading a check past
 // its own edge.
+//
+// Day 38: the leaf question is asked now, by `tools/ledger-working.js` — and
+// the three objects turning AUDITED here is what that morning was for. This
+// caveat is narrowed rather than deleted, because it is still true of *this*
+// tool: it forges wholesale, and a suite whose sight limit stops being
+// printed the day somebody else covers it is how a house forgets which tool
+// knows what.
 
 const { chromium } = require('playwright');
 const { execFileSync } = require('child_process');
@@ -305,7 +312,8 @@ function deskConvicts(scratch, entries, targetDate, field) {
   console.log('');
   console.log('claims-audited: this forges top-level fields only. A forged leaf inside ' +
     'working, crossCheck, place or horizon is outside its sight, and it does not ' +
-    'claim otherwise.');
+    'claim otherwise. Since Day 38 the leaf question is asked next door, by ' +
+    'tools/ledger-working.js — but by that tool and not by this one.');
 
   // Day 10. The cold record's bytes, whatever else happened.
   const ledgerBytesAfter = fs.readFileSync(LEDGER);

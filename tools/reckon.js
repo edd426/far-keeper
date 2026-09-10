@@ -45,7 +45,8 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const LEDGER = path.join(ROOT, 'reckoning', 'ledger.json');
-const { reckon, STANDING, todayAt, samePlace, METHOD, CLAIM_INTRODUCED, claimApplies } =
+const { reckon, STANDING, todayAt, samePlace, METHOD, CLAIM_INTRODUCED, claimApplies,
+        deepDifferences, deepPathCount } =
   require(path.join(ROOT, 'reckoning', 'reckoning.js'));
 
 function readLedger() {
@@ -297,6 +298,7 @@ function verify(entries) {
   let methodMoved = 0;
   let unplaced = 0;
   let dark = 0;
+  let deepUncheckable = 0;
   for (const entry of entries) {
     // The row is recomputed at the place the row names, never at PARIS.
     // See the long note above `placeProblem` — until Day 18 this line read
@@ -314,7 +316,16 @@ function verify(entries) {
     }
     const where = entry.place;
     const fresh = reckon(entry.date, where);
-    const diffs = differences(entry, fresh);
+    // Day 38. The shallow claims and the deep paths are asked separately and
+    // reported together. `deepDifferences` returns null for a row written
+    // under a method this file no longer runs: the arithmetic that made that
+    // working is gone, so there is nothing here that could recompute it, and
+    // counting such a row among the quiet ones would be reading silence as a
+    // witness (Day 31's own words, and Day 2's rule about a tool that cannot
+    // see).
+    const deep = deepDifferences(entry, fresh);
+    if (deep === null) deepUncheckable += 1;
+    const diffs = differences(entry, fresh).concat(deep || []);
     if (diffs.length === 0) {
       // The place is inside the verdict rather than printed beside it,
       // because what was established is *unchanged given this place* and
@@ -348,7 +359,17 @@ function verify(entries) {
         console.log(`reckon:   so there is no sunrise, no sunset and no day length on it. ${held.length} other`);
         console.log(`reckon:   ${held.length === 1 ? 'figure was' : 'figures were'} held besides that word: ${held.join(', ')}.`);
       } else {
-        console.log(`reckon: ${entry.date} unchanged at ${where.name} since it was published.`);
+        // Day 38. The badge's scope is said out loud rather than left to be
+        // assumed, which is Day 18's move for the fourth time: what changed
+        // this morning was not the word but its power, and the honest repair
+        // to a verdict that now covers sixty more numbers is to name them.
+        // Counted off the row at the moment of printing, never typed.
+        const held = deepPathCount(entry);
+        console.log(`reckon: ${entry.date} unchanged at ${where.name} since it was published` +
+          (deep === null
+            ? ` — but not its working: ${held} paths of it were published under method ` +
+              `${entry.method || 1}, and this file cannot recompute them.`
+            : `, working and all — ${held} paths of it held besides the claims.`));
       }
     } else {
       const entryMethod = entry.method || 1;
@@ -362,6 +383,13 @@ function verify(entries) {
     }
   }
   const drifted = sameMethod + methodMoved;
+  if (deepUncheckable > 0) {
+    console.log('');
+    console.log(`reckon: ${deepUncheckable} entr${deepUncheckable === 1 ? 'y shows' : 'ies show'} a working this file can never check.`);
+    console.log('reckon: they were computed under a method whose code is gone, so their showing');
+    console.log('reckon: of the work is a claim nobody — here or in a stranger\'s browser — can');
+    console.log('reckon: ever hold to anything. Their figures are still audited; the working is not.');
+  }
   if (unplaced > 0) {
     console.log('');
     console.log(`reckon: ${unplaced} entr${unplaced === 1 ? 'y was' : 'ies were'} not checked at all.`);

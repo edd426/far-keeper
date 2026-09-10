@@ -122,6 +122,312 @@
     return !introduced || entryDateISO >= introduced;
   }
 
+  // ---- The working is part of what a row claims ----
+  //
+  // Day 38. `horizon`, `working` and `crossCheck` are objects, and for a
+  // month and two days neither auditor reached inside one. `tools/reckon.js`
+  // named them in a comment — *a deep compare is a different kind of check,
+  // not a longer version of this one* — and `tools/claims-audited.js` has
+  // printed them UNAUDITED on every run since Day 36, which is the only
+  // reason the hole was in front of a morning at all.
+  //
+  // What was going unread: about fifty-seven numbers, and they are not
+  // scratch. `working` is the whole showing of the work — the Julian day
+  // and century, the eccentricity, the horizon zenith and its sensitivity,
+  // the epoch corrections, and then the full solar series evaluated three
+  // times over, at sunrise, at sunset and at solar noon. `crossCheck` is
+  // the second method's own answer and the size of its disagreement, and
+  // the second method's only job in this house is to be able to disagree.
+  //
+  // The reckoning room's spine, from Day 3, is three sentences and the
+  // second is *show the working so a stranger can find the error without
+  // trusting us*. So the part of the row offered as the reason to trust it
+  // was the part nothing looked at — Day 8, in the one place it costs most.
+  //
+  // Ember's cut on the way in, and half of it is taken. It said `passes`
+  // and `lastMoveSeconds` are a record of how hard the arithmetic worked
+  // rather than a claim the sun could disagree with, and that they wanted
+  // sorting before a leaf compare. On the *drift* question I think that is
+  // the wrong test, and Day 11 is why: the green word is `unchanged`, never
+  // `holds`, because all a recompute can establish is that a published
+  // number has not moved. Whether the sky could contradict a number has no
+  // bearing on whether a hand could edit it, and a row whose convergence
+  // residual has been quietly rewritten is a row lying about how it was
+  // made. Where Ember is right is one seam over: what a *reader* should be
+  // shown as evidence is a different question from what an auditor should
+  // hold, and that one is still open.
+
+  // The deep fields, in the order a reader meets them.
+  var DEEP_CLAIMS = ['horizon', 'working', 'crossCheck'];
+
+  // ---- Birthdays for the paths inside them ----
+  //
+  // The record has four shapes, not one, and every change of shape is a
+  // lawful birth. Switching a deep compare on without these turns thirty-one
+  // innocent rows red and hands the nine on the running method the Day 11
+  // forgery sentence — the exact fault Day 15 was built to stop and Day 37
+  // watched fire again from a different direction.
+  //
+  // The list is short because the method fork does most of the work. The
+  // three rows of 2026-08-06 to 08 were written under method 1, whose code
+  // no longer exists in this file; a recompute under method 2 cannot speak
+  // to a working that method 1 produced, so those rows are abstained on
+  // outright rather than being asked a question no arithmetic here can
+  // answer. Every path that lived only in those rows leaves with them, and
+  // what is left is seven births inside the running method.
+  //
+  // **Where these dates come from, which matters more than the dates.**
+  // Ash cut at this and inverted what I was about to build. Reading a
+  // field's birthday off the ledger is auditing the ledger with the ledger
+  // — Day 18's shape, a birthday as an input, and a hand that grafted a
+  // field onto an old row last week would have had the graft written down
+  // here as its birth and defended by this file forever.
+  //
+  // So the birthday is read from **git** — the commit that made this file
+  // start writing the field — and the ledger is then *tested* against that
+  // reading rather than consulted for it. Two roads: `horizon` is absent
+  // from the founding commit's return and arrives with the corner on
+  // 2026-08-10; the four crossCheck gap fields arrive on 2026-08-24. Both
+  // agree with the record exactly. They are independent witnesses because
+  // a hand grafting a field onto a published row does not touch this file,
+  // and a hand editing this file does not reach backwards into the record.
+  // Run by hand on a named question, which is the only way blame is allowed
+  // near this house; nothing below reaches for git.
+  var PATH_INTRODUCED = {
+    'horizon.zenith': '2026-08-10',
+    'horizon.obstructionDegrees': '2026-08-10',
+    'horizon.dipDegrees': '2026-08-10',
+    'crossCheck.sunriseGapMinutes': '2026-08-24',
+    'crossCheck.sunsetGapMinutes': '2026-08-24',
+    'crossCheck.beyondBound': '2026-08-24',
+    'crossCheck.maxGapMinutes': '2026-08-24'
+  };
+
+  function pathApplies(path, entryDateISO) {
+    var introduced = PATH_INTRODUCED[path];
+    return !introduced || entryDateISO >= introduced;
+  }
+
+  // Every leaf under a value, as dotted paths. An object is walked; anything
+  // else is a leaf, so a null or a string ends the walk where it stands.
+  function deepPaths(value, prefix, out) {
+    out = out || [];
+    if (value === null || typeof value !== 'object' || Array.isArray(value)) {
+      out.push(prefix);
+      return out;
+    }
+    var keys = Object.keys(value);
+    for (var i = 0; i < keys.length; i += 1) {
+      deepPaths(value[keys[i]], prefix + '.' + keys[i], out);
+    }
+    return out;
+  }
+
+  function atPath(row, path) {
+    var parts = path.split('.');
+    var here = row;
+    for (var i = 0; i < parts.length; i += 1) {
+      if (here === null || typeof here !== 'object') return undefined;
+      here = here[parts[i]];
+    }
+    return here;
+  }
+
+  // ---- How near is unchanged ----
+  //
+  // Day 38, and this is the morning's finding rather than its plumbing.
+  // `differences()` and the page's ledger loop have both compared numbers
+  // with `Math.abs(was - now) <= 1e-9` since early days. Measured across
+  // every leaf of a real row, that bound means something different in every
+  // field it has ever been applied to: against a sunrise in minutes (about
+  // 900) it is a slack of a thousandth of a millionth, and against a Julian
+  // day (about 2,461,292) it is **two representable steps**. Nothing
+  // anywhere said so. A fixed absolute tolerance is a fact about the size
+  // of the number, not about the field — and the old bound was a guess in
+  // the wrong units where this one is a guess in the right ones.
+  //
+  // Ember's instinct sorted these fields by what kind of claim they are and
+  // the arithmetic sorts them by magnitude, and the two orderings came out
+  // nearly reversed: `lastMoveSeconds`, flagged as the awkward one, has an
+  // ulp of about 1e-22 and is the safest number in the object.
+  //
+  // The comparison is a union, and each half covers the other's blind end.
+  // Near zero an ulp is meaninglessly tight and the absolute bound is
+  // right; far from zero the absolute bound is meaninglessly tight and the
+  // relative one is right. Taking either as sufficient is strictly more
+  // tolerant than the old rule alone, so no row that is clean this morning
+  // can be convicted by this change — which is the one thing a change to a
+  // tolerance must not do quietly.
+  //
+  // Why not exact equality, which is what a same-engine recompute would
+  // give: the second auditor runs in a stranger's browser, and the language
+  // does not require `Math.sin` and its neighbours to be correctly rounded.
+  // Two honest engines may part in the last place, and exact equality would
+  // print DRIFTED at somebody's laptop about a row nobody touched — the
+  // auditor we cannot reach convicting an innocent row, which is the single
+  // failure Day 36 built `claims-audited.js` to worry about.
+  //
+  // ---- And the sweep that was supposed to be impossible from here ----
+  //
+  // I wrote *this desk has one engine, so nothing here can gather how far
+  // two engines actually part* and offered the bound as a stated guess.
+  // Ember went and found a second engine on this desk — `bun`, which is
+  // JavaScriptCore, an independently written Math library — and swept
+  // `reckon()` under both. Re-run here rather than taken: three places
+  // (Anchorage, Paris, Longyearbyen), seven dates including both solstices
+  // and a leap day, 1080 leaves.
+  //
+  // **42 leaves differ between V8 and JavaScriptCore. None is convicted by
+  // the bound below.** The largest absolute parting is 1.36e-11.
+  //
+  // And the shape of what parts is the finding, because it is not what
+  // either of us predicted. My measure ranked the fields by magnitude and
+  // called `lastMoveSeconds` the safest number on the row — its ulp is
+  // about 1e-22. It is the *worst*: it parts by up to 750 billion ulps of
+  // its own value, the largest divergence anywhere in the sweep, on the
+  // field I was most confident about.
+  //
+  // Ember's reason for it is the one to keep. `lastMoveSeconds` is not a
+  // well-conditioned output at all — it is the **residual of a solver at
+  // the instant it stopped**, so its size is set by wherever two engines'
+  // slightly different trig happened to make the loop give up, and nothing
+  // bounds it from below. Measuring a residual in ulps of itself asks a
+  // question with no floor. The fence between the fields is neither
+  // claim-versus-scratch (Ember's first cut) nor magnitude (mine): it is
+  // **well-conditioned versus not**, and both of us had it wrong in
+  // different directions until something was run.
+  //
+  // Which makes the union above load-bearing in a way I did not know when
+  // I wrote it. I added the absolute limb out of caution, as the half that
+  // covers near-zero values where an ulp is meaninglessly tight. It turns
+  // out to be the **only** half doing any work on the only fields that
+  // actually move between engines: a residual of 6.8e-12 passes because
+  // 6.8e-12 is under 1e-9, and on ulps alone this file would print DRIFTED
+  // in somebody's browser about a row nobody had touched. The half I could
+  // not have justified by measurement is the half the measurement needed.
+  //
+  // What is still not measured, said plainly rather than left to be
+  // assumed: SpiderMonkey. Two engines are not all engines, and a reader on
+  // Firefox is outside this witness.
+  var DRIFT_TOLERANCE_ULPS = 4096;
+  var DRIFT_TOLERANCE_ABSOLUTE = 1e-9;
+
+  // A banked number owes its date and its domain (Day 5), and since Day 31
+  // it owes a third thing: whether anything can still gather it. This one
+  // can — the sweep is two commands on this desk for as long as both
+  // engines are here, and it is written down so a later hand can re-run it
+  // rather than believe it.
+  var DRIFT_TOLERANCE_WITNESS = {
+    gathered: '2026-09-10',
+    engines: 'V8 (node 22) and JavaScriptCore (bun 1.3)',
+    domain: '3 places, 7 dates, 1080 leaves of horizon, working and crossCheck',
+    leavesThatDiffer: 42,
+    largestPartingAbsolute: 1.36e-11,
+    largestPartingUlps: 7.5e11,
+    largestPartingPath: 'working.atSunrise.lastMoveSeconds',
+    convicted: 0,
+    unmeasured: 'SpiderMonkey — a reader on Firefox is outside this witness'
+  };
+
+  function sameNumber(was, now) {
+    if (was === now) return true;
+    if (typeof was !== 'number' || typeof now !== 'number') return false;
+    if (Number.isNaN(was) || Number.isNaN(now)) return Number.isNaN(was) && Number.isNaN(now);
+    if (!Number.isFinite(was) || !Number.isFinite(now)) return false;
+    var gap = Math.abs(was - now);
+    if (gap <= DRIFT_TOLERANCE_ABSOLUTE) return true;
+    var step = Math.max(Math.abs(was), Math.abs(now)) * Number.EPSILON;
+    return gap <= step * DRIFT_TOLERANCE_ULPS;
+  }
+
+  // ---- The deep audit itself ----
+  //
+  // Two questions, and they are forked for Day 11's reason: they catch
+  // different lies and neither substitutes for the other.
+  //
+  // **A value moved.** For every path the row actually carries, does the
+  // recompute produce the same number? This needs no birthday at all — it
+  // only ever asks about what is there.
+  //
+  // **The shape is wrong.** Is the set of paths the row carries the set its
+  // own date says it should carry? This is where the birthdays live, and it
+  // is the half that catches a graft: a hand that copies today's `horizon`
+  // onto the row of the sixth of August produces a field that *recomputes
+  // perfectly*, because the code writes that field for every date. Only the
+  // shape question can see it. The mirror — a hand deleting a field a row
+  // should carry — is the same question read the other way, and Day 15's
+  // rule is that an exemption pointed only at absence excuses the graft it
+  // was never looking at.
+  //
+  // Returns null when the row cannot be asked at all, with the reason.
+  function deepDifferences(published, recomputed) {
+    var method = published.method || 1;
+    if (method !== METHOD) {
+      // Not a clean row and not a drifted one. The arithmetic that wrote
+      // this working is gone from this file, so there is nothing here that
+      // could recompute it, and counting it among the quiet rows would be
+      // reading silence as a witness. Three rows of this tower's showing of
+      // its work can never be checked by anyone, and that is worth saying
+      // out loud rather than papering with a green word.
+      return null;
+    }
+    var found = [];
+    for (var i = 0; i < DEEP_CLAIMS.length; i += 1) {
+      var field = DEEP_CLAIMS[i];
+      var wasField = published[field];
+      var nowField = recomputed[field];
+      var wasPaths = wasField === undefined ? [] : deepPaths(wasField, field);
+      var nowPaths = nowField === undefined ? [] : deepPaths(nowField, field);
+      var seen = {};
+      var all = wasPaths.concat(nowPaths).filter(function (p) {
+        if (seen[p]) return false;
+        seen[p] = true;
+        return true;
+      });
+      for (var j = 0; j < all.length; j += 1) {
+        var path = all[j];
+        var carried = wasPaths.indexOf(path) !== -1;
+        var expected = nowPaths.indexOf(path) !== -1 && pathApplies(path, published.date);
+        if (carried && !pathApplies(path, published.date)) {
+          found.push(path + ': this entry carries it, but ' + published.date +
+            ' predates ' + PATH_INTRODUCED[path] + ', when the tower first wrote it');
+          continue;
+        }
+        if (!carried && expected) {
+          found.push(path + ': published nothing, recomputed ' +
+            atPath(recomputed, path) + ' — the path is missing from an entry ' +
+            'that should carry it');
+          continue;
+        }
+        if (carried && !expected) {
+          found.push(path + ': this entry carries it and a fresh computation ' +
+            'does not produce it at all');
+          continue;
+        }
+        if (!carried) continue;
+        var was = atPath(published, path);
+        var now = atPath(recomputed, path);
+        if (!sameNumber(was, now)) {
+          found.push(path + ': published ' + was + ', recomputed ' + now);
+        }
+      }
+    }
+    return found;
+  }
+
+  // How many paths a row's deep fields actually put on the record. Counted
+  // off the row rather than typed, so the figure cannot go stale (Day 33) —
+  // and counted at the moment of printing, so it describes the row in front
+  // of the reader and not the row this was written about.
+  function deepPathCount(published) {
+    var n = 0;
+    for (var i = 0; i < DEEP_CLAIMS.length; i += 1) {
+      var value = published[DEEP_CLAIMS[i]];
+      if (value !== undefined) n += deepPaths(value, DEEP_CLAIMS[i]).length;
+    }
+    return n;
+  }
+
   var PARIS = {
     name: 'Paris',
     latitude: 48.8566,
@@ -1807,6 +2113,16 @@
     CROSS_CHECK_WITNESS: CROSS_CHECK_WITNESS,
     CLAIM_INTRODUCED: CLAIM_INTRODUCED,
     claimApplies: claimApplies,
+    DEEP_CLAIMS: DEEP_CLAIMS,
+    PATH_INTRODUCED: PATH_INTRODUCED,
+    pathApplies: pathApplies,
+    deepPaths: deepPaths,
+    deepPathCount: deepPathCount,
+    deepDifferences: deepDifferences,
+    sameNumber: sameNumber,
+    DRIFT_TOLERANCE_ULPS: DRIFT_TOLERANCE_ULPS,
+    DRIFT_TOLERANCE_ABSOLUTE: DRIFT_TOLERANCE_ABSOLUTE,
+    DRIFT_TOLERANCE_WITNESS: DRIFT_TOLERANCE_WITNESS,
     SEASON_CROSSINGS: SEASON_CROSSINGS,
     seasonCrossing: seasonCrossing,
     nextSeasonCrossing: nextSeasonCrossing,
