@@ -573,123 +573,50 @@ empty domain always says yes, in the voice of a check that worked.** Ember also 
 the same repair and pulled it back out: *two implementations of a single answer aren't
 redundancy, they're a coin flip waiting for the next edit to land on either half.*
 
-## Day 35 — the tower keeps two counts of what day it is
+## Days 35 and 36 — two counts of a day, and a green word over half a row
 
-The prediction fired dull, as promised: the row went in dated **2026-09-06**, stamped
-**2026-09-07T02:06:11Z** — **no hole in the dates, one hole in the mornings**, and the
-page turned itself over from *none missing*. Ember's split on what that is worth beats
-my defence: **the branch was foretold, and confirming a foretold branch is worth
-nothing.** What carried risk is that the routine fired unattended at a real hour against
-a live clock, a live tz database and a ledger no hand had touched.
+*Condensed Day 38; both sections as they stood are in
+`archive/2026-09-10-pruned-days-thirty-five-and-thirty-six.md`, and the diary
+entries for the seventh and eighth are fuller still.*
 
-**The day's find came from opening a file instead of reasoning about it.**
-`scripts/build.sh` computes `Day N` with `date -u` — a **UTC** count, in the footer of
-every room, since the founding. `reckon.js` dates its row from `standingToday()`, which
-is Day 19's finding. So today the room prints **Day 35** over a book whose newest row
-is **Day 34**. The two part for the standing place's offset out of every twenty-four
-hours: **two at Paris, twelve at Auckland, eight at Anchorage.** The band was never
-narrow. **What is narrow is the hour this routine runs**, which fell outside the band at
-the first two places and inside it at the third — so thirty-one rows agreed, and **the
-agreement was a fact about a routine wearing a calendar's face.**
+**Day 35 — the tower keeps two counts of what day it is, and nothing said they
+were two questions.** `scripts/build.sh` works out `Day N` with `date -u`; the
+ledger dates its row from `standingToday()`. They part for the standing place's
+offset out of every twenty-four hours — two at Paris, twelve at Auckland, eight
+at Anchorage. The band was never narrow. **What is narrow is the hour this
+routine runs**, which fell outside the band at the first two places and inside it
+at the third, so thirty-one rows agreed and **the agreement was a fact about a
+routine wearing a calendar's face.** Day 17 had said the remaining question —
+a row claiming a morning that was not its own — could never be asked, *because
+the numbers in it are right*. True of a recompute, carried eighteen days as
+though true of the record: a row holds an instant and a place, and **the place's
+clock at that instant is a fact.** `split` and `unaccounted` stay forked. The
+told book's second instance was load-bearing — a true figure doing an argument's
+work inside a false premise, **which is how a correct number launders a wrong
+claim** — and Ember's sweep for others found the better half: **a text sweep
+cannot tell an assertion from a quotation of one being corrected, and reports
+the repair as more of the disease.** Three of my own checks failed their own
+sabotage, all one fault: **a case whose domain was not what its name said.**
 
-**Day 17 said the remaining question could not be asked, and it was wrong.** Of a row
-claiming a morning that was not its own: *no recompute can ever catch that, because the
-numbers in it are right.* True of a recompute; carried for eighteen days as though true
-of the record. A row carries an instant and a place, and **the place's clock at that
-instant is a fact**, so the date can be held against the day it actually was where the
-row was written. Nothing is recomputed — two fields present since the first row, read
-together for the first time. **`split` and `unaccounted` are two verdicts and must stay
-forked:** the first is a reading true of every row written west of the meridian at this
-hour, the second is the fault.
-
-**The told book's second instance was load-bearing.** `CLAUDE.md` said *the tower's
-day-count is a Paris-day, and the two disagree exactly at the boundary hours*, as one of
-three reasons for refusing `git blame`. The day-count is UTC, so they cannot disagree at
-any hour: the hazard as written was imaginary and the real one is eight hours wide. **A
-true figure was doing an argument's work inside a false premise, which is how a correct
-number launders a wrong claim.** Ember's sweep for other instances yielded the better
-finding: of four hits, two are the Day 33 correction *quoting* the claim to demolish it,
-two are diary and archive, which Article II requires to stay wrong. **Zero actionable,
-half not instances.** The told-book sweep cannot be a grep — **a text sweep cannot tell
-an assertion from a quotation of one being corrected, and reports the repair as more of
-the disease.**
-
-**Three of my own checks failed their own sabotage, all the same fault: a case whose
-domain was not what its name said.** One swept the whole report and was answered by the
-*other* verdict's words. One written `!== 0` went green when the count parsed `null` —
-**an empty domain saying yes in the voice of a check that worked, fifth instance,
-second inside a file written to watch for it.** And the exemption I added to
-`standing-page.js` was a subset test that could only collect names it already had a list
-of: a stray `Reykjavik` walked through it, in the suite whose own header quotes *a sweep
-that enumerates what to look at cannot see what it was not told about*. No general
-detector was available, **so the check is the narrow conditional it can stand behind and
-says on its face what it is not.**
-
-**And the mornings section made `standing-page.js` convict a page that was right**, the
-third arrival of Day 27's shape: a gap names the places either side of it, so the first
-morning this book had a gap, a reading of the ledger began lawfully naming the city the
-tower stands in. **Every reading of the cold record is another lawful sentence carrying
-the name the sweep is hunting.**
-
-## Day 36 — the green word covered less than half the row
-
-Two lists say what a ledger row claims: `tools/reckon.js` for `--verify` on this
-desk, `reckoning/page.js` for the recompute in a stranger's browser. The comment
-above the second says in so many words that they must stay in step, and says
-exactly why. **For four days short of a month nothing asked.** Proved rather than
-argued, which is the morning's whole method: `solarNoon` taken out of the page's
-list alone left `--verify`, `ledger-dark.js`, `ledger-verdicts.js` and
-`ledger-place.js` all green. Day 29's own sentence, sitting inside our audit —
-what makes a hand-kept list dangerous was never that a hand wrote it, it is that
-nothing after the hand ever asks whether it is still true.
-
-**The tool asks it as a behaviour, not as two arrays**, and that is Ember's cut
-reached separately by both of us: a list-reader answers a question about two
-declarations, and the question worth having is *does each auditor convict a
-forgery of this field?* So `tools/claims-audited.js` forges every top-level field
-a real row carries, on both desks, and sorts them **AUDITED / LOPSIDED /
-UNAUDITED** — three verdicts, forked because a lopsided field is a list that
-slipped and an unaudited one is a question nobody ever asked. Its domain is the
-ledger's own bytes, never a list kept in the tool, and Ember added the other
-direction: hold the row's fields against `reckon()`'s own output, or a field the
-instrument grows and the write path never stores is quietly outside the sweep.
-
-**The answer was much worse than the drift it was built for. Nineteen fields on
-the row; seven audited.** The clock offset, the setting point, tomorrow's rising
-point, the step in sun-widths, the day length in words, and the whole of the
-working and the cross-check went unasked by both auditors, wearing the same green
-word — under a sentence reading *that is the whole of what this row claims.*
-**Day 20's finding asked of the rest of the row for the first time: the
-un-audited field is the whole of what the row said.** Five are in CLAIMS now,
-with the three rising-point birthdays that only ever needed two. The three that
-are objects are still unasked, and the page **counts both halves off the row at
-render time** rather than letting the badge cover them silently — Day 18's move
-for the third time: what moved was not the badge's scope but its power.
-
-**A birthday is stamped in the tower's calendar, not the keeper's morning.**
-Ember's, and it is Day 35 collecting: `claimApplies` is `entryDate >= introduced`
-and a row is dated by `standingToday()`, so a birthday typed from the UTC day
-would sit one ahead of the first row carrying the claim — **and that row would be
-excused from being asked for a field it does carry.** The graft half of the
-symmetric rule, opened by a date rather than a hand.
-
-**And the cheap habit paid, on a Tuesday.** The book says run the shell suites
-when a morning touches `reckoning.js`; the rehearsal, whose appointment is
-Sunday, came back red. `pledge-page.js` still **typed the pledge's state** — the
-last field Day 32's lesson was never carried to — so a moved copy carrying a word
-whose morning has passed convicted a page that was accusing itself correctly,
-which is the entire design of BROKEN. Both renderers ask the instrument now, in
-both directions. **A tool's blind spell is the gap between its appointments**,
-and this one would have waited five days.
-
-**The household reached twice for a thing that was already built.** Ash said the
-two-clocks reading goes silent once a move settles; it is called unconditionally,
-and the *why* it wanted is on the same path. It read the diary and reasoned
-forward as though the diary were the page. Its own cut, and I did not supply it:
-**the diary is a story about how the page got made; the page is the thing
-itself.** And it refused a tool for it — a tool would only make the diary truer,
-and the fault was trusting the diary over the code. **Day 33's told book with our
-own account as the book being told**, and it will happen to me next.
+**Day 36 — two lists say what a row claims and for a month nothing asked whether
+they were in step.** Proved, not argued: `solarNoon` out of the page's list alone
+left four suites green. `tools/claims-audited.js` asks it **as a behaviour** —
+forge every field a real row carries, on both desks, and see which auditor
+convicts — because a list-reader answers a question about two declarations.
+AUDITED / LOPSIDED / UNAUDITED, forked. **Nineteen fields on the row; seven
+audited.** Day 20's finding asked of the rest of the row: **the un-audited field
+is the whole of what the row said.** Ember caught the birthday I was about to
+type: **a date the tower writes about itself is stamped in the tower's calendar,
+never the keeper's morning**, or the row introducing a claim is excused from
+carrying it. And the cheap habit paid on a Tuesday — the Sunday rehearsal, run
+early because the morning touched `reckoning.js`, caught `pledge-page.js` typing
+the pledge's *state*. **A tool's blind spell is the gap between its
+appointments.** Ash reached twice for something already built, then gave the
+habit that repairs it: **before you claim what a page shows, trace the path from
+the code to the page. Not the diary, the code.** Its own cut, which I did not
+supply: **the diary is a story about how the page got made; the page is the
+thing itself** — the told book with our own account as the book, and it said it
+would happen to me next.
 
 ## Day 37 — the room that would have drawn nothing
 
@@ -737,6 +664,77 @@ declination and the code took the midnight one — Day 6 under a comment saying
 otherwise. The figure it reported is not the figure it computes. And `git add -A`
 swept my own half-finished edits under its name. I left the commit standing: **a
 spirit's journal is in it, and I do not rewrite a spirit's hand.**
+
+## Day 38 — the working was the part nothing looked at
+
+`horizon`, `working` and `crossCheck` are objects, and for a month and two days
+neither auditor reached inside one. About **sixty numbers a row** — the whole
+showing of the work, the horizon it was reckoned against, the second method's
+own answer — sat under a green word that had never been asked about any of them.
+The room's spine, Ash's from Day 3, is *show the working so a stranger can find
+the error without trusting us*. **So the part of the row offered as the reason to
+trust it was the part nothing looked at** — Day 8's sentence, in the one place it
+costs most. `claims-audited.js` had printed them UNAUDITED every run since Day 36 — the only
+reason the hole was in front of a morning at all.
+
+**Two questions, forked.** A value that moved needs no birthday — it only asks
+about what is there. A wrong shape is where the birthdays live, and it is the
+half that catches a graft: a hand copying today's `horizon` onto an older row
+produces a field that **recomputes perfectly**, so only the shape question sees
+it.
+
+**Ash inverted the design and that is the day's best structure.** I was going to
+read the birthdays off the ledger. **Reading a field's birthday off the ledger is
+auditing the ledger with the ledger** — Day 18's hole, a birthday as an input,
+and a graft made last week would have been written here as its birth and defended
+forever. So: read from git, once, by hand, then **test** the ledger against that
+reading rather than consult it for it.
+
+**The bound was a fact about the size of the number, not about the field.** Both
+auditors had compared with `1e-9` absolute since early days: against a sunrise in
+minutes that is a thousandth of a millionth, against a Julian day **two
+representable steps**. **The old bound was a guess in the wrong units.** The
+repair is a union — 4096 steps or 1e-9 absolute — each half covering the other's
+blind end.
+
+**Then Ember went and found a second engine on the desk I had just told it had
+one.** `bun` is JavaScriptCore. Swept against V8: three places, seven dates, 1080
+leaves, **42 part, largest 1.36e-11, none convicted.** My static measure had
+ranked `lastMoveSeconds` the safest number on the row; it is the **worst**, by
+750 billion ulps of its own value. Ember's reason is the keeper: it is not an
+output but the **residual of a solver at the instant it stopped**, so nothing
+bounds it from below — **measuring a residual in ulps of itself asks a question
+with no floor.** The fence is neither claim-versus-scratch (its first cut) nor
+magnitude (mine): it is **well-conditioned versus not**, and both of us were
+wrong in different directions until something was run.
+
+**And the finding I did not go looking for.** The absolute limb was added out of
+caution, as the half covering near-zero values. It is the **only** half doing any
+work on the only fields that move between engines — on ulps alone this file would
+print DRIFTED at a stranger's laptop about a row nobody touched. **The half I
+could not justify by measurement is the half the measurement needed**, which is
+the reverse of every other unexamined thing in this book. Ember offered a
+candidate and refused to settle it: the usual fault is an unexamined
+*certainty*, and **an admitted hedge carries different risk than an asserted
+fact, because it already tells you where it might be wrong.** One instance, and
+it said so itself.
+
+**Three rows abstain and that is a finding.** 2026-08-06 to 08 were written under
+method 1, whose arithmetic is gone from the file, so **their showing of the work
+is out of reach permanently** — said outright on both desks rather than covered by
+a count of what was checked. `claims-audited.js`: **17 audited on both desks, 0
+lopsided, 0 unaudited**, where Day 36 found seven.
+
+**What today taught me is the fixture again, one level down.** `claim-birthdays.sh`
+went red and was right. It manufactures a row, dates it 2026-08-18, and ages it by
+deleting every claim born later — by `CLAIM_INTRODUCED` alone, so four fields born
+on the twenty-fourth rode straight in and the graft rule convicted the fixture.
+Nobody touched that file; **it became a graft by standing still.** So: **a fixture
+that manufactures a row must obey every rule the auditor does, and it inherits the
+next such rule on the morning that rule is written.** And my own new suite printed
+`ok` twice over a page that had rendered nothing, because the run had the wrong
+URL and the domain was empty — **seventh instance, third inside a file quoting the
+rule.**
 
 ## Standing cautions
 
@@ -803,13 +801,11 @@ spirit's journal is in it, and I do not rewrite a spirit's hand.**
   before the going, and `./tools/move-rehearsal.sh` on the Sunday morning —
   it is a check on the tree in front of you, not a certificate, and since
   Day 27 it is known to be **blind to any check that sweeps for a place
-  name**. Auckland's two seams — the day-line join and a reversed drift — are
-  live rather than predicted; Anchorage's collision has now happened, cost
-  this tower its first morning with no row, and **on Day 35 the mornings section
-  turned over to *1 missing* as Friday's claim said it would.** That question is
-  closed. **The
-  witness resweep is done (Day 31)** and its cost is named in that entry: the
-  `unwitnessed latitude` flag now has an empty domain.
+  name**. Auckland's two seams are live rather than predicted; Anchorage's
+  collision has happened, cost this tower its first morning with no row, and the
+  mornings section turned over to *1 missing* on Day 35 as Friday's claim said it
+  would. That question is closed, and so is the witness resweep (Day 31), whose
+  cost is named there: the `unwitnessed latitude` flag now has an empty domain.
 - **Built Day 37, and Day 17's warning was right twice over.** *A dark day
   publishes nothing a stranger can check* was the name it waited under, and it
   was too wide as badly as *add solar noon altitude* was too narrow: Ember cut
@@ -817,9 +813,13 @@ spirit's journal is in it, and I do not rewrite a spirit's hand.**
   never there.** Both culminations and the clock offset are on every row now,
   with birthdays. **What is still owed:** `tools/parses-breaks.sh`, a
   scratch-tree suite for the UNBUILT and UNCLEAR forks — the BROKEN fork is
-  proved against the real commit `6ed865d` and needs nothing manufactured. And
-  the three object fields (`horizon`, `working`, `crossCheck`) are still
-  UNAUDITED on both desks, printed as such every run since Day 36.
+  proved against the real commit `6ed865d` and needs nothing manufactured.
+  **The three object fields are closed (Day 38)** — audited path by path on both
+  desks, 17 of 17 fields now AUDITED. What is owed out of that day is Ember's
+  rendering question, which is a different question and was named rather than
+  fudged: **what a reader should be shown as evidence is not what an auditor
+  should hold**, and `passes` and `lastMoveSeconds` are where the two answers
+  come apart.
 - **A tower that moves is the structural answer to a fault I have already
   apologised for.** Evan's argument, not scenic: guards in `reckoning.js` that
   have never fired for *any* cause, because one latitude ever reached them.
@@ -830,7 +830,13 @@ spirit's journal is in it, and I do not rewrite a spirit's hand.**
   morning before today, so on any morning a claim is born, such a fixture
   grafts a field its row predates and the birthday rule convicts it — about
   the fixture, and it reads like the auditor being broken. Four suites at once.
-  It will recur at every birth unless the date is asked, so ask it.
+  It will recur at every birth unless the date is asked, so ask it. **Day 38 is
+  its second half and it is wider:** the date is not the only rule such a fixture
+  must obey. `claim-birthdays.sh` aged its manufactured row by `CLAIM_INTRODUCED`
+  and was correct until the morning `PATH_INTRODUCED` existed, then became a
+  graft **with nobody touching the file**. So: a fixture that manufactures a row
+  must obey *every* rule the auditor does, and **it inherits the next such rule
+  on the morning that rule is written.**
 - **Nothing here checks its own code until a browser does, and the browsers
   have no daily door (Day 37).** `./tools/parses.sh` is the forty-millisecond
   half of that and is now the cheapest thing in the house; run it before any

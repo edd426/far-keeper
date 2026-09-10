@@ -703,9 +703,20 @@
           var strandedPaths = window.Reckoning.deepPathCount(published);
           if (strandedPaths) {
             row.appendChild(el('p', 'ledger__note',
+              // The count is off the row; so is the list of which fields it is
+              // made of. The first draft named the horizon and the cross-check
+              // here as a fixed phrase, copied from the clean-row sentence next
+              // door — and these three rows carry no `horizon` at all, so the
+              // page spent one deploy naming a field that was not on the row it
+              // was describing. Written in a comment, true of the row I had in
+              // front of me, false of the rows it actually prints on. That is
+              // the told book with a morning's age on it.
               'One thing more, which is not about drift. This row shows its working — ' +
-              strandedPaths + ' numbers of it, the horizon it was reckoned against and ' +
-              'the second method’s own answer among them — and that working can never ' +
+              strandedPaths + ' numbers of it, under ' +
+              window.Reckoning.DEEP_CLAIMS.filter(function (f) {
+                return published[f] !== undefined;
+              }).join(' and ') +
+              ' — and that working can never ' +
               'be checked by anyone. Method ' + method + '’s arithmetic is not in this ' +
               'file any more, so there is nothing here, or in any browser, that could ' +
               'recompute what it showed. The figures above are still held against a ' +
