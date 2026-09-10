@@ -201,9 +201,33 @@ if (typeof fresh.risingPointDegrees !== "number") {
 // row is taken back off it. The list comes from CLAIM_INTRODUCED and not
 // from here, so the next claim this tower introduces cannot reopen this, and
 // what is spliced is what a row of that age could honestly have said.
-const { CLAIM_INTRODUCED } = require(path.resolve(process.argv[1], "reckoning/reckoning.js"));
+//
+// Day 38, and it is the same paragraph one level down. `horizon`, `working`
+// and `crossCheck` are audited path by path now, and their leaves have
+// birthdays too — so a row manufactured for 2026-08-18 by the reckon()
+// running this morning also carries four crossCheck gap fields born on the
+// twenty-fourth, and the graft half convicted it again, for a graft this
+// fixture committed again. A fourth DRIFTED row where three were expected,
+// reading exactly like the auditor being broken, one morning after the note
+// above was written about the identical thing.
+//
+// So the ageing walks both maps. What that says is worth more than the patch:
+// **a fixture that manufactures a row has to obey every rule the auditor
+// does, and it inherits the next such rule the day that rule is written.**
+// Ageing by the flat claims alone was correct until this morning and became a
+// graft with nobody touching this file — the Day 19 shape, a rule outliving
+// the world it was true in.
+const { CLAIM_INTRODUCED, PATH_INTRODUCED } =
+  require(path.resolve(process.argv[1], "reckoning/reckoning.js"));
 Object.keys(CLAIM_INTRODUCED).forEach((key) => {
   if (born < CLAIM_INTRODUCED[key]) delete fresh[key];
+});
+Object.keys(PATH_INTRODUCED).forEach((dotted) => {
+  if (born >= PATH_INTRODUCED[dotted]) return;
+  const parts = dotted.split(".");
+  let here = fresh;
+  for (let i = 0; i < parts.length - 1 && here; i += 1) here = here[parts[i]];
+  if (here) delete here[parts[parts.length - 1]];
 });
 const at = l.findIndex((x) => x.date === born);
 if (at < 0) { console.error("no " + born + " row to replace"); process.exit(1); }

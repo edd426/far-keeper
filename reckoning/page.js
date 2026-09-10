@@ -490,18 +490,39 @@
   // stale the way a typed figure does. Day 33: an aggregate wearing a
   // constant's syntax can never promise to have been true, only to stop
   // being.
-  function scopeOfCheck(published) {
+  // Day 38. The three that were named to the reader as uncovered are covered
+  // now, path by path, so this sentence has to move with them — a scope note
+  // that goes on naming a hole after the hole is filled is the told book with
+  // our own account as the book, which Day 36 said would happen to me next.
+  // Both halves are still counted off the row at render time and neither is
+  // typed.
+  function scopeOfCheck(published, deepChecked) {
     var asked = CLAIMS.filter(function (pair) {
       return published[pair[0]] !== undefined &&
         window.Reckoning.claimApplies(pair[0], published.date);
     });
     var unasked = Object.keys(published).filter(function (key) {
       if (NOT_A_RECOMPUTED_CLAIM.indexOf(key) !== -1) return false;
+      if (window.Reckoning.DEEP_CLAIMS.indexOf(key) !== -1) return false;
       return !CLAIMS.some(function (pair) { return pair[0] === key; });
     });
+    var paths = window.Reckoning.deepPathCount(published);
     var line = 'That is ' + asked.length +
       (asked.length === 1 ? ' field' : ' fields') + ' of this row held against a ' +
       'fresh computation: nobody has moved them since.';
+
+    if (paths && deepChecked) {
+      line += ' Under them, ' + paths + ' more numbers — the horizon this was ' +
+        'reckoned against, the whole showing of the working, and the second ' +
+        'method’s own answer — were held the same way, one path at a time.';
+    } else if (paths) {
+      line += ' The ' + paths + ' numbers of its working are not among them: this ' +
+        'row was computed under method ' + (published.method || 1) + ', whose ' +
+        'arithmetic is no longer in this file, so nothing here or anywhere can ' +
+        'recompute what it showed. That is not a claim it drifted. It is this ' +
+        'page saying its working can never be checked by anyone.';
+    }
+
     if (!unasked.length) {
       return line + ' Every other field on the row is the row’s own name, its ' +
         'method, its place or the instant it was written — none of them things ' +
@@ -564,7 +585,7 @@
         'this entry names no place, so there is nowhere to recompute it. That is ' +
         'not a claim that it drifted and not a claim that it stands — it is this ' +
         'page saying it could not check.';
-      var fresh, broken = [];
+      var fresh, broken = [], deepChecked = false;
       try {
         if (unplaced) throw new Error(unplaced);
         fresh = window.Reckoning.reckon(published.date, where);
@@ -590,11 +611,23 @@
               ' — the field is missing from an entry that should carry it');
             return;
           }
-          var same = (typeof was === 'number' && typeof now === 'number')
-            ? Math.abs(was - now) <= 1e-9
-            : was === now;
-          if (!same) broken.push(pair[1] + ': published ' + was + ', recomputed ' + now);
+          // Day 38. One comparison for both auditors, and it lives in
+          // reckoning.js for the reason the birthdays do: two copies of a
+          // rule is two chances to disagree, and the disagreement would show
+          // up as this browser calling a clean row DRIFTED where nobody here
+          // could see it. The old bound was `Math.abs(was - now) <= 1e-9`
+          // typed here and typed again on the desk.
+          if (!window.Reckoning.sameNumber(was, now)) {
+            broken.push(pair[1] + ': published ' + was + ', recomputed ' + now);
+          }
         });
+        // The working, the horizon and the cross-check, path by path. Null
+        // means a row this browser cannot check at all — see `deepUnchecked`
+        // below, which says so on the row rather than letting the green word
+        // stretch over sixty numbers nothing held.
+        var deepBroken = window.Reckoning.deepDifferences(published, fresh);
+        deepChecked = deepBroken !== null;
+        if (deepBroken) broken = broken.concat(deepBroken);
       } catch (error) {
         broken.push('could not recompute this entry: ' + error.message);
       }
@@ -660,6 +693,26 @@
             'sunsets above; the day’s diary entry sets out what moved and why. ' +
             'So this row is not the record being wrong about what was claimed — ' +
             'it is the claim, kept, and the tower saying it no longer stands by it.'));
+          // Day 38, and it belongs on this note rather than on the clean-row
+          // sentence next door, because these rows will never be clean: they
+          // are DRIFTED for as long as this tower stands (the method moved
+          // under them and the ledger is cold), so a fact printed only on a
+          // green row is a fact no reader of *these* rows will ever meet.
+          // Found by a case that asserted the sentence and did not find it —
+          // it was written for a branch these rows do not reach.
+          var strandedPaths = window.Reckoning.deepPathCount(published);
+          if (strandedPaths) {
+            row.appendChild(el('p', 'ledger__note',
+              'One thing more, which is not about drift. This row shows its working — ' +
+              strandedPaths + ' numbers of it, the horizon it was reckoned against and ' +
+              'the second method’s own answer among them — and that working can never ' +
+              'be checked by anyone. Method ' + method + '’s arithmetic is not in this ' +
+              'file any more, so there is nothing here, or in any browser, that could ' +
+              'recompute what it showed. The figures above are still held against a ' +
+              'fresh computation and still disagree with it. The working underneath ' +
+              'them is simply out of reach, and this page would rather say so than ' +
+              'let a count of what was checked quietly cover it.'));
+          }
         } else {
           row.appendChild(el('p', 'ledger__note',
             'This entry was computed under method ' + method + ', which is the ' +
@@ -698,13 +751,13 @@
           ? 'published ' + published.publishedAt + ', and it recomputes here, now, ' +
             'in your browser, at ' + placeName + '. On a day the sun does not clear ' +
             'the horizon there is no sunrise, no day length and no drift to hold ' +
-            'anyone to, and none is invented. ' + scopeOfCheck(published) +
+            'anyone to, and none is invented. ' + scopeOfCheck(published, deepChecked) +
             ' It is a lighter row than the ones above it with times on them, and it ' +
             'wears the same green word, so the difference is said here rather than ' +
             'left for you to notice.'
           : 'published ' + published.publishedAt + ', and it recomputes here, now, ' +
           'in your browser, at ' + placeName + ', to exactly those numbers. ' +
-          scopeOfCheck(published) +
+          scopeOfCheck(published, deepChecked) +
           ' The place is not part of that — it is the input this recompute was run ' +
           'from, so nothing here can check it. Whether the numbers were right on ' +
           'the day is a different question again, and this page cannot answer it — ' +
