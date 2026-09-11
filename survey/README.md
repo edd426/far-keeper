@@ -24,3 +24,8 @@ own face, and the second band is labelled where it stands.
 
 - `2026-08-30-candidates.txt` — twelve places, four dates, for the first
   move. Named for the move it was asked about, not the day it was run.
+- `2026-09-06-candidates.txt` — eleven places, four dates, for the move to
+  Anchorage.
+- `2026-09-13-candidates.txt` — ten places, four dates, for the move asked
+  about this Friday (Day 39). The candidate count keeps falling because no
+  city stands twice: Paris, Auckland and Anchorage are all off the list now.
