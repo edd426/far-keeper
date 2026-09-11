@@ -457,6 +457,48 @@
     zone: 'America/Anchorage'
   };
 
+  // Day 39. Chosen on the survey of 2026-09-13
+  // (`survey/2026-09-13-candidates.txt`), and the reason took three hands and
+  // one correction to arrive at.
+  //
+  // The first two reasons offered this morning were both spent, and neither
+  // was caught by argument — only by opening the ledger. Ash chose Tokyo to
+  // make the day-line join load-bearing; Ember called that join one of two
+  // unlit corners. It has not been unlit since the thirtieth of August. Of
+  // 35 published rows, every one of Auckland's seven reaches it by the
+  // negative limb and every one of Anchorage's four by the past-1440 limb.
+  // Both spirits had it from this file's own neighbours — `survey.js`'s
+  // header says those guards "have never fired for any cause", and its
+  // footer says "Paris never reaches it". Both true on Day 22, standing in
+  // Paris. Both printed at the foot of the file Friday's choice is made from.
+  // The told book, steering a decision rather than merely describing a
+  // record. The second corner, the polar fold, wants a solstice and cannot
+  // be reached by a September move at all.
+  //
+  // What is left is a regime rather than a corner, and it is measured, not
+  // argued. Across all 35 rows this tower has published, the absolute drift
+  // runs 2.192 to 5.664 minutes; the floor is 2.19. Nairobi's is 0.07 — an
+  // order of magnitude below anything this record holds. The tower has stood
+  // at 48.9, −36.8 and 61.2 degrees and never once inside 36 degrees of the
+  // equator, which is also the ground of the correction owed to Wren: the
+  // rising-point step here is 0.72 of a sun's width and never approaches the
+  // ruler I sent her.
+  //
+  // Ember found a sharper exemplar and offered it against its own case —
+  // Quito, at ±0.01 across all four sampled dates. Nairobi is taken over it
+  // for a reason that has nothing to do with the drift: Quito is one of only
+  // two candidates whose offset is negative enough to carry this routine's
+  // ~02:20 UTC waking back across midnight, so it leaves the date sequence
+  // running straight through. Nairobi skips 2026-09-12. Today's work is a
+  // reading of that axis, and choosing the one place that declines to test
+  // it would be arranging not to be caught.
+  var NAIROBI = {
+    name: 'Nairobi',
+    latitude: -1.2921,
+    longitude: 36.8219,
+    zone: 'Africa/Nairobi'
+  };
+
   // ---- Where this tower stands, and what day it is there ----
   //
   // Day 19. Until this morning the tower had no place — it had a *constant*,
@@ -562,10 +604,15 @@
   var STANDING = {
     place: ANCHORAGE,
     since: '2026-09-05',
+    // Day 39. The Anchorage pledge is *superseded*, never cleared — Day 25's
+    // finding, and the reason is that clearing a kept word on arrival makes
+    // KEPT dead code and leaves a page that can accuse and never vouch. So
+    // the field simply names the next word instead, and `pledgeStanding`
+    // reads PLEDGED again from this commit until Sunday.
     pledge: {
-      place: ANCHORAGE,
-      on: '2026-09-06',
-      announced: '2026-09-04'
+      place: NAIROBI,
+      on: '2026-09-13',
+      announced: '2026-09-11'
     }
   };
 
@@ -2100,6 +2147,7 @@
     PARIS: PARIS,
     AUCKLAND: AUCKLAND,
     ANCHORAGE: ANCHORAGE,
+    NAIROBI: NAIROBI,
     civilDayStartUTCMinutes: civilDayStartUTCMinutes,
     STANDING: STANDING,
     pledgeStanding: pledgeStanding,

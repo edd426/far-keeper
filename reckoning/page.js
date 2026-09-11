@@ -1642,6 +1642,282 @@
     });
   }
 
+  // ---- the dates ----
+  //
+  // Day 39, and it is `renderMornings`' missing half.
+  //
+  // Day 34 built the mornings because **the dates cannot show a lost
+  // morning**: a westward crossing is handed a day its own book already
+  // holds, refuses to rewrite it, and the date is simply written the next
+  // morning instead — so the date sequence runs straight through a morning
+  // that was lost. That is true and it is only one direction.
+  //
+  // The mirror was never built and, worse, was written down as though it
+  // had been. `CLAUDE.md` has said since Day 33 that an eastward crossing
+  // "leaves a hole in the `date` sequence, **and the rule above reads it**."
+  // Nothing reads it. `renderMornings` counts `publishedAt` and says so on
+  // its own face; `tools/mornings-page.js` states outright that *the date
+  // sequence is not what this section reads*. The sentence claiming a
+  // reading was written in the same breath as the correction that found the
+  // told book — Day 33's own fault, inside Day 33's own repair. **A repair
+  // is a new claim and gets no credit from the error it fixed.**
+  //
+  // **The two axes are blind to different losses, and that is the whole
+  // reason both exist.** A morning is a UTC day this tower woke and spoke.
+  // A date is a day the tower's own calendar claimed. Going west costs a
+  // morning and no date; going east costs a date and no morning. Count one
+  // axis only and exactly half of what a move can cost is invisible — and
+  // the half that is invisible is the half nobody is looking at, because
+  // the section that exists announces a clean record every load.
+  //
+  // **It never says why.** A date with no row is as consistent with an
+  // eastward crossing as with a morning nobody woke the tower for, and the
+  // record does not separate them. Day 19 claimed the places either side of
+  // a hole told those apart and Day 33 found that paragraph had never once
+  // described this record. So the neighbours are printed as facts standing
+  // beside a gap and this draws no line between them. What it *may* do,
+  // because it is arithmetic on two fields and not a story, is say whether
+  // a morning was also lost at that date — two readings side by side, each
+  // labelled, with the inference left to the reader who has both.
+  //
+  // **It reports zero**, like the mornings, for the same reason: a check
+  // that speaks only when it has something to show has an empty domain on
+  // every other day, and an empty domain always says yes.
+  function renderDates(entries) {
+    var host = document.getElementById('dates-report');
+    if (!host) return;
+    host.replaceChildren();
+
+    // A row with no usable date is not a date we can place. Counted and
+    // printed rather than quietly dropped — a count over a filtered list is
+    // a fact about the filter until the filter is printed too.
+    var dated = [];
+    var undatable = 0;
+    (entries || []).forEach(function (entry) {
+      var date = entry && entry.date;
+      if (typeof date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+        undatable += 1;
+        return;
+      }
+      var stamp = entry.publishedAt;
+      dated.push({
+        date: date,
+        place: (entry.place && entry.place.name) || 'an unnamed place',
+        morning: (typeof stamp === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(stamp))
+          ? stamp.slice(0, 10)
+          : null
+      });
+    });
+
+    if (!dated.length) {
+      host.appendChild(el('p', 'loading',
+        'no row in the ledger carries a date this page can read, so there ' +
+        'is nothing here to count. That is a statement about the record, ' +
+        'not about the tower.'));
+      return;
+    }
+
+    dated.sort(function (a, b) { return a.date < b.date ? -1 : a.date > b.date ? 1 : 0; });
+    var claimed = Object.create(null);
+    var mornings = Object.create(null);
+    dated.forEach(function (row) {
+      if (!claimed[row.date]) claimed[row.date] = row;
+      if (row.morning) mornings[row.morning] = true;
+    });
+
+    var first = dated[0].date;
+    var last = dated[dated.length - 1].date;
+    var span = Math.round(
+      (Date.parse(last + 'T00:00:00Z') - Date.parse(first + 'T00:00:00Z')) / 86400000) + 1;
+    if (!isFinite(span) || span < 1 || span > 40000) {
+      host.appendChild(el('p', 'loading',
+        'the dates in this record run from ' + first + ' to ' + last +
+        ', which is not a span this page is willing to walk. Nothing is ' +
+        'counted rather than counted wrongly.'));
+      return;
+    }
+
+    var unclaimed = [];
+    for (var i = 0; i < span; i += 1) {
+      var day = window.Reckoning.shiftDate(first, i);
+      if (!claimed[day]) unclaimed.push(day);
+    }
+
+    var held = Object.keys(claimed).length;
+    var head = 'From ' + first + ' to ' + last + ' is ' + span +
+      ' days of this tower’s own calendar, and it claimed ' + held +
+      ' of them';
+    head += unclaimed.length
+      ? '. ' + unclaimed.length + (unclaimed.length === 1 ? ' date is' : ' dates are') +
+        ' unclaimed.'
+      : ' — none unclaimed.';
+    host.appendChild(el('p', 'standing', head));
+
+    host.appendChild(el('p', 'standing note',
+      'This looks between ' + first + ' and ' + last + ' and no further. A ' +
+      'date left unclaimed after ' + last + ' is not inside the span yet and ' +
+      'cannot be counted here; it appears when the next row lands and carries ' +
+      'the span over it. A clean reading is a reading up to ' + last + '.'));
+    if (dated.length !== held) {
+      host.appendChild(el('p', 'standing note',
+        dated.length + ' rows carry those ' + held + ' dates, so at least ' +
+        'one date was claimed by more than one row.'));
+    }
+    if (undatable) {
+      host.appendChild(el('p', 'standing note',
+        undatable + (undatable === 1 ? ' row carries' : ' rows carry') +
+        ' no readable date and is left out of the count above.'));
+    }
+
+    unclaimed.forEach(function (day) {
+      var beforeDay = null;
+      var afterDay = null;
+      Object.keys(claimed).forEach(function (had) {
+        if (had < day && (beforeDay === null || had > beforeDay)) beforeDay = had;
+        if (had > day && (afterDay === null || had < afterDay)) afterDay = had;
+      });
+      var before = beforeDay && claimed[beforeDay];
+      var after = afterDay && claimed[afterDay];
+      var line = 'No row claims ' + day + '.';
+      if (before) {
+        line += ' The date before it, ' + beforeDay + ', was claimed at ' +
+          before.place + '.';
+      }
+      if (after) {
+        line += ' The date after it, ' + afterDay + ', was claimed at ' +
+          after.place + '.';
+      }
+      // The second reading, and it is arithmetic rather than a story: was a
+      // *morning* lost here too? Both answers are printed as what they are.
+      // Neither is a verdict — a reader holding both knows more than either
+      // section alone can say, and that is as far as this page goes.
+      line += mornings[day]
+        ? ' This tower did wake and speak on ' + day + ' in UTC; what it ' +
+          'wrote that morning carries a different date.'
+        : ' No row was written on ' + day + ' in UTC either.';
+      line += ' Why is not in the record.';
+      host.appendChild(el('p', 'standing note', line));
+    });
+  }
+
+  // The forward half, and every figure in it is computed.
+  //
+  // This was a typed paragraph for one draft — the offset, the city, the
+  // wake hour and both dates written out by hand — and `standing-page.js`
+  // convicted it inside the hour, sweeping the room for the name of a city
+  // the tower had left and finding *Anchorage* in my own sentence. The
+  // check was right and the repair is Day 4's: a hand-written figure marks
+  // the exact spot where a cheap computation was not done. Day 33's half
+  // sits on top of it — the wake hour is the one figure this house has
+  // already been caught typing, in a comment claiming nothing below it was
+  // typed, and it was false of fourteen rows.
+  //
+  // **What is a narrator and what is an instrument** is Ash's cut from Day
+  // 34, and this section is deliberately both, in two parts that are drawn
+  // separately. The count above asks a question of the whole record and has
+  // an answer on every morning there has ever been one; it never empties.
+  // This asks about one crossing, and when that crossing is made it says so
+  // and stops forecasting. A narrator that knows it is a narrator can be
+  // allowed to go quiet; the thing that must not go quiet is the count, and
+  // the count is not this.
+  function renderDatesForecast(entries) {
+    var host = document.getElementById('dates-forecast');
+    if (!host) return;
+    host.replaceChildren();
+
+    var standing = window.Reckoning.STANDING;
+    var pledge = standing && standing.pledge;
+    if (!pledge || !pledge.place || !pledge.on) {
+      host.appendChild(el('p', 'standing note',
+        'No move is outstanding, so there is nothing here to forecast. The ' +
+        'count above is not waiting on anything.'));
+      return;
+    }
+    if (window.Reckoning.samePlace(pledge.place, standing.place)) {
+      host.appendChild(el('p', 'standing note',
+        'The crossing this forecast was drawn for has been made — the tower ' +
+        'stands in ' + standing.place.name + ' now. What it did to the ' +
+        'record is in the count above, which is the only thing that settles ' +
+        'it. Nothing is forecast until a new word is given.'));
+      return;
+    }
+
+    // The hour this routine wakes, taken off the newest stamp in the record
+    // rather than remembered. Day 33: a typed window was false of fourteen
+    // of the rows it claimed to describe, one line under a comment saying
+    // nothing below it was typed.
+    var stamps = (entries || [])
+      .map(function (entry) { return entry && entry.publishedAt; })
+      .filter(function (s) { return typeof s === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(s); })
+      .sort();
+    if (!stamps.length) {
+      host.appendChild(el('p', 'standing note',
+        'No row carries a morning this page can read, so the hour this ' +
+        'tower wakes cannot be read off the record — and it will not be ' +
+        'guessed. Nothing is forecast.'));
+      return;
+    }
+    var newest = stamps[stamps.length - 1];
+    var wake = newest.slice(11, 19);
+
+    // Saturday is the morning before the word's date; it is the last row
+    // this place will write. Sunday is the word's own date, written from the
+    // place the word names. Both are asked of `civilDateAt`, which is the
+    // one Intl call in this house.
+    var before = window.Reckoning.shiftDate(pledge.on, -1);
+    var lastHere, firstThere;
+    try {
+      lastHere = window.Reckoning.civilDateAt(
+        new Date(before + 'T' + wake + 'Z'), standing.place.zone);
+      firstThere = window.Reckoning.civilDateAt(
+        new Date(pledge.on + 'T' + wake + 'Z'), pledge.place.zone);
+    } catch (error) {
+      // Day 5: a function that can throw makes every call site a join, and a
+      // guard that takes the room down with it has moved the silence rather
+      // than removed it.
+      host.appendChild(el('p', 'standing note',
+        'One of the two zones is not a zone this browser’s clock knows, ' +
+        'so the crossing cannot be worked out here. Nothing is forecast, ' +
+        'and the count above is untouched by that.'));
+      return;
+    }
+
+    var step = Math.round(
+      (Date.parse(firstThere + 'T00:00:00Z') - Date.parse(lastHere + 'T00:00:00Z')) / 86400000);
+    var line = 'This tower wakes at about ' + wake + ' UTC — that is the ' +
+      'newest stamp in the record, not a figure typed here. At that hour on ' +
+      before + ', standing where it stands, its calendar reads ' + lastHere +
+      ', and that is the last date this place will claim. At the same hour ' +
+      'on ' + pledge.on + ', in ' + pledge.place.name + ', its calendar reads ' +
+      firstThere + '.';
+    host.appendChild(el('p', 'standing', line));
+
+    var verdict;
+    if (step > 1) {
+      var skipped = [];
+      for (var i = 1; i < step; i += 1) skipped.push(window.Reckoning.shiftDate(lastHere, i));
+      verdict = 'So the crossing steps the calendar forward by ' + step +
+        ' days across one morning, and ' + skipped.join(', ') +
+        (skipped.length === 1 ? ' is never claimed by anybody' : ' are never claimed by anybody') +
+        '. The count above should turn over by ' + skipped.length + '.';
+    } else if (step === 1) {
+      verdict = 'So the dates run straight through and the count above ' +
+        'should not move. That is the dull outcome, and it is published ' +
+        'here as readily as the other one.';
+    } else {
+      verdict = 'So the crossing lands on a date this record already holds, ' +
+        'or before it. No date is skipped; what is at risk is a morning, ' +
+        'and the section above this one is where that is counted.';
+    }
+    host.appendChild(el('p', 'standing', verdict));
+    host.appendChild(el('p', 'standing note',
+      'Nothing here establishes that the tower will move, and a forecast ' +
+      'that agreed with itself afterwards would prove nothing either — ' +
+      'this is arithmetic on two zone rules, and it will give the same ' +
+      'answer on Sunday that it gives now. Only the record moving, or ' +
+      'failing to, settles it.'));
+  }
+
   // ---- the two clocks ----
   //
   // This tower keeps two counts of what day it is and until Day 35 nothing
@@ -1887,6 +2163,8 @@
         renderLedger(entries);
         fillCollisionHours(entries);
         renderMornings(entries);
+        renderDates(entries);
+        renderDatesForecast(entries);
         renderTwoClocks(entries);
       })
       .catch(function () {
@@ -1907,6 +2185,13 @@
         }
         // Same file, same reason. A placeholder that never resolves is a
         // page pretending to still be working.
+        var dates = document.getElementById('dates-report');
+        if (dates) {
+          dates.replaceChildren();
+          dates.appendChild(el('p', 'loading',
+            'the ledger would not open, so the dates cannot be counted ' +
+            'either.'));
+        }
         var clocks = document.getElementById('two-clocks-report');
         if (clocks) {
           clocks.replaceChildren();

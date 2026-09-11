@@ -255,7 +255,13 @@ function check(ok, message) {
     // if some row in the book carries it.
     const strays = await moved.evaluate((city) => {
       const body = document.body.cloneNode(true);
-      ['#ledger-list', '#pledge-section', '#mornings-report', '#two-clocks-report']
+      // Day 39 adds two. `#dates-report` is the mornings' twin on the other
+      // axis: it names the places either side of an unclaimed date, which is
+      // a row's fact and not the tower's. `#dates-forecast` names the place
+      // the tower has given its *word* to, which is the pledge's lawful
+      // naming one mount along. Both are held to the same standard below.
+      ['#ledger-list', '#pledge-section', '#mornings-report', '#two-clocks-report',
+        '#dates-report', '#dates-forecast']
         .forEach((id) => {
           const node = body.querySelector(id);
           if (node) node.remove();
@@ -328,6 +334,31 @@ function check(ok, message) {
         pledgeText.includes(pledgedPlace)
           ? `the exemption is load-bearing: the pledge names the place it promised (${pledgedPlace})`
           : `the pledge does not name ${pledgedPlace}, so lifting it out of the sweep exempts nothing`);
+
+      // Day 39, and the same standard again for the forecast, which is the
+      // other mount that names the pledged place lawfully. While a move is
+      // outstanding it must say so; once the move is made it must go quiet
+      // and say *that*, and a forecast that had simply stopped drawing would
+      // make its own exemption free. Both branches are accepted, and a blank
+      // mount is accepted by neither — Day 29's condition, that an exemption
+      // carries a test its own reason still holds.
+      const forecastText = await moved.evaluate(() => {
+        const host = document.querySelector('#dates-forecast');
+        return host ? (host.innerText || host.textContent || '') : '';
+      });
+      const forecastSpeaks = forecastText.trim().length > 0;
+      check(forecastSpeaks,
+        forecastSpeaks
+          ? 'the forecast drew something, so its exemption is covering words rather than a silence'
+          : 'the forecast mount is empty, so lifting it out of the sweep exempts nothing');
+      if (forecastSpeaks) {
+        const lawful = forecastText.includes(pledgedPlace) ||
+          /nothing here to forecast|has been made|cannot be worked out|Nothing is forecast/.test(forecastText);
+        check(lawful,
+          lawful
+            ? `the exemption is load-bearing: the forecast either names the pledged place (${pledgedPlace}) or says why it is not forecasting`
+            : `the forecast neither names ${pledgedPlace} nor explains its silence, so the exemption is covering a stray`);
+      }
     }
 
     // And the two readings of the ledger, held to the same standard again.
@@ -503,6 +534,11 @@ function check(ok, message) {
       if (ledger) ledger.remove();
       const pledge = body.querySelector('#pledge-section');
       if (pledge) pledge.remove();
+      // Day 39: the forecast names the pledged place for the same reason the
+      // pledge section does — it is forecasting a crossing *to* it. Lifted
+      // here on the same terms, and held to them in the check below.
+      const forecast = body.querySelector('#dates-forecast');
+      if (forecast) forecast.remove();
       const text = body.innerText || body.textContent || '';
       if (!text.includes(city)) return null;
       const at = text.indexOf(city);
