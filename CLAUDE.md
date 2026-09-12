@@ -618,6 +618,30 @@ the whole report for `NaN`. That the offset is a real, computable fact
 about a dark day, discarded at the same line that discards solar noon, is
 **named and not built** — it belongs beside Ember's altitude.
 
+**Day 40: the header's founding claim was a told book, and it is a computed
+section now instead of a repaired sentence.** Since Day 22 this file's own
+opening comment said three guards — the acos fold, the day-line join, the
+rising-point arc — "have never fired for any cause, because one latitude has
+ever reached them." True in Paris. False since the Auckland move, and left
+standing seventeen mornings past the day it stopped being true: Day 39 found
+the day-line join firing on all eleven non-Paris rows, and two spirits had
+read this paragraph instead of the ledger on the same morning. COMMONPLACE.md
+recorded the fix as owed and Ember's question as open: *does anything here
+check a claim-about-the-record against the record on a cadence, the way
+`--verify` does for numbers — and prose cannot be made to.*
+
+Prose cannot, but the tool holding the prose can stop asserting from memory.
+A `HISTORICAL` section now reads `reckoning/ledger.json` live, every run, and
+reports which guards have actually fired and on which place's rows — the
+count is never hand-typed, so it cannot go stale the way the sentence it
+replaces did. The header keeps the Day 22 claim in its own tense (Day 31's
+pattern for `CROSS_CHECK_WITNESS`) rather than deleting the history, and
+points at the live section instead of restating the fact by hand.
+`survey-breaks.sh` asserts Auckland's fired count (frozen forever, having
+moved off the shortlist — Day 32's no-city-twice) and that the ledger's
+absence is guarded rather than left to crash the tool (Day 5's rule: a
+function that gains the power to throw makes every call site a new join).
+
 ## The word the tower gave, and the page that keeps it
 
 ```bash
@@ -883,6 +907,100 @@ and throw.
 
 **What is still outside it:** `check-sight.sh` reads the working tree, so
 moving a copy dirties it and it abstains every run. BLIND is not an all-clear.
+
+## The drift got a second method, and what it disclosed
+
+```bash
+./scripts/local-snapshot.sh tools/second-drift.js   # the new lines, forged four ways
+```
+
+**Built Day 40.** `crossCheck` carried a sunrise, a sunset and two gaps —
+two **levels** and nothing else. The drift is not a level; it is the
+difference between two days, it is this room's signed quantity (Ash named it
+Day 3), and it is the figure on the front of every letter this tower has
+sent. **It had never once been put to the second method.** `crossCheck` now
+carries `dayLengthMinutes` and `changeSinceYesterdayMinutes` of method B's
+own, born `2026-09-11` in `PATH_INTRODUCED`, and the page prints both beside
+method A's and subtracts them in front of the reader.
+
+**The wrong version was built first and is worth more than the right one.**
+The morning's measurement set the *level* gap against the *drift* — 12.9 s of
+disagreement about sunrise at Nairobi against a drift under 5 s a day — and
+read it as a check gone coarser than the number it is aimed at. **That is a
+category error**, and the reason was already written in this house's own hand,
+in the letter of 2026-08-15: *a steady bias mostly cancels when you subtract
+one day from the next.* Asked properly the two methods differ about the drift
+by **0.05 s** at Nairobi across 2026 — the calmest of the four places, not the
+worst. **Measure a check's slack in the same shape as the quantity you are
+asking about**: a bias against a level, a difference of biases against a
+difference. Ember's mechanism, run rather than argued: sunrise's sensitivity
+to a declination error goes with `tan(latitude)` — 0.087 min/° at Nairobi
+against −7.45 at Anchorage.
+
+**Ash's word for the twin, and it is the finding: the drift is opaque to a
+steady bias.** It does not show one (its robustness) and it cannot see through
+to one (its blindness), and those are one property. August's sunset was a
+minute and a half late for six days and the drift was out by about a second —
+**the figure that looked soundest was the one the fault was best hidden in.**
+
+**No fork, no verdict, no bound — all three deliberate.** `maxGapMinutes` is a
+bound on a *level* and says nothing about a difference of two levels; one
+invented here without a sweep would be Day 21's manufactured diagnosis. And
+Ember's caution, taken *before* the display was built: a verdict reading
+UNRESOLVED three mornings in four, starting the week a city's name goes up, is
+an alarm a keeper stops reading — Day 31's `unwitnessed latitude` rule with
+more force, because there the flag was rare. Case 6 of the suite is that
+caution as a check, with its own domain asserted non-empty first. The
+sixty-minute sweep is named on the page as **silent here, which is not the
+same as reassuring** (Day 32: do not let the honesty of a bound get borrowed).
+
+**The new check's first finding was about the check.** Method B is an almanac
+and an almanac is written a year at a time, so its day *length* walks smoothly
+across the turn of the year while its **drift** swallows the epoch's restart
+in one step. On 2027-01-01 the two methods should differ about the drift by
+**29.6 s at Anchorage, 13.4 at Paris, 8.0 at Auckland, 0.33 at Nairobi** —
+about **seven times** the worst disagreement anywhere inside the year, and the
+ratio is the same at every latitude, which is what makes it the almanac's seam
+rather than anything about a place. Said on the page before it happens,
+computed from the standing place, and the suite proves the figure moves when
+the place does.
+
+**Made to fail, and both results are written as they came out.** Deleting the
+`renderSecondOnTheDrift` call → **14 red**, and it convicted this suite's own
+dark-branch NaN sweep, which was green over an empty string (**eighth instance
+of the empty domain in this house, fourth inside a file quoting the rule**).
+Wiring method A's drift into B's slot → **2 red, and not the ones predicted**:
+the case holding the printed subtraction against its two printed operands
+stays *green*, because subtracting a number from itself is a correct
+subtraction. What catches it is the plainer case — a difference of exactly
+nothing is one method twice — and the turn-of-year figure going still.
+**Two cases I had down as one strong and one weak were the other way round.**
+
+### Four fixtures aged a row and only one had been mended
+
+`Reckoning.newestBirthday()` is new and exists because the same repair was
+made once and never travelled. A fixture that manufactures a ledger row builds
+it with today's `reckon()`, so it carries every field today's instrument
+emits; stamp it with a date older than the newest birthday and the symmetric
+half of the birthday rule convicts it, correctly, **about the fixture**. Day
+37 found that in four suites at once. Day 38 found the repair half-made —
+`claim-birthdays.sh` asked `CLAIM_INTRODUCED` alone and became a graft with
+nobody touching it — and mended that one file. **This morning, the first since
+then that a birthday landed in `PATH_INTRODUCED`, the three files beside it
+went red for the identical reason**: `dark-row.sh`, `ledger-dark.js`, and
+`sun-standing.js`, which reached for the birthday of the claim it is *about* —
+the natural date, right for three days. All four ask the instrument one
+question now. **A lesson applied to one of four copies is a lesson the house
+has not learned**, and the copies are what made it possible; the answer lives
+in the instrument for the same reason `CLAIM_INTRODUCED` does.
+
+**And `day-line-page.js` counted the container.** Its `secondsIn()` filtered
+on `/differ/`, which was every figure in the section while there were exactly
+two; a third such line appeared and it went red about a page that was right.
+It names its two terms now. This house had written that caution down for
+itself — *count what the case is actually about, never the container it sits
+in* — and it still landed, the good way round: **loud, immediate, and about a
+hand-kept needle rather than a generated one.**
 
 ## The two clocks, and the one half that is locked
 

@@ -227,7 +227,16 @@ async function readFigures(page, selector) {
   // load — the instrument's own output, not a hand-typed fixture (Day 15) —
   // and spliced into the ledger on its way to the page.
   const Reckoning = require('../reckoning/reckoning.js');
-  const born = Reckoning.CLAIM_INTRODUCED.sunHighestDegrees;
+  // **Day 40.** This read `CLAIM_INTRODUCED.sunHighestDegrees` — the
+  // birthday of the claim this case is *about*, which is the natural date to
+  // reach for and was right for three days. A row on that date carries every
+  // field today's `reckon()` emits, including any born since, so the morning
+  // two crossCheck birthdays landed it became a graft and the page convicted
+  // it, correctly, about the fixture. The date a manufactured row can
+  // honestly wear is the newest birthday in the instrument, never the one
+  // belonging to the field under test; that is still past this claim's own
+  // birthday, so the case asks exactly what it always asked.
+  const born = Reckoning.newestBirthday();
   const forged = Reckoning.reckon(born, Reckoning.STANDING.place);
   forged.publishedAt = born + 'T12:00:00Z';
 

@@ -57,9 +57,21 @@ async function secondMethod(page) {
 }
 
 // Every "N seconds" the section prints, as numbers.
+// The two *level* differences — sunrise and sunset — and only those.
+//
+// **Day 40.** This filtered on `/differ/` alone, which was every figure in
+// the section that said "differ" while there were exactly two. The morning
+// the drift got a second method a third such line appeared, and this suite
+// went red about a page that was right: it had been counting the container
+// rather than the thing the case is about. That is a caution this house
+// wrote for itself and it still landed — and it landed the good way round,
+// loud and immediate, which is the argument for a hand-kept needle that
+// names its terms. The wrap question below is about a whole day appearing
+// in a difference between two clock times, and the drift is not a clock
+// time, so it was never in this case's domain.
 function secondsIn(figures) {
   return Object.entries(figures)
-    .filter(([term]) => /differ/.test(term))
+    .filter(([term]) => /^they differ at (sunrise|sunset) by$/.test(term))
     .map(([, value]) => {
       const m = /(-?[\d.]+)\s*seconds/.exec(value || '');
       return m ? Math.abs(Number(m[1])) : null;

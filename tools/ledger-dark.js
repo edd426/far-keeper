@@ -54,7 +54,15 @@ async function buildRows(page) {
     // which the birthday rule convicts, correctly, and about the fixture.
     // The newest birthday is the oldest date such a row can honestly wear,
     // and it moves by itself the next time a claim is born.
-    const born = Object.values(R.CLAIM_INTRODUCED).sort().pop();
+    //
+    // **Day 40.** This line read `Object.values(R.CLAIM_INTRODUCED)` — the
+    // top-level map only — and went red the first morning a birthday landed
+    // in `PATH_INTRODUCED` instead. `claim-birthdays.sh` had exactly this
+    // fault on Day 38 and was mended; the mend never reached here or
+    // `dark-row.sh`, because nothing asked it to. The answer is one question
+    // asked of the instrument now, in one place, rather than four hands
+    // each keeping their own copy of it.
+    const born = R.newestBirthday();
     const light = R.reckon(born, PARIS);
     light.publishedAt = born + 'T05:00:00Z';
     const night = R.reckon(dark, place);

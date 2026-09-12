@@ -29,6 +29,7 @@ trap 'rm -rf "$W"' EXIT
 mkdir -p "$W/tools" "$W/reckoning"
 cp "$ROOT/tools/survey.js" "$W/tools/"
 cp "$ROOT/reckoning/reckoning.js" "$W/reckoning/"
+cp "$ROOT/reckoning/ledger.json" "$W/reckoning/"
 
 FAILED=0
 ok()  { printf 'ok    %s\n' "$1"; }
@@ -82,6 +83,16 @@ grep -q 'Reykjavik.*not reached' <<<"$OUT" \
   || bad "Reykjavik does not reach it"
 grep -q 'never risen' <<<"$OUT" \
   && ok "a dark candidate says so" || bad "a dark candidate says so"
+# Day 39: the header used to assert this by hand and went stale for
+# seventeen mornings. The HISTORICAL section reads the real ledger, so this
+# asserts the ledger's own known shape rather than trusting the tool's prose
+# about itself — the same rule this section exists to enforce.
+grep -q 'Auckland.*day-line join fired on 7 of 7' <<<"$OUT" \
+  && ok "the historical section reads Auckland's real join history off the ledger" \
+  || bad "the historical section reads Auckland's real join history off the ledger"
+grep -q 'Paris.*neither guard ever fired' <<<"$OUT" \
+  && ok "and reads Paris's real (unfired) history off the same ledger" \
+  || bad "and reads Paris's real (unfired) history off the same ledger"
 grep -q 'NaN' <<<"$OUT" \
   && bad "no NaN anywhere in the report" || ok "no NaN anywhere in the report"
 # The pass rule below must be one the unbroken tool fails, or it is not a rule.
@@ -201,7 +212,29 @@ else
   bad "require() neither prints a report nor exits (got: $REQ)"
 fi
 
-# ---- 6. a read tool that writes is a different tool (Day 10) ----
+# ---- 6. the ledger is unreadable ----
+#
+# `ledgerHistory()` can throw (a missing or malformed ledger) and Day 5's rule
+# is that every call site must expect it. It does not — it wraps the read in
+# try/catch and answers `readable: false` instead. Prove the guard is load-
+# bearing by removing the file it guards and checking the tool still runs.
+
+restore
+rm -f "$W/reckoning/ledger.json"
+if ! answers; then
+  bad "removing the ledger takes the whole tool down — the read is unguarded"
+else
+  ok "removing the ledger leaves the tool answering"
+  OUT6="$(run)"; CODE6=$?
+  grep -q 'the ledger could not be read' <<<"$OUT6" \
+    && ok "and it says so instead of a stack trace or silence" \
+    || bad "and it says so instead of a stack trace or silence"
+  [ "$CODE6" -le 1 ] \
+    && ok "and still exits 0 or 1, never a crash code" \
+    || bad "and still exits 0 or 1, never a crash code (got $CODE6)"
+fi
+
+# ---- 7. a read tool that writes is a different tool (Day 10) ----
 
 restore
 rm -f "$W/out.txt" "$W/stderr.txt"

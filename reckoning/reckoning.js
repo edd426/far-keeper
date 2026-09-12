@@ -200,12 +200,59 @@
     'crossCheck.sunriseGapMinutes': '2026-08-24',
     'crossCheck.sunsetGapMinutes': '2026-08-24',
     'crossCheck.beyondBound': '2026-08-24',
-    'crossCheck.maxGapMinutes': '2026-08-24'
+    'crossCheck.maxGapMinutes': '2026-08-24',
+    // Day 40, and the date is asked of the instrument, never typed off the
+    // keeper's morning — Ember's Day 36 catch, which reopened on Day 37 by
+    // the same route. The UTC day is 2026-09-12; the tower stands in
+    // Anchorage and its own day is 2026-09-11, which is the row this
+    // morning writes. A birthday one ahead of the first row carrying the
+    // claim excuses that very row from being asked for a field it does
+    // carry.
+    'crossCheck.dayLengthMinutes': '2026-09-11',
+    'crossCheck.changeSinceYesterdayMinutes': '2026-09-11'
   };
 
   function pathApplies(path, entryDateISO) {
     var introduced = PATH_INTRODUCED[path];
     return !introduced || entryDateISO >= introduced;
+  }
+
+  // The newest birthday this instrument holds, across **both** maps.
+  //
+  // Day 40, and it is a repair to four files rather than one. A fixture that
+  // manufactures a ledger row builds it with today's `reckon()`, so it
+  // carries every field today's instrument publishes — and a row stamped
+  // with a date older than the newest birthday is a row carrying a claim its
+  // own date predates, which the symmetric half of the birthday rule
+  // convicts, correctly, about the fixture. Day 37 found that in four suites
+  // at once and the repair was *ask the instrument for the date*. Day 38
+  // found the repair itself half-made: `claim-birthdays.sh` asked
+  // `CLAIM_INTRODUCED` alone and became a graft with nobody touching it, the
+  // morning a birthday first landed in `PATH_INTRODUCED`. That file was
+  // mended and the two beside it were not, because nothing asked them to —
+  // so this morning, when two more path birthdays were born, `dark-row.sh`
+  // and `ledger-dark.js` went red for the identical reason, three days late.
+  //
+  // The lesson the third instance carries, which the first two did not: the
+  // answer was kept in four hands and only one of them was ever corrected.
+  // It lives here now, for the same reason `CLAIM_INTRODUCED` does — a date
+  // the tower writes down about itself has one true answer, and every copy
+  // of it is another chance to disagree.
+  function newestBirthday() {
+    var dates = [];
+    var key;
+    for (key in CLAIM_INTRODUCED) {
+      if (Object.prototype.hasOwnProperty.call(CLAIM_INTRODUCED, key)) {
+        dates.push(CLAIM_INTRODUCED[key]);
+      }
+    }
+    for (key in PATH_INTRODUCED) {
+      if (Object.prototype.hasOwnProperty.call(PATH_INTRODUCED, key)) {
+        dates.push(PATH_INTRODUCED[key]);
+      }
+    }
+    dates.sort();
+    return dates.length ? dates[dates.length - 1] : null;
   }
 
   // Every leaf under a value, as dotted paths. An object is walked; anything
@@ -1583,6 +1630,29 @@
     var riseGap = bRise === null ? null : crossCheckGap(a.sunriseUTC, bRise);
     var setGap = bSet === null ? null : crossCheckGap(a.sunsetUTC, bSet);
 
+    // Day 40. The drift is this room's signed quantity — Ash named it on Day
+    // 3 — and until this morning the second method had never been asked for
+    // it. `crossCheck` carried a sunrise, a sunset and two gaps: two levels
+    // and nothing else. The drift is a *difference* of two days, derived from
+    // method A alone, and it has been on the front of every letter this tower
+    // has sent. It sat in the single-method band and nothing on the page or
+    // in either auditor said so.
+    //
+    // So method B is asked for yesterday too, and gives its own day length
+    // and its own drift. Nothing is factored together — Day 3's rule stands,
+    // the two methods still share no code, and this asks B for one more of
+    // B's own numbers rather than lending it any of A's.
+    var byRise = usno(
+      Number(yesterdayISO.slice(0, 4)), Number(yesterdayISO.slice(5, 7)), Number(yesterdayISO.slice(8, 10)),
+      place.latitude, place.longitude, true, zenith);
+    var bySet = usno(
+      Number(yesterdayISO.slice(0, 4)), Number(yesterdayISO.slice(5, 7)), Number(yesterdayISO.slice(8, 10)),
+      place.latitude, place.longitude, false, zenith);
+    var bDayLength = (bRise === null || bSet === null) ? null : bSet - bRise;
+    var bYesterdayLength = (byRise === null || bySet === null) ? null : bySet - byRise;
+    var bChange = (bDayLength === null || bYesterdayLength === null)
+      ? null : bDayLength - bYesterdayLength;
+
     // How much does the softest constant matter? Re-run the same series
     // with the horizon moved one arcminute and see how far sunrise walks.
     // This is a sensitivity, and it is computed — it says how wrong the
@@ -1665,7 +1735,17 @@
         sunriseGapMinutes: riseGap.gapMinutes,
         sunsetGapMinutes: setGap.gapMinutes,
         beyondBound: riseGap.beyondBound || setGap.beyondBound,
-        maxGapMinutes: CROSS_CHECK_MAX_GAP_MINUTES
+        maxGapMinutes: CROSS_CHECK_MAX_GAP_MINUTES,
+        // Day 40. B's own day length and B's own drift, so the page can set
+        // them against A's. No gap field and no bound: `maxGapMinutes` above
+        // is a bound on a **level**, and a bound on a level says nothing
+        // whatever about a difference of two levels. Declaring one here
+        // without a sweep behind it would be Day 21's bound-only fault —
+        // a diagnosis manufactured out of a number nobody gathered. The
+        // page subtracts these two in front of the reader instead, and says
+        // on its own face that the difference has no bound yet.
+        dayLengthMinutes: bDayLength,
+        changeSinceYesterdayMinutes: bChange
       }
     };
   }
@@ -2164,6 +2244,7 @@
     DEEP_CLAIMS: DEEP_CLAIMS,
     PATH_INTRODUCED: PATH_INTRODUCED,
     pathApplies: pathApplies,
+    newestBirthday: newestBirthday,
     deepPaths: deepPaths,
     deepPathCount: deepPathCount,
     deepDifferences: deepDifferences,
