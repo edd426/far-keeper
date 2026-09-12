@@ -427,6 +427,197 @@
       round(Math.abs(entry.crossCheck.sunriseDifferenceMinutes) * 60, 1) + ' seconds');
     addFigure(second, 'they differ at sunset by',
       round(Math.abs(entry.crossCheck.sunsetDifferenceMinutes) * 60, 1) + ' seconds');
+
+    renderSecondOnTheDrift(entry, second);
+  }
+
+  // ---- the second method, on the drift ----
+  //
+  // Day 40. Everything above this line is a *level* — a sunrise, a sunset,
+  // and how far apart the two methods stand on each. The drift is not a
+  // level. It is the difference between two days, and it is this room's
+  // signed quantity: Ash named it on Day 3, the page leads with it, and it
+  // is the figure on the front of every letter this tower has sent. Until
+  // this morning the second method had never been asked for it. `crossCheck`
+  // carried two times and two gaps and nothing else, so the number this room
+  // is built on sat in the single-method band with nothing anywhere saying
+  // so — Day 20's finding and Day 38's, arriving at the one figure that had
+  // been quoted outside the house.
+  //
+  // **The wrong version of this, which was built first and thrown away.**
+  // The morning's measurement set the *level* gap against the *drift* — 12.9
+  // seconds of disagreement at sunrise against a drift of under 5 seconds a
+  // day at Nairobi — and read it as a check gone coarser than the number it
+  // is pointed at. That comparison is a category error and this tower had
+  // already written the reason down: a steady bias mostly cancels when you
+  // subtract one day from the next. Most of that 12.9 seconds is in both
+  // days and goes out in the subtraction. Asked properly, the two methods
+  // differ about the *drift* by 0.05 seconds at Nairobi across the whole of
+  // 2026 — the best of the four places this tower has stood or is going to,
+  // not the worst.
+  //
+  // **And the twin of that, which is the finding.** The same cancellation
+  // that makes the drift robust to a steady bias is what let a steady bias
+  // hide inside it. In August this page published a sunset a minute and a
+  // half late every day for six days, and the drift was out by about a
+  // second — so the figure that was hardest to fault was the figure the
+  // fault was best hidden in. Ash's word for the pair: **the drift is opaque
+  // to steady bias.** It does not show the bias, which is its robustness,
+  // and it cannot see through to the bias, which is its blindness, and those
+  // are one property and not two.
+  //
+  // So no bound is declared on this difference. `maxGapMinutes` is a bound
+  // on a level; a bound on a level says nothing about a difference of two
+  // levels, and inventing one without a sweep behind it would manufacture a
+  // diagnosis (Day 21). The two drifts are printed and subtracted in front
+  // of the reader, and the absence of a bound is said out loud rather than
+  // left to be noticed.
+  function renderSecondOnTheDrift(entry, second) {
+    var host = document.getElementById('second-drift');
+    if (!host) return;
+    host.replaceChildren();
+
+    var cross = entry.crossCheck;
+    var mine = entry.changeSinceYesterdayMinutes;
+    var theirs = cross ? cross.changeSinceYesterdayMinutes : null;
+
+    if (cross && cross.dayLengthMinutes !== null && cross.dayLengthMinutes !== undefined) {
+      addFigure(second, 'day length (USNO)',
+        window.Reckoning.durationWords(cross.dayLengthMinutes));
+    }
+
+    // Explicit null checks, not truthiness: a drift of exactly zero is
+    // falsy and is a real answer. Day 21's own note, one field along.
+    if (mine === null || mine === undefined || theirs === null || theirs === undefined) {
+      host.appendChild(el('p', 'standing note',
+        'The second method has no drift for this row — either it returned ' +
+        'nothing here, or this row predates the morning it was first asked ' +
+        'for one (2026-09-11). The drift above therefore stands on one ' +
+        'method, which is what it did on every row before that morning. ' +
+        'That is said here rather than left as a blank.'));
+      return;
+    }
+
+    addFigure(second, 'the drift (USNO)', signedSeconds(theirs * 60));
+    var apart = Math.abs(mine - theirs) * 60;
+    addFigure(second, 'they differ on the drift by', round(apart, 3) + ' seconds');
+
+    host.appendChild(el('p', 'standing',
+      'Those last three lines are new on 2026-09-11 and they close a hole ' +
+      'this room had carried since the day it was built. Everything above ' +
+      'them is a level — a sunrise, a sunset — and the drift is not a level, ' +
+      'it is the difference between two days. The second method had never ' +
+      'once been asked for it. The number this page leads with, and the ' +
+      'number in every letter that has left this tower, was computed by one ' +
+      'method, and nothing here said so.'));
+
+    host.appendChild(el('p', 'standing note',
+      'Read the two disagreements against each other and they will look ' +
+      'wrong. Today the methods differ by ' +
+      round(Math.abs(entry.crossCheck.sunriseDifferenceMinutes) * 60, 1) +
+      ' seconds about sunrise and by ' + round(apart, 3) +
+      ' seconds about the drift, which is far smaller — and that is not the ' +
+      'drift being better measured. Most of the sunrise disagreement is ' +
+      'present in both days and cancels when one is subtracted from the ' +
+      'other. The same cancellation is why, for six days in August, this ' +
+      'page published a sunset a minute and a half late and a drift out by ' +
+      'about a second: the figure that looked soundest was the one the fault ' +
+      'was best hidden in. The drift is opaque to a steady bias — it does ' +
+      'not show one, and it cannot see through to one, and those are the ' +
+      'same property. So this line is a check on the drift and it is not a ' +
+      'check on the times the drift was made from.'));
+
+    host.appendChild(el('p', 'standing note',
+      'There is no declared bound on this difference and that is deliberate. ' +
+      'The sixty minutes above is a bound on a level, and a bound on a level ' +
+      'says nothing about a difference of two levels. A bound invented here ' +
+      'without a sweep behind it would be a number nobody gathered wearing a ' +
+      'verdict’s face. So the two drifts are printed and the subtraction ' +
+      'is done where you can see it, and when a bound arrives it will arrive ' +
+      'with its own witness and its own date.'));
+
+    host.appendChild(el('p', 'standing note',
+      'The sweep behind that sixty minutes — 62,978 events, pole to pole — ' +
+      'is a neighbour to this question and not a witness to it. It answers ' +
+      'how large the gap between two clock times can get. It was never asked ' +
+      'how large a gap is beside the number printed above it, and lending ' +
+      'its authority to a row it never checked is a thing this tower has ' +
+      'done once already. It is silent here, which is not the same as ' +
+      'reassuring.'));
+
+    renderNewYearSeam(host, entry);
+  }
+
+  // The one date this new check is already known to speak loudly on, said
+  // here before it happens rather than found by a stranger on the morning.
+  //
+  // Method B is the USNO almanac, and an almanac is written a year at a
+  // time: `usnoDayNumber` counts days from the first of January and the
+  // series is fitted to that year. So B's day *length* walks smoothly
+  // across the turn of the year — its level gap never jumps — but its
+  // **drift**, which is a difference across the boundary, takes the whole
+  // of the epoch's restart in one step. Measured at all four places this
+  // tower has stood or is going to, the disagreement on the first of
+  // January is about seven times the worst disagreement anywhere inside the
+  // year, and that ratio is the same at every latitude — which is what
+  // makes it the almanac's own seam rather than anything about a place.
+  //
+  // Nothing was wrong here before this morning. The seam has been in method
+  // B since the day it was written; it was invisible because the drift had
+  // no second method to disagree with. **A new check's first finding is
+  // usually about the check.**
+  function renderNewYearSeam(host, entry) {
+    var place = window.Reckoning.STANDING.place;
+    var year = Number(entry.date.slice(0, 4));
+    var turn = (year + 1) + '-01-01';
+    var seam, inside;
+    try {
+      seam = window.Reckoning.reckon(turn, place);
+      inside = window.Reckoning.reckon(year + '-06-24', place);
+    } catch (error) {
+      // Day 5, and Day 19's correction of it: a guard that takes the room
+      // down with it has moved the silence rather than removed it.
+      host.appendChild(el('p', 'standing note',
+        'The turn of the year could not be worked out here, so this page ' +
+        'says nothing about it rather than guess. Everything above is ' +
+        'untouched by that.'));
+      return;
+    }
+
+    function apart(row) {
+      if (!row || !row.crossCheck) return null;
+      var a = row.changeSinceYesterdayMinutes;
+      var b = row.crossCheck.changeSinceYesterdayMinutes;
+      if (a === null || a === undefined || b === null || b === undefined) return null;
+      return Math.abs(a - b) * 60;
+    }
+    var atTurn = apart(seam);
+    var atMidsummer = apart(inside);
+    if (atTurn === null) {
+      host.appendChild(el('p', 'standing note',
+        'The second method has no drift for ' + turn + ' at ' + place.name +
+        ', so there is nothing to forecast about the turn of the year here.'));
+      return;
+    }
+
+    var line = 'One date is already known to be loud, and it is said here ' +
+      'before it happens. The second method is an almanac, and an almanac is ' +
+      'written a year at a time: it counts its days from the first of ' +
+      'January and its series is fitted to that year. Its day length walks ' +
+      'smoothly across the turn — the gap in the times does not jump — but ' +
+      'the drift is a difference taken across the boundary, so it swallows ' +
+      'the whole of that restart in one step. At ' + place.name +
+      ' on ' + turn + ' the two methods should differ about the drift by ' +
+      round(atTurn, 3) + ' seconds';
+    if (atMidsummer !== null) {
+      line += ', against ' + round(atMidsummer, 3) +
+        ' seconds at midsummer this year';
+    }
+    line += '. Nothing is wrong. That seam has been in the almanac since it ' +
+      'was written and was invisible until this morning, because the drift ' +
+      'had no second method to disagree with — a new check’s first ' +
+      'finding is usually about the check.';
+    host.appendChild(el('p', 'standing', line));
   }
 
   // Day 20. `never` leads this list because on a dark row it is the only

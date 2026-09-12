@@ -3,11 +3,26 @@
 // survey — what does this tower's own method say at a place we might stand?
 //
 // Built Day 22, three mornings before the first move. Evan's argument for
-// moving at all is that three guards in `reckoning/reckoning.js` — the `acos`
-// fold, the general non-Paris offset branch, the rising-point arc — have never
-// fired for any cause, because one latitude has ever reached them. A tower that
-// stays put cannot find a latitude-dependent error, in the exact way Wren's
-// clearing could not find its missing month from inside itself.
+// moving at all was that three guards in `reckoning/reckoning.js` — the `acos`
+// fold, the general non-Paris offset branch (the day-line join), the
+// rising-point arc — had never fired for any cause, because one latitude had
+// ever reached them. A tower that stays put cannot find a latitude-dependent
+// error, in the exact way Wren's clearing could not find its missing month
+// from inside itself. That was true on Day 22, in Paris, and it was kept
+// exactly that way in this comment for seventeen mornings after it stopped
+// being true.
+//
+// Day 39: it was false, and had been since the Auckland move. The day-line
+// join has fired on eleven of thirty-five non-Paris rows — every row Auckland
+// or Anchorage ever published. Two spirits read this paragraph instead of the
+// ledger on the same morning and both built an argument on it (Ember's own
+// workbench note, same day, same fault, named for something else an hour
+// earlier). The paragraph was true when written and nothing after the hand
+// ever asked whether it still was — Day 29's sentence about a hand-kept list,
+// landing on a hand-kept *sentence* instead. The HISTORICAL section below
+// reads the ledger itself rather than restate the claim by hand, precisely so
+// this file cannot go stale silently a second time: whatever it says, it says
+// because it looked.
 //
 // So the next place has to be chosen, and the house's rule for choosing things
 // is to ask the instrument rather than ask which city sounds well. Ember drew
@@ -76,7 +91,10 @@
 // tower would refuse to stand behind (a cross-check past the bound); 2 the tool
 // could not do its job.
 
+const fs = require('fs');
+const path = require('path');
 const Reckoning = require('../reckoning/reckoning.js');
+const LEDGER_PATH = path.join(__dirname, '..', 'reckoning', 'ledger.json');
 
 // The move this survey is for. A constant, so the committed run reproduces.
 const MOVE_DATE = '2026-09-13';
@@ -190,6 +208,29 @@ function dayLineReach(working) {
   return out;
 }
 
+// Has the ledger itself ever fired the day-line join or the acos fold? Read
+// live off `reckoning/ledger.json`, never hand-typed, so the answer this file
+// gives cannot go stale the way the header's old prose did (Day 39). A row
+// that predates `working` (none, currently) is skipped rather than thrown on.
+function ledgerHistory() {
+  let rows;
+  try {
+    rows = JSON.parse(fs.readFileSync(LEDGER_PATH, 'utf8'));
+  } catch (error) {
+    return { readable: false, detail: error.message };
+  }
+  const byPlace = {};
+  for (const row of rows) {
+    const name = (row.place && row.place.name) || 'unknown';
+    if (!byPlace[name]) byPlace[name] = { rows: 0, joinFired: 0, foldFired: 0 };
+    const entry = byPlace[name];
+    entry.rows += 1;
+    if (row.never) { entry.foldFired += 1; continue; }
+    if (row.working && dayLineReach(row.working).length) entry.joinFired += 1;
+  }
+  return { readable: true, byPlace, total: rows.length };
+}
+
 function surveyOne(place, dateISO) {
   let r;
   try {
@@ -229,6 +270,22 @@ function report(lines) {
   lines.push('A column dated past today describes that place\'s geometry. It is not a claim');
   lines.push('that this tower will be reckoning there on that date; under one place a week');
   lines.push('it will not be.');
+  lines.push('');
+  lines.push('HISTORICAL — has the ledger itself ever fired the day-line join or the acos');
+  lines.push('fold, read off reckoning/ledger.json rather than asserted in prose (Day 39).');
+  const history = ledgerHistory();
+  if (!history.readable) {
+    lines.push(`  the ledger could not be read (${history.detail}) — no historical answer this run`);
+  } else {
+    lines.push(`  ${history.total} published rows`);
+    for (const name of Object.keys(history.byPlace)) {
+      const h = history.byPlace[name];
+      const notes = [];
+      if (h.joinFired) notes.push(`day-line join fired on ${h.joinFired} of ${h.rows}`);
+      if (h.foldFired) notes.push(`acos fold fired on ${h.foldFired} of ${h.rows}`);
+      lines.push('  ' + pad(name, 13) + (notes.length ? notes.join('; ') : `${h.rows} rows, neither guard ever fired`));
+    }
+  }
 
   for (const date of DATES) {
     lines.push('');

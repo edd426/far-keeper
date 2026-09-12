@@ -280,7 +280,19 @@ verify_case() {
     // the instrument. A row on that date is the oldest row that can honestly
     // carry everything today's \`reckon()\` emits, and it moves by itself the
     // next time a claim is introduced.
-    const born = Object.values(R.CLAIM_INTRODUCED).sort().pop();
+    //
+    // **Day 40: and it must be the newest of BOTH maps.** This line read
+    // \`CLAIM_INTRODUCED\` alone for three days and went red the first
+    // morning a birthday landed in \`PATH_INTRODUCED\` instead — the two
+    // cross-check drift fields, born 2026-09-11. Nobody touched this file;
+    // it became a graft by standing still, which is word for word what
+    // \`claim-birthdays.sh\` did on Day 38 and was repaired for. The lesson
+    // did not travel to the second file, because nothing asked it to. A
+    // fixture inherits every rule the auditor has, including the ones
+    // written after it.
+    // Asked of the instrument as one question, because four files were
+    // deriving this answer by hand and only one of them was ever corrected.
+    const born = R.newestBirthday();
     const light = R.reckon(born, PARIS);
     light.publishedAt = born + 'T05:00:00Z';
     const rows = [light, dark];
