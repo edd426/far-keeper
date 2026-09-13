@@ -85,7 +85,15 @@ const PLEDGE_TO_AUCKLAND =
 async function run() {
   const browser = await chromium.launch({ executablePath: EXECUTABLE });
 
-  // ---- 1. PLEDGED, as the tower stands right now, unforged ----
+  // ---- 1. The live pledge state, whatever it is, unforged ----
+  // The heading read *PLEDGED, as the tower stands right now* until Day 41.
+  // Day 31 saw that go false and said so; Day 32 repaired every typed field
+  // under it and left the heading alone. It has named the wrong state on
+  // most mornings since — KEPT from Day 27, PLEDGED again for two days when
+  // the Nairobi word superseded the Anchorage one, KEPT again this morning.
+  // Nothing here reads the heading, which is exactly why it could go on
+  // being wrong: a repair applied to the fields and not to the sentence
+  // describing them (Day 25, and the told book).
   {
     const page = await browser.newPage();
     await page.goto(URL + 'reckoning/', { waitUntil: 'networkidle' });

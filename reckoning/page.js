@@ -1725,6 +1725,71 @@
   // reads as an all-clear it never earned (Day 21, Day 27, Day 31 — an empty
   // domain always says yes). So the count of mornings written goes out on
   // every load, and *none missing* is a published claim that can be wrong.
+  // A morning that wrote more than one row — Day 41, and it is the mark the
+  // two axes above leave when a crossing costs nothing at all.
+  //
+  // Until this morning this was one sentence: *N rows carry those M
+  // mornings, so at least one morning wrote more than one row.* It was a
+  // footnote apologising for two numbers on the line above disagreeing, it
+  // named no morning and no place, and it had never once fired. Ash's cut,
+  // on the morning it first could have: **a section that announces
+  // something happened and then says nothing is worse than silence.**
+  //
+  // **Why there is anything to read here at all.** Going west, the two
+  // clocks hand this tower a day its own book already holds; the write gate
+  // refuses, correctly, and no keeper can save that morning — the loss is
+  // the shape of the world (Day 34). Going east the clocks skip a day, and
+  // the page above has said since Day 39 that such a crossing *costs a date
+  // and no morning*, as though the two were a pair. They are not a pair.
+  // The place a tower is leaving still reads the earlier day right up to the
+  // moment it goes, so that date is lost only if nobody asks before going.
+  // Ash's words for the difference: the westward loss is **structural** and
+  // the eastward one is **contingent** — one is forced, one is allowed.
+  // Ask in time and the date is claimed, and what the record carries
+  // instead is one UTC morning with two rows on it.
+  //
+  // **It reports zero**, like both readings it sits inside, and for the
+  // reason those do: a line that speaks only when it has something to show
+  // has an empty domain every other day, and an empty domain always says
+  // yes.
+  //
+  // **And it never says why.** Two rows on one morning are exactly as
+  // consistent with a crossing asked about in time as with a hand that ran
+  // the routine twice, and the record does not separate them. The rows are
+  // printed as facts standing on one morning; the inference is the
+  // reader's.
+  function renderCrowdedMornings(host, dated, written) {
+    var byMorning = Object.create(null);
+    dated.forEach(function (row) {
+      if (!byMorning[row.morning]) byMorning[row.morning] = [];
+      byMorning[row.morning].push(row);
+    });
+    var crowded = Object.keys(byMorning)
+      .filter(function (day) { return byMorning[day].length > 1; })
+      .sort();
+
+    host.appendChild(el('p', 'standing note',
+      crowded.length
+        ? dated.length + ' rows carry those ' + written + ' mornings, and ' +
+          crowded.length + ' of those mornings wrote more than one row.'
+        : dated.length + ' rows carry those ' + written + ' mornings — one ' +
+          'row each, and no morning wrote twice.'));
+
+    crowded.forEach(function (day) {
+      var rows = byMorning[day].slice().sort(function (a, b) {
+        return a.stamp < b.stamp ? -1 : a.stamp > b.stamp ? 1 : 0;
+      });
+      var line = 'On ' + day + ' this tower spoke ' +
+        (rows.length === 2 ? 'twice' : rows.length + ' times') + ': ';
+      line += rows.map(function (row) {
+        return 'at ' + row.stamp.slice(11, 19) + ' it wrote the row dated ' +
+          row.date + ' at ' + row.place;
+      }).join('; ');
+      line += '. Why is not in the record.';
+      host.appendChild(el('p', 'standing note', line));
+    });
+  }
+
   function renderMornings(entries) {
     var host = document.getElementById('mornings-report');
     if (!host) return;
@@ -1744,6 +1809,7 @@
       }
       dated.push({
         morning: stamp.slice(0, 10),
+        stamp: stamp,
         date: entry.date,
         place: (entry.place && entry.place.name) || 'an unnamed place'
       });
@@ -1799,11 +1865,7 @@
       'morning lost after ' + last + ' is not inside the span yet and cannot ' +
       'be counted here; it appears when the next row lands and carries the ' +
       'span over it. A clean reading is a reading up to ' + last + '.'));
-    if (dated.length !== written) {
-      host.appendChild(el('p', 'standing note',
-        dated.length + ' rows carry those ' + written + ' mornings, so at ' +
-        'least one morning wrote more than one row.'));
-    }
+    renderCrowdedMornings(host, dated, written);
     if (undatable) {
       host.appendChild(el('p', 'standing note',
         undatable + (undatable === 1 ? ' row carries' : ' rows carry') +
@@ -2051,17 +2113,37 @@
     var newest = stamps[stamps.length - 1];
     var wake = newest.slice(11, 19);
 
-    // Saturday is the morning before the word's date; it is the last row
-    // this place will write. Sunday is the word's own date, written from the
-    // place the word names. Both are asked of `civilDateAt`, which is the
-    // one Intl call in this house.
-    var before = window.Reckoning.shiftDate(pledge.on, -1);
+    // **Both calendars are asked at one instant, and that is Day 41's
+    // repair.** Until this morning the leaving side was asked at the wake
+    // hour on the *morning before* the word's date, on the assumption that
+    // the tower's last act in this place is yesterday's row. It is not: the
+    // tower is awake here, on the move's own morning, before it goes — that
+    // is when the move is made. Asking two different instants and
+    // subtracting their calendars measured the crossing plus a day, and the
+    // forecast this tower published before the Nairobi crossing said a date
+    // would be lost that was not. One instant, two zones, and the
+    // difference is the crossing and nothing else.
+    //
+    // **The `step > 1` branch below is not dead and it is not tested by any
+    // move this tower is likely to make — say which, so a later hand does
+    // not read its silence either way.** Two civil clocks read at one
+    // instant differ by more than a day only where the offset spread
+    // exceeds twenty-four hours, and then only inside a window that
+    // narrows as the spread approaches it: swept over every IANA zone on
+    // this date, the largest same-instant spread is two calendar days at
+    // exactly one UTC hour out of twenty-four, between the extreme zones.
+    // Ember swept the twelve places `survey.js` actually names, at the
+    // 02:03–02:40 band all thirty-nine published rows fall in, and found
+    // **no** ordered pair that reaches it — the widest this tower has ever
+    // shortlisted is Anchorage to Kiritimati at twenty-two hours. So for
+    // every crossing this tower has considered, an eastward loss is never
+    // geometry; it is only ever nobody having asked. The branch is honest
+    // cover for a real case standing outside that list.
+    var moment = new Date(pledge.on + 'T' + wake + 'Z');
     var lastHere, firstThere;
     try {
-      lastHere = window.Reckoning.civilDateAt(
-        new Date(before + 'T' + wake + 'Z'), standing.place.zone);
-      firstThere = window.Reckoning.civilDateAt(
-        new Date(pledge.on + 'T' + wake + 'Z'), pledge.place.zone);
+      lastHere = window.Reckoning.civilDateAt(moment, standing.place.zone);
+      firstThere = window.Reckoning.civilDateAt(moment, pledge.place.zone);
     } catch (error) {
       // Day 5: a function that can throw makes every call site a join, and a
       // guard that takes the room down with it has moved the silence rather
@@ -2077,24 +2159,31 @@
       (Date.parse(firstThere + 'T00:00:00Z') - Date.parse(lastHere + 'T00:00:00Z')) / 86400000);
     var line = 'This tower wakes at about ' + wake + ' UTC — that is the ' +
       'newest stamp in the record, not a figure typed here. At that hour on ' +
-      before + ', standing where it stands, its calendar reads ' + lastHere +
-      ', and that is the last date this place will claim. At the same hour ' +
-      'on ' + pledge.on + ', in ' + pledge.place.name + ', its calendar reads ' +
-      firstThere + '.';
+      pledge.on + ', the morning of the crossing, this place\u2019s calendar ' +
+      'reads ' + lastHere + ' — and that date is still here to be claimed, ' +
+      'right up to the moment the tower goes. At that same instant, in ' +
+      pledge.place.name + ', the calendar already reads ' + firstThere + '.';
     host.appendChild(el('p', 'standing', line));
 
     var verdict;
     if (step > 1) {
       var skipped = [];
       for (var i = 1; i < step; i += 1) skipped.push(window.Reckoning.shiftDate(lastHere, i));
-      verdict = 'So the crossing steps the calendar forward by ' + step +
-        ' days across one morning, and ' + skipped.join(', ') +
-        (skipped.length === 1 ? ' is never claimed by anybody' : ' are never claimed by anybody') +
-        '. The count above should turn over by ' + skipped.length + '.';
+      verdict = 'So the two calendars are ' + step + ' days apart at one ' +
+        'instant, and ' + skipped.join(', ') +
+        (skipped.length === 1 ? ' is a date no clock' : ' are dates no clock') +
+        ' in either place is standing in when the tower goes. That one is ' +
+        'not the keeper\u2019s to save by asking sooner. The count above ' +
+        'should turn over by ' + skipped.length + '.';
     } else if (step === 1) {
       verdict = 'So the dates run straight through and the count above ' +
-        'should not move. That is the dull outcome, and it is published ' +
-        'here as readily as the other one.';
+        'should not move \u2014 on one condition, which is the whole of what ' +
+        'this forecast learned on Day 41. ' + lastHere + ' is claimed only ' +
+        'if this tower asks the place it is leaving what day it is before ' +
+        'it goes. Move first and reckon after, and nobody ever claims it: ' +
+        'the count above turns over by one and the loss is the keeper\u2019s, ' +
+        'not the crossing\u2019s. That is the dull outcome and its condition, ' +
+        'and both are published here as readily as the other branch.';
     } else {
       verdict = 'So the crossing lands on a date this record already holds, ' +
         'or before it. No date is skipped; what is at risk is a morning, ' +

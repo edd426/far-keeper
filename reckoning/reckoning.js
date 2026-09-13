@@ -649,8 +649,8 @@
   // reachable. A guard written for a rare case turning out to be the whole
   // road is worth saying out loud rather than reading as luck.
   var STANDING = {
-    place: ANCHORAGE,
-    since: '2026-09-05',
+    place: NAIROBI,
+    since: '2026-09-13',
     // Day 39. The Anchorage pledge is *superseded*, never cleared — Day 25's
     // finding, and the reason is that clearing a kept word on arrival makes
     // KEPT dead code and leaves a page that can accuse and never vouch. So
