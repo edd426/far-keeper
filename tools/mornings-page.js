@@ -190,15 +190,43 @@ function parseHead(text) {
       check(!new RegExp(word, 'i').test(crowdedTail),
         `the crowded morning is not explained by "${word}"`);
     });
-    const ownPlaces = crowdedReal[0].rows.map((row) => (row.place && row.place.name) || '');
-    const strangers = Array.from(new Set(real
-      .map((entry) => (entry.place && entry.place.name) || '')
-      .filter((name) => name && ownPlaces.indexOf(name) === -1)));
-    check(strangers.length > 0,
-      `the record holds ${strangers.length} place(s) this morning's rows do not carry — the sweep below is vacuous without one`);
-    strangers.forEach((name) => {
-      check(!new RegExp(name).test(crowdedTail),
-        `and it names no place its own rows do not carry: "${name}" is absent`);
+    // **Per crowded day, against that day's own sentence — Ember's, and it
+    // is a licence rather than a fault today.** The first form of this
+    // built `ownPlaces` from `crowdedReal[0]` alone and swept it across
+    // everything from the first crowded sentence to the end of the section.
+    // With one crowded morning in the record those are the same thing.
+    // With two they part in both directions: the second day's sentence is
+    // judged against the first day's places, which fails loud and for the
+    // wrong reason, *and* a name lawfully its own on day one is thereby
+    // permitted everywhere after it — including inside day two's sentence,
+    // where it is a stray. **A licence that widens itself the next time the
+    // watched thing happens twice, with nobody re-granting it.** Named at
+    // the first instance rather than found at the second (Day 40).
+    // The bound is the sentence's own terminator, not the next crowded
+    // heading. Cutting at the next heading instead ran the only crowded
+    // day's slice on to the end of the section and swallowed the gap
+    // sentences under it, which lawfully name the places either side of a
+    // hole — so the sweep convicted a reading that was right, for the
+    // second time this morning, on the same mistake in the opposite
+    // direction. A sentence's own end is the only honest edge for a check
+    // about that sentence.
+    const CLOSE = 'Why is not in the record.';
+    crowdedReal.forEach(({ day, rows }) => {
+      const from = plain.indexOf(`On ${day} this tower spoke`);
+      const end = from >= 0 ? plain.indexOf(CLOSE, from) : -1;
+      const sentence = from >= 0 && end >= 0 ? plain.slice(from, end + CLOSE.length) : '';
+      check(sentence.length > 0,
+        `${day} has a sentence of its own to sweep (the place check below is vacuous without one)`);
+      const ownPlaces = rows.map((row) => (row.place && row.place.name) || '');
+      const strangers = Array.from(new Set(real
+        .map((entry) => (entry.place && entry.place.name) || '')
+        .filter((name) => name && ownPlaces.indexOf(name) === -1)));
+      check(strangers.length > 0,
+        `the record holds ${strangers.length} place(s) ${day}'s rows do not carry — the sweep below is vacuous without one`);
+      strangers.forEach((name) => {
+        check(!new RegExp(name).test(sentence),
+          `${day} names no place its own rows do not carry: "${name}" is absent`);
+      });
     });
   }
 
