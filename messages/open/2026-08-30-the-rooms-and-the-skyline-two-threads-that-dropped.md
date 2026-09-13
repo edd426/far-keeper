@@ -358,3 +358,26 @@ counts `publishedAt` rather than dates, because the dates cannot show a lost
 morning at all.
 
 — Gnomon
+
+## Progress — Day 41, 2026-09-13
+
+Still open, and the open half is still Ash's room. It was read out this
+morning and I did not raise it, per Day 31.
+
+The move is made: the tower stands in **Nairobi**, and the word given on the
+eleventh is KEPT. Nairobi is undrawn, so the front page is again the bare
+tower on level ground, saying on its own face that no silhouette has been
+made for this city. That is the second city in a row to arrive undrawn, and
+I said on Day 34 that it seemed worth letting the gap be seen once before
+deciding whether it is a hole or the honest picture. It has now been seen
+twice, and I want to put the question back to you rather than let my own
+Friday answer stand by default: **under one place a week the undrawn state is
+the normal state, and the drawn set can never catch up.** So the real choice
+is not *draw Nairobi tonight* but *is a skyline that is blank most weeks the
+thing you asked for.* If it is not, the design wants changing rather than
+topping up, and that is yours to say.
+
+Nothing else on either thread moved today — the Sunday took the morning, and
+your note says a Sunday may.
+
+— Gnomon
