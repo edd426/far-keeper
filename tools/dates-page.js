@@ -339,13 +339,35 @@ function parseHead(text) {
   await fore.goto(`${URL}reckoning/`, { waitUntil: 'networkidle' });
   const forecast = await fore.$eval('#dates-forecast',
     (host) => host.textContent.replace(/\s+/g, ' ').trim());
+  // **Three forks, and the gate is *is a crossing outstanding*, not *is
+  // there a pledge* — Day 41.** Until this morning the gate was
+  // `s && s.pledge`, which reads a pledge object as a crossing to come. Day
+  // 25 settled that a kept pledge is *superseded, never cleared*, so the
+  // object outlives its own crossing: on the morning the tower arrived,
+  // three cases here went red about a page that was right, because the
+  // forecast had correctly fallen into its *the crossing has been made*
+  // branch and printed none of the figures a pending one prints. A fixture
+  // whose domain is not what its name says, for the fourth time in this
+  // house.
   const pledged = await fore.evaluate(() => {
     const s = window.Reckoning.STANDING;
-    return s && s.pledge ? { name: s.pledge.place.name, on: s.pledge.on } : null;
+    if (!s || !s.pledge) return null;
+    return {
+      name: s.pledge.place.name,
+      on: s.pledge.on,
+      outstanding: !window.Reckoning.samePlace(s.pledge.place, s.place)
+    };
   });
 
   check(forecast.length > 0, 'the forecast drew something (every assertion below is vacuous otherwise)');
-  if (pledged) {
+  if (pledged && !pledged.outstanding) {
+    check(/has been made/.test(forecast) && forecast.includes(pledged.name),
+      `the pledged crossing is made, so the forecast says so and names where the tower now stands (${pledged.name})`);
+    check(/settles it/.test(forecast),
+      'and hands the reader back to the count, which is the only thing that settles it');
+    check(!/turn over by \d+|should not move/.test(forecast),
+      'and forecasts nothing about a crossing that is already in the record');
+  } else if (pledged) {
     const newestStamp = real
       .map((e) => e.publishedAt)
       .filter((s) => typeof s === 'string')
@@ -367,6 +389,69 @@ function parseHead(text) {
       'with no pledge outstanding the forecast says so rather than drawing nothing');
   }
   await fore.close();
+
+  // ---- Ten-and-a-half: the forecast asks both calendars at one instant ---
+  // **Day 41, and it is the repair for a claim this tower published and got
+  // wrong.** Before the Anchorage → Nairobi crossing the forecast printed
+  // *2026-09-12 is never claimed by anybody; the count above should turn
+  // over by 1.* It was claimed, from Anchorage, minutes before the tower
+  // went. The fault was the pair of instants: the leaving calendar was read
+  // at the wake hour on the morning *before* the move, as though this
+  // tower's last act in a place were the previous day's row, while the
+  // arriving one was read on the move's own morning. Two mornings
+  // subtracted from each other measure the crossing plus a day.
+  //
+  // The case forges the tower back to where it stood on the eve, with the
+  // word it actually gave, so the forecast draws for the real crossing. The
+  // pass rule is what a page with the old arithmetic would fail: the
+  // straight-through fork, and no sentence anywhere claiming the twelfth
+  // goes unclaimed. The forgery is asserted to have landed first, and the
+  // unrepaired page is what makes the rule bite — Day 5.
+  const EVE_STANDING =
+    "var STANDING = {\n    place: " +
+    JSON.stringify({ name: 'Anchorage', latitude: 61.2181, longitude: -149.9003, zone: 'America/Anchorage' }) +
+    ",\n    since: '2026-09-05',\n    pledge: { place: " +
+    JSON.stringify({ name: 'Nairobi', latitude: -1.2921, longitude: 36.8219, zone: 'Africa/Nairobi' }) +
+    ", on: '2026-09-13', announced: '2026-09-11' }\n  };";
+  const eve = await browser.newPage({ viewport: { width: 390, height: 900 } });
+  let eveLanded = false;
+  await eve.route('**/reckoning.js*', async (route) => {
+    const response = await route.fetch();
+    const before = await response.text();
+    const body = before.replace(/var STANDING = \{[\s\S]*?\n  \};/, EVE_STANDING);
+    eveLanded = body !== before;
+    await route.fulfill({ response, body });
+  });
+  await eve.goto(`${URL}reckoning/`, { waitUntil: 'networkidle' });
+  check(eveLanded,
+    'the eve fixture landed: the tower stands in Anchorage with its word given to Nairobi for 2026-09-13');
+
+  if (eveLanded) {
+    const eveText = await eve.$eval('#dates-forecast',
+      (host) => host.textContent.replace(/\s+/g, ' ').trim());
+    check(/Nairobi/.test(eveText) && !/has been made/.test(eveText),
+      'and the forecast draws for a crossing still to come (every assertion below is vacuous otherwise)');
+    check(/calendar reads 2026-09-12/.test(eveText),
+      'the leaving calendar is read on the move\u2019s own morning: Anchorage reads 2026-09-12, not the eve\u2019s 2026-09-11');
+    check(/already reads 2026-09-13/.test(eveText),
+      'and the arriving calendar is read at that same instant: Nairobi reads 2026-09-13');
+    check(/should not move/.test(eveText),
+      'so the two are one day apart and the count is forecast not to move \u2014 which is what the record then showed');
+    // **This case was a wording check and I had it down as the strong one.**
+    // Run against a tree with only the arithmetic put back it stayed green,
+    // because the sentence it hunted lives in the `step > 1` fork whose
+    // wording this morning also changed — so it convicted the old words and
+    // not the old sum. Day 40's finding again: a case cannot be ranked
+    // before its sabotage is run. It reads the arithmetic now — a forecast
+    // that has measured the crossing plus a day lands in the skipped-date
+    // fork whatever that fork says, and that fork is the one that turns the
+    // count over.
+    check(!/turn over by/.test(eveText) && !/never claimed by anybody/.test(eveText),
+      'and it lands in no skipped-date fork at all: the crossing plus a day is a sum, not a wording');
+    check(/only if this tower asks/.test(eveText) && /keeper/.test(eveText),
+      'the straight-through fork names its condition \u2014 the date survives only because somebody asked before going');
+  }
+  await eve.close();
 
   // ---- Eleven: the page still does not scroll sideways -----------------
   for (const width of [375, 390, 1440]) {

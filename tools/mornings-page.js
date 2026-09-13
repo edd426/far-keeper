@@ -120,6 +120,116 @@ function parseHead(text) {
   check(holedHead.span === holedHead.spoke + holedHead.missing,
     `the arithmetic still closes with a hole in it: ${holedHead.span} = ${holedHead.spoke} + ${holedHead.missing}`);
 
+  // ---- Two-and-a-half: a morning that wrote more than one row ----------
+  // **Day 41.** Going west costs a morning; going east, asked about in time,
+  // costs nothing and leaves one UTC day carrying two rows. Until this
+  // morning that mark was a single sentence apologising for two numbers on
+  // the line above disagreeing — no morning named, no place, no reading —
+  // and it had never fired. Ash's cut on the morning it first could:
+  // *a section that announces something happened and then says nothing is
+  // worse than silence.*
+  //
+  // Every needle here is computed off the real ledger. Typing 2026-09-13
+  // would pass for ever (the record is cold) and would still be Day 4's
+  // fault: a hand-written figure marking the spot where a cheap computation
+  // was not done.
+  const crowdedReal = (() => {
+    const byMorning = Object.create(null);
+    real.forEach((entry) => {
+      if (typeof entry.publishedAt !== 'string') return;
+      const day = entry.publishedAt.slice(0, 10);
+      (byMorning[day] = byMorning[day] || []).push(entry);
+    });
+    return Object.keys(byMorning)
+      .filter((day) => byMorning[day].length > 1)
+      .sort()
+      .map((day) => ({ day, rows: byMorning[day] }));
+  })();
+
+  check(/rows carry those \d+ mornings/.test(plain),
+    'the count of rows against the count of mornings is printed on every load, crowded or not');
+  check(crowdedReal.length > 0,
+    `the record holds ${crowdedReal.length} morning(s) that wrote more than one row — the assertions below are vacuous without one`);
+
+  if (crowdedReal.length) {
+    check(plain.includes(`and ${crowdedReal.length} of those mornings wrote more than one row`),
+      `the count of crowded mornings matches the record's own (${crowdedReal.length})`);
+    crowdedReal.forEach(({ day, rows }) => {
+      check(plain.includes(`On ${day} this tower spoke`),
+        `the crowded morning is named: ${day}`);
+      rows.forEach((row) => {
+        const place = (row.place && row.place.name) || 'an unnamed place';
+        check(plain.includes(`it wrote the row dated ${row.date} at ${place}`),
+          `and ${day} names the row it wrote at ${row.place.name}: ${row.date}`);
+        check(plain.includes(`at ${row.publishedAt.slice(11, 19)} it wrote`),
+          `and the hour it wrote it: ${row.publishedAt.slice(11, 19)}`);
+      });
+    });
+    // **The domain, asserted before it is swept — and this guard exists
+    // because the sabotage caught its absence, not because I foresaw it.**
+    // With the reading torn out, `indexOf` returns −1 and `slice(-1)` hands
+    // the sweep below a single character, over which every cause word is
+    // absent and every tick goes green. Ninth instance in this house of an
+    // empty domain saying yes, and the second inside a file that quotes the
+    // rule against it.
+    const crowdedAt = plain.indexOf(`On ${crowdedReal[0].day} this tower spoke`);
+    check(crowdedAt >= 0,
+      `there is a crowded-morning sentence to read (${crowdedReal[0].day}) — the sweep below is vacuous without one`);
+    const crowdedSentence = crowdedAt >= 0 ? plain.slice(crowdedAt) : '';
+    check(/Why is not in the record/.test(crowdedSentence),
+      'and the crowded morning carries the same refusal a gap does: why is not in the record');
+    // **A place name cannot be swept for here, and finding that out cost a
+    // red tick.** The reading lawfully names each row's own place, so a
+    // needle reading `Nairobi` convicts a sentence that is right — Day 27
+    // exactly, where `standing-page.js` convicted the page for a pledge
+    // lawfully naming its own place. What is swept for is a *cause*; what is
+    // checked instead, for places, is that no place appears beyond the ones
+    // this morning's own rows carry.
+    const crowdedTail = crowdedSentence.split('Why is not in the record')[0];
+    ['crossing', 'eastward', 'because', 'the move', 'slept', 'collision'].forEach((word) => {
+      check(!new RegExp(word, 'i').test(crowdedTail),
+        `the crowded morning is not explained by "${word}"`);
+    });
+    const ownPlaces = crowdedReal[0].rows.map((row) => (row.place && row.place.name) || '');
+    const strangers = Array.from(new Set(real
+      .map((entry) => (entry.place && entry.place.name) || '')
+      .filter((name) => name && ownPlaces.indexOf(name) === -1)));
+    check(strangers.length > 0,
+      `the record holds ${strangers.length} place(s) this morning's rows do not carry — the sweep below is vacuous without one`);
+    strangers.forEach((name) => {
+      check(!new RegExp(name).test(crowdedTail),
+        `and it names no place its own rows do not carry: "${name}" is absent`);
+    });
+  }
+
+  // The zero fork. It must print on a record with nothing to show, or its
+  // silence on every ordinary morning reads as an all-clear it never earned.
+  const flat = await browser.newPage({ viewport: { width: 390, height: 900 } });
+  let flattened = false;
+  await flat.route('**/ledger.json*', async (route) => {
+    const response = await route.fetch();
+    const before = await response.text();
+    const seen = Object.create(null);
+    const entries = JSON.parse(before).filter((entry) => {
+      const day = typeof entry.publishedAt === 'string' ? entry.publishedAt.slice(0, 10) : null;
+      if (day === null) return true;
+      if (seen[day]) return false;
+      seen[day] = true;
+      return true;
+    });
+    const body = JSON.stringify(entries, null, 2);
+    flattened = body !== before;
+    await route.fulfill({ response, body });
+  });
+  await flat.goto(`${URL}reckoning/`, { waitUntil: 'networkidle' });
+  const flatText = await readReport(flat);
+  check(flattened, 'the one-row-per-morning ledger actually reached the page');
+  check(/one row each, and no morning wrote twice/.test(flatText),
+    'a record with no crowded morning says so out loud rather than going quiet');
+  check(!/this tower spoke twice/.test(flatText),
+    'and names none, because there are none to name');
+  await flat.close();
+
   // ---- Three: it must not say why -------------------------------------
   // Ash's condition, and the one this section is most likely to rot into. A
   // gap is as consistent with a crossing as with a morning nobody woke the
@@ -134,7 +244,15 @@ function parseHead(text) {
   // in exactly the voice of a check that worked.
   const gapTail = holedText.split('Nothing was written on')[1] || '';
   check(gapTail.length > 0, 'there is a gap sentence to sweep for a cause (the sweep below is vacuous without one)');
-  const causes = ['crossing', 'collision', 'because', 'westward', 'Anchorage', 'the move', 'slept'];
+  // `Anchorage` was in this list until Day 41 and was one coincidence away
+  // from a red tick: the gap sentence lawfully names the places either side
+  // of the hole, so a place-name needle here convicts a sentence that is
+  // right the moment the gap lands beside that city. It passed for two days
+  // because the one real gap happens to sit between Auckland and Anchorage
+  // and the needle was checked against the sentence's *tail*. Swept for a
+  // cause; a place is checked the other way, against the rows the sentence
+  // actually names.
+  const causes = ['crossing', 'collision', 'because', 'westward', 'the move', 'slept'];
   for (const word of causes) {
     check(!new RegExp(word, 'i').test(gapTail),
       `the gap is not explained by "${word}"`);
