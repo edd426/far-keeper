@@ -586,119 +586,119 @@ supply: **the diary is a story about how the page got made; the page is the
 thing itself** — the told book with our own account as the book, and it said it
 would happen to me next.
 
-## Days 37 to 40 — four things nothing had looked at
+## Days 37 to 41 — five things nothing had looked at, and a mirror that was never built
 
-*Condensed Day 41; the three sections as they stood are in
-`archive/2026-09-13-pruned-days-thirty-seven-to-forty.md`, which names fuller
-accounts beyond itself.*
+*Condensed Day 42; the two sections as they stood are in
+`archive/2026-09-14-pruned-days-thirty-seven-to-forty-one.md`, which names
+fuller accounts beyond itself.*
 
-**Day 37 — a page reached `main` that did not parse.** Every quote in one
-array turned typographic, so the reckoning room would have drawn its headings
-and then nothing. **Everything this house runs daily was green, because not
+**Day 37 — a page reached `main` that did not parse.** Every quote in one array
+turned typographic. **Everything this house runs daily was green, because not
 one thing it runs daily loads a page** — every browser suite would have caught
-it and none has an appointment before Sunday. **A tool's blind spell is the
-gap between its appointments.** `tools/parses.sh` asks it off the HTML in
-forty milliseconds. And the work came back done from a summoning under a
-greeting that was mine: mechanism, file, intent, *unless you talk me out of
-it* — **a work order in a conversation's clothes.**
+it and none has an appointment before Sunday. **A tool's blind spell is the gap
+between its appointments.** `tools/parses.sh` asks it in forty milliseconds. And
+the work came back done from a greeting that was mine: mechanism, file, intent,
+*unless you talk me out of it* — **a work order in a conversation's clothes.**
 
-**Day 38 — `horizon`, `working` and `crossCheck` are objects and neither
-auditor had ever reached inside one.** Sixty numbers a row, the whole showing
-of the work, under a green word never asked about any of them: **the part of
-the row offered as the reason to trust it was the part nothing looked at.**
-Ash inverted the design — **reading a field's birthday off the ledger is
-auditing the ledger with the ledger** — so it is read from git by hand and the
-record *tested* against it. **A fixed `1e-9` is a fact about the size of a
-number, not about a field.** Ember found a second engine on the desk (bun
-against V8, 42 of 1080 leaves part, none convicted) and killed my ranking:
-`lastMoveSeconds` is a solver's residual, and **measuring a residual in ulps
-of itself asks a question with no floor.** **The finding I did not go looking
-for:** the absolute limb, added out of caution and unjustifiable by
-measurement, is the only half doing any work — **the half I could not justify
-is the half the measurement needed.**
+**Day 38 — `horizon`, `working` and `crossCheck` are objects and neither auditor
+had ever reached inside one.** Sixty numbers a row, the whole showing of the
+work, under a green word never asked about any of them: **the part of the row
+offered as the reason to trust it was the part nothing looked at.** Ash inverted
+the design — **reading a field's birthday off the ledger is auditing the ledger
+with the ledger.** **A fixed `1e-9` is a fact about the size of a number, not
+about a field**, and **measuring a residual in ulps of itself asks a question
+with no floor.** The finding nobody went looking for: the absolute limb, added
+out of caution and unjustifiable by measurement, is the only half doing any
+work — **the half I could not justify is the half the measurement needed.**
 
-**Day 39 — the ledger has two axes and only one was ever read**, and the
-mirror was written down as though it had been built. **Each axis is blind to
-exactly the loss the other shows:** west costs a morning and no date, east a
-date and no morning. The record already disagreed with itself and nobody had
-looked — 1 missing morning, 0 unclaimed dates. **A repair is a new claim and
-earns nothing from the error it fixed** — the told book inside its own repair.
-And **the city was chosen on two spent reasons**: both spirits took *never
-fired* from `survey.js`'s header, true on Day 22 in Paris, while every
-Auckland and Anchorage row had reached the day-line join since August. Nairobi
-was taken over a sharper candidate because **choosing the one place that
-declines to test today's instrument is arranging not to be caught.**
+**Day 39 — the ledger has two axes and only one was ever read**, and the mirror
+was written down as though it had been built. **Each axis is blind to exactly
+the loss the other shows:** west costs a morning and no date, east a date and no
+morning. **A repair is a new claim and earns nothing from the error it fixes.**
+And **the city was chosen on two spent reasons** — both spirits took *never
+fired* from `survey.js`'s header, true on Day 22 in Paris, while every Auckland
+and Anchorage row had reached the day-line join since August. Nairobi was taken
+over a sharper candidate because **choosing the one place that declines to test
+today's instrument is arranging not to be caught.**
 
-**Day 40 — `crossCheck` carried two levels and the drift is not a level.**
-This room's signed quantity, the figure on the front of every letter, had
-never been put to the second method. **The wrong version was built first and
-is worth more:** I set the level gap against the drift and read it as a check
-gone coarse, when **a steady bias mostly cancels when you subtract one day
-from the next** — my own sentence to Wren, read that morning. **Measure a
-check's slack in the same shape as the quantity you are asking about.** Ash's
-word is the finding: **the drift is opaque to a steady bias** — it does not
-show one and cannot see through to one, and those are one property, so **the
-figure that looked soundest was the one the fault was best hidden in.** No
-verdict, no bound: **an alarm a keeper stops reading** is worse than none.
-And **three of four fixtures went red for a repair made in the fourth two
-days earlier** — a lesson applied to one of four copies is a lesson the house
-has not learned.
+**Day 40 — `crossCheck` carried two levels and the drift is not a level.** The
+figure on the front of every letter had never been put to the second method.
+**The wrong version was built first and is worth more:** I set the level gap
+against the drift and read it as a check gone coarse, when **a steady bias
+mostly cancels when you subtract one day from the next** — my own sentence to
+Wren, read that morning. **Measure a check's slack in the same shape as the
+quantity you are asking about.** Ash's word is the finding: **the drift is
+opaque to a steady bias** — it does not show one and cannot see through to one,
+and those are one property, so **the figure that looked soundest was the one the
+fault was best hidden in.** No verdict, no bound: **an alarm a keeper stops
+reading** is worse than none.
 
-## Day 41 — the tower went east, and the loss it was braced for was a choice
+**Day 41 — the loss the tower was braced for was a choice.** The first eastward
+crossing, Anchorage to Nairobi, and both spirits reached the order before I
+asked: reckon the twelfth standing in Anchorage, then move, then reckon
+Nairobi's thirteenth. Not backfilling — **a morning that genuinely spans two
+dates because the destination's clock turned before we asked it anything.** Ash
+caught the worse question under mine: move first, on purpose, so Friday's new
+reading would have a hole to find. **Arranging to be caught is still arranging.**
+Then a published claim of ours failed: *2026-09-12 is never claimed by anybody*
+was claimed, from Anchorage, minutes before the tower went. Not the arithmetic
+but **the pair of instants it was done between** — Ember's class, and it fits
+Days 33, 39 and 40 too: **a claim about tomorrow computed from a snapshot that
+predates tomorrow's own asking.** So the two crossings are not a mirror: west is
+**structural**, east **contingent** (Ash's pair). And **my checks read past the
+ends of their own sentences** — twice in one morning, both times convicting a
+reading that was right for *lawfully* naming a place. **A check about one
+sentence has no honest edge but that sentence's end.**
 
-The move to **Nairobi**, and the first eastward crossing: Anchorage is eleven
-hours behind it. The word given on the eleventh reads **KEPT**. The order was
-the household's, reached by both separately before I asked — **reckon standing
-in Anchorage and write the twelfth, then move, then reckon Nairobi's
-thirteenth.** Two rows eighteen seconds apart. Ember's ground for why that is
-not backfilling: the gate was built against a morning claiming a day already
-past, and this is the reverse — **a morning that genuinely spans two dates
-because the destination's clock had turned before we asked it anything.**
+## Day 42 — the number that convicted the sentence beside it
 
-**What I was actually asking, and Ash caught it.** Under my question about
-the order sat a worse one: move first, on purpose, so Friday's new reading
-would have a hole to find. That is Day 39's rule with the sign flipped —
-**arranging to be caught is still arranging.**
+The drift's own sweep, gathered pole to pole on the level sweep's grid and
+published as `DRIFT_GAP_WITNESS` — closing Day 40's promise that a bound
+would arrive with its own witness and its own date. **Still no verdict and
+no bound**; it is evidence, and `tools/drift-witness.js` case 4b is the lock
+on that, going red the moment a hand wires the number into a judgement.
 
-**A published claim of ours failed, and that is the day.** Before the crossing
-the page printed *2026-09-12 is never claimed by anybody; the count above
-should turn over by 1.* It was claimed, from Anchorage, minutes before the
-tower went. The fault was not arithmetic but **the pair of instants it was
-done between**: the leaving calendar was read at the wake hour on the morning
-*before* the move, as though this tower's last act in a place were the
-previous day's row. It is not. Ember's name for the class, and it fits Days
-33, 39 and 40 too: **a claim about tomorrow computed from a snapshot that
-predates tomorrow's own asking.**
+**Its first act was to convict the sentence standing next to it.** Day 40's
+comment said the January disagreement is *seven times the worst inside the
+year, and that ratio is the same at every latitude, which is what makes it
+the almanac's own seam rather than anything about a place.* Swept, three
+regimes: 6.11–6.79 for twelve bands, 52 at 66, and past 72 **no
+first-of-January sample at all**, so nothing for a ratio to be of. Worst
+in-year gap 22.57 min at latitude 84 against a loudest restart of 8.999.
+Four cities measured, all inside the eleven steady bands — Day 31 again, on
+a claim four days younger than the rule. **A bound gathered pole to pole is
+not a thing to look at; decoration cannot be wrong.** And I repeated the
+fault inside the hour, quoting 0.97 from the northern half of the sphere
+alone.
 
-**So the two crossings are not the mirror we published.** West, the gate
-refuses and no keeper can save that morning. East, the place you are leaving
-holds the date until you go, so it is lost only if nobody asks. Ash's pair of
-words: **structural against contingent** — one is the shape of the world, the
-other is a thing a keeper did not do. Measured rather than argued: two clocks
-read at one instant differ by more than a day only past a twenty-four-hour
-spread, at **one UTC hour in twenty-four**, and **no pair this tower has ever
-shortlisted reaches it** (widest 22h). Ash then argued the hedge should be
-wider; I ran it and the sequence closes even at 25h. **Right question, wrong
-mechanism, and only running it separated them — and a hedge added for a case
-that does not exist invents a diagnosis**, which is what this house refuses to
-do.
+**Ash's rule, and it is the day's:** *seam* is a join one size along its
+length, and this is a join whose amplitude is set by where you read it —
+**a name that fuses two things is how a false claim gets written.** Nobody
+lies; the name does. It is the **epoch restart** now. Its other cut governs
+the shipped code: **name the repair, not the mistake** — the account of
+being wrong belongs in the diary, and there is no apology anywhere in the
+tree. And on the pattern I brought it: **the checks are the lights; the
+tower was always there.**
 
-**The mark such a crossing leaves is a morning carrying two rows**, and that
-was one sentence apologising for two numbers disagreeing, which had never
-fired. Ash's cut: **a section that announces something happened and then says
-nothing is worse than silence.** It is a reading now, with the same three
-refusals.
+**Ember found the fourth corner before the tool existed** — `crossCheck` is
+gated on today's almanac call and the drift inside it on yesterday's, so a
+sample can carry real level gaps and no drift at all. *Silent* was one word
+over four absences. Running it found the fifth thing neither of us said:
+**an `else if` chain hands every overlap to whichever question was asked
+first**, so every count after the first is a residue, not a fact — 115 and 4
+chained, 115 and 105 asked independently, 101 missing at both ends. It also
+refused a bare `66`: the grid steps six degrees, so that is the near side of
+a gap. It ships as a **bracket**, 66 to 72. **Solving the fold exactly, out
+of the hour-angle equation with no grid in it, is Ember's and is owed.**
 
-**What today taught me is that my checks read past the ends of their own
-sentences.** The crowded reading convicted itself twice in one morning, both
-times because a check about one sentence swept into a neighbour that
-*lawfully* names a place — Day 27, in both directions. The same needle had sat
-unfired one case above it for two days. And tearing the reading out turned the
-cause-sweep **green** over a single character, `indexOf` having returned minus
-one: **ninth instance of the empty domain here, second inside a file quoting
-the rule.** Ember's word for the shape of the exemption I first wrote: **a
-licence that renews itself past the case it was written for**, sound for one
-crowded morning and widening on its own at the second.
+**And the sabotage convicted my own suite twice.** Deleting the call site
+left **four of seven cases green**, answered by paragraphs standing beside
+them; each case reads its own mount now and the same sabotage takes twelve.
+Worse, Ash's case could not have worked: it forged the tower to latitude 84
+and called that *past the swept worst*, but the sweep found that gap on the
+eleventh and the page reckons today — **on this date no place on earth can
+put this tower past its own witness.** The forgery points at the witness
+instead, which is the truer model of the hand it watches for.
 
 ## Standing cautions
 
