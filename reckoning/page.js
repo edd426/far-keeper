@@ -542,37 +542,107 @@
       'how large the gap between two clock times can get. It was never asked ' +
       'how large a gap is beside the number printed above it, and lending ' +
       'its authority to a row it never checked is a thing this tower has ' +
-      'done once already. It is silent here, which is not the same as ' +
-      'reassuring.'));
+      'done once already.'));
 
-    renderNewYearSeam(host, entry);
+    renderDriftWitness(host);
+    renderEpochRestart(host, entry);
   }
 
-  // The one date this new check is already known to speak loudly on, said
-  // here before it happens rather than found by a stranger on the morning.
+  // The paragraph above used to end *it is silent here, which is not the
+  // same as reassuring*, which was true and was a mood standing where a
+  // measurement could stand. The drift has its own sweep as of 2026-09-14
+  // and this is where it is cited — Ember's condition on gathering it at
+  // all, and the right one: a witness nothing quotes is a checker wired to
+  // no door wearing a witness's coat.
+  //
+  // It is evidence and not a threshold. Nothing here compares this row's
+  // drift gap to it. A bound is a thing with a far side and the pull to use
+  // one will arrive; when it does it should arrive as a decision somebody
+  // made, in daylight, not as a number that quietly acquired a verdict.
+  function renderDriftWitness(outer) {
+    var w = window.Reckoning.DRIFT_GAP_WITNESS;
+    if (!w) return;
+
+    // Its own mount, and the reason is Day 41's and it landed on this
+    // file's own suite an hour after it was written. Sabotage 1 — delete
+    // this call — left four of the seven cases **green**, because the date,
+    // the worst figure and two of the counts also appear in paragraphs
+    // beside these. A check about one paragraph has no honest edge but that
+    // paragraph's end, so the paragraphs get a box and the suite reads the
+    // box. Nothing on the page looks different for it.
+    var host = el('div', '');
+    host.id = 'drift-witness';
+    outer.appendChild(host);
+
+    host.appendChild(el('p', 'standing note',
+      'The drift now has a sweep of its own. On ' + w.sweptOn + ' this ' +
+      'difference was gathered on the level sweep’s grid — latitudes ' +
+      w.latitudeRange[0] + ' to ' + w.latitudeRange[1] + ' every six ' +
+      'degrees, longitudes every ten, every eleventh day of ' + w.year +
+      ' — and across ' + w.inYearSamples.toLocaleString() + ' days on which ' +
+      'both methods named a drift, the largest they ever came apart by was ' +
+      round(w.largestInYearGapMinutes * 60, 1) + ' seconds, at latitude ' +
+      w.largestInYearAt.latitude + ' on ' + w.largestInYearAt.date + '. The ' +
+      'first of January is counted apart and is the paragraph below. ' +
+      'That figure is evidence and not a limit: nothing on this page ' +
+      'compares today’s gap to it, and there is still no bound and no ' +
+      'verdict on the drift. It is here so that a reader has a measured ' +
+      'number where this page carried a mood, and it can be re-run — ' +
+      w.tool + ' prints AGREES or DIFFERS against the figures above.'));
+
+    host.appendChild(el('p', 'standing note',
+      'What the sweep could not see is published with it. Of ' +
+      w.litSamples.toLocaleString() + ' lit days on the grid, ' +
+      w.oursMissingSamples + ' had no drift of ours (our own method had the ' +
+      'day and not the day before it) and ' + w.theirsMissingSamples +
+      ' had none of theirs — ' + w.theirsNoTimeTodaySamples + ' because the ' +
+      'almanac would not speak about the date at all, and ' +
+      w.theirsNoYesterdaySamples + ' because it spoke about the date and ' +
+      'declined about the day before. ' + w.bothMissingSamples + ' were ' +
+      'missing at both ends at once, which is why those counts overlap and ' +
+      'are given whole rather than as a tally that adds up. Four ways for ' +
+      'one number to be absent, and they were one word until this morning.'));
+  }
+
+  // The one date this check is already known to speak loudly on, said here
+  // before it happens rather than found by a stranger on the morning.
   //
   // Method B is the USNO almanac, and an almanac is written a year at a
   // time: `usnoDayNumber` counts days from the first of January and the
   // series is fitted to that year. So B's day *length* walks smoothly
   // across the turn of the year — its level gap never jumps — but its
   // **drift**, which is a difference across the boundary, takes the whole
-  // of the epoch's restart in one step. Measured at all four places this
-  // tower has stood or is going to, the disagreement on the first of
-  // January is about seven times the worst disagreement anywhere inside the
-  // year, and that ratio is the same at every latitude — which is what
-  // makes it the almanac's own seam rather than anything about a place.
+  // of the epoch's restart in one step.
   //
-  // Nothing was wrong here before this morning. The seam has been in method
-  // B since the day it was written; it was invisible because the drift had
-  // no second method to disagree with. **A new check's first finding is
-  // usually about the check.**
-  function renderNewYearSeam(host, entry) {
+  // Day 42 swept that restart pole to pole rather than at the four cities
+  // this tower has stood in, and the swept table is the claim now. The
+  // ratio of restart to worst-in-year is 6.11 to 6.79 for twelve bands, 52
+  // in the 66 band, and past 72 there is **no first-of-January sample at
+  // all** — those latitudes are dark or the almanac declines, so nothing is
+  // there for a ratio to be of. The largest in-year gap anywhere, 22.57
+  // minutes at latitude 84, is nearly three times the loudest restart
+  // anywhere, 8.999 at −66. So the restart is the loud thing at the
+  // latitudes this tower has stood at, and that is a smaller sentence than
+  // the one that stood here.
+  //
+  // Ash took the old name off it. It was *the seam*, which fuses two things
+  // — a join that is everywhere, and an amplitude set by where you read it
+  // — and the fused name is how *the same at every latitude* got written in
+  // the first place. It is the **epoch restart**: the join lives in the
+  // almanac's structure, the size of it is a fact about a latitude.
+  //
+  // Nothing about method B was wrong then or now. The restart has been in
+  // it since it was written; it was invisible because the drift had no
+  // second method to disagree with. **A new check's first finding is
+  // usually about the check** — and this one's second finding, two days
+  // later, was about the sentence the check's first finding was written in.
+  function renderEpochRestart(host, entry) {
     var place = window.Reckoning.STANDING.place;
     var year = Number(entry.date.slice(0, 4));
     var turn = (year + 1) + '-01-01';
-    var seam, inside;
+    var restart, inside;
     try {
-      seam = window.Reckoning.reckon(turn, place);
+      restart = window.Reckoning.reckon(turn, place);
       inside = window.Reckoning.reckon(year + '-06-24', place);
     } catch (error) {
       // Day 5, and Day 19's correction of it: a guard that takes the room
@@ -591,7 +661,7 @@
       if (a === null || a === undefined || b === null || b === undefined) return null;
       return Math.abs(a - b) * 60;
     }
-    var atTurn = apart(seam);
+    var atTurn = apart(restart);
     var atMidsummer = apart(inside);
     if (atTurn === null) {
       host.appendChild(el('p', 'standing note',
@@ -613,11 +683,39 @@
       line += ', against ' + round(atMidsummer, 3) +
         ' seconds at midsummer this year';
     }
-    line += '. Nothing is wrong. That seam has been in the almanac since it ' +
-      'was written and was invisible until this morning, because the drift ' +
-      'had no second method to disagree with — a new check’s first ' +
-      'finding is usually about the check.';
+    line += '. Nothing is wrong. That restart has been in the almanac ' +
+      'since it was written and was invisible until the drift had a second ' +
+      'method to disagree with — a new check’s first finding is usually ' +
+      'about the check.';
     host.appendChild(el('p', 'standing', line));
+
+    // The half that is not about this place, and it is the half that was
+    // wrong here for two days. Read off the swept witness rather than
+    // asserted, so that a later sweep moving the numbers moves this
+    // sentence with them instead of leaving it behind.
+    var w = window.Reckoning.DRIFT_GAP_WITNESS;
+    if (w) {
+      var band = el('div', '');
+      band.id = 'epoch-restart-band';
+      host.appendChild(band);
+      band.appendChild(el('p', 'standing note',
+        'How loud that is depends on where you stand, and this page said ' +
+        'otherwise until the sweep of ' + w.sweptOn + '. The largest ' +
+        'first-of-January disagreement found anywhere on the sphere is ' +
+        round(w.largestTurnOfYearGapMinutes * 60, 1) + ' seconds, at ' +
+        'latitude ' + w.largestTurnOfYearAt.latitude + '; the largest ' +
+        'disagreement found on any other day of the year is ' +
+        round(w.largestInYearGapMinutes * 60, 1) + ' seconds, at latitude ' +
+        w.largestInYearAt.latitude + '. So the turn of the year is the loud ' +
+        'date in the middle latitudes and is not the loud date near the ' +
+        'poles. And past the sweep’s reach it is not a date at all: ' +
+        'first-of-January samples run out somewhere between latitude ' +
+        w.turnOfYearSampledUpToLatitude + ' and latitude ' +
+        w.turnOfYearFirstEmptyLatitude + ' — two numbers rather than one, ' +
+        'because the grid steps six degrees at a time and the true fold has ' +
+        'no reason to sit on a multiple of six.'));
+    }
+
   }
 
   // Day 20. `never` leads this list because on a dark row it is the only

@@ -1173,6 +1173,61 @@
     tool: 'tools/cross-check-sweep.js'
   };
 
+  // The drift's own witness, gathered Day 42, on the level sweep's grid.
+  //
+  // `CROSS_CHECK_WITNESS` above is a witness to a **level** — how far apart
+  // two clock times can get. The drift is a difference of two levels, and
+  // Day 40 refused to let the level's bound stand behind it, on the grounds
+  // that a bound nobody gathered wearing a verdict's face is Day 21's fault
+  // again. That refusal ended on a promise: when a bound arrives it arrives
+  // with its own witness and its own date. This is the date.
+  //
+  // **There is still no bound and no verdict.** This object is evidence,
+  // not a threshold: nothing in this file or on the page compares a row's
+  // drift gap to it, and Ember's Day 40 caution is why — a verdict reading
+  // UNRESOLVED three mornings in four is an alarm a keeper stops reading.
+  // What it does is replace a sentence. Until this morning the page said
+  // the level sweep "is silent here, which is not the same as reassuring",
+  // which is a mood standing where a measured number can stand.
+  //
+  // The absence counts are four numbers rather than one because a drift is
+  // made from two days and two methods and can go missing at any of the
+  // four corners. They are asked **independently** of every lit sample, so
+  // each is a fact rather than a residue of the questions asked before it —
+  // the overlap is large (101) and an `else if` chain hands every overlap
+  // to whichever line happens to come first. See the tool's header.
+  //
+  // The turn-of-year evidence is reported as a **bracket**, not an edge.
+  // The grid steps in 6°, so all it can honestly say is that samples reach
+  // 66 and there are none at 72; the fold itself is a continuous latitude
+  // with no reason to sit on a multiple of six. Solving it out of the
+  // hour-angle equation, grid-free, is Ember's and is owed.
+  var DRIFT_GAP_WITNESS = {
+    sweptOn: '2026-09-14',
+    latitudeRange: [-90, 90],
+    year: 2026,
+    inYearSamples: 30539,
+    turnOfYearSamples: 851,
+    largestInYearGapMinutes: 22.565752103251043,
+    largestInYearAt: { latitude: 84, longitude: 100, date: '2026-09-11' },
+    largestTurnOfYearGapMinutes: 8.999086620116486,
+    largestTurnOfYearAt: { latitude: -66, longitude: 180, date: '2026-01-01' },
+    // Method A folded on the date itself: no day length, so no difference.
+    darkSamples: 7489,
+    litSamples: 31509,
+    // Our own drift absent — A had today's length and not yesterday's.
+    oursMissingSamples: 115,
+    // Their drift absent, by either route, and then the two routes apart.
+    theirsMissingSamples: 105,
+    theirsNoTimeTodaySamples: 20,
+    theirsNoYesterdaySamples: 85,
+    bothMissingSamples: 101,
+    // Where the turn-of-year evidence stops. Two numbers on purpose.
+    turnOfYearSampledUpToLatitude: 66,
+    turnOfYearFirstEmptyLatitude: 72,
+    tool: 'tools/drift-gap-sweep.js'
+  };
+
   // The gap between the two methods at one event, and whether the tower is
   // willing to stand behind it. `differenceMinutes` is null exactly when the
   // gap is past the bound; `gapMinutes` is always the raw truth.
@@ -2239,6 +2294,7 @@
     METHOD_CHANGED_ON: METHOD_CHANGED_ON,
     CROSS_CHECK_MAX_GAP_MINUTES: CROSS_CHECK_MAX_GAP_MINUTES,
     CROSS_CHECK_WITNESS: CROSS_CHECK_WITNESS,
+    DRIFT_GAP_WITNESS: DRIFT_GAP_WITNESS,
     CLAIM_INTRODUCED: CLAIM_INTRODUCED,
     claimApplies: claimApplies,
     DEEP_CLAIMS: DEEP_CLAIMS,
