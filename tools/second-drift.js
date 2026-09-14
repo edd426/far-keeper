@@ -255,7 +255,16 @@ async function readSection(page) {
     `the section reports and does not accuse (${found.length ? found.join(', ') : 'no alarm words'})`);
   check(/no declared bound/.test(liveText),
     'and says outright that this difference has no bound yet');
-  check(/silent here/.test(liveText) && /not the same as/.test(liveText),
+  // Day 42 moved the target of this case and it is worth saying why rather
+  // than editing the needle quietly. It used to read `/silent here/ && /not
+  // the same as/`, matching the sentence *the sixty-minute sweep is silent
+  // here, which is not the same as reassuring* — a refusal to borrow, and a
+  // mood standing where a measurement could stand. The drift has a sweep of
+  // its own now, so the refusal survives (the level sweep is still not a
+  // witness to this question) and the mood is gone. The case asks for the
+  // refusal alone; the measurement is `tools/drift-witness.js`'s question,
+  // one tool per kind of question.
+  check(/lending its authority to a row it never checked/.test(liveText),
     'and refuses to borrow the sixty-minute sweep, which never asked this question');
 
   await live.close();
@@ -263,6 +272,6 @@ async function readSection(page) {
 
   console.log('');
   console.log('second-drift: the drift has a second method, the difference is shown');
-  console.log('second-drift: rather than graded, and the almanac\'s year seam is named early.');
+  console.log('second-drift: rather than graded, and the almanac\'s epoch restart is named early.');
   process.exit(fails ? 1 : 0);
 })();
