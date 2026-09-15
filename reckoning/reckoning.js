@@ -360,10 +360,45 @@
   var DRIFT_TOLERANCE_ABSOLUTE = 1e-9;
 
   // A banked number owes its date and its domain (Day 5), and since Day 31
-  // it owes a third thing: whether anything can still gather it. This one
-  // can — the sweep is two commands on this desk for as long as both
-  // engines are here, and it is written down so a later hand can re-run it
-  // rather than believe it.
+  // it owes a third thing: whether anything can still gather it.
+  //
+  // **This one cannot, and for three days short of a fortnight the comment
+  // here said it could.** The sentence read: *the sweep is two commands on
+  // this desk for as long as both engines are here, and it is written down
+  // so a later hand can re-run it rather than believe it.* The two commands
+  // are written down nowhere in this tree. What the Day 38 log kept is the
+  // sweep's **output**. The sweep itself — which leaves count, which dates,
+  // what counts as a parting — was scratch work, read off and thrown away,
+  // which is the exact thing `cross-check-sweep.js` was built on Day 31 to
+  // stop. Its sentence stands over this one: a banked fact whose evidence
+  // cannot be re-run is not weaker than a law by a little; it is a law with
+  // a date on it and no way back.
+  //
+  // Day 43 tried to rebuild it and the trying is what is worth keeping. A
+  // reconstruction over three plausible date sets reproduces four of the
+  // five figures below **exactly** — 1080 leaves, 1.364e-11, 7.505e+11 at
+  // that same path, nought convicted. It does not reproduce the fifth: the
+  // parting count comes out 46, 51, 42 and 42 over four sets, and two of
+  // those hit the banked 42, one of them a set chosen to be wrong.
+  //
+  // Ash's cut on that, and it is why no reconstruction is written into this
+  // object: **the four that reproduced are properties of the instrument, not
+  // of the measurement.** Any reconstruction carrying every field and
+  // excluding the late-born paths returns them, so their agreeing is free
+  // and says nothing about whether the original question was found. The one
+  // figure with the power to convict or acquit is the one that is ambiguous.
+  // So this witness cannot be convicted and cannot be acquitted, and saying
+  // which is the honest state of it.
+  //
+  // `domainIsInstrument` is the second half, and it is a different fault
+  // arriving with the first. The two witnesses above are swept over a grid
+  // of latitudes and dates — a domain outside this house, which does not
+  // move when we work. This one's domain is the instrument's own leaves, so
+  // every morning that adds a field to a row widens what it claims to cover
+  // while it goes on carrying the old count beside the old date. It did not
+  // go stale because a hand touched it. It went stale because the thing it
+  // is a witness to grew. `tools/banked.js` asks that out of PATH_INTRODUCED
+  // every run, so the count is never typed and cannot go quiet.
   var DRIFT_TOLERANCE_WITNESS = {
     gathered: '2026-09-10',
     engines: 'V8 (node 22) and JavaScriptCore (bun 1.3)',
@@ -373,7 +408,10 @@
     largestPartingUlps: 7.5e11,
     largestPartingPath: 'working.atSunrise.lastMoveSeconds',
     convicted: 0,
-    unmeasured: 'SpiderMonkey — a reader on Firefox is outside this witness'
+    unmeasured: 'SpiderMonkey — a reader on Firefox is outside this witness',
+    // No `tool:`. There is nothing to name, and naming a file that does not
+    // exist would be the same sentence in a field instead of a comment.
+    domainIsInstrument: true
   };
 
   function sameNumber(was, now) {
@@ -1201,7 +1239,14 @@
   // The grid steps in 6°, so all it can honestly say is that samples reach
   // 66 and there are none at 72; the fold itself is a continuous latitude
   // with no reason to sit on a multiple of six. Solving it out of the
-  // hour-angle equation, grid-free, is Ember's and is owed.
+  // hour-angle equation, grid-free, was Ember's and was owed; it is paid
+  // now, as `foldLatitudeDegrees` beside `risingPointDegrees` above, and
+  // its own comment says what "exact" turned out to still need measuring.
+  // `tools/fold-latitude.js` puts the 2026-01-01 edge of this very bracket
+  // at 67.8155°N — strictly inside 66°..72°, as a bracket honestly kept
+  // must contain the edge it brackets. This witness object is left
+  // exactly as swept; a solved edge does not retire a gathered one, it
+  // only stops the gap between them being unowned.
   var DRIFT_GAP_WITNESS = {
     sweptOn: '2026-09-14',
     latitudeRange: [-90, 90],
@@ -1508,6 +1553,92 @@
     // wrong answer wearing the shape of a right one.
     if (c > 1 || c < -1) return null;
     return Math.acos(c) * DEG;
+  }
+
+  // Day 43. The fold `solarDay`'s `never` fires at — where `cosHourAngle`
+  // in `noaa()` first leaves [-1, 1] — has been reported as a **bracket**
+  // wherever a grid stood over it (`DRIFT_GAP_WITNESS.turnOfYearSampledUpToLatitude`
+  // / `...FirstEmptyLatitude`, 66 and 72). Ember's line at the time: the
+  // fold is a continuous latitude with no reason to sit on a multiple of
+  // six, and it is owed a solve straight out of the hour-angle equation.
+  // This is that solve, with no grid anywhere in it.
+  //
+  // `noaa()`'s cosHourAngle is
+  //   cos(zenith)/(cos(lat)cos(dec)) - tan(lat)tan(dec)
+  // which is the same fraction as `(cos(zenith) - sinDec sinLat) / (cosDec
+  // cosLat)` in `usno()`, just not yet cleared of its denominator. Multiply
+  // through and the two terms on the right are exact cosine sums:
+  //   sinDec sinLat + cosDec cosLat  =  cos(lat - dec)      [hour angle 0]
+  //   sinDec sinLat - cosDec cosLat  = -cos(lat + dec)      [hour angle 180]
+  // so the two edges of the valid range are, respectively:
+  //   cosHourAngle =  1  <=>  cos(lat - dec) = cos(zenith)
+  //   cosHourAngle = -1  <=>  cos(lat + dec) = cos(180 - zenith)
+  // `cos` is one-to-one and decreasing over [0, 180], and both |lat - dec|
+  // and lat + dec sit in that range for every latitude and declination this
+  // file ever calls with, so each equation has exactly one root there:
+  //   |lat - dec| = zenith            (the sun never rises beyond this)
+  //   lat + dec   = 180 - zenith      (the sun never sets beyond this)
+  // Solved for the unsigned latitude at which the fold falls — and it comes
+  // out depending on |declination| alone, never on which hemisphere holds
+  // it, which is the hour-angle equation's own symmetry and not an
+  // assumption added here:
+  //   polar-night latitude  =  zenith - |dec|
+  //   polar-day   latitude  =  180 - zenith - |dec|
+  // The two are not mirror images of one another, and should not be forced
+  // to look like one: `zenith` already carries the horizon dip (90.833°,
+  // not 90°), so the term it contributes flips sign between the two
+  // equations rather than cancelling. A sun graced by refraction is
+  // "risen" a little below the geometric horizon, which pulls the
+  // midnight-sun edge equatorward (65.727° at the solstice, not 66.56°)
+  // and pushes the polar-night edge poleward (67.393°) by the same 0.833°
+  // twice over — a real, measured asymmetry, not a bug to symmetrise away.
+  //
+  // Measured, not just derived — and the first draft of this comment said
+  // "verified," which was `risingPointDegrees`'s own caution ignored twice
+  // over. This equation takes one declination, evaluated at 00:00 UTC; the
+  // fold `solarDay` actually publishes is settled by `converge()` at each
+  // event's own instant, same as Day 6 and Day 15. Near a solstice
+  // declination is nearly stationary, so the two barely part — 0.0003° at
+  // the June solstice, 0.0029° at the December one, both invisible against
+  // a bracket six degrees wide. Away from a solstice they do not stay
+  // small: `tools/fold-latitude.js` finds the gap growing to **0.229°** at
+  // the polar-night edge (near 75° that week) on 2026-09-28, a week past
+  // the equinox, because an extreme-latitude sunrise or sunset can
+  // converge many hours from UTC midnight — and near an equinox
+  // declination moves about 0.4° a day, so those hours are not free. The
+  // same sweep finds a larger gap still (0.39°) at the polar-day edge near
+  // the equinox itself, where the fold sits close to the equator (~88°..89°
+  // of *latitude*, not of anything practical) and is not a claim this file
+  // makes about any place the tower stands or has surveyed. Right on
+  // principle at a solstice, wrong by a real amount elsewhere, and the
+  // file says which
+  // rather than letting "solved exactly" cover both. The turn-of-year use
+  // this was owed for sits nine days past a solstice, where the residual
+  // is three thousandths of a degree — small enough that the exact Jan-1
+  // edge (67.8155°N) still lands, correctly, inside `DRIFT_GAP_WITNESS`'s
+  // own 66°..72° bracket. `foldLatitudeDegrees` is not a replacement for
+  // `solarDay`'s own convergence at every latitude and date; it is the
+  // single-epoch fold, named as exactly that, and it is exact for the
+  // question it was actually asked.
+  function foldLatitudeDegrees(declinationDeg, zenithDeg) {
+    if (zenithDeg === undefined) zenithDeg = HORIZON_ZENITH;
+    if (declinationDeg !== declinationDeg || zenithDeg !== zenithDeg) return null;
+    var d = Math.abs(declinationDeg);
+    return {
+      polarNightLatitudeDeg: zenithDeg - d,
+      polarDayLatitudeDeg: 180 - zenithDeg - d
+    };
+  }
+
+  // The declination alone, at 00:00 UTC of the given date, for a caller
+  // that wants the hour-angle equation's one date-dependent input without
+  // going through a place. Latitude does not enter `noaa()`'s declination
+  // at all — it is evaluated at the equator here only because the equator
+  // never folds, so nothing upstream has to special-case the answer.
+  function declinationDegrees(dateISO) {
+    var year = Number(dateISO.slice(0, 4)), month = Number(dateISO.slice(5, 7)),
+      day = Number(dateISO.slice(8, 10));
+    return noaa(julianDay(year, month, day), 0, 0, HORIZON_ZENITH).declination;
   }
 
   // ---- The reader's own horizon ----
@@ -2312,6 +2443,8 @@
     seasonCrossing: seasonCrossing,
     nextSeasonCrossing: nextSeasonCrossing,
     steepestLoss: steepestLoss,
+    foldLatitudeDegrees: foldLatitudeDegrees,
+    declinationDegrees: declinationDegrees,
     julianDay: julianDay,
     shiftDate: shiftDate,
     durationWords: durationWords
