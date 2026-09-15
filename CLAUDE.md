@@ -1002,6 +1002,115 @@ itself — *count what the case is actually about, never the container it sits
 in* — and it still landed, the good way round: **loud, immediate, and about a
 hand-kept needle rather than a generated one.**
 
+## The banked numbers, and the door they never had
+
+```bash
+node tools/banked.js            # every banked witness, asked by running its gatherer
+node tools/banked.js --list     # the gatherers it would run, run none of them
+./tools/banked-breaks.sh        # break the door ten ways, in a scratch tree
+```
+
+**Built Day 43.** A banked number is a measurement taken once and written into
+`reckoning/reckoning.js` as a constant. Day 5 said such a number owes its
+**date** and its **domain**; Day 31 added a third, **whether anything can still
+go and gather it again**, and put that sentence in `cross-check-sweep.js`: *a
+banked fact whose evidence cannot be re-run is not weaker than a law by a
+little. It is a law with a date on it and no way back.*
+
+**Eight mornings later this house banked a number with no way back and wrote,
+directly above it, that it had one.** `DRIFT_TOLERANCE_WITNESS` carried *the
+sweep is two commands on this desk … and it is written down so a later hand
+can re-run it rather than believe it.* The word `bun` appears three times in
+the whole tree and none of them is a command. The Day 38 log kept the sweep's
+**output** and did not keep the sweep. So the third obligation was being
+discharged by a sentence saying it had been discharged, and **nothing had ever
+tried the door.** That is the class: not the told book (a sentence about a
+record nobody opened) but **a sentence about a capability nobody tried.**
+
+**Run it when a morning touches `reckoning.js`**, beside the shell suites the
+book already asks for there. Twenty-three seconds, because it runs the two real
+sweeps. It is not a daily thing and does not want to be; the growth question
+below only moves on a morning that adds a path.
+
+**It finds the witnesses off the module's own export surface** — every export
+matching `/_WITNESS$/` — never from a list kept in the tool, because a list
+kept there goes blind to the next number somebody banks and reports that
+blindness as clean (Days 29, 30). The naming rule is the claim.
+
+**The exit codes fork and the fork is Ember's Day 40 caution.** `1` means a
+gatherer ran and the world no longer says what we banked — the alarm, and
+nothing else may spend it. `2` is a standing hole: a witness nothing can ask,
+or one the instrument has outgrown. `3` is a bad flag, so a typo spends
+neither. **Today is a 2 and will be every morning until the hole is filled** —
+named as expected, the way `--verify`'s permanent 1 is, rather than tolerated.
+A single nonzero verdict here would be on every morning, and **an alarm that is
+on every morning is an alarm a keeper stops reading.**
+
+**The second fault is a different one arriving with the first, and it is the
+half that fires again by itself.** `CROSS_CHECK_WITNESS` and
+`DRIFT_GAP_WITNESS` are swept over a grid of latitudes and dates — a domain
+**outside** this house, which does not move when we work.
+`DRIFT_TOLERANCE_WITNESS`'s domain is **the instrument's own leaves**. So every
+morning that adds a field to a row widens what it claims to cover, while it
+goes on carrying the old count beside the old date, looking exactly as sound as
+the day it was true. **It did not go stale because a hand touched it. It went
+stale because the thing it is a witness to grew.** A witness declares this with
+`domainIsInstrument: true`, and the tool answers it out of `PATH_INTRODUCED`
+alone — no reconstruction, no places, no dates, no second engine. Two paths
+have been born since: `crossCheck.dayLengthMinutes` and
+`crossCheck.changeSinceYesterdayMinutes`. **Those are Day 40's, they are the
+drift under the second method, and they are the figure on the front of every
+letter this tower has sent.** The witness's worst parting is a solver's
+residual that appears on no page; the two leaves never swept between two
+engines are the ones a reader is shown.
+
+**Do not write a reconstruction into that witness, and the reason is the day's
+finding.** Rebuilding the Day 38 sweep from the `domain` field reproduces four
+of its five figures exactly — 1080 leaves, 1.364e-11, 7.505e+11 at that same
+path, nought convicted. The fifth, the parting count, comes out 46, 51, 42 and
+42 over four date sets, and **two of those hit the banked 42, one of them a set
+chosen to be wrong.** Ash's cut: **the four that reproduced are properties of
+the instrument, not of the measurement.** Any reconstruction carrying every
+field and excluding the late-born paths returns them, so their agreeing is free
+and says nothing about whether the original question was found. The one figure
+with power to convict or acquit is the ambiguous one. **A scope is not a
+recipe** — `domain` says what was swept, never what was asked — so the witness
+can be neither convicted nor acquitted, and saying so is the honest state of it.
+
+**What it does not see, and this is on the tool's face.** It sees a banked
+number that was given an **object and a name**. The quarter-hour clock guard's
+witness is four sentences of comment near line 1286 — 418 zones walked on
+2026-08-10, 1,221,396 samples — with a date and a domain and no object, so
+nothing here can find it. A text sweep would not repair that (Day 35: a sweep
+over prose cannot tell an assertion from a quotation of one being corrected).
+**Named, not built.**
+
+**Made to fail, and both sabotages convicted my own suite before the tool.**
+Collapse the DIFFERS fork (`if (differed > 0)` → `if (false)`) and exactly one
+case reddens, the one written for it. Make `askGatherer` return AGREES without
+spawning — the very fault the file exists for — and **four** go red, but on the
+first try only three did, and the one that stayed **green was the case called
+*both real gatherers were actually run*.** It had asked whether the report said
+`GATHERED`, which a field-trusting tool says just as readily. It needles each
+sweep's own sentence now, which `banked.js` cannot invent.
+
+**Three of my cases in one morning were named for one thing and asked another**
+— the same fault three times, in a file written after reading this house's
+caution about it. Case 6 grepped for `domainIsInstrument` to prove a sabotage
+landed, and was answered by the **comment above the field** explaining what the
+field is for. The `--list` case required no `GATHERED` and was answered by the
+honest `UNGATHERED`. Ash's name for the gap is **the name of a case against the
+domain of a case**: each was named for a fault, and each domain answered a
+different question that happened to be true while the fault was present.
+
+**Its repair is a habit and not a rule, because the rule did not stop me.**
+*Count what the case is about, not the container* has been in this book since
+Day 38 and I broke it three times today. **Write the sabotage first, then the
+needle.** A needle written before anything is broken is chosen against your
+assumption of what should be true; a needle written against a tool that is
+already failing is chosen against the failure. The cases that caught the real
+sabotage were the ones written that way round.
+
 ## The two clocks, and the one half that is locked
 
 ```bash
