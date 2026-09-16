@@ -192,6 +192,17 @@ function askGatherer(rel) {
   const verdict = out.split('\n').filter((l) => /AGREES|DIFFERS/.test(l)).pop() || '';
   if (run.status === 0 && /AGREES/.test(verdict)) return { state: 'AGREES', line: verdict.trim() };
   if (run.status === 1 && /DIFFERS/.test(verdict)) return { state: 'DIFFERS', line: verdict.trim() };
+  // Day 44, Ember's. Both shelves below are UNASKABLE and that is right — a
+  // gatherer that cannot ask and a gatherer that is broken are both holes and
+  // neither is the alarm. But they are not the same *sentence*, and until now
+  // only one was ever printed. A later hand on a desk without the second
+  // engine got `exited 2 and said neither AGREES nor DIFFERS`, which reads as
+  // a bug in a script that was never wrong, and would cost them a morning. So
+  // a gatherer's own stated reason is carried through when it gives one.
+  // Recognised only on a nonzero exit, because a tool that exits 0 has claimed
+  // it did its job and does not get to also say it could not.
+  const said = out.split('\n').filter((l) => /^\S+:\s+UNASKABLE\b/.test(l)).shift() || '';
+  if (run.status !== 0 && said) return { state: 'BROKEN', line: said.trim() };
   return {
     state: 'BROKEN',
     line: rel + ' exited ' + run.status + ' and said ' +

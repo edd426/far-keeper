@@ -114,10 +114,18 @@ echo
 T="$WORK/clean"; fresh_tree "$T"
 run_in "$T"
 CLEAN_OUT="$OUT"; CLEAN_CODE=$CODE
-if [[ $CLEAN_CODE -eq 2 ]] && grep -q 'HOLES' <<<"$CLEAN_OUT"; then
-  ok "the pristine tower reports standing holes, exit 2 — today's expected state"
+# Day 44. This read `exit 2 and HOLES` from the day it was written until the
+# morning the last hole was filled, and then went red about a tower that was
+# right — Day 17's expiry with the day's own work as the clock. What the case
+# is about is that the tool *reached* every witness and spoke about each,
+# which is true whether the answer is a hole or a clean bill. So it is asked
+# that way now, and the tally is reported rather than required.
+CLEAN_WITNESSES="$(grep -c '_WITNESS — gathered' <<<"$CLEAN_OUT")"
+if [[ $CLEAN_CODE -ne 1 ]] && [[ $CLEAN_WITNESSES -ge 3 ]] &&
+   grep -qE 'HOLES|ASKED' <<<"$CLEAN_OUT"; then
+  ok "the pristine tower reaches all $CLEAN_WITNESSES witnesses and reports (exit $CLEAN_CODE)"
 else
-  bad "the pristine tower did not report holes (exit $CLEAN_CODE) — every case below is unreadable"
+  bad "the pristine tower did not reach every witness (exit $CLEAN_CODE, $CLEAN_WITNESSES seen) — every case below is unreadable"
   printf '%s\n' "$CLEAN_OUT" | sed 's/^/      /'
 fi
 
@@ -209,11 +217,16 @@ fi
 # Asked of a witness that HAS one today, so the case is about the question
 # being put to every witness rather than about the one already known to fail.
 
+# Day 44: this used to strip ONE tool field and expect two UNGATHERED, the
+# second being the standing hole. The hole is filled, so the count it wanted
+# came half from the sabotage and half from the weather — a case borrowing a
+# domain it did not build. It strips two now, and owns both.
 T="$WORK/untooled"; fresh_tree "$T"
 stub_gatherers "$T"
 perl -0pi -e "s/    tool: 'tools\/cross-check-sweep\.js'\n//" "$T/$R"
-if landed "$T" "the cross-check tool field was not removed"; then
-  if ! grep -q "tools/cross-check-sweep.js'" "$T/$R"; then
+perl -0pi -e "s/    tool: 'tools\/drift-gap-sweep\.js'\n//" "$T/$R"
+if landed "$T" "the two tool fields were not removed"; then
+  if ! grep -q "tools/cross-check-sweep.js'" "$T/$R" && ! grep -q "tools/drift-gap-sweep.js'" "$T/$R"; then
     run_in "$T"
     UNGATHERED_N="$(grep -c 'UNGATHERED' <<<"$OUT")"
     if [[ $CODE -eq 2 && $UNGATHERED_N -eq 2 ]]; then
@@ -222,7 +235,7 @@ if landed "$T" "the cross-check tool field was not removed"; then
       bad "only $UNGATHERED_N witness reported UNGATHERED (exit $CODE) — expected 2"
     fi
   else
-    bad "SABOTAGE DID NOT LAND — the tool field survived the substitution"
+    bad "SABOTAGE DID NOT LAND — a tool field survived the substitution"
   fi
 fi
 
@@ -245,16 +258,32 @@ fi
 # Case 6 watches for a line going away. If the line was never there, case 6
 # is answered by nothing at all and passes for free (Day 27, Day 34).
 
-if grep -q 'OUTGROWN' <<<"$CLEAN_OUT"; then
-  ok "the pristine tower does say OUTGROWN — case 6 has something to lose"
-else
-  bad "the pristine tower says nothing about growth — case 6 below is vacuous"
+# Day 44: this used to read OUTGROWN off the *pristine* tower, which said it
+# only because one witness happened to be behind the instrument that morning.
+# Re-gather that witness and the domain empties and this guard fires — which
+# is the guard working, and is also the guard saying the case beneath it was
+# standing on the weather. Case 6's fixture backdates the witness now, so the
+# line is there because this suite put it there.
+BACKDATE='s/    gathered: .[0-9-]+.,/    gathered: \x272026-08-01\x27,/g'
+
+T="$WORK/outgrown"; fresh_tree "$T"
+stub_gatherers "$T"
+perl -0pi -e "$BACKDATE" "$T/$R"
+if landed "$T" "no gathered date was backdated"; then
+  run_in "$T"
+  if grep -q 'OUTGROWN' <<<"$OUT"; then
+    ok "a witness backdated behind the births does say OUTGROWN — case 6 has something to lose"
+  else
+    bad "backdating bought no OUTGROWN — case 6 below is vacuous"
+    printf '%s\n' "$OUT" | sed 's/^/      /'
+  fi
 fi
 
 # ── Case 6 — dropping the domain declaration must not buy silence ────────────
 
 T="$WORK/undeclared"; fresh_tree "$T"
 stub_gatherers "$T"
+perl -0pi -e "$BACKDATE" "$T/$R"
 perl -0pi -e "s/    domainIsInstrument: true\n//" "$T/$R"
 if landed "$T" "domainIsInstrument was not removed"; then
   # The word also stands in the comment above the object, so the assertion
@@ -277,8 +306,10 @@ fi
 
 T="$WORK/forward"; fresh_tree "$T"
 stub_gatherers "$T"
-perl -0pi -e "s/    gathered: '2026-09-10',/    gathered: '2099-01-01',/" "$T/$R"
-if landed "$T" "the gathered date was not moved"; then
+# Day 44: this named the date as a literal and rotted the morning the witness
+# was re-gathered — a fixture pinned to a value it does not own.
+perl -0pi -e "s/    gathered: .[0-9-]+.,/    gathered: \x272099-01-01\x27,/g" "$T/$R"
+if landed "$T" "no gathered date was moved forward"; then
   run_in "$T"
   if grep -q 'no path has been born since it was gathered' <<<"$OUT" &&
      ! grep -q 'OUTGROWN' <<<"$OUT"; then
@@ -291,14 +322,17 @@ fi
 
 T="$WORK/backward"; fresh_tree "$T"
 stub_gatherers "$T"
-perl -0pi -e "s/    gathered: '2026-09-10',/    gathered: '2026-08-01',/" "$T/$R"
-if landed "$T" "the gathered date was not backdated"; then
+perl -0pi -e "$BACKDATE" "$T/$R"
+if landed "$T" "no gathered date was backdated"; then
   run_in "$T"
   BORN_N="$(grep -c '(born 20' <<<"$OUT")"
-  if [[ $BORN_N -gt 2 ]]; then
-    ok "backdating it widens the count to $BORN_N paths — read off PATH_INTRODUCED, not typed"
+  # Against the instrument's own record, never a number typed here: backdated
+  # behind every birthday, it must name every path PATH_INTRODUCED holds.
+  ALL_N="$(cd "$T" && node -e 'console.log(Object.keys(require("./reckoning/reckoning.js").PATH_INTRODUCED).length)')"
+  if [[ $BORN_N -eq $ALL_N ]] && [[ $ALL_N -gt 0 ]]; then
+    ok "backdating names all $BORN_N of the instrument's births — read off PATH_INTRODUCED, not typed"
   else
-    bad "backdating the witness listed $BORN_N paths — expected more than the live 2"
+    bad "backdating listed $BORN_N paths where the instrument records $ALL_N"
   fi
 fi
 
@@ -428,11 +462,15 @@ run_in "$T" --list
 # word this case is actually about. The first run of this suite read the
 # third witness's honest UNGATHERED as a claim about a gatherer that had not
 # been run — a check about one word answered by a longer word containing it.
-if [[ $CODE -eq 2 ]] && grep -q 'not run (--list)' <<<"$OUT" &&
+# Day 44: this also required exit 2, which it took from the standing hole and
+# not from anything --list does. The claim is that nothing ran and nothing was
+# claimed; the code it must never spend is 1, the alarm.
+LISTED_N="$(grep -c 'not run (--list)' <<<"$OUT")"
+if [[ $CODE -ne 1 ]] && [[ $LISTED_N -ge 3 ]] &&
    ! grep -qE '(^|[^N])GATHERED —' <<<"$OUT"; then
-  ok "--list names the gatherers without running them, and claims nothing about them"
+  ok "--list names all $LISTED_N gatherers without running them, and claims nothing about them"
 else
-  bad "--list did not hold its tongue about gatherers it never ran (exit $CODE)"
+  bad "--list did not hold its tongue about gatherers it never ran (exit $CODE, $LISTED_N listed)"
 fi
 
 echo

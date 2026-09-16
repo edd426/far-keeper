@@ -375,20 +375,45 @@
   // a date on it and no way back.
   //
   // Day 43 tried to rebuild it and the trying is what is worth keeping. A
-  // reconstruction over three plausible date sets reproduces four of the
-  // five figures below **exactly** — 1080 leaves, 1.364e-11, 7.505e+11 at
-  // that same path, nought convicted. It does not reproduce the fifth: the
-  // parting count comes out 46, 51, 42 and 42 over four sets, and two of
-  // those hit the banked 42, one of them a set chosen to be wrong.
+  // reconstruction over three plausible date sets reproduced four of its five
+  // figures **exactly** — 1080 leaves, 1.364e-11, 7.505e+11 at that same path,
+  // nought convicted — and missed the fifth, the parting count coming out 46,
+  // 51, 42 and 42 over four sets. Ash's cut on that: **the four that
+  // reproduced are properties of the instrument, not of the measurement.** Any
+  // reconstruction carrying every field and excluding the late-born paths
+  // returns them, so their agreeing is free. The 2026-09-10 figures could
+  // therefore be neither convicted nor acquitted, and they never have been.
   //
-  // Ash's cut on that, and it is why no reconstruction is written into this
-  // object: **the four that reproduced are properties of the instrument, not
-  // of the measurement.** Any reconstruction carrying every field and
-  // excluding the late-born paths returns them, so their agreeing is free
-  // and says nothing about whether the original question was found. The one
-  // figure with the power to convict or acquit is the one that is ambiguous.
-  // So this witness cannot be convicted and cannot be acquitted, and saying
-  // which is the honest state of it.
+  // ---- Day 44: gathered again, and this is a different measurement ----
+  //
+  // `tools/drift-tolerance-sweep.js` exists now and the fields below came out
+  // of it this morning. It is **not** a reconstruction, for the reason above:
+  // it asks its own question, on its own domain, on its own date, and the
+  // question is written down in the file and in `question:` here — which is
+  // what was actually missing. A `domain` says what was swept; it never says
+  // what was asked, and a later hand rebuilding the scope cannot know whether
+  // they rebuilt the question.
+  //
+  // **So nothing here confirms or refutes 2026-09-10** (Ash, flatly, when
+  // asked). Those figures are kept in this comment and in no live field, so
+  // that nothing reads them as current and nobody subtracts one set from the
+  // other. For the record, they were: 1080 leaves, 42 parting, 1.36e-11
+  // absolute, 7.5e11 ulps, 0 convicted.
+  //
+  // **And one of them was two figures under one name.** The Day 38 log —
+  // the only place that sweep's output survives — records two winners:
+  //
+  //     working.atSunrise.lastMoveSeconds   gap 6.82e-12  ulps 7.50e+11
+  //     working.atSunset.lastMoveSeconds    gap 1.36e-11  ulps 3.12e+11
+  //
+  // The banked `largestPartingAbsolute` was 1.36e-11, which is **atSunset's**,
+  // and the singular `largestPartingPath` beside it named **atSunrise**, which
+  // is the ulps winner. Three fields that read as one row were two
+  // measurements with a singular noun laid across the join. Nobody typed a
+  // false number; the name did it (Day 42: a name that fuses two things is how
+  // a false claim gets written). The two winners are two fields now, each with
+  // its own path, and this morning's sweep finds them at two different leaves
+  // again — so the fusion was not a one-morning accident of the domain.
   //
   // `domainIsInstrument` is the second half, and it is a different fault
   // arriving with the first. The two witnesses above are swept over a grid
@@ -400,17 +425,38 @@
   // is a witness to grew. `tools/banked.js` asks that out of PATH_INTRODUCED
   // every run, so the count is never typed and cannot go quiet.
   var DRIFT_TOLERANCE_WITNESS = {
-    gathered: '2026-09-10',
-    engines: 'V8 (node 22) and JavaScriptCore (bun 1.3)',
-    domain: '3 places, 7 dates, 1080 leaves of horizon, working and crossCheck',
-    leavesThatDiffer: 42,
-    largestPartingAbsolute: 1.36e-11,
-    largestPartingUlps: 7.5e11,
-    largestPartingPath: 'working.atSunrise.lastMoveSeconds',
+    gathered: '2026-09-16',
+    tool: 'tools/drift-tolerance-sweep.js',
+    question:
+      'the ledger is written by node on this desk and recomputed in a stranger\'s ' +
+      'browser, which is a different engine. Do two engines produce the same doubles ' +
+      'from this instrument, and is any parting between them wide enough that ' +
+      'sameNumber() would call it a move? A parting past that bound would print ' +
+      'DRIFTED at a stranger about a row no hand ever touched.',
+    engines: 'V8 (node 22.22.2) and JavaScriptCore (bun 1.3.11)',
+    domain: '6 places, 8 dates, 3656 leaves — the whole row, not three fields of it',
+    leaves: 3656,
+    leavesThatDiffer: 143,
+    // The two stakes, apart. A parting under a field an auditor reads can
+    // produce the DRIFTED-at-a-stranger fault above; one under a field no
+    // auditor reads cannot, whatever its size. The worst parting either sweep
+    // has found is a solver's residual that appears on no page.
+    differUnderAuditedField: 81,
+    differUnderUnauditedField: 62,
+    // Counted apart because `engine` covers two mechanisms and not one
+    // (Ember). A double that parts is arithmetic; a string or a clock offset
+    // that parts is two ICU builds carrying two copies of somebody's law —
+    // Day 6's parliament, not the sky. Nought, and measured rather than
+    // assumed: the run says so on its face rather than staying silent.
+    nonNumericPartings: 0,
+    // Two winners, two names. See the comment above for what one name over
+    // both of them cost the figure it replaced.
+    largestPartingAbsolute: 1.364e-11,
+    largestPartingAbsolutePath: 'Paris|2026-06-21.working.atSunset.lastMoveSeconds',
+    largestPartingUlps: 9.334e11,
+    largestPartingUlpsPath: 'Ushuaia|2027-01-01.working.atSunrise.lastMoveSeconds',
     convicted: 0,
     unmeasured: 'SpiderMonkey — a reader on Firefox is outside this witness',
-    // No `tool:`. There is nothing to name, and naming a file that does not
-    // exist would be the same sentence in a field instead of a comment.
     domainIsInstrument: true
   };
 
