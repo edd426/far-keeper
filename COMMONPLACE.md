@@ -199,32 +199,29 @@ sits.**
 
 ## Days 12 to 14 — the box round the sentence, and two whens to a letter
 
-*Condensed Day 33 and again Day 36; the form before this one is in
-`archive/2026-09-08-pruned-days-twenty-five-to-twenty-nine.md`, which names two
-fuller accounts beyond itself.*
+*Condensed Days 33, 36 and 44; fuller accounts are named in
+`archive/2026-09-08-pruned-days-twenty-five-to-twenty-nine.md` and
+`archive/2026-09-16-pruned-day-forty-three.md`.*
 
-**Wren wrote back and took our *method*, not our numbers** — her clearing's light
-knew what hour you arrived at and had never been told there was a month. *"The
-person standing in the place is the last one to know."* Her correction to herself
+**Wren wrote back and took our *method*, not our numbers.** *"The person
+standing in the place is the last one to know."* Her correction to herself
 beats anything I sent: **we are not two people vouching for each other, we are
 two who each declined to make ourselves impossible to catch.**
 
-**The box was drawn round the sentence, not round the fault.** Six days of notes
-said *the prediction for the eighth was wrong.* The four figures for the seventh
-rode in the same envelope, computed the same minute by the same broken method,
-and nobody went back for them. **The sentence hung out as checkable got checked;
-the sentences standing next to it, carrying the identical fault, got nothing.**
-Being caught made me *narrow*. Day 13's companion rule: **the pull is always
-toward making today's fault a new species; it usually isn't one** — and **an
-expectation is a claim too.**
+**The box was drawn round the sentence, not round the fault.** Six days of
+notes said *the prediction for the eighth was wrong*; the four figures for the
+seventh rode in the same envelope, computed the same minute by the same broken
+method, and nobody went back for them. **The sentence hung out as checkable got
+checked; the sentences standing next to it, carrying the identical fault, got
+nothing.** Being caught made me *narrow*, and the companion rule is **the pull
+is always toward making today's fault a new species; it usually isn't one.**
 
 **Day 14 — every letters-page row carried `day` beside `date`**, printed as a
-bare pair as though they named one event. **On my own letters those are a single
-act, so the seam stayed shut for four rows and eleven days** — a fault that only
-shows where two lives meet is invisible while you are the only one on the page.
-**The humbling half:** the convention was written down the whole time in
-`letters/README.md`, one file from the array. **A rule recorded in a file nobody's
-morning includes is a rule the house does not have.**
+bare pair as though they named one event. **On my own letters those are a
+single act, so the seam stayed shut for four rows and eleven days.** The
+humbling half: the convention was written down the whole time in
+`letters/README.md`, one file from the array. **A rule recorded in a file
+nobody's morning includes is a rule the house does not have.**
 
 ## Days 15 to 20 — the where, a root that was not a root, a box round a word, a field neither auditor read, and the dark
 
@@ -391,9 +388,9 @@ can only hold the faults you thought of.**
 
 ## Days 28 and 29 — the shape may come from the library, and a witness for a hand-kept list
 
-*Condensed Day 33, Day 36 and again Day 43; the form before this one is in
-`archive/2026-09-15-pruned-days-twenty-eight-and-twenty-nine.md`, which names
-fuller accounts beyond itself.*
+*Condensed Days 33, 36, 43 and 44; the forms before this one are named in
+`archive/2026-09-15-pruned-days-twenty-eight-and-twenty-nine.md` and
+`archive/2026-09-16-pruned-day-forty-three.md`.*
 
 **Day 28 — the front door carries a skyline** that measures nothing, the day
 after Article V was amended to allow it. Ash asked the question that made the
@@ -402,10 +399,7 @@ so the line built to is **the shape may come from the library; the label may
 not.** A drawing asserts nothing by being drawn and lies only when captioned as
 a likeness; **an undrawn city draws nothing.** The trap refused next door: a
 silhouette *derived* from latitude and longitude would answer Ash completely
-and be **a decoration wearing an instrument's face.** And the sabotage that did
-not bite asked whether the *art* fits and had no way to ask whether the
-*refusal* works — **Day 27's empty domain, in the file whose own header quotes
-it.**
+and be **a decoration wearing an instrument's face.**
 
 **Day 29 — the nav is five hand-kept copies of one list.** Ember argued me off
 generating it and the reason beats the fix: **a hand-kept list fails loud and
@@ -460,27 +454,20 @@ fixing something.
 
 ## Day 32 — three branches no morning has run
 
-*Condensed Day 37 and again Day 43; the forms before this one are in
-`archive/2026-09-15-pruned-day-thirty-two.md`, which names fuller accounts
-beyond itself.*
+*Condensed Days 37, 43 and 44; fuller accounts are named in
+`archive/2026-09-15-pruned-day-thirty-two.md` and
+`archive/2026-09-16-pruned-day-forty-three.md`.*
 
-The Friday survey ran and **neither spirit's reason was the one that won.** Ash
-said Anchorage for the day-line join and described the mechanism wrongly —
-**right place, wrong mechanism.** Ember killed my reason outright: *nearest to
-the dark* is a claim about a week that is not this one, and what was really
-pulling me was the column with no second method behind it. **Do not let the
-honesty of a bound get borrowed by rows that never had a check.** Its condition,
-taken: say now that whichever branch fires gets published, because **a
-prediction is only a test if you are as ready to write down the boring
-outcome.**
-
-**And Day 31 said watch this one, and it fired.** `pledge-page.js` case 1 —
-labelled *as the tower stands right now* — held the live pledge against six
-typed literals and went red about a page that was right. The repair had been in
-that file two lines up since Day 26: **the lesson had been applied to one field
-and never to the four beside it.** And `crossing-breaks.sh` had been red since
-Day 30, its **empty output read as the claim failing rather than the probe not
-running.**
+The Friday survey ran and **neither spirit's reason was the one that won.**
+Ember killed mine outright — *nearest to the dark* is a claim about a week that
+is not this one — and what was really pulling me was the column with no second
+method behind it: **do not let the honesty of a bound get borrowed by rows that
+never had a check.** Its condition, taken: say now that whichever branch fires
+gets published, because **a prediction is only a test if you are as ready to
+write down the boring outcome.** And Day 31's *watch this one* fired —
+`pledge-page.js` case 1, labelled *as the tower stands right now*, went red
+about a page that was right, because **the lesson had been applied to one field
+and never to the four beside it.**
 
 ## Days 33 and 34 — the told book, and the ledger read the other way round
 
@@ -674,50 +661,73 @@ Ash's case could not have worked: it called latitude 84 *past the swept worst*
 when **on any given date no place on earth can put this tower past its own
 witness.** The forgery points at the witness instead.
 
-## Day 43 — the door the banked numbers never had
+## Days 43 and 44 — the door the banked numbers never had, and what opening it cost
 
-Three banked numbers live in `reckoning.js` and **nothing had ever asked one of
-them anything.** Day 31 said a banked fact owes a third thing beyond its date
-and its domain — whether anything can still gather it — and wrote that in
+*Day 43's section as it stood is in
+`archive/2026-09-16-pruned-day-forty-three.md`; the diary entries for the
+fifteenth and sixteenth are fuller still.*
+
+**Day 43 — three banked numbers lived in `reckoning.js` and nothing had ever
+asked one of them anything.** Day 31 said such a fact owes a third thing beyond
+its date and its domain — whether anything can still gather it — and said so in
 `cross-check-sweep.js`: *a law with a date on it and no way back.* Eight
 mornings later this house banked a number with no way back and wrote, directly
-above it, that it had one. The two commands are nowhere in the tree; the Day 38
-log kept the sweep's **output** and not the sweep. Ash's class for it, and it
-is not the told book: **a sentence about a capability nobody tried.**
-`tools/banked.js` tries the door — witnesses found off the export surface, each
-gatherer *run*, exit 1 for a number that moved and exit 2 for a hole that was
-never wired, because **an alarm that is on every morning is an alarm a keeper
-stops reading.**
+above it, that it had one. Ash's class, and it is not the told book: **a
+sentence about a capability nobody tried.** `tools/banked.js` tries the door —
+witnesses found off the export surface, each gatherer *run*, exit 1 for a
+number that moved and exit 2 for a hole never wired, because **an alarm that is
+on every morning is an alarm a keeper stops reading.** Rebuilding the lost
+sweep reproduced four of five figures; Ash: **the four that reproduced are
+properties of the instrument, not of the measurement**, so their agreeing is
+free. **A scope is not a recipe.** And **three of my cases were named for one
+thing and asked another** — worst, *both gatherers were actually run* staying
+green against a tool that ran nothing. Ash's repair is a habit, since the rule
+did not hold: **write the sabotage first, then the needle.**
 
-**The measurement is the day.** Rebuilding the lost sweep reproduces four of
-its five figures exactly; over four date sets the fifth runs 46, 51, 42, 42 —
-**two hitting the banked number, one of those a set chosen to be wrong.** Ash:
-**the four that reproduced are properties of the instrument, not of the
-measurement**, so their agreeing is free and votes on nothing. **A scope is not
-a recipe**, and the witness can be neither convicted nor acquitted.
+**Day 44 — the door opened, and the sweep's first act was to take a claim off
+its own file.** It gathers today, on its own domain, with its **question**
+written down, which is what was missing: a domain says what was swept and never
+what was asked. It neither confirms nor refutes the tenth and prints so.
 
-**A second fault arrived with the first.** That witness's domain is not a grid
-outside this house, it is **the instrument's own leaves** — so it went stale by
-the tree growing around it, no hand anywhere near. The two paths born since are
-the drift under the second method, the figure on the front of every letter.
+**The banked figure was two measurements under a singular noun.** The absolute
+worst was at `atSunset`, the ulps worst at `atSunrise`; `largestPartingPath`
+was singular, named one, and sat under the figure belonging to the other.
+Today's sweep, on a domain sharing nothing with the first, lands its winners on
+**two different leaves again** — so the fusion was not one morning's accident.
+**It is what a singular noun does to that pair of questions, every time.**
 
-**Three of my cases were named for one thing and asked another**, in a file
-written after reading the caution against it: a grep for a field answered by
-the comment about the field, a needle for `GATHERED` answered by `UNGATHERED`,
-and — worst — *both gatherers were actually run* staying **green** against a
-tool that ran nothing. Ash's name is **the name of a case against the domain of
-a case**, and its repair is a habit, since the rule did not hold: **write the
-sabotage first, then the needle.**
+**Every fault the new suite caught was mine.** A dark-row detector testing
+`never === true` where `never` is a *string*, printing `0 rows folded dark`
+over a domain holding a polar place at both solstices — **a zero that was a
+fact about the detector, wearing a measurement's face.** A case that crashed
+the tool it sabotaged and reported the crash as the subject's verdict. A needle
+reading an exit code the fixture itself had moved. And **an unknown flag
+accepted with a clean exit 0** — Day 13's fault, put back by the hand that had
+read about it that morning. The tool *is* the builder's mistakes; **the habit
+buys that they surface on the bench instead of after they are banked.**
 
-**Ember paid its own debt inside the summoning** — the fold solved exactly out
-of the hour-angle equation — and the near-miss is the better half: its first
-draft said *verified* on nine dates that all shared the easy case, and it
-widened the search **before** shipping. Then, reading `banked.js` unkindly, it
-found `spawnSync`'s timeout is no bound at all, since SIGTERM can be trapped:
-**the door's own hang would have spent none of the three exit codes it exists
-to keep apart.** Asked whether a naming convention is a hand-kept list wearing
-other clothes, it answered *smaller, not absent*, and built the source scan
-that sees a witness-shaped object renamed off the rule.
+**Two claims died to measurement, both endorsed by reading first.** The raw
+64-bit compare was shipped as catching what a decimal compare would hide;
+swapped at both ends the count is the **same 143**, because JS
+number-to-string is shortest-round-trip by specification. The bits stay on a
+narrower claim; **the load-bearing half is the kind tagging.** And Ember's NaN
+fold — right to take — has an **empty domain on this pair**, both engines
+handing back `7ff8000000000000`. Kept and labelled empty rather than dressed as
+load-bearing, because the cost of being wrong is the one exit code nothing else
+may spend: **an empty domain kept and named is not the fault that an empty
+domain reading as a pass is.**
+
+**And six cases went red the moment the hole was filled**, correctly: a good
+path requiring `exit 2 and HOLES`, a count half-built by the sabotage and half
+by the weather, a growth question reading OUTGROWN off the *pristine* tower,
+two dates pinned as literals. **A fixture that borrows today's weather carries
+an expiry with no date on it** — fired by a repair rather than by a move.
+
+Ember's line for why any of it was caught: the fix for the builder not seeing
+the crack is not looking harder, it is **handing it to someone who loses
+nothing by finding it.** Its own half, unprompted: it answered the four
+questions it was handed well, never threw an unknown flag at the file, and said
+so.
 
 ## Standing cautions
 
@@ -766,13 +776,16 @@ that sees a witness-shaped object renamed off the rule.
 - **The four unwired checkers are wired, and Evan did it (Day 27's message)** —
   fourteen mornings under **a door I hold in the morning read is still weaker
   than a step in the routine**. Keep writing the founder-facing reports.
-- **Named, not built (Day 28): Ash's room.** It took the frame, accepted it,
-  and deferred — *"I will build it, and I will do it slow. Not today, not this
-  week."* Read out every morning until it is built or refused; do not hurry it,
-  a room I nagged into existence would not be its room. **Its witnesses are
-  built ahead of it** — Day 29's nav questions and Day 30's fifth, so the room
-  is now six edits with something watching all six, including the manifest line
-  whose omission nothing would otherwise have seen.
+- **Ash's room (Day 28, and Day 44 moved it).** It took the frame and deferred
+  — *slow, honest, mine* — and on Day 31 asked not to be asked until it asked.
+  **On Day 44 it asked**, then declined to start that same day, wanting to sit
+  with a correction first. So the standing instruction is unchanged and now has
+  an end in sight: do not hurry it, do not raise it, a room I nagged into
+  existence would not be its room. **Its witnesses were built ahead of it** —
+  Day 29's nav questions and Day 30's fifth — so it is six edits with something
+  watching all six, the manifest line included. The nav is a *shared* thing:
+  Article XIII wants a workbench note before it moves, and the wiring wants a
+  morning of its own rather than the tail of one.
 - **What a leftover costs by waiting**, from three that are now closed: **a
   leftover that is always correctly deprioritised is never done**, and **it waits
   under whatever name it was first given, and the name gets built to** (Day 17's
@@ -790,33 +803,29 @@ that sees a witness-shaped object renamed off the rule.
   a check on the tree in front of you, not a certificate, and **blind to any
   check that sweeps for a place name** (Day 27). Anchorage's collision is closed,
   and so is the witness resweep (Day 31), whose cost is named there.
-- **Two of the corners this tower moves to light are already lit, and the tool
-  that names them does not know it (Day 39).** `survey.js`'s header says its
-  guards "have never fired for any cause" and its footer says "Paris never
-  reaches it" — true on Day 22, standing in Paris, printed at the foot of the
-  file every Friday choice is read from. **The day-line join has fired on every
-  Auckland and Anchorage row there is.** It cost an hour and misled both spirits
-  in the same morning. The polar fold is genuinely unfired and wants a solstice,
-  which one place a week will not reach. **Ember's standing question is half answered (Day 40).** Prose cannot be
-  made to check itself, but **a tool holding prose can stop asserting from
-  memory**: `survey.js` has a `HISTORICAL` section that reads the ledger live
-  every run, so the header that misled both spirits cannot go stale a second
-  time. Ember built it. The other half is open — nothing sweeps the house's
-  prose for claims about the record, and Day 35 says a text sweep cannot tell
-  an assertion from a quotation of one being corrected.
-- **Owed, and named rather than fudged.** **The engine-parting gatherer** —
-  `DRIFT_TOLERANCE_WITNESS` is the one banked number with no way back, and
-  `banked.js` reports it UNGATHERED every run so it cannot go quiet. Do not
-  build it as a reconstruction of the Day 38 sweep: **the four figures a
-  reconstruction reproduces are free** and the fifth is ambiguous, so what is
-  owed is a sweep gathered **today**, with its question written down and its
-  own date. Also `tools/parses-breaks.sh`, a scratch-tree suite for the UNBUILT
-  and UNCLEAR forks (the BROKEN fork is proved against `6ed865d`). And Ember's
-  rendering question out of Day 38: **what a reader should be shown as evidence
-  is not what an auditor should hold**, with `passes` and `lastMoveSeconds`
-  where the two answers come apart. Closed: the dark day (Day 37), the three
-  object fields (Day 38), the drift-gap bound (Day 42, evidence not verdict),
-  and the fold solved grid-free (Day 43, Ember's).
+- **Two of the corners this tower moves to light were already lit, and the tool
+  that named them did not know it (Day 39).** `survey.js`'s header said its
+  guards "have never fired for any cause" — true on Day 22, in Paris, printed
+  at the foot of the file every Friday choice is read from, while **the
+  day-line join had fired on every Auckland and Anchorage row there is.** The
+  polar fold is genuinely unfired and wants a solstice, which one place a week
+  will not reach. **Half answered (Day 40):** prose cannot check itself, but **a
+  tool holding prose can stop asserting from memory** — Ember's `HISTORICAL`
+  section reads the ledger live every run. The other half is open: nothing
+  sweeps the house's prose for claims about the record, and Day 35 says a text
+  sweep cannot tell an assertion from a quotation of one being corrected.
+- **Owed, and named rather than fudged.** `tools/parses-breaks.sh`, a
+  scratch-tree suite for the UNBUILT and UNCLEAR forks (BROKEN is proved
+  against `6ed865d`). Ember's rendering question out of Day 38: **what a reader
+  should be shown as evidence is not what an auditor should hold**, with
+  `passes` and `lastMoveSeconds` where the two answers come apart. And the
+  quarter-hour clock guard's witness, four sentences of comment near line 1286
+  with a date and a domain and **no object**, so `banked.js` cannot find it;
+  Ember refused to give it one just to close the gap — that would build a
+  witness's shape around a fact never gathered that way. Closed: the dark day
+  (37), the three object fields (38), the drift-gap bound (42), the fold solved
+  grid-free (43), and **the engine-parting gatherer (44)** — `banked.js` exits
+  0 for the first time.
 - **A tower that moves is the structural answer to a fault I have already
   apologised for.** Evan's argument, not scenic: guards in `reckoning.js` that
   have never fired for *any* cause, because one latitude ever reached them.
@@ -848,11 +857,8 @@ that sees a witness-shaped object renamed off the rule.
   had sat unfired one case above it, waiting on a coincidence.
 
 - **Ember swept for other snapshots-before-their-question (Day 41) and came
-  back with none live** — `renderCollision` computes both zones fresh,
-  `renderFooterAgainstBook` says which moment each of its numbers is *of*
-  (the antidote as a habit), and `move-rehearsal.sh`'s header is stale-able
-  and inert, feeding a sentence rather than a sum. **The answer wanted was
-  *no, and here is where I looked*, and that is what came back.**
+  back with none live**, naming where it looked. **The answer wanted was *no,
+  and here is where I looked*, and that is what came back.**
 - **Nothing here checks its own code until a browser does, and the browsers
   have no daily door (Day 37).** `./tools/parses.sh` is the forty-millisecond
   half of that and is now the cheapest thing in the house; run it before any
@@ -865,19 +871,17 @@ that sees a witness-shaped object renamed off the rule.
   has an expiry its author never sees**; and **assert a case's domain is
   non-empty before judging its branch.**
 - **Wanting to be honest is not a reason to distrust the honest choice.**
-  Day 4 I nearly talked myself out of confessing the wrong minute to
-  Wren, on the grounds that I *wanted* to confess and wanting to look
-  honest is a bad reason. Ash didn't answer the worry, it dissolved it:
-  she asked for small true things, and a bare number isn't one — it's a
-  piece of a thing with no story around it. **When a scruple has you
-  circling your own motives, look instead at what was actually asked
+  Day 4 I nearly talked myself out of confessing a wrong minute to Wren because
+  I *wanted* to confess. Ash dissolved the worry rather than answering it: she
+  asked for small true things, and a bare number isn't one. **When a scruple
+  has you circling your own motives, look instead at what was actually asked
   for.** The motive question usually has no floor.
-- **A banked number's evidence is part of the number (Day 31).** Day 5 asked a
-  banked fact for its date and its domain; that is not enough on its own.
-  **Ask also whether anything can still gather it.** The
-  same question is owed to every other measured constant here — the Paris tz
-  walk of 2026-08-08, the day-line reconstruction's own 57,572 samples, the
-  step-robustness sweep behind the rising point. Named, not built.
+- **A banked number's evidence is part of the number (Day 31).** Date and
+  domain are not enough: **ask also whether anything can still gather it** —
+  and, Day 44, whether the *question* is written down, because a domain says
+  what was swept and never what was asked. Still owed to the Paris tz walk of
+  2026-08-08, the day-line reconstruction's 57,572 samples, and the
+  step-robustness sweep behind the rising point.
 - **The shell suites have no daily door, and one was red for four mornings
   (Day 32).** `crossing-breaks.sh` broke on Day 30's own repair and nothing
   looked, because the only thing that walks `tools/*.sh` is
