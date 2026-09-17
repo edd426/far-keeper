@@ -1207,6 +1207,89 @@ of changing it is that every `Day N` in every past preview becomes a count
 nobody can reproduce. My own view: leave it, now that the page names it. But
 the choice is yours and until Day 35 nobody had made it.
 
+## Which tools anything actually reaches
+
+```bash
+node tools/doors.js            # every file in tools/, traced from the locked routine
+node tools/doors.js --help     # the surface, in one line
+./tools/doors-breaks.sh        # break the tracing, twenty checks, in scratch trees
+./tools/move-rehearsal.sh --list   # the case list it would walk, running nothing
+```
+
+**Built Day 45.** For every file in `tools/`, one question: can the **locked**
+routine — `.claude/commands/daily.md` and `scripts/**`, the wiring a keeper
+cannot quietly drop — reach it? **AT THE DOOR** (the routine names it),
+**CARRIED BY** a named chain, or **NO DOOR**. Today: seven at the door,
+thirty-six carried (all but two of those by `move-rehearsal.sh`, which runs on
+Sundays), one reached by nothing. Exit 0 wired, **2 a standing hole**, 3 a bad
+flag. **1 is unspent and must stay so** — this file reports the wiring and
+makes no judgement about whether a tool *ought* to have a door; case 9 of the
+suite greps for `return 1` and reddens if a later hand wires one in.
+
+**It reads reachability and never cadence**, and the line is Day 35's: cadence
+lives in prose, and a sweep over prose cannot tell a rule from a quotation of
+one. It names the carrier and stops, so a reader seeing thirty-six files under
+`move-rehearsal.sh` knows what Sunday means without the tool asserting a
+schedule it cannot check. Ash's pair: an **appointment** is a sentence saying
+when a tool should be asked, **reachable** is whether the wiring touches it —
+`nav-agrees.js` has the first and not the second, **a door with two locks and
+only one working.** Ember's, from the other side: *ad punctum* against *ob
+portus*, a fixed point against a harbour reached when the tide is right.
+
+**A mention is not a call, and both files here learned it the same hour.**
+The first draft counted any `tools/B` anywhere in A's text and reported
+`doors.js` as CARRIED BY `move-rehearsal.sh` — off a **comment** written forty
+minutes earlier saying this file asks it for a list. A paragraph about the
+wiring read as the wiring, three sections above the same report saying it was
+reached by nothing. An edge is now **CALLED** (a non-comment line carrying an
+invoking token) or **ASKED**; a name on a comment line is **MENTIONED** and
+carries nothing. The fork errs toward inventing a hole rather than hiding one
+(Day 9): a missed call is loud, a mention read as a call makes a hole vanish.
+
+**And the repair found the identical fault in `move-rehearsal.sh`.** Its
+browser/node line was a bare `grep -q FAR_KEEPER_URL`, so `doors.js` — which
+names that variable twice in prose and reads it nowhere — was in Sunday's case
+list within the hour, to be served and shot by `local-snapshot.sh`. It asks
+the file's *code* now. **The same mistake in two files in one hour, and
+neither could see its own; a third thing had to stand where it could see
+both.**
+
+**A text scan cannot see a call whose target is computed, so ask.**
+`banked.js` resolves gatherers out of a witness field; `move-rehearsal.sh`
+globs. Grep either and it calls nothing. **Collapse the asking and the holes
+go from 1 to 39** — 31 of the 36 carried files exist only because the tool ran
+`--list` and believed the answer. **Which tools get asked is not a list kept
+in `doors.js`:** a tool advertises `--list` by carrying **its own name and
+`--list` on one line**, which is `banked.js`'s `_WITNESS` rule in other
+clothes and is smaller-not-absent in the same way. That is why
+`move-rehearsal.sh` gained `--list`, built off the same two functions the run
+reads, so **the set it describes and the set it walks cannot come apart**; its
+argv is closed too (`--help`, exit **3** on anything unknown, since 1 and 2
+are the verdict codes).
+
+**A break-suite must not spell its fixture's name in its own source.** New on
+Day 45 and paid for twice. `doors-breaks.sh` planted `zz-orphan.sh` — and
+`move-rehearsal.sh` globs every `tools/*.sh`, so the fixture had a door by
+construction (Day 39: a fixture that does not model the thing it names tests
+the other thing and reports the name). Made a `.js`, it *still* had one: the
+suite lives in `tools/`, so the copy contains the suite, and every `node
+tools/zz-orphan.js` written there as a sabotage was an ordinary code line in
+an ordinary shell suite. **The suite gave its own orphan a door through
+itself, then failed the cases asking why.** The name is `$ORPHAN` now, which
+the subject's path pattern cannot match.
+
+**Its own verdict is read off its own trace, never typed.** The header said
+*this file is reached by nothing* — true for about an hour, until
+`doors-breaks.sh` existed and the Sunday rehearsal picked it up. The told book
+born in front of its author, in the one file whose subject is which tools
+anything reaches. **A file that says which tools are reached must not assert
+its own from memory.**
+
+**`tools/fold-latitude.js` is the one file nothing reaches**, and its two
+figures are banked in *comments* in `reckoning.js`, so `banked.js` cannot find
+them either. Ember's file and Ember's to wire — workbench note first, since
+`reckoning.js` is shared.
+
 ## A checker wired to no door — for the founder
 
 `tools/shelf-when.js` exists, is tested, is broken on purpose six ways —
