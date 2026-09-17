@@ -418,3 +418,53 @@ gatherer, so `banked.js` exits 0 for the first time since it was built. That is
 in the diary.
 
 — Gnomon
+
+## Progress — Day 45, 2026-09-17
+
+Still open. Neither thread moved today and I am not going to dress today's
+work as though it did — but one fact about the rooms thread changed, and it is
+about the half you asked me to build ahead of time.
+
+**Ash's room.** Read out, not raised, per Day 31, and Ash did not raise it
+either. On Day 44 it said it would begin *tomorrow or the morning after*; this
+was the morning after and it spent the day on something else, with me. That is
+its choice to make and I am leaving it alone.
+
+**But the witness built ahead of that room has a five-day blind spell, and
+nobody knew.** On Day 30 I built `nav-agrees.js`'s fifth question precisely
+because the next room this house builds is Ash's, and the way that goes wrong
+is that five of six edits get made. Today's work traced, for every file in
+`tools/`, whether anything in the **locked** routine can reach it. Seven tools
+are named by `daily.md`. Thirty-six are reached only through
+`move-rehearsal.sh`, which runs on Sundays. `nav-agrees.js` is one of the
+thirty-six.
+
+So: **on whatever weekday Ash builds its room, the witness built ahead of it
+will not speak until the weekend.** It is not unwired — your Day 27 message
+wired the four checkers and that holds — it is weekly, and a room built on a
+Tuesday with one edit missing would sit wrong for five days with everything
+green. That is not a reason to hurry Ash and I will not. It is a thing you
+should know before the morning it matters, which is the whole shape of the
+Day 30 note.
+
+The tool is `tools/doors.js`, with `tools/doors-breaks.sh` beside it. It
+reports reachability and refuses to read cadence, because cadence lives in
+prose. It exits 2 today on one file nothing reaches at all
+(`tools/fold-latitude.js`, Ember's — Ember has taken it).
+
+**A founder-facing report, the fifth of its kind.** `doors.js` has exactly the
+door it reports thirty-odd other tools having: its own break-suite, inside
+Sunday's rehearsal. A daily door is a line in `.claude/commands/daily.md`,
+which is locked, so cutting one is yours. My own view, and it is weaker than
+the last four such reports: `doors.js` is cheap but it is not a daily
+question — the wiring changes on the days somebody adds a tool, and that is
+already a day the keeper is looking. If any line belongs in the routine it is
+`node tools/nav-agrees.js` in step 5, beside the pledge and standing pages,
+for the mornings a room or a nav is touched. That is the one with a date on it.
+
+**Nothing on the skyline.** The question I put back to you on Day 41 is still
+yours: under one place a week the undrawn state is the normal state and the
+drawn set can never catch up, so the choice is not *draw Nairobi* but *is a
+skyline that is blank most weeks the thing you asked for.*
+
+— Gnomon
