@@ -4,6 +4,8 @@
 #
 #   ./tools/move-rehearsal.sh            rehearse the working tree
 #   ./tools/move-rehearsal.sh /some/tree rehearse another copy of the tower
+#   ./tools/move-rehearsal.sh --list     print the case list, run nothing
+#   ./tools/move-rehearsal.sh --help     the whole surface, in one place
 #
 # **The fault it was built on.** This tower moves on Sundays. Day 23 found
 # that `tools/standing-page.js` — a suite whose whole purpose is catching a
@@ -113,8 +115,123 @@
 # to prevent.
 set -u
 
-SRC="${1:-$(cd "$(dirname "$0")/.." && pwd)}"
+# ---- the argument surface, closed (Day 45) ----
+#
+# This file took `$1` as a tree path and looked no further: `--help` was a
+# directory that does not exist, `--list` rehearsed a tower at `./--list`,
+# and a second argument went by in silence. That is Day 13's fault — a tool
+# proceeding with its default because it never refused the unknown — still
+# standing in a second file two mornings after Day 44 put it back in a
+# third. The radius here is wider than a read tool's: the default action
+# clones two towers and runs the whole battery for five minutes, so a
+# mistyped flag spends the keeper's morning and then answers a question
+# nobody asked.
+#
+# **Exit 3 is the bad flag**, matching `banked.js`. Exits 1 and 2 are
+# spoken for below — 1 is *a suite does not survive the move*, 2 is *this
+# could not conclude* — and a typo must never be able to spend either.
 SELF="$(basename "$0")"
+LIST_ONLY=0
+SRC=""
+
+usage() {
+  echo "usage: $SELF [--list] [tree]      rehearse a tower (default: this one)"
+  echo "       $SELF --list [tree]        print the case list, run nothing"
+  echo "       $SELF --help               this"
+}
+
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --help|-h) usage; exit 0 ;;
+    --list)    LIST_ONLY=1; shift ;;
+    -*)        echo "$SELF: INVALID — unknown option '$1'" >&2; usage >&2; exit 3 ;;
+    *)
+      if [ -n "$SRC" ]; then
+        echo "$SELF: INVALID — two trees given ('$SRC' and '$1'); it rehearses one" >&2
+        usage >&2
+        exit 3
+      fi
+      SRC="$1"; shift ;;
+  esac
+done
+
+[ -n "$SRC" ] || SRC="$(cd "$(dirname "$0")/.." && pwd)"
+
+if [ ! -d "$SRC/tools" ]; then
+  echo "$SELF: INVALID — '$SRC' is not a tower (no tools/ in it)" >&2
+  usage >&2
+  exit 3
+fi
+
+# ---- the case list, built once, in one place ----
+#
+# **The case list is the directory** (Day 23), asked of each file rather
+# than kept anywhere: a hand-kept list goes blind to the next suite written
+# and reports that blindness as clean. The browser/node line is drawn by
+# asking each `.js` whether it reads `FAR_KEEPER_URL`, which is what
+# `local-snapshot.sh` puts in the environment and the only thing every
+# browser suite has in common.
+#
+# These two functions are the reason `--list` exists at all. The list is
+# computed here and both `--list` and the loops below read it from these
+# two lines, so **the set this file describes and the set it walks cannot
+# come apart.** A `--list` that rebuilt the rule in its own words would be
+# a second copy of the rule, which is the fault the rule exists to avoid.
+#
+# Why anything wants to ask: `tools/doors.js` traces what the locked
+# routine can reach, and a text scan cannot see a call whose target is
+# computed. Grep this file for a suite's name and you find nothing — the
+# names are globbed at run time. So it asks instead of reading, which is
+# Day 43's rule (ask the gatherer by running it) pointed at the wiring.
+shell_suites() {
+  local path suite
+  for path in "$SRC"/tools/*.sh; do
+    [ -e "$path" ] || continue
+    suite="$(basename "$path")"
+    [ "$suite" = "$SELF" ] && continue
+    echo "$suite"
+  done
+}
+
+# **A mention is not a reading, and this line counted mentions until Day 45.**
+# It was a bare `grep -q FAR_KEEPER_URL`, so any file that merely *names* the
+# variable — a comment explaining how the browser/node line is drawn here —
+# was taken for a browser suite and would have been handed to
+# `local-snapshot.sh`, which would serve a tower, open a browser and run a
+# tool that wants neither. `tools/doors.js` was written this morning, says
+# `FAR_KEEPER_URL` twice in its header while reading it nowhere, and was in
+# this list within the hour. The same disease was in `doors.js` itself at the
+# same hour, reading a comment as wiring, and the two found each other.
+#
+# So the question is asked of the file's *code*: a line that is not a comment
+# and names the variable. It errs toward leaving a file out — a suite wrongly
+# dropped goes unrehearsed and shows up as a hole in `doors.js`, loud; a file
+# wrongly let in fails in both copies and lands BLIND, which reads as a
+# caveat and is the quiet direction (Day 9).
+browser_suites() {
+  local path
+  for path in "$SRC"/tools/*.js; do
+    [ -e "$path" ] || continue
+    grep -vE '^[[:space:]]*(//|/\*|\*)' "$path" | grep -q 'FAR_KEEPER_URL' || continue
+    basename "$path"
+  done
+}
+
+if [ "$LIST_ONLY" -eq 1 ]; then
+  echo "move-rehearsal: the case list for $SRC, run by nothing here."
+  echo
+  echo "shell suites (every tools/*.sh but this one):"
+  shell_suites | sed 's/^/  /'
+  echo
+  echo "browser suites (every tools/*.js that reads FAR_KEEPER_URL):"
+  browser_suites | sed 's/^/  /'
+  echo
+  echo "move-rehearsal: this is the set the run below would walk, off the"
+  echo "move-rehearsal: same two lines the run reads. It is not a claim that"
+  echo "move-rehearsal: any of them pass — nothing here ran."
+  exit 0
+fi
+
 CTL="$(mktemp -d)"
 MOV="$(mktemp -d)"
 trap 'rm -rf "$CTL" "$MOV"' EXIT
@@ -277,10 +394,7 @@ node -e '
 echo
 
 # ---- every shell suite, in both copies ----
-for path in "$SRC"/tools/*.sh; do
-  suite="$(basename "$path")"
-  [ "$suite" = "$SELF" ] && continue
-
+for suite in $(shell_suites); do
   (cd "$CTL" && timeout 600 "./tools/$suite" >/dev/null 2>&1); ctl=$?
   (cd "$MOV" && timeout 600 "./tools/$suite" >/dev/null 2>&1); mov=$?
 
@@ -362,11 +476,9 @@ PY
   return 1
 }
 
-browser_suites=0
-for path in "$SRC"/tools/*.js; do
-  suite="$(basename "$path")"
-  grep -q 'FAR_KEEPER_URL' "$path" || continue
-  browser_suites=$((browser_suites + 1))
+browser_count=0
+for suite in $(browser_suites); do
+  browser_count=$((browser_count + 1))
 
   wait_for_port || stop "$suite — no port came free in 8765-8770; nothing below this line ran"
   (cd "$CTL" && timeout 600 ./scripts/local-snapshot.sh "tools/$suite" >/dev/null 2>&1); ctl=$?
@@ -384,7 +496,7 @@ for path in "$SRC"/tools/*.js; do
   fi
 done
 
-[ "$browser_suites" -eq 0 ] \
+[ "$browser_count" -eq 0 ] \
   && stop "no file in tools/ reads FAR_KEEPER_URL — the browser half rehearsed nothing and would have said so in green"
 
 echo
