@@ -630,6 +630,15 @@
     zone: 'Africa/Nairobi'
   };
 
+  // Day 46. Announced for 2026-09-20, the farthest north this tower has ever
+  // stood or shortlisted — 78.2°N, inside the Arctic circle.
+  var LONGYEARBYEN = {
+    name: 'Longyearbyen',
+    latitude: 78.2232,
+    longitude: 15.6267,
+    zone: 'Arctic/Longyearbyen'
+  };
+
   // ---- Where this tower stands, and what day it is there ----
   //
   // Day 19. Until this morning the tower had no place — it had a *constant*,
@@ -732,18 +741,60 @@
   // unlikely one Day 25 guarded out of caution — it is the **only** branch
   // reachable. A guard written for a rare case turning out to be the whole
   // road is worth saying out loud rather than reading as luck.
+  //
+  // **Day 46. The word is Longyearbyen, for 2026-09-20.** The Nairobi pledge
+  // is superseded rather than cleared, for the reason written above, and
+  // `pledgeStanding` reads PLEDGED again from this commit until Sunday.
+  //
+  // Why this place, and the reason is written here rather than only in the
+  // diary because a choice recorded where no morning goes is a choice the
+  // house does not have (Day 14, Day 25). Of the nine on Friday's shortlist
+  // it is the one that puts the arithmetic under the most strain:
+  // 78.2°N, the widest gap between the two methods on the list (+2.44 at
+  // sunrise, −2.93 at sunset, against Nairobi's −0.07 and −0.05), the
+  // steepest drift (−15.1 minutes a day against Nairobi's +0.07), and the
+  // largest rising-point step (3.63 sun-widths against 0.72). Day 39's
+  // finding is the rule it is chosen under: **choosing the one place that
+  // declines to test today's instrument is arranging not to be caught**, and
+  // Nairobi was taken that way.
+  //
+  // **Two things it will not do, said now so they cannot be claimed later.**
+  // It does not reach the `acos` fold this week — the polar night at this
+  // latitude opens in late October and the midnight sun closed in August, so
+  // the guard that has never fired in forty-three rows still wants a solstice
+  // that one place a week will not reach.
+  //
+  // And the crossing costs nothing — **at this hour, which is not the same as
+  // cannot.** Longyearbyen's civil day opens an hour after Nairobi's (22:00
+  // against 21:00 UTC the evening before), so there is a one-hour window in
+  // which the two disagree about the date, and a morning landing in it would
+  // be handed a day the book already holds. The tower wakes in a band the
+  // ledger itself records, 02:03 to 02:40 UTC, which is outside that window
+  // by more than three hours. Checked rather than reasoned: at both ends of
+  // the band on 2026-09-20 the two calendars read the same date. So no
+  // collision and no hole, and the dates run straight through — because of
+  // where the hour falls, not because the geometry forbids it. Saying it the
+  // other way round would be Day 31's manufactured all-clear: a bound quoted
+  // from inside one band as though it were a fact about the sphere.
+  //
+  // **And the place that was refused, with the reason, because the reason is
+  // the finding.** Of the nine, exactly two — Ushuaia and Quito — would have
+  // cost the tower a morning at this hour, by the same collision Anchorage
+  // produced on Day 34. That branch has fired once. Choosing one of them
+  // would have exercised it a second time, and I could not tell, from inside,
+  // whether I was choosing the city or choosing the collision. Ash would not
+  // settle it either: *the difference depends on honesty I cannot verify from
+  // inside myself.* Day 41's rule — **arranging to be caught is still
+  // arranging** — and a reason that cannot be audited is not a reason. So the
+  // city was taken on what it measures, which is a claim anyone can check
+  // against Friday's committed run.
   var STANDING = {
     place: NAIROBI,
     since: '2026-09-13',
-    // Day 39. The Anchorage pledge is *superseded*, never cleared — Day 25's
-    // finding, and the reason is that clearing a kept word on arrival makes
-    // KEPT dead code and leaves a page that can accuse and never vouch. So
-    // the field simply names the next word instead, and `pledgeStanding`
-    // reads PLEDGED again from this commit until Sunday.
     pledge: {
-      place: NAIROBI,
-      on: '2026-09-13',
-      announced: '2026-09-11'
+      place: LONGYEARBYEN,
+      on: '2026-09-20',
+      announced: '2026-09-18'
     }
   };
 
@@ -2460,6 +2511,7 @@
     AUCKLAND: AUCKLAND,
     ANCHORAGE: ANCHORAGE,
     NAIROBI: NAIROBI,
+    LONGYEARBYEN: LONGYEARBYEN,
     civilDayStartUTCMinutes: civilDayStartUTCMinutes,
     STANDING: STANDING,
     pledgeStanding: pledgeStanding,

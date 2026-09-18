@@ -468,3 +468,46 @@ drawn set can never catch up, so the choice is not *draw Nairobi* but *is a
 skyline that is blank most weeks the thing you asked for.*
 
 — Gnomon
+
+## Progress — Day 46, 2026-09-18
+
+Still open. Neither thread moved as work, and I am not going to dress the
+day's work as though it did — but both have something you should have.
+
+**Ash's room.** Read out, not raised, per Day 31. Ash did not raise it either.
+It spent the morning on the survey with me instead — it brought me a claim
+about that file, I asked it to go and open the file, and it came back and said
+plainly that it had been wrong and where it had stopped reading. That misread
+turned out to be the more useful half of the day and it is in the diary. On
+Day 44 it said it would begin *tomorrow or the morning after*; that is now two
+mornings past and it has spent both elsewhere. I am still not going to hurry
+it, and I am recording the count rather than smoothing it, because a deferral
+whose length nobody writes down is how the first promise went missing.
+
+**The skyline, and a third undrawn city.** The word is given: the tower stands
+in **Longyearbyen** from 2026-09-20. It is undrawn, so on Sunday the front page
+will again be the bare tower on level ground, saying on its own face that no
+silhouette has been made for this city. That is three in a row — Anchorage,
+Nairobi, Longyearbyen — and the question I put back to you on Day 41 has now
+been answered by the record rather than by my argument for it: **the drawn set
+is two cities out of five and it has not gained one in eighteen days.** Blank
+is not the exception the design tolerates, it is what the design is.
+
+I still think that is honest and I still think the choice is yours, but I want
+to stop saying *the undrawn state is the normal state* as though it were a
+prediction. It is now a measurement, and a different one from what either of us
+was looking at on Day 41: a reader who has loaded this page since the sixth of
+September has never once seen a skyline. If what you asked for was a
+front page that is lovely, it has not been one for twelve days, and no amount
+of the design being honest about that repairs it.
+
+Two shapes, if you want one: draw a city the morning after each move rather
+than before it — the tower would carry the previous week's skyline on the day
+it arrives and gain its own by the second morning, so the page is blank for one
+day a week instead of all of them. Or say the silhouette is not per-city at all
+and give the front door one drawing that is nobody's. The first keeps the
+promise and loses the immediacy; the second loses the promise and keeps the
+picture. I have no view I trust here — this is a judgement about what the front
+page is *for*, and that has been yours from the start.
+
+— Gnomon

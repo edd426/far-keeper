@@ -2,27 +2,42 @@
 
 // survey — what does this tower's own method say at a place we might stand?
 //
-// Built Day 22, three mornings before the first move. Evan's argument for
-// moving at all was that three guards in `reckoning/reckoning.js` — the `acos`
-// fold, the general non-Paris offset branch (the day-line join), the
-// rising-point arc — had never fired for any cause, because one latitude had
-// ever reached them. A tower that stays put cannot find a latitude-dependent
-// error, in the exact way Wren's clearing could not find its missing month
-// from inside itself. That was true on Day 22, in Paris, and it was kept
-// exactly that way in this comment for seventeen mornings after it stopped
-// being true.
+// **Read the HISTORICAL section of the report for what has actually fired.
+// Nothing in this comment answers that question, and no sentence here should
+// be quoted as though it did.** Three guards in `reckoning/reckoning.js` are
+// the ones at issue — the `acos` fold, the general non-Paris offset branch
+// (the day-line join), and the rising-point arc — and the report asks the
+// ledger about all three on every run.
 //
-// Day 39: it was false, and had been since the Auckland move. The day-line
-// join has fired on eleven of thirty-five non-Paris rows — every row Auckland
-// or Anchorage ever published. Two spirits read this paragraph instead of the
-// ledger on the same morning and both built an argument on it (Ember's own
-// workbench note, same day, same fault, named for something else an hour
-// earlier). The paragraph was true when written and nothing after the hand
-// ever asked whether it still was — Day 29's sentence about a hand-kept list,
-// landing on a hand-kept *sentence* instead. The HISTORICAL section below
-// reads the ledger itself rather than restate the claim by hand, precisely so
-// this file cannot go stale silently a second time: whatever it says, it says
-// because it looked.
+// Why the report answers and this comment refuses, which is the history and
+// is kept because it is the reason:
+//
+// Built Day 22, three mornings before the first move. Evan's argument for
+// moving at all was that those three guards had never fired for any cause,
+// because one latitude had ever reached them. A tower that stays put cannot
+// find a latitude-dependent error, in the exact way Wren's clearing could not
+// find its missing month from inside itself.
+//
+// Day 39: that had been false since the Auckland move — the day-line join had
+// fired on every row Auckland or Anchorage ever published — and the sentence
+// had stood here for seventeen mornings after it stopped being true. Two
+// spirits read this paragraph instead of the ledger on the same morning and
+// both built an argument on it. The paragraph was true when written and
+// nothing after the hand ever asked whether it still was: Day 29's sentence
+// about a hand-kept list, landing on a hand-kept *sentence* instead.
+//
+// Day 40's repair was the HISTORICAL section, which reads the ledger rather
+// than restating the claim by hand — whatever it says, it says because it
+// looked. **Day 46 found that repair had not reached the reading.** The old
+// claim was still the first thing this file asserted, with its hedge under it
+// and its correction under that, and a third reader stopped inside it and
+// reported the false claim as the file's stance — having read the hedge. So
+// the order is inverted here rather than the words improved: a reader
+// summarising a file reports its **first assertion**, and no amount of
+// correcting underneath moves that. The history now stands under a refusal
+// instead of in front of one. (The other half of Day 46 is that the Day 40
+// section answered for two of the three guards this comment named, which is
+// the same disease one storey down; the third is tracked from today.)
 //
 // So the next place has to be chosen, and the house's rule for choosing things
 // is to ask the instrument rather than ask which city sounds well. Ember drew
@@ -97,7 +112,7 @@ const Reckoning = require('../reckoning/reckoning.js');
 const LEDGER_PATH = path.join(__dirname, '..', 'reckoning', 'ledger.json');
 
 // The move this survey is for. A constant, so the committed run reproduces.
-const MOVE_DATE = '2026-09-13';
+const MOVE_DATE = '2026-09-20';
 
 // Hand-kept. Nothing computes this list; it is the keeper's shortlist, and it
 // is meant to be edited each week. `zone` must be a name the clock has heard
@@ -105,7 +120,8 @@ const MOVE_DATE = '2026-09-13';
 // place the tower could not stand in is worth nothing.
 //
 // Day 32: Auckland comes off, having been stood in. Day 39: Anchorage comes
-// off the same way. No city twice is the rule, and the honest place to keep it
+// off the same way, and Day 46 Nairobi. No city twice is the rule, and the
+// honest place to keep it
 // is here — a name removed from the shortlist cannot be chosen by accident,
 // where a name left on it and remembered about
 // is Day 3's memory-dependence wearing a list. Paris was never on this list.
@@ -119,7 +135,6 @@ const CANDIDATES = [
   { name: 'Longyearbyen', latitude:  78.2232, longitude:   15.6267, zone: 'Arctic/Longyearbyen' },
   { name: 'Tokyo',        latitude:  35.6762, longitude:  139.6503, zone: 'Asia/Tokyo' },
   { name: 'Ushuaia',      latitude: -54.8019, longitude:  -68.3030, zone: 'America/Argentina/Ushuaia' },
-  { name: 'Nairobi',      latitude:  -1.2921, longitude:   36.8219, zone: 'Africa/Nairobi' },
   { name: 'Quito',        latitude:  -0.1807, longitude:  -78.4678, zone: 'America/Guayaquil' },
   { name: 'Kiritimati',   latitude:   1.8721, longitude: -157.4278, zone: 'Pacific/Kiritimati' },
   { name: 'Singapore',    latitude:   1.3521, longitude:  103.8198, zone: 'Asia/Singapore' },
@@ -208,10 +223,23 @@ function dayLineReach(working) {
   return out;
 }
 
-// Has the ledger itself ever fired the day-line join or the acos fold? Read
-// live off `reckoning/ledger.json`, never hand-typed, so the answer this file
-// gives cannot go stale the way the header's old prose did (Day 39). A row
-// that predates `working` (none, currently) is skipped rather than thrown on.
+// Has the ledger itself ever fired the day-line join, the acos fold, or the
+// rising-point arc? Read live off `reckoning/ledger.json`, never hand-typed,
+// so the answer this file gives cannot go stale the way the header's old
+// prose did (Day 39). A row that predates `working` (none, currently) is
+// skipped rather than thrown on.
+//
+// The third guard was left out on Day 40 even though this file's own header
+// names all three — checked Day 46 by asking the ledger directly rather than
+// trusting that leaving it out was harmless: `risingPointDegrees`'s own
+// `c > 1 || c < -1` refusal (reckoning.js, near `risingPointDegrees`) is a
+// separate arithmetic path from the fold that gates `solarDay`, called with
+// the same zenith but a different equation, so a row could in principle
+// clear the fold and still fail this one. It is tracked by field presence —
+// `in row` rather than a hand-typed birthday — so a row published before
+// `risingPointDegrees` existed is skipped the same way a null value would be
+// counted, without this file needing to know or maintain the date it was
+// born on.
 function ledgerHistory() {
   let rows;
   try {
@@ -222,11 +250,15 @@ function ledgerHistory() {
   const byPlace = {};
   for (const row of rows) {
     const name = (row.place && row.place.name) || 'unknown';
-    if (!byPlace[name]) byPlace[name] = { rows: 0, joinFired: 0, foldFired: 0 };
+    if (!byPlace[name]) byPlace[name] = { rows: 0, joinFired: 0, foldFired: 0, arcRows: 0, arcFired: 0 };
     const entry = byPlace[name];
     entry.rows += 1;
     if (row.never) { entry.foldFired += 1; continue; }
     if (row.working && dayLineReach(row.working).length) entry.joinFired += 1;
+    if ('risingPointDegrees' in row || 'settingPointDegrees' in row) {
+      entry.arcRows += 1;
+      if (row.risingPointDegrees === null || row.settingPointDegrees === null) entry.arcFired += 1;
+    }
   }
   return { readable: true, byPlace, total: rows.length };
 }
@@ -271,8 +303,9 @@ function report(lines) {
   lines.push('that this tower will be reckoning there on that date; under one place a week');
   lines.push('it will not be.');
   lines.push('');
-  lines.push('HISTORICAL — has the ledger itself ever fired the day-line join or the acos');
-  lines.push('fold, read off reckoning/ledger.json rather than asserted in prose (Day 39).');
+  lines.push('HISTORICAL — has the ledger itself ever fired the day-line join, the acos');
+  lines.push('fold, or the rising-point arc, read off reckoning/ledger.json rather than');
+  lines.push('asserted in prose (Day 39, extended to the third guard Day 46).');
   const history = ledgerHistory();
   if (!history.readable) {
     lines.push(`  the ledger could not be read (${history.detail}) — no historical answer this run`);
@@ -280,10 +313,21 @@ function report(lines) {
     lines.push(`  ${history.total} published rows`);
     for (const name of Object.keys(history.byPlace)) {
       const h = history.byPlace[name];
+      // Day 46. The row count leads every line, fired or not. When the third
+      // guard went in, the places with nothing to report lost their `h.rows`
+      // to the arc's own narrower count, so Paris — 24 rows, 12 of them
+      // carrying a rising point — printed as though it had 12. And the
+      // fallback still said *neither guard*, a word that was right while
+      // there were two of them. Both are the same fault one size down from
+      // the one this section exists for: a sentence that stopped describing
+      // the thing while nobody was asking it.
       const notes = [];
       if (h.joinFired) notes.push(`day-line join fired on ${h.joinFired} of ${h.rows}`);
       if (h.foldFired) notes.push(`acos fold fired on ${h.foldFired} of ${h.rows}`);
-      lines.push('  ' + pad(name, 13) + (notes.length ? notes.join('; ') : `${h.rows} rows, neither guard ever fired`));
+      if (h.arcFired) notes.push(`rising-point arc fired on ${h.arcFired} of ${h.arcRows}`);
+      else if (h.arcRows) notes.push(`rising-point arc never fired (${h.arcRows} rows carry it)`);
+      else notes.push('no row carries a rising point');
+      lines.push('  ' + pad(name, 13) + pad(`${h.rows} rows`, 9) + notes.join('; '));
     }
   }
 
