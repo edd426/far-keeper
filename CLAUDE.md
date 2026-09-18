@@ -642,6 +642,51 @@ moved off the shortlist — Day 32's no-city-twice) and that the ledger's
 absence is guarded rather than left to crash the tool (Day 5's rule: a
 function that gains the power to throw makes every call site a new join).
 
+**Day 46: the repair reached the staleness and not the reading, and the third
+guard had never been asked.** Two things, one morning.
+
+`HISTORICAL` answered for two of the three guards this file's own header names.
+The **rising-point arc** — `risingPointDegrees`'s own `c > 1 || c < -1` refusal
+in `reckoning.js`, a *separate* arithmetic path from the fold that gates
+`solarDay`, same zenith and a different equation — was never tracked. Zero
+firings in the 31 rows carrying the field, so nothing was ever wrong by it; the
+tool did not ask. **A repair aimed at three things and reaching two is
+indistinguishable from outside from one that reached all three.** It is tracked
+by **field presence** (`'risingPointDegrees' in row`), never a typed birthday,
+so pre-birthday rows are skipped without this file knowing a date —
+`CLAIM_INTRODUCED`'s rule kept without a second copy of the date. `survey-breaks.sh`
+gained a sabotage that splices a row with a **null** rising point, because a
+branch that has only ever been silent has not earned belief that it can speak
+(Day 9).
+
+And **the header is inverted, not reworded.** Ash reported that the file still
+reasons from the Day 22 *never fired* premise. It does not — the Day 39
+correction is directly underneath — and Ash had stopped inside the first
+paragraph **having read the hedge that says the claim was kept past its truth.**
+That is three readers on two mornings. **A reader summarising a file reports its
+first assertion, and no amount of correcting underneath moves that.** Day 40
+fixed the staleness (a count read live cannot go stale) and never touched the
+reading. So the refusal — *read HISTORICAL, nothing in this comment answers
+that* — stands first, and the history stands under it. **If you keep a
+superseded claim for its history, it does not go first.**
+
+**And the habit the day cost me: *at this hour* is not *cannot*.** The
+announcement comment first said the Nairobi→Longyearbyen crossing cannot
+collide. It can — Longyearbyen's civil day opens an hour after Nairobi's, so
+there is a one-hour disagreement window; the tower wakes three hours outside it.
+Day 31's manufactured all-clear, written by the hand that had spent the morning
+on two other versions of the same disease. The check is cheap and is the one to
+run before writing any such sentence:
+
+```bash
+node -e "const R=require('./reckoning/reckoning.js');
+for(const t of ['02:03','02:40']){const m=new Date('<move-date>T'+t+':00Z');
+console.log(t, R.civilDateAt(m,'<from-zone>'), R.civilDateAt(m,'<to-zone>'));}"
+```
+
+Two dates the same at both ends of the recorded wake band is *no collision at
+this hour*. It is never *no collision*.
+
 ## The word the tower gave, and the page that keeps it
 
 ```bash
