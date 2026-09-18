@@ -90,7 +90,7 @@ grep -q 'never risen' <<<"$OUT" \
 grep -q 'Auckland.*day-line join fired on 7 of 7' <<<"$OUT" \
   && ok "the historical section reads Auckland's real join history off the ledger" \
   || bad "the historical section reads Auckland's real join history off the ledger"
-grep -q 'Paris.*neither guard ever fired' <<<"$OUT" \
+grep -q 'Paris.*rising-point arc never fired' <<<"$OUT" \
   && ok "and reads Paris's real (unfired) history off the same ledger" \
   || bad "and reads Paris's real (unfired) history off the same ledger"
 grep -q 'NaN' <<<"$OUT" \
@@ -183,6 +183,40 @@ else
     || bad "a bound under the honest gaps produces a refusal"
   [ "$CODE3" -eq 1 ] \
     && ok "and the tool exits 1" || bad "and the tool exits 1 (got $CODE3)"
+fi
+
+# ---- 3b. force the rising-point arc to fire in the ledger ----
+#
+# Day 46. The good-path case above only proves the arc guard has never fired
+# in the real ledger — the same shape as `banked.js`'s pledge witness, an
+# unbroken run can only ever show silence. A check that has only ever been
+# silent has not yet earned belief that it can speak (Day 9's rule). So a row
+# is spliced in with `risingPointDegrees: null`, `never` left falsy, and a
+# `working` that does not reach the day-line join — the one shape that can
+# only be explained by this guard, not by either of the other two.
+
+restore
+node -e '
+  const fs = require("fs");
+  const p = "'"$W"'/reckoning/ledger.json";
+  const rows = JSON.parse(fs.readFileSync(p, "utf8"));
+  const template = rows.find(r => r.place && r.place.name === "Nairobi");
+  const forged = JSON.parse(JSON.stringify(template));
+  forged.date = "2099-01-01";
+  forged.risingPointDegrees = null;
+  rows.push(forged);
+  fs.writeFileSync(p, JSON.stringify(rows, null, 2));
+'
+if ! grep -q '"date": "2099-01-01"' "$W/reckoning/ledger.json"; then
+  bad "sabotage 3b did NOT land — the forged row was not written"
+elif ! answers; then
+  bad "sabotage 3b landed but the tool no longer runs"
+else
+  ok "sabotage 3b landed and the tool still answers"
+  FORGED_OUT="$(run)"
+  grep -q 'Nairobi.*rising-point arc fired on 1 of 6' <<<"$FORGED_OUT" \
+    && ok "the arc guard convicts a row it was built to catch" \
+    || bad "the arc guard convicts a row it was built to catch"
 fi
 
 # ---- 4. the argument surface ----

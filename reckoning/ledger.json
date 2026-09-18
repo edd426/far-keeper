@@ -3845,5 +3845,104 @@
       "changeSinceYesterdayMinutes": 0.06773721936963284
     },
     "publishedAt": "2026-09-17T02:30:33Z"
+  },
+  {
+    "date": "2026-09-18",
+    "method": 2,
+    "place": {
+      "name": "Nairobi",
+      "latitude": -1.2921,
+      "longitude": 36.8219,
+      "zone": "Africa/Nairobi"
+    },
+    "sunrise": "06:24",
+    "sunset": "18:30",
+    "solarNoon": "12:27",
+    "utcOffsetMinutes": 180,
+    "dayLengthMinutes": 726.1654967576151,
+    "dayLength": "12h 06m 10s",
+    "changeSinceYesterdayMinutes": 0.06837309892546273,
+    "risingPointDegrees": 88.12903106207547,
+    "settingPointDegrees": 271.675650248573,
+    "risingPointTomorrowDegrees": 88.51640169507229,
+    "risingPointStepArcminutes": 23.242237979809204,
+    "risingPointStepSunWidths": 0.7263199368690376,
+    "sunHighestDegrees": 86.91641375303041,
+    "sunLowestDegrees": -89.69423791906985,
+    "horizon": {
+      "zenith": 90.833,
+      "obstructionDegrees": 0,
+      "dipDegrees": 0
+    },
+    "working": {
+      "julianDay": 2461301.5,
+      "julianCentury": 0.26711841204654346,
+      "eccentricity": 0.016697396102983226,
+      "horizonZenithDeg": 90.833,
+      "horizonSensitivitySecondsPerArcminute": -4.002063377977265,
+      "epochCorrectionSecondsSunrise": -3.3240650236211877,
+      "epochCorrectionSecondsSunset": -12.510792001389746,
+      "sunriseUTCMinutes": 203.8373908870301,
+      "sunsetUTCMinutes": 930.0028876446452,
+      "atSunrise": {
+        "julianDay": 2461301.6415537437,
+        "julianCentury": 0.2671222875768307,
+        "meanLongitudeDeg": 177.0744731511786,
+        "meanAnomalyDeg": 253.67776309101282,
+        "equationOfCentreDeg": -1.825240721719439,
+        "apparentLongitudeDeg": 175.2460478517894,
+        "obliquityDeg": 23.437997573563628,
+        "declinationDeg": 1.8890884575555185,
+        "equationOfTimeMinutes": 5.710863301049417,
+        "hourAngleDeg": 90.79103645298011,
+        "solarNoonUTCMinutes": 567.0015366989505,
+        "passes": 3,
+        "lastMoveSeconds": 2.5148779059236404e-7
+      },
+      "atSunset": {
+        "julianDay": 2461302.1458353386,
+        "julianCentury": 0.2671360940544456,
+        "meanLongitudeDeg": 177.57151697619156,
+        "meanAnomalyDeg": 254.17478317186396,
+        "equationOfCentreDeg": -1.8301236825605653,
+        "apparentLongitudeDeg": 175.7382106129411,
+        "obliquityDeg": 23.43799676841075,
+        "declinationDeg": 1.6938381439661485,
+        "equationOfTimeMinutes": 5.890937336811716,
+        "hourAngleDeg": 90.7953562453642,
+        "solarNoonUTCMinutes": 566.8214626631883,
+        "passes": 3,
+        "lastMoveSeconds": 6.311120159807615e-7
+      },
+      "atSolarNoon": {
+        "julianDay": 2461301.8936885362,
+        "julianCentury": 0.26712919065123203,
+        "meanLongitudeDeg": 177.32298914493913,
+        "meanAnomalyDeg": 253.92626721297347,
+        "equationOfCentreDeg": -1.8276990213747255,
+        "apparentLongitudeDeg": 175.49210649443,
+        "obliquityDeg": 23.43799717105596,
+        "declinationDeg": 1.7914862469696504,
+        "equationOfTimeMinutes": 5.800908065083649,
+        "hourAngleDeg": 90.79319474588459,
+        "solarNoonUTCMinutes": 566.9114919349164,
+        "passes": 3,
+        "lastMoveSeconds": 5.188076102058403e-7
+      }
+    },
+    "crossCheck": {
+      "method": "USNO Almanac for Computers",
+      "sunrise": "06:24",
+      "sunset": "18:30",
+      "sunriseDifferenceMinutes": -0.07455035734176363,
+      "sunsetDifferenceMinutes": -0.05233476433033957,
+      "sunriseGapMinutes": -0.07455035734176363,
+      "sunsetGapMinutes": -0.05233476433033957,
+      "beyondBound": false,
+      "maxGapMinutes": 60,
+      "dayLengthMinutes": 726.1432811646036,
+      "changeSinceYesterdayMinutes": 0.06830734170762298
+    },
+    "publishedAt": "2026-09-18T02:14:56Z"
   }
 ]

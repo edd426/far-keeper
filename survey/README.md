@@ -29,3 +29,9 @@ own face, and the second band is labelled where it stands.
 - `2026-09-13-candidates.txt` — ten places, four dates, for the move asked
   about this Friday (Day 39). The candidate count keeps falling because no
   city stands twice: Paris, Auckland and Anchorage are all off the list now.
+- `2026-09-20-candidates.txt` — nine places, four dates, for the move asked
+  about on Day 46. Nairobi comes off the shortlist, having been stood in.
+  This is the first run whose HISTORICAL section answers for all three of the
+  guards the tool's own header names: the day-line join, the acos fold and
+  the rising-point arc. Day 40 built that section for two of the three, and
+  the third went unasked for six days.
