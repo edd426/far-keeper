@@ -365,10 +365,46 @@ $(node -e '
 ' "$SRC")
 EOF
 
-# The far place is a real place object, held to what `placeProblem()` asks —
-# see the note above the function. `Rehearsal` at 0,0 is on the earth and in
-# a zone the clock knows.
-rewrite_standing "$MOV" "$FAR_ZONE" "Rehearsal" 0 0 \
+# ---- the ground the moved copy stands on ----
+#
+# Day 47, and it is the hole this file did not know it had. From Day 24 the
+# moved copy was `rewrite_standing "$MOV" "$FAR_ZONE" "Rehearsal" 0 0` —
+# latitude **nought**, every Sunday, for every move. This tool moves the
+# tower's *clock* and has never once moved its *ground*. Auckland at −36.8,
+# Anchorage at 61.2, Nairobi at −1.3, and now Longyearbyen at 78.2: the
+# rehearsal stood on the equator for all of them, so a suite whose fixture
+# quietly assumes a latitude was never asked about the one we were going to.
+#
+# Found by standing a whole copy at Longyearbyen's real ground on the eve of
+# that move and running this file's own case list by hand. Three suites went
+# red that are green here — one reaching for a cross-check on a date that is
+# midnight sun at 78°N, two holding a fixture against a ratio to wherever the
+# tower happens to be standing. Ash found the line; the reds found the cost.
+#
+# So the moved copy takes the **pledged** place's latitude and longitude when
+# the tower has given its word to go somewhere, and keeps 0,0 when it has
+# not. It keeps the name `Rehearsal` and the far zone: the name is deliberately
+# a word this house never says (Day 27 — a fixture named something the house
+# says makes a name-sweep vacuous, and the refusal to give it a real city's
+# name stands), and the zone is still chosen for calendar disagreement, which
+# is what the far zone was always for. It is therefore a chimera on purpose
+# and the tool says so on its own face rather than letting a reader think the
+# copy *is* the destination: a tower standing on the destination's ground
+# under a calendar that disagrees with home. Both halves of a move are in the
+# fixture now, and neither of them is the destination's identity.
+read -r MOVE_LAT MOVE_LON MOVE_WHY <<EOF
+$(node -e '
+  const { STANDING } = require(process.argv[1] + "/reckoning/reckoning.js");
+  const p = STANDING.pledge && STANDING.pledge.place;
+  if (p && Number.isFinite(p.latitude) && Number.isFinite(p.longitude)) {
+    console.log([p.latitude, p.longitude, "the-ground-we-have-promised-to-stand-on"].join(" "));
+  } else {
+    console.log(["0", "0", "no-pledge-stands-so-the-old-nought-ground"].join(" "));
+  }
+' "$SRC")
+EOF
+
+rewrite_standing "$MOV" "$FAR_ZONE" "Rehearsal" "$MOVE_LAT" "$MOVE_LON" \
   || stop "the tower could not be moved — the STANDING literal has changed shape"
 rewrite_standing "$CTL" "$NEAR_ZONE" "$HERE_NAME" "$HERE_LAT" "$HERE_LON" \
   || stop "the control could not be rewritten — the STANDING literal has changed shape"
@@ -390,6 +426,18 @@ node -e '
 ' "$MOV" "$CTL" "$FAR_ZONE" "$NEAR_ZONE" "$SRC" \
   && ok "the fixture: the control stands at $HERE_NAME as the tower does, the other copy at $FAR_ZONE" \
   || stop "the fixture was not built — the two copies do not stand where they should"
+
+# And the ground, asserted rather than assumed — a rewrite that landed the
+# zone and silently kept the old latitude would leave every line below saying
+# the opposite of what it means, which is the fault this whole morning was
+# about one storey down.
+node -e '
+  const m = require(process.argv[1] + "/reckoning/reckoning.js");
+  process.exit(m.STANDING.place.latitude === Number(process.argv[2]) &&
+               m.STANDING.place.longitude === Number(process.argv[3]) ? 0 : 1);
+' "$MOV" "$MOVE_LAT" "$MOVE_LON" \
+  && ok "and it stands at $MOVE_LAT, $MOVE_LON — $MOVE_WHY — under a calendar that disagrees, which is not the destination and does not claim to be" \
+  || stop "the moved copy did not take the ground it was given" 
 
 echo
 

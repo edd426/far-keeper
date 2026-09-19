@@ -198,8 +198,37 @@ async function readMount(page, id) {
   }
 
   const hereGap = await driftGapSeconds(live);
-  check(hereGap !== null && Number.isFinite(hereGap),
-    `setup: the standing place's drift gap is on the page to compare against (${hereGap} s)`);
+
+  // Day 47. This used to read `farGap > hereGap * 100`, and *here* is
+  // wherever the tower happens to be standing on the morning it runs. The
+  // threshold was chosen in Nairobi, whose drift gap is the quietest figure
+  // this tower has ever published, so a hundredfold was free; at
+  // Longyearbyen the standing gap is 2.8 seconds and the same fixture is
+  // only eight times louder, and the case went red about a page that was
+  // right. A ratio taken against a quantity that moves with the tower is a
+  // fact about where the tower is (Day 15's rule, one room along), and this
+  // case is named for the *fixture* being loud. So both ends are forged now
+  // and the lock cannot move under it. `hereGap` is still read and still
+  // printed — it is worth knowing on the tick — but nothing is asserted of
+  // it, because at a place whose row folds dark there is honestly no gap
+  // here to have.
+  const QUIET = { name: 'Nearline', latitude: 0, longitude: 0, zone: 'UTC' };
+  const quiet = await browser.newPage();
+  let quietLanded = false;
+  await quiet.route('**/reckoning.js*', async (route) => {
+    const response = await route.fetch();
+    const before = await response.text();
+    const body = before.replace(STANDING_NEEDLE, (m, head, _old, tail) =>
+      head + JSON.stringify(QUIET) + tail);
+    quietLanded = body !== before;
+    await route.fulfill({ response, body });
+  });
+  await quiet.goto(`${URL}reckoning/`, { waitUntil: 'networkidle' });
+  check(quietLanded, 'the forgery landed: the instrument on the wire stands on the equator');
+  const quietGap = await driftGapSeconds(quiet);
+  check(quietGap !== null && Number.isFinite(quietGap),
+    `the fixture was built: the quiet end has a drift gap to compare against (${quietGap} s, and here it is ${hereGap} s)`);
+  await quiet.close();
 
   // 4a — a genuinely loud row, named for what it is rather than for what
   // would have been convenient.
@@ -221,9 +250,9 @@ async function readMount(page, id) {
   const farGap = await driftGapSeconds(far);
   check(farText.trim().length > 0,
     `the fixture was built: the section drew at latitude 84 (${farText.trim().length} characters)`);
-  check(farGap !== null && hereGap !== null && farGap > hereGap * 100,
-    `and the fixture is the case it is named for: the gap there is far louder ` +
-    `than here (${farGap} s against ${hereGap} s)`);
+  check(farGap !== null && quietGap !== null && farGap > quietGap * 100,
+    `and the fixture is the case it is named for: the gap at latitude 84 is far ` +
+    `louder than the quiet end (${farGap} s against ${quietGap} s)`);
 
   if (farText.trim().length > 0) {
     const found = ALARMS.filter((word) => farText.toLowerCase().includes(word));

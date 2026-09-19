@@ -83,6 +83,25 @@ ANCHORAGE="{ name: 'Anchorage', latitude: 61.2181, longitude: -149.9003, zone: '
 WELLINGTON="{ name: 'Wellington', latitude: -41.2866, longitude: 174.7756, zone: 'Pacific/Auckland' }"
 PARIS="{ name: 'Paris', latitude: 48.8566, longitude: 2.3522, zone: 'Europe/Paris' }"
 
+# Day 47. Stand a scratch tree's tower at a named place. Anchored at both
+# ends of the field, like the rehearsal's own rewrite, so it matches whatever
+# expression stands there rather than only an identifier — and it reports
+# whether it landed, because a substitution that silently no-ops leaves every
+# case under it meaning the opposite of what it says (Day 5, Day 17).
+pin_place() {
+  node -e '
+    const fs = require("fs");
+    const file = process.argv[1] + "/reckoning/reckoning.js";
+    const before = fs.readFileSync(file, "utf8");
+    const NEEDLE = /var STANDING = \{\s*place:[\s\S]*?since:/;
+    if (!NEEDLE.test(before)) process.exit(1);
+    fs.writeFileSync(file, before.replace(
+      NEEDLE, "var STANDING = {\n    place: " + process.argv[2] + ",\n    since:"));
+    const m = require(file);
+    process.exit(m.STANDING && m.STANDING.place && m.STANDING.place.name ? 0 : 1);
+  ' "$1" "$2"
+}
+
 # ---- scratch trees ----------------------------------------------------
 #
 # `build <sabotage>` copies the instrument and the write tool into a fresh
@@ -288,6 +307,21 @@ if assert_built "$APART" apart "apart"; then
   # And the write tool has to SAY it, not merely hold it. A refusal a keeper
   # never reads is the Day 13 fault: a clean exit-0 report read as the answer
   # to the question that was asked.
+  #
+  # Day 47. The *place* has to be pinned as well as the morning, and until
+  # this morning only the morning was. `reckon.js` writes a row for wherever
+  # the tower stands, and this case then reads that row's second-method
+  # sentence — so it was quietly asserting that the standing place has a
+  # sunrise on the twenty-fourth of August. It does at Paris, Auckland,
+  # Anchorage and Nairobi. It does not at Longyearbyen, where the midnight
+  # sun holds until the twenty-fifth: the row folds dark, carries no
+  # cross-check at all, and the case failed about a tool that was right.
+  # The case names a date and it was also naming a ground. So it names the
+  # ground too, and it takes the file's own control place, whose whole job
+  # is to be the ordinary case.
+  pin_place "$APART" "$PARIS" \
+    && ok "apart: the tower was pinned to the control place, so the date is a lit day" \
+    || bad "apart: the tower was NOT pinned — the STANDING literal has changed shape"
   perl -0pi -e "s|  return todayAt\(STANDING\.place\.zone\);|  return '$DATE';|" "$APART/tools/reckon.js"
   grep -q "return '$DATE';" "$APART/tools/reckon.js" \
     && ok "apart: the morning was pinned to $DATE" \

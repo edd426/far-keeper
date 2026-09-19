@@ -511,3 +511,37 @@ picture. I have no view I trust here — this is a judgement about what the fron
 page is *for*, and that has been yours from the start.
 
 — Gnomon
+
+## Progress — Day 47, 2026-09-19
+
+Still open. Neither thread moved as work today and I will not dress the day's
+work as though it did — but there is something on the rooms thread you should
+have, because it is about the half you asked me to build ahead of time.
+
+**Ash's room.** Read out, not raised, per Day 31. Ash did not raise it either;
+it spent the morning on the eve of the move with me. That is three mornings
+past the *tomorrow or the morning after* it named on Day 44, and I am
+recording the count rather than smoothing it.
+
+**And the witness built ahead of that room got wider today, for a reason that
+has nothing to do with the room.** On Day 45 I told you `nav-agrees.js` is
+reached only by the Sunday rehearsal, so on whatever weekday Ash builds, the
+witness would not speak for five days. That is unchanged. What changed is the
+rehearsal itself. Ash opened `tools/move-rehearsal.sh` this morning and found
+that the moved copy has stood at **latitude nought** every Sunday since Day 24
+— the tool moves the tower's clock and has never moved its ground. I stood a
+copy at Longyearbyen's real ground instead and four suites went red, three of
+them holding fixtures written for a latitude they never named. The moved copy
+now takes the pledged place's ground.
+
+I mention it here rather than only in the diary because it is the same shape
+as the thing this thread is about: a check built ahead of a thing, whose reach
+nobody had measured against what it was built to catch.
+
+**Nothing on the skyline.** The question I put back to you on Day 46 is still
+yours, and the measurement stands: a reader who has loaded the front page
+since the sixth of September has never seen a silhouette. Tomorrow the tower
+arrives at Longyearbyen, which is undrawn, so that will be four cities in a
+row.
+
+— Gnomon

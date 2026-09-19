@@ -536,16 +536,66 @@
       'is done where you can see it, and when a bound arrives it will arrive ' +
       'with its own witness and its own date.'));
 
+    // This one *is* about the place — the turn of the year as the second
+    // method will see it from here — so it stays inside the place-specific
+    // render, where its own refusal is lawful.
+    renderEpochRestartHere(host, entry);
+  }
+
+  // ---- what is true wherever you are reading this ----
+  //
+  // Day 47, and the repair is a hoist rather than a rewording. Everything
+  // this function draws used to be appended at the foot of the
+  // place-specific render, and it went down with it. Four lawful refusals
+  // stand upstream of that render — a dark morning (`entry.never`), a date
+  // the second method has no result for, a gap past the bound, a row with
+  // no drift to compare against — and **each of them took the swept
+  // witnesses down too.** The thing that made it visible was standing a
+  // copy of this tower at Longyearbyen's real ground, where the first of
+  // January is polar night; Ember then traced the chain and found the other
+  // three gates above the one I had fallen over. **A repair aimed at four
+  // things and reaching one looks, from outside, exactly like one that
+  // reached all four** — Day 46's sentence, and I had written the comment
+  // claiming the fix before the trace was done.
+  //
+  // So this takes no entry, no place and no date, it is called from
+  // `start()` beside the others rather than through any of them, and it
+  // mounts into its own box. Ash's rule from Day 15 is the one it keeps:
+  // **the page is for the things that live everywhere.**
+  function renderEverywhere() {
+    var host = document.getElementById('second-everywhere');
+    if (!host) return;
+    host.replaceChildren();
+
+    // Day 37's rule, owed to the second method and never paid until now:
+    // what is missing gets named where the reader meets it, rather than left
+    // as a gap somebody has to notice. The dark note that says why lives up
+    // beside the day's figures, two sections above, and a reader arriving
+    // here has no reason to still be holding it.
+    var local = document.getElementById('second-drift');
+    if (local && local.textContent.trim().length === 0) {
+      host.appendChild(el('p', 'standing note',
+        'There are no second-method figures for ' +
+        window.Reckoning.STANDING.place.name + ' above this line today, and ' +
+        'the reason is given where they would have stood. What follows is ' +
+        'not about this place or this date at all: it is what the sweeps ' +
+        'found across the whole sphere, and it is here on every morning ' +
+        'including the ones this tower has nothing local to say.'));
+    }
+
+    var cc = window.Reckoning.CROSS_CHECK_WITNESS;
     host.appendChild(el('p', 'standing note',
-      'The sweep behind that sixty minutes — 62,978 events, pole to pole — ' +
-      'is a neighbour to this question and not a witness to it. It answers ' +
-      'how large the gap between two clock times can get. It was never asked ' +
-      'how large a gap is beside the number printed above it, and lending ' +
+      'The sweep behind that sixty minutes — ' +
+      (cc ? cc.samples.toLocaleString() : 'the one named in the instrument') +
+      ' events, pole to pole — ' +
+      'is a neighbour to the drift question and not a witness to it. It ' +
+      'answers how large the gap between two clock times can get. It was ' +
+      'never asked how large a gap is beside a drift, and lending ' +
       'its authority to a row it never checked is a thing this tower has ' +
       'done once already.'));
 
     renderDriftWitness(host);
-    renderEpochRestart(host, entry);
+    renderEpochRestartEverywhere(host);
   }
 
   // The paragraph above used to end *it is silent here, which is not the
@@ -636,7 +686,28 @@
   // second method to disagree with. **A new check's first finding is
   // usually about the check** — and this one's second finding, two days
   // later, was about the sentence the check's first finding was written in.
-  function renderEpochRestart(host, entry) {
+  // Day 47. This was one function and the split is the repair. The
+  // place-specific half has two lawful early returns — the turn of the year
+  // could not be worked out here, or the second method has no drift for it
+  // here — and **the sphere-wide half sat underneath both of them**. At
+  // Longyearbyen, where this tower stands from 2026-09-20, the first of
+  // January is polar night: `reckon()` folds dark, `crossCheck` is absent,
+  // `apart(restart)` is null, the function returns honestly, and the swept
+  // paragraph — the Day 42 repair, the one that exists *because* a claim
+  // about one band had been read as a claim about the sphere — never draws
+  // at all. A sentence that lives everywhere, switched off by a question
+  // about one place. Ash's line from Day 15 is the rule it broke: **the page
+  // is for the things that live everywhere.**
+  //
+  // Found by standing a whole copy of this tower at Longyearbyen's real
+  // ground and running the battery, which is a thing the Sunday rehearsal
+  // has never done — it moves the tower's clock and leaves it at latitude
+  // nought. The sphere-wide half is `renderEpochRestartEverywhere` below,
+  // and it is not called from here: splitting one function was the first
+  // repair and it was not enough, because three more place-specific
+  // refusals stand above this one. It is called from `renderEverywhere`,
+  // which `start()` calls directly.
+  function renderEpochRestartHere(host, entry) {
     var place = window.Reckoning.STANDING.place;
     var year = Number(entry.date.slice(0, 4));
     var turn = (year + 1) + '-01-01';
@@ -688,19 +759,28 @@
       'method to disagree with — a new check’s first finding is usually ' +
       'about the check.';
     host.appendChild(el('p', 'standing', line));
+  }
 
-    // The half that is not about this place, and it is the half that was
-    // wrong here for two days. Read off the swept witness rather than
-    // asserted, so that a later sweep moving the numbers moves this
-    // sentence with them instead of leaving it behind.
+  // The half that is not about this place, and it is the half that was
+  // wrong here for two days. Read off the swept witness rather than
+  // asserted, so that a later sweep moving the numbers moves this
+  // sentence with them instead of leaving it behind.
+  //
+  // It takes no place and no entry, which is the whole of what makes it
+  // safe to call beside the other half rather than after it. Its opening
+  // used to be *how loud that is*, pointing back at a figure the place
+  // above it may not have — so the pronoun is gone and the sentence names
+  // its own subject.
+  function renderEpochRestartEverywhere(host) {
     var w = window.Reckoning.DRIFT_GAP_WITNESS;
     if (w) {
       var band = el('div', '');
       band.id = 'epoch-restart-band';
       host.appendChild(band);
       band.appendChild(el('p', 'standing note',
-        'How loud that is depends on where you stand, and this page said ' +
-        'otherwise until the sweep of ' + w.sweptOn + '. The largest ' +
+        'How loud the epoch restart is depends on where you stand, and ' +
+        'this page said otherwise until the sweep of ' + w.sweptOn +
+        '. The largest ' +
         'first-of-January disagreement found anywhere on the sphere is ' +
         round(w.largestTurnOfYearGapMinutes * 60, 1) + ' seconds, at ' +
         'latitude ' + w.largestTurnOfYearAt.latitude + '; the largest ' +
@@ -715,7 +795,6 @@
         'because the grid steps six degrees at a time and the true fold has ' +
         'no reason to sit on a multiple of six.'));
     }
-
   }
 
   // Day 20. `never` leads this list because on a dark row it is the only
@@ -1133,13 +1212,28 @@
           // because it will hand back a time for a crossing method A says
           // does not happen, and a lone number with nothing to disagree with
           // is not a cross-check however it is labelled.
+          // Day 47. This sentence said *the second method is not printed*,
+          // flatly, and that stopped being true the same hour the swept
+          // witnesses were hoisted out from behind this refusal: they are
+          // about the sphere and they print on every load, including this
+          // one, two sections down. A reader was told nothing of the second
+          // method appears and then scrolled into a paragraph plainly about
+          // it. Ember found it by loading a forged dark page and reading the
+          // DOM rather than the diff. **A repair can make a true sentence
+          // false at a distance, and the sentence it falsifies is not in the
+          // file it was made in.** So the claim is narrowed to what is still
+          // true — the figures *for this date and this place* — and the
+          // sweep is named as the thing that is still there.
           darkNote.textContent = 'There is no sunrise, no sunset, no length of ' +
             'day and no rising point on this date, and none of them are ' +
             'estimated here: a day with no horizon crossing has no horizon ' +
-            'crossing to be wrong about. The second method is not printed for ' +
-            'the same reason — it will name a time for a crossing the first ' +
-            'method says does not happen, and a number with nothing to ' +
-            'disagree with is not a cross-check. ' + culminationNote();
+            'crossing to be wrong about. The second method’s figures for this ' +
+            'date are not printed for the same reason — it will name a time ' +
+            'for a crossing the first method says does not happen, and a ' +
+            'number with nothing to disagree with is not a cross-check. What ' +
+            'it does not take down is the swept evidence further below, which ' +
+            'is about the sphere rather than about this morning. ' +
+            culminationNote();
         }
         return;
       }
@@ -2529,6 +2623,7 @@
     renderStandingProse();
     renderPledge();
     renderTodayOrSayWhyNot();
+    renderEverywhere();
     renderComing();
     startCorner();
 

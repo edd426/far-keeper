@@ -155,7 +155,41 @@ function main() {
   const allOk = insideBracket;
   console.log('');
   console.log(allOk ? 'ALL OK' : 'FAILED');
-  process.exit(allOk ? 0 : 1);
+
+  // ---- The AGREES/DIFFERS contract `banked.js` reads ----
+  //
+  // Day 47. This file is `FOLD_LATITUDE_WITNESS`'s named gatherer now, so
+  // `banked.js` runs it and reads its last AGREES/DIFFERS line rather than
+  // a field — same contract as every other witness's gatherer. What is
+  // asked is the witness's own two claims, put back to the world by
+  // rerunning the sweep, not typed twice: the worst gap this sweep finds,
+  // and whether the turn-of-year edge still lands inside its bracket.
+  const fw = R.FOLD_LATITUDE_WITNESS;
+  const gapMatches = fw && Math.abs(worstGap.gapDeg - fw.largestGapDeg) < 1e-9 &&
+    worstGap.date === fw.largestGapAt.date && worstGap.edge === fw.largestGapAt.edge;
+  const debtMatches = fw && insideBracket === fw.turnOfYearInsideBracket &&
+    Math.abs(janLat - fw.turnOfYearExactLatitudeDeg) < 1e-9;
+
+  console.log('');
+  if (!fw) {
+    console.log('fold-latitude: DIFFERS — reckoning.js exports no FOLD_LATITUDE_WITNESS to check against.');
+    process.exit(1);
+  }
+  if (gapMatches && debtMatches) {
+    console.log('fold-latitude: AGREES — the published witness is what this sweep found.');
+    process.exit(0);
+  }
+  console.log('fold-latitude: DIFFERS — this sweep no longer finds what FOLD_LATITUDE_WITNESS banked.');
+  if (!gapMatches) {
+    console.log('  worst gap now ' + worstGap.gapDeg.toFixed(4) + '° at ' + worstGap.date +
+      ' (' + worstGap.edge + '), witness said ' + fw.largestGapDeg + '° at ' +
+      fw.largestGapAt.date + ' (' + fw.largestGapAt.edge + ').');
+  }
+  if (!debtMatches) {
+    console.log('  turn-of-year fold now ' + janLat.toFixed(4) + '°, inside=' + insideBracket +
+      ', witness said ' + fw.turnOfYearExactLatitudeDeg + '°, inside=' + fw.turnOfYearInsideBracket + '.');
+  }
+  process.exit(1);
 }
 
 if (require.main === module) main();
