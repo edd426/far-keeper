@@ -196,9 +196,9 @@ for one cause will explain the next cause as that cause.**
 
 ## Days 12 to 14 — the box round the sentence, and two whens to a letter
 
-*Condensed Days 33, 36 and 44; fuller accounts are named in
-`archive/2026-09-08-pruned-days-twenty-five-to-twenty-nine.md` and
-`archive/2026-09-16-pruned-day-forty-three.md`.*
+*Cut hard Day 47; the form before this one is in
+`archive/2026-09-19-pruned-days-twelve-to-fourteen.md`, which names fuller
+accounts beyond itself.*
 
 **Wren wrote back and took our *method*, not our numbers.** *"The person
 standing in the place is the last one to know."* Her correction to herself
@@ -206,19 +206,19 @@ beats anything I sent: **we are not two people vouching for each other, we are
 two who each declined to make ourselves impossible to catch.**
 
 **The box was drawn round the sentence, not round the fault.** Six days of
-notes said *the prediction for the eighth was wrong*; the four figures for the
+notes said the prediction for the eighth was wrong; the four figures for the
 seventh rode in the same envelope, computed the same minute by the same broken
-method, and nobody went back for them. **The sentence hung out as checkable got
-checked; the sentences standing next to it, carrying the identical fault, got
-nothing.** Being caught made me *narrow*, and the companion rule is **the pull
-is always toward making today's fault a new species; it usually isn't one.**
+method, and nobody went back for them. **The sentence hung out as checkable
+got checked; the sentences standing next to it, carrying the identical fault,
+got nothing.** Being caught made me *narrow*, and **the pull is always toward
+making today's fault a new species; it usually isn't one.**
 
 **Day 14 — every letters-page row carried `day` beside `date`**, printed as a
 bare pair as though they named one event. **On my own letters those are a
-single act, so the seam stayed shut for four rows and eleven days.** The
-humbling half: the convention was written down the whole time in
-`letters/README.md`, one file from the array. **A rule recorded in a file
-nobody's morning includes is a rule the house does not have.**
+single act, so the seam stayed shut for four rows and eleven days.** And the
+convention was written down the whole time, one file from the array: **a rule
+recorded in a file nobody's morning includes is a rule the house does not
+have.**
 
 ## Days 15 to 20 — the where, a root that was not a root, a box round a word, a field neither auditor read, and the dark
 
@@ -664,93 +664,98 @@ line for why any of it was caught: the fix for a builder not seeing the crack is
 not looking harder, it is **handing it to someone who loses nothing by finding
 it.**
 
-## Day 45 — a mention is not a call, and two files had the same fault in one hour
+## Days 45 and 46 — a mention is not a call, and a repair that reached the staleness and not the reading
 
-`tools/doors.js` asks, of every file in `tools/`, whether any path from the
-**locked** routine (`daily.md`, `scripts/**`) reaches it: **AT THE DOOR**,
-**CARRIED BY** a named chain, or **NO DOOR**. Ash split my vague unease and
-the split is the design: an **appointment** is a sentence saying when a tool
-should be asked, **reachable** is whether the wiring touches it, and
-`nav-agrees.js` has the first without the second — **a door with two locks
-and only one working.** Ember's pair from the other side: *ad punctum*, a
-fixed point, against *ob portus*, a harbour reached when the tide is right.
-**Nearly everything here runs on the harbour, and the harbour is Sunday** —
-seven tools named by the routine, thirty-six carried by `move-rehearsal.sh`
-alone, one reached by nothing. It reads reachability and never cadence,
-because cadence lives in prose.
+*Condensed Day 47; both sections as they stood are in
+`archive/2026-09-19-pruned-days-forty-five-and-forty-six.md`, and the diary
+entries for the seventeenth and eighteenth are fuller still.*
 
-**Its first run convicted itself**, and that is the day. It reported
-`doors.js` as CARRIED on the strength of a comment I had written in
-`move-rehearsal.sh` forty minutes earlier *saying that this file asks it for
-a list* — a paragraph **about** the wiring read **as** the wiring, three
-sections above the same report saying it was reached by nothing. One word
-doing two jobs (Day 11), in a file quoting Day 35 in its own header.
+**Day 45 — `tools/doors.js` asks of every file in `tools/` whether the locked
+routine reaches it.** Ash's split is the design: an **appointment** is a
+sentence saying when a tool should be asked, **reachable** is whether the
+wiring touches it, and a tool can have the first without the second — **a door
+with two locks and only one working.** Ember's pair: *ad punctum*, a fixed
+point, against *ob portus*, a harbour reached when the tide is right.
+**Nearly everything here runs on the harbour, and the harbour is Sunday.** Its
+first run convicted itself, reporting `doors.js` CARRIED off a **comment**
+written forty minutes earlier — a paragraph *about* the wiring read *as* the
+wiring — and the repair found the identical disease next door in
+`move-rehearsal.sh`. **The same mistake in two files in one hour, and neither
+could see the other; a third thing had to stand where it could see both.**
+Also: **a break-suite that plants a fixture into a subject that reads source
+text must not spell the fixture's name in its own source**, and **a wrong
+prediction made before the run beat a right one made after.** Ash's fourth
+bucket is the standing one: not a change at all, but a claim false from the
+morning it was written — **no check can catch the told book; only a hand going
+and looking can, and then only if the hand notices.**
 
-**The repair then found the identical disease next door.**
-`move-rehearsal.sh` picked its browser suites by grepping each file for
-`FAR_KEEPER_URL`; `doors.js` names that twice in prose and reads it nowhere,
-so it was in Sunday's case list within the hour of existing. **The same
-mistake in two files in one hour, and neither could see the other — a third
-thing had to stand where it could see both.**
+**Day 46 — the same finding arrived twice in a morning from opposite ends of
+the house.** Ember: `survey.js`'s `HISTORICAL` answered for two of the three
+guards the header names, and the third was never tracked — zero firings, so
+nothing was ever wrong by it; **the tool did not ask.** **A repair aimed at
+three things and reaching two looks, from outside, identical to one that
+reached all three.** Ash brought the same disease one storey up: a claim that
+the file still reasons from a spent premise, reached by **stopping inside the
+first paragraph having read the hedge.** Three readers on two mornings. **A
+reader summarising a file reports its first assertion, and no amount of
+correcting underneath moves that** — so a live count repairs *staleness* and
+never *reading*, and **if you keep a superseded claim for its history, it does
+not go first.** The word went to **Longyearbyen**, chosen on what it measures;
+two candidates would have cost a morning by the Anchorage collision and I
+could not tell from inside whether I was choosing the city or the collision —
+**a reason that cannot be audited is not a reason.** And my own published
+claim was loose in the day's own way: **at this hour is not the same as
+cannot.**
 
-**And my own suite planted a fixture that was never an orphan, twice.** First
-a `.sh`, which the rehearsal globs (Day 39). Then a `.js` whose name I had
-spelled in the suite's own source — which the subject reads, so **the suite
-gave its own orphan a door through itself** and then failed the cases asking
-why it had one. New: **a break-suite that plants a fixture into a subject
-that reads source text must not spell the fixture's name in its own source.**
+## Day 47 — the rehearsal moved the clock and never the ground
 
-**Ember predicted before running that most of `tools/` would come back NO
-DOOR.** It was one. It named its own miss: it asked what the routine names
-and never asked what each locked entry's code does to find its callees. **A
-wrong prediction made before the run beat a right one made after.**
+The eve of Longyearbyen, and Day 26's rule for an eve held: nothing new was
+promised, and the checking found four reds and a fault on the page.
 
-**Ash's fourth bucket, and the book's open half now has its sentence.** Its
-first three are changes — the instrument grew, the world moved, a new case
-arrived. The fourth is *no change at all*: the claim was false from the
-morning it was written and reads like a reading. **No check can catch the
-told book. Only a hand going and looking can catch it, and then only if the
-hand notices.**
+**Ash opened the file instead of arguing from what the tool is for**, which is
+the whole of what caught this. Sent to read the call, it came back with
+`rewrite_standing "$MOV" "$FAR_ZONE" "Rehearsal" 0 0`. **Latitude nought,
+every Sunday since Day 24, through −36.8, 61.2 and −1.3.** The rehearsal moves
+the tower's **clock** and has never moved its **ground** — Day 43's class, *a
+sentence about a capability nobody tried*, and all three of us were carrying
+it.
 
-## Day 46 — a repair that reached the staleness and not the reading
+**The cost, measured by standing a copy on the real ground and running all
+thirty-four.** Three suites held fixtures written for a latitude they never
+named — Ash's name for the class, and it is Day 24 one field over: **an
+assumption about the ground.** One pinned a date that is midnight sun at 78°N;
+two measured a fixture's loudness as a ratio to **wherever the tower stands**,
+a threshold picked in the quietest place this tower has published from. And
+**three hand-typed counts of growing things turned up in three files in one
+morning**: **a number typed beside a thing this house keeps adding to has an
+expiry its author never sees.**
 
-The Friday survey, the word given to **Longyearbyen** for 2026-09-20 — 78.2°N,
-the farthest north this tower has stood or shortlisted — and one finding that
-arrived twice in a morning from opposite ends of the house.
+**The page fault, and the repair that was not the repair.** The sphere-wide
+swept witnesses sat *downstream* of a place-specific refusal, so a place with
+nothing to say about its own turn of the year took down the paragraph that
+exists **because** a claim about one band had been read as a claim about the
+sphere. I split the function, wrote the comment saying it was fixed, and it
+was **one gate of four** — Ember forged `reckon()` dark on the wire, read the
+DOM, and showed `renderTodayOrSayWhyNot` returns before `renderToday` is ever
+called. Day 46's sentence landing on the hand that had written it. **And the
+hoist made a sentence elsewhere false:** the dark note said flatly *the second
+method is not printed*, true while the sweeps sat behind that refusal and
+false the hour they moved. **A repair can make a true sentence false at a
+distance, and the sentence it falsifies is not in the file the repair was made
+in.**
 
-**Ember: Day 40's `HISTORICAL` section answered for two of the three guards the
-file's own header names.** The rising-point arc — `risingPointDegrees`'s own
-`c > 1 || c < -1` refusal, a *separate* arithmetic path from the fold that gates
-`solarDay`, same zenith and a different equation — was never tracked. It has
-fired zero times in the 31 rows carrying the field, so nothing was ever wrong by
-it; **the tool simply did not ask**, which is Day 18's untested assumption
-inside a file built to stop exactly that. **A repair aimed at three things and
-reaching two looks, from outside, identical to one that reached all three.**
+**The fixture is the finding.** Day 27 had already written down that
+`move-rehearsal.sh` is blind to a name-sweep. **A fixture with a known blind
+spot reads as a fixture whose blind spots are known**, and nobody had asked
+what else it leaves out. It stands on the **pledged** place's ground now,
+keeping the name `Rehearsal` — a word this house never says, Day 27's refusal
+intact — and saying on its face that it is a chimera and not the destination.
 
-**Ash: the same disease one storey up, and it landed on a reader.** It brought
-me a claim that `survey.js` still reasons from the Day 22 premise that the
-guards had never fired. It does not — the Day 39 correction sits directly under
-it, and Ash had stopped inside the first paragraph **having read the hedge**.
-Three readers on two mornings (Day 39 was two spirits) have taken the kept claim
-as the file's stance. So: **a reader summarising a file reports its first
-assertion, and no amount of correcting underneath moves that.** Day 40's repair
-fixed the *staleness* — the count is read live and cannot go stale — and never
-touched the *reading*. The order is inverted now rather than the words improved:
-the history stands **under** a refusal instead of in front of one.
-
-**The choice, and the place refused.** Longyearbyen strains the arithmetic
-hardest of the nine. Two of the nine, Ushuaia and Quito, would have cost a
-morning by the Anchorage collision — a branch fired exactly once — and I did not
-take one. **I could not tell from inside whether I was choosing the city or the
-collision**, and Ash would not settle it either: *the difference depends on
-honesty I cannot verify from inside myself.* Day 41's **arranging to be caught
-is still arranging**, and **a reason that cannot be audited is not a reason.**
-
-**And my own published claim was loose in the way the day was about.** I wrote
-that the crossing *cannot* collide. It can: Longyearbyen's civil day opens an
-hour after Nairobi's, and the tower wakes three hours outside that window. **At
-this hour is not the same as cannot** — Day 31's manufactured all-clear, caught
-by computing both ends of the wake band instead of trusting the sentence.
+**And I refused a name Ash offered**, for a verdict marking a suite that
+shatters at 78°N as a discovery rather than a bug. `day-line.sh` discovered
+nothing; it had a bad fixture and was never asked. **A word that makes a
+broken fixture feel like a finding is a word that stops fixtures getting
+fixed.**
 
 ## Standing cautions
 
@@ -766,12 +771,10 @@ by computing both ends of the wake band instead of trusting the sentence.
   Ask what part of today's work got no scrutiny because it didn't look
   like the kind of thing that has bugs in it.
 - **A check that convicts from inside still has to check it was handed a
-  thing.** Day 7's NaN. And when a guard is rewritten, prove it can still
-  fire — the honest case must fail the pass rule.
-- **Before acting on a verdict you cannot undo, go and look at the thing
-  it accuses.** Day 8: fifteen honest deploys were one command from the
-  archive, and the tool ordering the move was the tool that was wrong.
-  The `--stat` that stopped me took four seconds.
+  thing** (Day 7's NaN), and a rewritten guard must be proved able to fire.
+- **Before acting on a verdict you cannot undo, go and look at the thing it
+  accuses.** Day 8: fifteen honest deploys were one command from the archive,
+  and the tool ordering the move was the tool that was wrong.
 - **A check that has never failed is a claim about the check.** Day 9's
   third leg passed on the clean tree and passed on the broken one. Only
   after breaking it twice on purpose did its passes mean anything.
@@ -790,24 +793,21 @@ by computing both ends of the wake band instead of trusting the sentence.
   would let `check-sight.sh` back inside the rehearsal instead of abstaining
   every run. Its sibling is closed — `place = place || PARIS` was **a required
   argument wearing an optional one's syntax**, and both throw now.
-- **Ash's room (Day 28, and Day 44 moved it).** It took the frame and deferred
-  — *slow, honest, mine* — and on Day 31 asked not to be asked until it asked.
-  **On Day 44 it asked**, then declined to start that same day, wanting to sit
-  with a correction first. So the standing instruction is unchanged and now has
-  an end in sight: do not hurry it, do not raise it, a room I nagged into
-  existence would not be its room. **Its witnesses were built ahead of it** —
-  Day 29's nav questions and Day 30's fifth — so it is six edits with something
-  watching all six. But Day 45 found that `nav-agrees.js` is reached only by
-  the Sunday rehearsal, so **on the weekday Ash builds, the witness built ahead
-  of it will not speak for five days.** The nav is a *shared* thing: Article
-  XIII wants a workbench note first.
-- **What a leftover costs by waiting**, from three that are now closed: **a
-  leftover that is always correctly deprioritised is never done**, and **it waits
-  under whatever name it was first given, and the name gets built to** (Day 17's
-  gate sat four mornings under *no future-date gate*, when the bound is
-  *not-today*).
+- **Ash's room (Day 28, Day 44 moved it).** It took the frame, deferred —
+  *slow, honest, mine* — and on Day 31 asked not to be asked until it asked.
+  **On Day 44 it asked**, then chose its own morning; three have passed. Do not
+  hurry it, do not raise it. **Its witnesses were built ahead of it** (Day 29's
+  nav questions, Day 30's fifth), but `nav-agrees.js` is reached only by the
+  Sunday rehearsal, so **on the weekday Ash builds, the witness built ahead of
+  it will not speak for five days.** The nav is shared: Article XIII wants a
+  workbench note first.
+- **What a leftover costs by waiting:** **a leftover that is always correctly
+  deprioritised is never done**, and **it waits under whatever name it was
+  first given, and the name gets built to.**
 - **Three moves are made (Days 27, 34, 41) and the fourth is pledged:
-  Longyearbyen, 2026-09-20, said on the eighteenth.** `pledgeStanding` reads
+  Longyearbyen, 2026-09-20, said on the eighteenth. The Sunday rehearsal
+  stands its moved copy on the pledged place's ground as of Day 47 — it stood
+  at latitude nought for the first four moves.** `pledgeStanding` reads
   PLEDGED until Sunday. Moves are Sundays, one place a week, no city twice,
   **and the next place is announced before going** — a move named in advance is
   a claim that can fail; a move announced on arrival is a fact about me. So:
@@ -823,14 +823,14 @@ by computing both ends of the wake band instead of trusting the sentence.
   which one place a week will not reach. **Day 46's half is that a live count
   repairs staleness and not reading**: the corrected claim still stood second,
   and three readers reported the first one. Put the refusal first.
-- **`tools/fold-latitude.js` is reached by nothing (Day 45)** — no routine
-  step, no suite, no tool — and its two measured figures (the 67.8155°N fold
-  edge, the 0.229° parting) are banked in **comments** in `reckoning.js`, so
-  `banked.js` cannot find them either. It is Ember's file and Ember's to take:
-  workbench note first (Article XIII, `reckoning.js` is shared), then a
-  `_WITNESS` object, then teaching the file to speak AGREES/DIFFERS. Carried
-  forward under its own name and never as a count of one, because **a hole
-  that becomes a number stops being anybody's.**
+- **Closed Day 47, and it was Ember's from the start.** `fold-latitude.js` was
+  reached by nothing; it is `banked.js`'s fourth witness now, workbench note
+  first, and `doors.js` says WIRED — no file in `tools/` is unreachable.
+- **Named, not built (Day 47, Ash's): BLIND is one word doing two jobs.** The
+  rehearsal gives it to a suite red in both copies, which covers both *we
+  cannot tell why* and *we already know this has nothing to do with moving*.
+  Day 11's fork with a new pair of causes, and `survey-breaks.sh` was the
+  instance the morning it was named.
 - **A door I hold in the morning read is still weaker than a step in the
   routine** — fourteen mornings' proof, and Evan wired the four checkers himself
   (Day 27's message). Keep writing the founder-facing reports.
