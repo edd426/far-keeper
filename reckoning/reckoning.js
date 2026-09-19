@@ -1727,6 +1727,37 @@
     };
   }
 
+  // The witness `tools/fold-latitude.js` owed `banked.js`, Day 47. The
+  // comment above already carried the two figures in prose; this is the
+  // same measurement given an object and a name ending `_WITNESS`, so
+  // `banked.js`'s discovery-by-suffix can find it and `askGatherer` can
+  // put it back to the world by running the file rather than reading a
+  // field. Numbers here are the sweep's own output, not re-typed guesses
+  // at it — see `tools/fold-latitude.js`'s run for how they were taken.
+  var FOLD_LATITUDE_WITNESS = {
+    gathered: '2026-09-19',
+    tool: 'tools/fold-latitude.js',
+    question:
+      'foldLatitudeDegrees() takes one declination at 00:00 UTC; solarDay\'s own ' +
+      '`never` fold is settled per event by converge(), which can land hours away ' +
+      'from UTC midnight at an extreme latitude. Do the closed form and the settled ' +
+      'fold still agree closely enough near a solstice, and does the closed form\'s ' +
+      'own reach (the turn-of-year edge DRIFT_GAP_WITNESS bracketed but never solved) ' +
+      'still land inside that bracket?',
+    domain: 'every 5th day of 2026, both edges (polar night and polar day)',
+    samples: 73,
+    largestGapDeg: -0.39475909041981083,
+    largestGapAt: {
+      date: '2026-03-22', edge: 'day',
+      predictedDeg: 88.61767390299796, measuredDeg: 88.22291481257815
+    },
+    // The turn-of-year debt this file was actually built to close: the
+    // exact Jan-1 fold against DRIFT_GAP_WITNESS's own 66°..72° bracket.
+    turnOfYearExactLatitudeDeg: 67.81545780172038,
+    turnOfYearBracket: [66, 72],
+    turnOfYearInsideBracket: true
+  };
+
   // The declination alone, at 00:00 UTC of the given date, for a caller
   // that wants the hour-angle equation's one date-dependent input without
   // going through a place. Latitude does not enter `noaa()`'s declination
@@ -2542,6 +2573,7 @@
     nextSeasonCrossing: nextSeasonCrossing,
     steepestLoss: steepestLoss,
     foldLatitudeDegrees: foldLatitudeDegrees,
+    FOLD_LATITUDE_WITNESS: FOLD_LATITUDE_WITNESS,
     declinationDegrees: declinationDegrees,
     julianDay: julianDay,
     shiftDate: shiftDate,

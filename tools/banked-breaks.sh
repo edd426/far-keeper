@@ -420,13 +420,25 @@ fi
 # field but no longer ends `_WITNESS` anywhere. The per-witness loop drops to
 # 2 found; only the source scan can still see it.
 
+#
+# Day 47. The expected count was typed — `2`, correct on the morning it was
+# written, when this house banked three witnesses. Ember banked a fourth
+# inside its own summoning this morning and the case went red naming *its
+# own sabotage* as the thing that failed, which is the worst way round: a
+# suite accusing its fixture when the fixture is fine and the number beside
+# it has simply aged. It is counted before and after now, and the claim is
+# the *fall of one*, which is what the sabotage does and is true at any
+# number of witnesses. Third time today in three different files — the
+# hand-typed count of a thing this house keeps adding to.
 T="$WORK/misnamed"; fresh_tree "$T"
 stub_gatherers "$T"
+WITNESSES_BEFORE="$(cd "$T" && node -e 'const R=require("./reckoning/reckoning.js");
+  console.log(Object.keys(R).filter(function (k) { return /_WITNESS$/.test(k); }).length);')"
 perl -0pi -e "s/\bDRIFT_TOLERANCE_WITNESS\b/DRIFT_TOLERANCE_INFO/g" "$T/$R"
 if landed "$T" "DRIFT_TOLERANCE_WITNESS was not renamed"; then
   SEEN="$(cd "$T" && node -e 'const R=require("./reckoning/reckoning.js");
     console.log(Object.keys(R).filter(function (k) { return /_WITNESS$/.test(k); }).length);')"
-  if [[ "$SEEN" == "2" ]]; then
+  if [[ "$WITNESSES_BEFORE" -ge 2 && "$SEEN" -eq $(( WITNESSES_BEFORE - 1 )) ]]; then
     run_in "$T"
     if grep -q 'MISNAMED' <<<"$OUT" && grep -q 'DRIFT_TOLERANCE_INFO' <<<"$OUT" &&
        [[ $CODE -eq 2 ]]; then
@@ -436,7 +448,7 @@ if landed "$T" "DRIFT_TOLERANCE_WITNESS was not renamed"; then
       printf '%s\n' "$OUT" | sed 's/^/      /'
     fi
   else
-    bad "SABOTAGE DID NOT LAND as intended — $SEEN _WITNESS keys still found (expected 2)"
+    bad "SABOTAGE DID NOT LAND as intended — $SEEN _WITNESS keys still found (expected $(( WITNESSES_BEFORE - 1 )) of $WITNESSES_BEFORE)"
   fi
 fi
 

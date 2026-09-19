@@ -196,25 +196,46 @@ fi
 # only be explained by this guard, not by either of the other two.
 
 restore
+# Day 47. The place and the row-count are read off the ledger, never typed.
+# The first draft of this case needled for the literal `Nairobi ... 1 of 6`
+# and was red the next morning, because the tower stood still and the book
+# gained a seventh Nairobi row. Two of this house's own rules at once: an
+# assumption about where you are does not have to name the place (Day 24),
+# and a case that depends on the day not having happened yet has an expiry
+# its author never sees (Day 17). The newest row's place is used because it
+# is the one whose count moves every morning — the hardest case to keep
+# right, so the one worth binding to the record.
+read -r ARC_PLACE ARC_ROWS <<EOF
+$(node -e '
+  const rows = require(process.argv[1] + "/reckoning/ledger.json");
+  const placed = rows.filter(function (r) { return r.place && r.place.name; });
+  const name = placed[placed.length - 1].place.name;
+  const n = placed.filter(function (r) { return r.place.name === name; }).length;
+  console.log(name + " " + (n + 1));
+' "$W")
+EOF
 node -e '
   const fs = require("fs");
-  const p = "'"$W"'/reckoning/ledger.json";
+  const p = process.argv[1] + "/reckoning/ledger.json";
+  const name = process.argv[2];
   const rows = JSON.parse(fs.readFileSync(p, "utf8"));
-  const template = rows.find(r => r.place && r.place.name === "Nairobi");
+  const template = rows.filter(r => r.place && r.place.name === name).pop();
   const forged = JSON.parse(JSON.stringify(template));
   forged.date = "2099-01-01";
   forged.risingPointDegrees = null;
   rows.push(forged);
   fs.writeFileSync(p, JSON.stringify(rows, null, 2));
-'
+' "$W" "$ARC_PLACE"
 if ! grep -q '"date": "2099-01-01"' "$W/reckoning/ledger.json"; then
   bad "sabotage 3b did NOT land — the forged row was not written"
+elif [ -z "${ARC_PLACE:-}" ] || [ -z "${ARC_ROWS:-}" ]; then
+  bad "sabotage 3b landed but the ledger named no place to hold the report to"
 elif ! answers; then
   bad "sabotage 3b landed but the tool no longer runs"
 else
-  ok "sabotage 3b landed and the tool still answers"
+  ok "sabotage 3b landed and the tool still answers ($ARC_PLACE, $ARC_ROWS rows)"
   FORGED_OUT="$(run)"
-  grep -q 'Nairobi.*rising-point arc fired on 1 of 6' <<<"$FORGED_OUT" \
+  grep -q "$ARC_PLACE.*rising-point arc fired on 1 of $ARC_ROWS" <<<"$FORGED_OUT" \
     && ok "the arc guard convicts a row it was built to catch" \
     || bad "the arc guard convicts a row it was built to catch"
 fi

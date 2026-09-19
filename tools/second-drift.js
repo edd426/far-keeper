@@ -78,6 +78,13 @@ const check = (cond, m) => (cond ? ok(m) : bad(m));
 // all and the page must say so rather than print a blank.
 const QUITO = { name: 'Quito', latitude: -0.1807, longitude: -78.4678, zone: 'America/Guayaquil' };
 const TROMSO = { name: 'Tromso', latitude: 69.6492, longitude: 18.9553, zone: 'Europe/Oslo' };
+// Day 47. A second lit place, so the *moves with the place* lock can be read
+// between two forgeries rather than between a forgery and wherever the tower
+// happens to be standing. It was read against the standing place until this
+// morning, and that made the case a claim about a latitude nothing in it
+// named: at Longyearbyen the first of January is polar night, there is no
+// figure here at all, and the case went red about a page that was right.
+const PARIS = { name: 'Paris', latitude: 48.8566, longitude: 2.3522, zone: 'Europe/Paris' };
 
 const STANDING_NEEDLE = /(var STANDING = \{\s*place:\s*)([\s\S]*?)(,\s*\n\s*since:)/;
 
@@ -95,6 +102,17 @@ async function readFigures(page, selector) {
 // Every paragraph the new section mounted, as one string.
 async function readSection(page) {
   return (await page.textContent('#second-drift')) || '';
+}
+
+// Day 47. The sphere-wide half of this section has its own box now, because
+// four place-specific refusals stand above `#second-drift` and each of them
+// used to take the swept witnesses down with it. A case about a sentence
+// that is true everywhere reads it here; a case about this place reads
+// `#second-drift`. Keeping one reader for both boxes would put a
+// place-independent sentence back inside a place-dependent domain, which is
+// the fault of the morning wearing a helper's clothes.
+async function readEverywhere(page) {
+  return (await page.textContent('#second-everywhere')) || '';
 }
 
 (async () => {
@@ -175,11 +193,24 @@ async function readSection(page) {
   // The page says so before it happens. Day 33's lock: the figure must move
   // when the place moves, or it is a typed constant wearing a computation's
   // face.
+  //
+  // Day 47. What the *standing* place is owed here is one of two sentences,
+  // and which one depends on its latitude: a figure if the second method has
+  // a drift for the turn, and a plain refusal if it has not. Requiring the
+  // figure made this a claim about a latitude the case never named — Day 24's
+  // rule, one field over from a city — and it went red at Longyearbyen about
+  // a page that was right. So the fork is asserted, and the branch is named
+  // on the tick so a reader knows which one answered.
   const seamHere = liveText.match(/differ about the drift by ([\d.]+) seconds/);
-  check(seamHere !== null,
-    `the turn of the year is forecast with a figure (${seamHere ? seamHere[1] + ' s' : 'no figure'})`);
-  check(/almanac/.test(liveText) && /first of January/.test(liveText),
-    'and it says which mechanism it is, rather than only that it is loud');
+  const refusedHere = /nothing to forecast about the turn of the year/.test(liveText) ||
+    /no drift for/.test(liveText);
+  check(seamHere !== null || refusedHere,
+    `the turn of the year is either forecast or refused here, never blank (${
+      seamHere ? seamHere[1] + ' s' : refusedHere ? 'refused — no drift at the turn here' : 'blank'})`);
+  if (seamHere) {
+    check(/almanac/.test(liveText) && /first of January/.test(liveText),
+      'and it says which mechanism it is, rather than only that it is loud');
+  }
 
   const quito = await browser.newPage();
   let quitoLanded = false;
@@ -197,11 +228,34 @@ async function readSection(page) {
   const quitoText = await readSection(quito);
   const seamThere = quitoText.match(/differ about the drift by ([\d.]+) seconds/);
   check(seamThere !== null, 'a tower at Quito also forecasts the turn of the year');
-  if (seamHere && seamThere) {
-    check(seamHere[1] !== seamThere[1],
-      `and the figure is computed, not typed — it moves with the place (${seamHere[1]} s vs ${seamThere[1]} s)`);
-  }
+  check(/almanac/.test(quitoText) && /first of January/.test(quitoText),
+    'and it says which mechanism it is, rather than only that it is loud');
   await quito.close();
+
+  // The lock itself, between two forgeries. Day 33: the figure must move when
+  // the place moves, or it is a typed constant wearing a computation's face.
+  // Both ends are forged now, so the case cannot be made vacuous — or red —
+  // by wherever this tower is standing on the morning it runs.
+  const paris = await browser.newPage();
+  let parisLanded = false;
+  await paris.route('**/reckoning.js*', async (route) => {
+    const response = await route.fetch();
+    const before = await response.text();
+    const body = before.replace(STANDING_NEEDLE, (m, head, _old, tail) =>
+      head + JSON.stringify(PARIS) + tail);
+    parisLanded = body !== before;
+    await route.fulfill({ response, body });
+  });
+  await paris.goto(`${URL}reckoning/`, { waitUntil: 'networkidle' });
+  check(parisLanded, 'the forgery landed: the instrument on the wire stands at Paris');
+  const parisText = await readSection(paris);
+  const seamParis = parisText.match(/differ about the drift by ([\d.]+) seconds/);
+  check(seamParis !== null, 'the fixture was built: a tower at Paris forecasts the turn too');
+  if (seamParis && seamThere) {
+    check(seamParis[1] !== seamThere[1],
+      `and the figure is computed, not typed — it moves with the place (Paris ${seamParis[1]} s vs Quito ${seamThere[1]} s)`);
+  }
+  await paris.close();
 
   // ---- 5. A row the second method has no drift for says so ----
   //
@@ -238,7 +292,108 @@ async function readSection(page) {
   check(darkText.trim().length > 0 &&
         !/NaN/.test(darkText) && !/undefined/.test(darkText),
     'and the dark branch prints no NaN and no undefined');
+
+  // Day 47, and this is the case the day was about. The swept band — the
+  // pole-to-pole figures out of `DRIFT_GAP_WITNESS` — is not a claim about
+  // the standing place. It is the Day 42 repair, and it exists *because* a
+  // claim about one band had been read as a claim about the sphere. Until
+  // this morning it was rendered at the foot of the place-specific function,
+  // downstream of that function's two lawful refusals, so a dark place took
+  // the sphere-wide paragraph down with its own. The two are separate
+  // renders now and this holds them apart: the refusal above must be on the
+  // page **and** the band with it.
+  const darkBand = await dark.$('#epoch-restart-band');
+  const darkBandText = darkBand ? (await darkBand.textContent() || '').trim() : '';
+  check(/nothing to forecast about the turn of the year/.test(darkText) ||
+        /no drift for/.test(darkText),
+    'setup: the dark place really is refusing to forecast its own turn');
+  check(darkBandText.length > 0,
+    `and the sweep that is about the sphere is drawn anyway (${darkBandText.length} characters)`);
+  check(darkBandText.length > 0 && /anywhere on the sphere/.test(darkBandText),
+    'and it is the sweep, not some other paragraph wearing its box');
   await dark.close();
+
+  // ---- 5b. A morning with no horizon crossing at all ----
+  //
+  // Day 47, Ember's finding, and it is the one the whole morning turned on.
+  // Splitting `renderEpochRestart` in two was the first repair and it was
+  // not enough: `renderTodayOrSayWhyNot` returns on `entry.never` before
+  // `renderToday` is ever called, so on a dark morning **nothing** in the
+  // second-method chain draws — and the swept witnesses, which are about
+  // the sphere and not about the place, went down with it. Three more
+  // refusals stand in that chain besides. So the sphere-wide box is mounted
+  // from `start()` now and this is the case that holds it there.
+  //
+  // The fixture is a place that is genuinely dark today rather than a date
+  // forged onto one — a latitude chosen so that the *tool* decides it is
+  // dark, not the test. Its domain is asserted before its branch is read:
+  // a place-specific box that is empty because the page drew nothing at all
+  // would pass a sweep looking for emptiness, which is this house's oldest
+  // way of being wrong.
+  const POLE = { name: 'Northpole', latitude: 89.5, longitude: 0, zone: 'UTC' };
+  const pole = await browser.newPage();
+  let poleLanded = false;
+  await pole.route('**/reckoning.js*', async (route) => {
+    const response = await route.fetch();
+    const before = await response.text();
+    const body = before.replace(STANDING_NEEDLE, (m, head, _old, tail) =>
+      head + JSON.stringify(POLE) + tail);
+    poleLanded = body !== before;
+    await route.fulfill({ response, body });
+  });
+  await pole.goto(`${URL}reckoning/`, { waitUntil: 'networkidle' });
+  check(poleLanded, 'the forgery landed: the instrument on the wire stands at latitude 89.5');
+
+  const poleDark = await pole.evaluate(() => {
+    const R = window.Reckoning;
+    try {
+      return !!R.reckon(R.todayAt(R.STANDING.place.zone), R.STANDING.place).never;
+    } catch (e) { return false; }
+  });
+  check(poleDark,
+    'the fixture is the case it is named for: the tower folds dark there this morning');
+  const poleRoom = ((await pole.textContent('#today-loading')) || '').trim();
+  check(poleRoom.length > 0,
+    `and the room still says so in words (${poleRoom.length} characters)`);
+  // The dark note is its own element, not the loading line. Reading the
+  // wrong one made the first draft of the two checks below pass over a
+  // string that was never in the box they were pointed at — a case whose
+  // domain was not what its name said, which is the fault this house has
+  // now caught in its own suites more times than in its pages.
+  const poleNote = ((await pole.textContent('#today-dark-note')) || '').trim();
+  check(poleNote.length > 0,
+    `setup: the dark note itself drew (${poleNote.length} characters)`);
+  const poleHere = (await readSection(pole)).trim();
+  const poleEverywhere = (await readEverywhere(pole)).trim();
+  check(poleHere.length === 0,
+    `the place's own second-method box is lawfully empty on a dark morning (${poleHere.length} characters)`);
+  check(poleEverywhere.length > 0,
+    `and the swept witnesses, which are about the sphere, are drawn anyway (${poleEverywhere.length} characters)`);
+  check(poleEverywhere.length > 0 && /anywhere on the sphere/.test(poleEverywhere),
+    'and it is the sweep itself, not some other paragraph wearing its box');
+  check(poleEverywhere.length > 0 &&
+        !/NaN/.test(poleEverywhere) && !/undefined/.test(poleEverywhere),
+    'and nothing in it went NaN or undefined where the place has no figures');
+
+  // Day 47, second half, and Ember found it by loading the forged dark page
+  // rather than reading the diff. The hoist made a sentence elsewhere false:
+  // the dark note said flatly *the second method is not printed*, which was
+  // true while the sweeps sat behind this place's refusal and stopped being
+  // true the hour they were moved out from behind it. A reader was told
+  // nothing of the second method appears and then scrolled into a paragraph
+  // plainly about it. There was no case anywhere on that sentence's wording,
+  // which is why it had room to go stale — the same shape as the fault the
+  // hoist was repairing, one file along. Both halves are checked: the note
+  // must not make the flat claim, and the empty local box must be named
+  // where the reader meets it.
+  check(poleNote.length > 0 && !/The second method is not printed/.test(poleNote),
+    'the dark note does not claim the second method is absent when the sweeps are on the page');
+  check(poleNote.length > 0 && /second method’s figures for this date/.test(poleNote),
+    'and it narrows the claim to the figures for this date');
+  check(poleEverywhere.length > 0 &&
+        /no second-method figures for/.test(poleEverywhere),
+    'and the empty local box is named where a reader meets it, not left as a gap');
+  await pole.close();
 
   // ---- 6. Ember's caution, as a check rather than an intention ----
   //
@@ -264,8 +419,17 @@ async function readSection(page) {
   // witness to this question) and the mood is gone. The case asks for the
   // refusal alone; the measurement is `tools/drift-witness.js`'s question,
   // one tool per kind of question.
-  check(/lending its authority to a row it never checked/.test(liveText),
+  const everywhereText = await readEverywhere(live);
+  check(everywhereText.trim().length > 0,
+    `setup: the sphere-wide box drew beside the place's own (${everywhereText.trim().length} characters)`);
+  check(/lending its authority to a row it never checked/.test(everywhereText),
     'and refuses to borrow the sixty-minute sweep, which never asked this question');
+  // And the figure in that refusal is read off the witness rather than typed
+  // beside it — Ember found it hand-written while tracing the four gates.
+  check(/\d/.test(everywhereText) &&
+        everywhereText.includes(String(await live.evaluate(
+          () => window.Reckoning.CROSS_CHECK_WITNESS.samples.toLocaleString()))),
+    'and the sweep is sized off CROSS_CHECK_WITNESS, not from a number typed beside it');
 
   await live.close();
   await browser.close();
