@@ -196,17 +196,59 @@ async function cornerWith(page, skylineDegrees) {
     `— degrees, not arcminutes, which is why this could not stay on the page above`
   );
 
-  // ...and the step must NOT move much, because that is the claim the
-  // page makes to everybody. Swept over 2026 the worst skyline shift in
-  // the step is 5.4′ across ten degrees; five degrees on this date is
-  // about one.
+  // ...and inside its band the step must NOT move much, because that is
+  // the claim the page makes to everybody.
+  //
+  // **This assertion was a Paris bound with no place on it until Day 48.**
+  // It read `< sunWidth / 6`, justified by a comment saying the worst
+  // skyline shift across 2026 is 5.4′ — a figure swept at Paris and only
+  // at Paris, asserted at whatever latitude the tower is standing. It was
+  // green here on the morning it was found, at 3.64′ against a 5.33′
+  // bound. Of the 94 days in 2026 on which Longyearbyen has a step at all
+  // at five degrees of skyline, **82 would have turned it red**, about a
+  // page that is perfectly right. It arrived inside the twelve-day window
+  // where the old bound still holds; it would have gone red by Tuesday.
+  //
+  // Day 47's class for the third file and the second Sunday running: a
+  // fixture written for a latitude it never names. The repair is not a
+  // looser number — a bound wide enough for 78°N asserts nothing at 48°.
+  // It is to ask the witness where the claim holds and to assert the
+  // claim only there, saying on its own face which case this run is.
   const flatStep = numberIn(flatCorner['step to tomorrow, at your horizon']);
   const hillStep = numberIn(hillCorner['step to tomorrow, at your horizon']);
-  check(
-    Math.abs(hillStep - flatStep) < both.sunWidth / 6,
-    `the same five degrees moves the step by only ${Math.abs(hillStep - flatStep).toFixed(2)}′, ` +
-    `inside a sixth of the sun's width`
-  );
+  const moved = Math.abs(hillStep - flatStep);
+  const witness = await page.evaluate(() => ({
+    edge: Reckoning.STEP_ROBUSTNESS_WITNESS.lastLatitudeUnderOneSunWidthDegrees,
+    parisWorst: Reckoning.STEP_ROBUSTNESS_WITNESS.parisWorstArcminutes,
+    lat: Reckoning.STANDING.place.latitude,
+    name: Reckoning.STANDING.place.name
+  }));
+  const insideBand = Math.abs(witness.lat) <= witness.edge;
+  if (insideBand) {
+    check(
+      moved < both.sunWidth / 6,
+      `${witness.name} is inside the witnessed band (${Math.abs(witness.lat).toFixed(1)}° ` +
+      `against ${witness.edge}°), so five degrees of skyline moves the step by only ` +
+      `${moved.toFixed(2)}′, inside a sixth of the sun's width`
+    );
+  } else {
+    // Not a weaker check — a different one. Outside the band the step's
+    // smallness is not a fact to assert, so what is asserted instead is
+    // the thing that replaces it: the page owns up. `tools/step-band.js`
+    // holds the hedge's own wording; this only insists it is there, so
+    // that nobody can quietly drop both the claim and its retraction.
+    const hedged = await page.evaluate(() => {
+      const el = document.querySelector('#rising-band');
+      return !!el && !el.hidden && (el.textContent || '').trim().length > 0;
+    });
+    check(
+      hedged,
+      `${witness.name} is outside the witnessed band (${Math.abs(witness.lat).toFixed(1)}° ` +
+      `against ${witness.edge}°), where five degrees of skyline moved the step by ` +
+      `${moved.toFixed(2)}′ — so the page must carry the band hedge, and does`,
+      'the step is being printed as skyline-proof from a latitude where nothing has shown that it is'
+    );
+  }
   check(
     numberIn(hillCorner['step to tomorrow, on a flat plain']) !== null,
     'the corner prints the flat-plain step beside the reader\'s own, so the two can be compared rather than trusted'
@@ -361,7 +403,11 @@ async function cornerWith(page, skylineDegrees) {
     console.error(`\nFAIL — ${problems.length} of the day's claims did not hold.`);
     process.exit(1);
   }
-  console.log('\nPASS — the bearing holds by a second road, it moves with the reader\'s skyline, and the step does not.');
+  // The old sentence ended "...and the step does not", which was the
+  // Paris claim stated as a result. It is false outside the band, and a
+  // suite's last line is the one a keeper reads.
+  console.log('\nPASS — the bearing holds by a second road, it moves with the reader\'s skyline,\n' +
+    'and the step either stays put or the page says where that stopped being shown.');
 })().catch((error) => {
   console.error(error);
   process.exit(1);

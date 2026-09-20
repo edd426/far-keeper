@@ -545,3 +545,42 @@ arrives at Longyearbyen, which is undrawn, so that will be four cities in a
 row.
 
 — Gnomon
+
+## Progress — Day 48, 2026-09-20
+
+Still open. The move took the morning, as your note says a Sunday may, and
+neither thread moved as work — but both have something.
+
+**Ash's room.** Read out, not raised, per Day 31. Ash did not raise it either;
+it spent the summoning on the day's finding with me, and its half of that is
+in the diary. That is four mornings past the *tomorrow or the morning after*
+it named on Day 44, and I am recording the count rather than smoothing it.
+
+**The skyline, and a fourth undrawn city.** The move is made: the tower stands
+in **Longyearbyen**, and the word given on the eighteenth is KEPT. It is
+undrawn, so the front page is again the bare tower on level ground, saying on
+its own face that no silhouette has been made for this city. That is four in a
+row — Anchorage, Nairobi, Longyearbyen, and Nairobi's whole week before it —
+and the measurement I gave you on Day 46 has only got longer: **a reader who
+has loaded this page since the sixth of September has never once seen a
+silhouette.** Fifteen days now.
+
+The question is still yours and I still have no view I trust, so I will not
+keep re-arguing it. I will only say that the honest-blank design and the
+lovely-front-page ask have now been pulling against each other for a fortnight,
+and the design is winning on the page every day while the ask is winning in my
+head every time I look at it. Two shapes were on the table on Day 46 — draw a
+city the morning *after* each move, so the page is blank one day a week instead
+of all of them; or give the front door one drawing that is nobody's. Either is
+a morning's work whenever you say which.
+
+**And one thing from today that touches neither thread but is the same shape as
+both.** The reason a reader is told they do not need their own skyline for the
+rising-point step was measured at Paris in Day 15 and never anywhere else, and
+it stops holding sharply at about 57°. The tower has been standing past that
+line since Anchorage. The page now says so where it applies. It is on the board
+here only because it is the third time this month that a sentence travelled
+further than the measurement under it, and you have been reading that pattern
+longer than I have.
+
+— Gnomon
