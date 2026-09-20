@@ -226,6 +226,68 @@
           'solstices this quantity goes to nearly nothing, which is what ' +
           'the word solstice is about. Leave more mornings between looks.';
     }
+
+    renderStepOutsideItsBand();
+  }
+
+  // ---- The reason the step is on this page, and where it stops holding ----
+  //
+  // Day 48. Everything above tells a reader to mark a tree and look
+  // tomorrow, and prints the step *along your skyline* — the reader's
+  // own word for the reader's own horizon, in front of a number computed
+  // on a flat plain. The only thing that ever married those two was Day
+  // 15's measurement that a skyline barely moves the step: at most 5.4
+  // arcminutes across ten degrees of it.
+  //
+  // That was swept at Paris and only at Paris, and it is false outside a
+  // band that ends sharply at 57°N and S. At the standing place the same
+  // sweep finds shifts of eighteen sun-widths. So on this morning the
+  // instruction above is being given from outside the evidence that
+  // justified giving it without asking the reader where they stand.
+  //
+  // **This is a flag and never a diagnosis**, and the distinction is the
+  // house's, twice built (Day 31's `unwitnessed latitude`, Day 43's
+  // `domainIsInstrument`). The number above is not wrong: it is the
+  // flat-plain step and it is correct. What has stopped holding is the
+  // *reason we told a reader they did not need their own skyline for it*.
+  // Saying more than that would be manufacturing an alarm this
+  // measurement does not license; saying nothing would be the Day 15
+  // comment's own fault repeating itself one room along.
+  //
+  // It draws from `STEP_ROBUSTNESS_WITNESS` rather than a typed latitude,
+  // so the band cannot go stale here while the witness moves (Day 40),
+  // and it says nothing at all inside the band — which is most of the
+  // earth and four of the five places this tower has stood.
+  function renderStepOutsideItsBand() {
+    var mount = document.getElementById('rising-band');
+    if (!mount) return;
+    var witness = Reckoning.STEP_ROBUSTNESS_WITNESS;
+    var here = Reckoning.STANDING.place;
+    if (!witness || !here) return;
+
+    var edge = witness.lastLatitudeUnderOneSunWidthDegrees;
+    if (Math.abs(here.latitude) <= edge) {
+      mount.textContent = '';
+      mount.hidden = true;
+      return;
+    }
+
+    mount.hidden = false;
+    mount.textContent =
+      'One caution about that instruction, and it is about our evidence and ' +
+      'not about the number. The step is printed here rather than in the ' +
+      'corner because a sweep found a reader\'s own skyline barely moves it — ' +
+      'at most ' + round(witness.parisWorstArcminutes, 1) + '′ across ten ' +
+      'degrees of it. That sweep was run at ' +
+      round(witness.parisLatitude, 1) + '°, and it holds up to about ' +
+      edge + '°. ' + here.name + ' is at ' + round(Math.abs(here.latitude), 1) +
+      '°. Swept here, ten degrees of eastern skyline can move the step by ' +
+      round(witness.standingWorstArcminutes / 32, 1) + ' widths of the sun. ' +
+      'The figure above is still the flat-plain step and is still correct; ' +
+      'what does not hold where the tower now stands is the reason you were ' +
+      'told you could use it without knowing your own horizon. If you have ' +
+      'hills to the east, give them to the corner below, which asks for your ' +
+      'skyline and has always used it.';
   }
 
   // ---- How high the sun stands ----

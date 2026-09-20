@@ -788,9 +788,27 @@
   // arranging** — and a reason that cannot be audited is not a reason. So the
   // city was taken on what it measures, which is a claim anyone can check
   // against Friday's committed run.
+  // **Day 48. The move is made: the tower stands at Longyearbyen.** The
+  // pledge above is not cleared — Day 25's rule, and the reason is that
+  // clearing it on arrival kills KEPT, which is the one branch that ever
+  // vouches rather than accuses. `pledgeStanding` reads KEPT from the
+  // moment this value flipped, on the gate `since >= announced`.
+  //
+  // Both halves of what was said on Friday held, checked rather than
+  // assumed. The crossing cost nothing: at 02:03 and at 02:40 UTC on the
+  // twentieth, Nairobi and Longyearbyen name the same date, so no morning
+  // was handed a day the book already held. And the fold did not fire —
+  // the twentieth is an ordinary lit row here, sunrise and sunset both
+  // published, `never` unset.
+  //
+  // What the arrival disclosed is one storey along and is the day's work:
+  // the rising-point **step** is 116 arcminutes here, 3.63 sun-widths, and
+  // the comment two hundred lines below that says the step barely moves
+  // with a reader's skyline was swept at Paris and only at Paris. See
+  // `STEP_ROBUSTNESS_WITNESS`.
   var STANDING = {
-    place: NAIROBI,
-    since: '2026-09-13',
+    place: LONGYEARBYEN,
+    since: '2026-09-20',
     pledge: {
       place: LONGYEARBYEN,
       on: '2026-09-20',
@@ -1306,6 +1324,98 @@
     // Lit days on which method B returned nothing at all. Not a gap of zero.
     silentSamples: 20,
     tool: 'tools/cross-check-sweep.js'
+  };
+
+  // The rising-point step's horizon-robustness, gathered Day 48 — the
+  // first morning this tower stood at a latitude where the number moves.
+  //
+  // **What this witness is a witness to, and it is not the step.** The
+  // step's own size is published every morning and needs no witness. This
+  // is the *sensitivity* of the step to the reader's own skyline, and it
+  // is load-bearing in a way the size is not: it is the entire argument
+  // for printing the step on the page rather than in the corner. The
+  // bearing is kept in the corner because it is horizon-hung. The step was
+  // put on the page, big, labelled *along your skyline*, with a reader
+  // told to go and mark a tree — on the strength of one sentence saying
+  // the skyline barely moves it.
+  //
+  // That sentence was gathered at Paris in Day 15 and never anywhere else,
+  // and it travelled to Auckland, Anchorage, Nairobi and here without
+  // being asked. It reproduces exactly inside its own band: 5.391′ on
+  // 2026-01-22 at 48.9°N, which is the only reason to believe the widened
+  // half (Day 31). Outside that band it is not close. At the standing
+  // place it is **eighty times larger in the same units**, and a
+  // sensitivity of 18.8 sun-widths is bigger than the step itself has ever
+  // been anywhere this tower has published from.
+  //
+  // **The edge is sharp, not gradual**, which is why no hedge about "high
+  // latitudes" would have done: under one sun's width all the way to 56°,
+  // and past it by 57°. What happens there is that the year's shortest
+  // days begin brushing the fold, so a small skyline change swings the
+  // step wildly on those days and on no others.
+  //
+  // **Two domains, and the fork is the second finding.** Sweeping skyline
+  // at a high latitude walks some days into the fold, and a sweep must say
+  // what it does with them. WHOLE-BAND drops such a date entirely;
+  // ANY-STEP keeps every skyline on which a step exists. The figures here
+  // are ANY-STEP, the conservative reading, because a reader in a valley
+  // who can see the sun is owed a true number. **At Paris the two domains
+  // return the same figure to every digit** — no day there folds anywhere
+  // across the band — so the choice was invisible at the only latitude it
+  // was ever made at, and the gap only opens where the answer matters:
+  // 432.78′ against 602.81′ here, 148.52′ against 280.74′ at Anchorage.
+  //
+  // No verdict and no bound is attached to any of this. What it licenses
+  // is the hedge `renderRisingPoint` now prints when the standing place is
+  // outside the witnessed band — the page saying that the reason it told
+  // you a skyline was not needed does not hold where the tower stands.
+  // Ember's shape, and it is the middle this house has built twice before
+  // (`unwitnessed latitude`, Day 31; `domainIsInstrument`, Day 43).
+  var STEP_ROBUSTNESS_WITNESS = {
+    gathered: '2026-09-20',
+    tool: 'tools/step-robustness-sweep.js',
+    question:
+      'the rising-point step is printed on the page rather than in the corner because a ' +
+      'reader is said not to need their own skyline for it — at most 5.4′ of shift across ' +
+      'nought to ten degrees of it. Is that a fact about the sphere, or a fact about the one ' +
+      'latitude it was ever swept at? And over which days: every date, or only dates whose ' +
+      'whole skyline band stays lit?',
+    domain:
+      'every day of 2026; skyline nought to ten degrees at a 0.25° mesh; the five places ' +
+      'this tower has stood (Nairobi, Auckland, Paris, Anchorage, Longyearbyen) and a latitude ' +
+      'grid at 45, 50, 52, 54, 55, 56, 57, 58 and 60°. ANY-STEP domain: every (date, skyline) ' +
+      'pair on which a rising point exists. A scope says what was swept, never what was asked.',
+    skylineDegreesSwept: [0, 10],
+    skylineMeshDegrees: 0.25,
+    // The reproduction inside the old band. If this stops holding, the
+    // sweep is measuring something else and the disagreement is ours.
+    parisWorstArcminutes: 5.390784295242085,
+    parisWorstOn: '2026-01-22',
+    parisLatitude: 48.8566,
+    parisDatesDroppedByWholeBand: 0,
+    // The standing place, on the morning this was gathered.
+    standingPlace: 'Longyearbyen',
+    standingLatitude: 78.2232,
+    standingWorstArcminutes: 602.8128733570363,
+    standingWorstOn: '2026-10-06',
+    standingWorstWholeBandArcminutes: 432.7806341410043,
+    standingWorstWholeBandOn: '2026-09-28',
+    // The band, and it is the thing the page now reads.
+    //
+    // These two were typed by hand on the morning they were gathered and
+    // one of them was typed wrong — 56 and 57, against a sweep that says
+    // 57 and 58 — in the same hour, by the same hand, as the witness built
+    // to stop exactly that. It was caught in a minute only because the
+    // gatherer was made to check them rather than print them beside each
+    // other. **A number typed next to the tool that computes it is not
+    // checked by sitting next to it.**
+    lastLatitudeUnderOneSunWidthDegrees: 57,
+    firstLatitudeOverOneSunWidthDegrees: 58,
+    // What was published from outside the band before anyone asked: the
+    // tower stood at Anchorage 2026-09-05 to 2026-09-12 telling readers
+    // the step needed no skyline of theirs.
+    anchorageWorstArcminutes: 280.7396907230957,
+    anchorageWorstOn: '2026-11-19'
   };
 
   // The drift's own witness, gathered Day 42, on the level sweep's grid.
@@ -2153,10 +2263,22 @@
     // is *horizon-hung* and hard: five degrees of skyline to the east
     // moves the rising point about six degrees at Paris — roughly twelve
     // days' worth of the daily step — so a reader handed the flat-plain
-    // bearing and standing in a valley would mark the wrong tree. The
-    // step barely moves: across nought to ten degrees of skyline it
-    // shifts by at most 5.4 arcminutes, a sixth of the sun's own width,
-    // and that is the worst day of 2026 (22 January), swept.
+    // bearing and standing in a valley would mark the wrong tree.
+    //
+    // **Read STEP_ROBUSTNESS_WITNESS before using the step as the leg
+    // that does not need a skyline. Nothing in this comment answers
+    // that, and the claim underneath it held for one band only.**
+    //
+    // The claim, in its own tense, kept for its history and not because
+    // it is the state of things (Day 46: if you keep a superseded claim,
+    // it does not go first). Day 15 said: *the step barely moves — across
+    // nought to ten degrees of skyline it shifts by at most 5.4
+    // arcminutes, a sixth of the sun's own width, and that is the worst
+    // day of 2026 (22 January), swept.* True, and reproduced to three
+    // decimals on Day 48. It was swept at Paris and at Paris only. The
+    // bearing half above says "at Paris" on its face; this half said
+    // nothing, and a margin with no band named reads as a claim about the
+    // sphere — Day 31, third time. The witness now carries the band.
     //
     // Stated in sun-widths on purpose. Written as a percentage of the
     // step it reads as 4% in August and 34% at the solstice, which looks
@@ -2554,6 +2676,7 @@
     METHOD_CHANGED_ON: METHOD_CHANGED_ON,
     CROSS_CHECK_MAX_GAP_MINUTES: CROSS_CHECK_MAX_GAP_MINUTES,
     CROSS_CHECK_WITNESS: CROSS_CHECK_WITNESS,
+    STEP_ROBUSTNESS_WITNESS: STEP_ROBUSTNESS_WITNESS,
     DRIFT_GAP_WITNESS: DRIFT_GAP_WITNESS,
     CLAIM_INTRODUCED: CLAIM_INTRODUCED,
     claimApplies: claimApplies,
