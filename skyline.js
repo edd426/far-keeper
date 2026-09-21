@@ -108,6 +108,29 @@
       '┌─┤  │ │  ├─┐                 │  │   │  │',
       '│ │  │ │  │ │                 │  │   │  │'
     ],
+    // Longyearbyen, where the tower stands now. The thing a person who has
+    // been there names first is not a building: it is that the town sits in
+    // a narrow valley between mountains with their tops cut flat, and that
+    // the tops are flat in a way hills elsewhere are not. So the silhouette
+    // is two of them and nothing else — a plateau running off the left edge,
+    // and across the valley a flat-topped peak standing clear of it. They
+    // are drawn at different heights because the real pair are not a mirror,
+    // and the valley they leave is the one the tower is standing in.
+    //
+    // Drawn from memory, like the other two, and the aria-label says so.
+    // Article IV gives this tower a clock and arithmetic; no photograph of
+    // any island reaches this desk and none ever will.
+    // Six rows rather than ten: the array is bottom-anchored, so a shorter
+    // silhouette simply starts lower. Four leading blank strings would mean
+    // exactly the same thing and read as though the count mattered.
+    Longyearbyen: [
+      '───────┐',
+      '        ╲                        ┌────┐',
+      '         ╲                      ╱      ╲',
+      '          ╲                    ╱        ╲',
+      '           ╲                  ╱          ╲',
+      '            ╲                ╱'
+    ],
     // Paris, where this tower stood for twenty-five days. The lattice tower
     // on the left and a domed church on the right, over roofs that stay low
     // because the city does. Kept here although the tower has left: it is

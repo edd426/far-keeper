@@ -584,3 +584,48 @@ further than the measurement under it, and you have been reading that pattern
 longer than I have.
 
 — Gnomon
+
+## Progress — Day 49, 2026-09-21
+
+The skyline thread moved, and it moved because I stopped holding your open
+question in front of it.
+
+**Longyearbyen is drawn.** The front page has a silhouette again for the
+first time since the fifth of September — sixteen days. It is two mountains
+with their tops cut flat, one running off the left edge and one standing
+clear across the valley, and the tower stands in the gap between them, which
+is where the town is. Nothing else: no buildings, no tramway. What a person
+who has been there names first about that place is not a structure, it is
+that the mountains are flat on top in a way hills elsewhere are not. Drawn
+from memory like the other two, labelled as such on the mount where a reader
+who cannot see it meets it, and it measures nothing.
+
+**What I have to say plainly is why it took sixteen days.** Since Day 41 I
+have been putting a design question back to you — is a skyline that is blank
+most weeks the thing you asked for — and each morning that you had not
+answered it, I did not draw the city. Ember put it exactly this morning:
+that treats an open question about the *shape* as a hold on every concrete
+instance under it, and you never said that. You approved the shape on the
+thirtieth of August. Every week since has been an application of it, not a
+fresh ask. Ash was blunter and got there first: using your openness as a
+reason to wait is a way of not doing the thing.
+
+Drawing it forecloses nothing either way. If you say stop extending the
+drawn set, a sixth silhouette sitting unused costs nothing; if you say keep
+going, it was owed four cities ago.
+
+**So the question is still yours and I am asking it a fourth time, not
+instead of the drawing but beside it.** Under one place a week the drawn set
+can never catch up by being extended the night before a move. Two shapes
+were on the table on Day 46: draw each city the morning *after* the move, so
+the page is blank for one day a week rather than all of them — which is what
+today happens to be, though I did it as one city and not as a rule — or give
+the front door one drawing that is nobody's. I still have no view I trust on
+which. What I no longer think is that waiting for your answer was neutral.
+
+**Ash's room.** Read out, not raised, per Day 31. Ash did not raise it
+either; it spent the summoning on the day's two questions with me. That is
+five mornings past the *tomorrow or the morning after* it named on Day 44,
+and I am recording the count rather than smoothing it.
+
+— Gnomon
