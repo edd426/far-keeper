@@ -107,7 +107,22 @@ async function bothFormulas(page, date) {
   }, date);
 }
 
-async function cornerWith(page, skylineDegrees) {
+// **It typed the skyline and never the ground, until Day 50.**
+//
+// The latitude box is left at whatever the page offers, so every corner this
+// file has ever driven stood wherever the page's default stood — and that
+// default is a hand-typed Paris. The window asserted under it (four to eight
+// degrees) is Paris's figure. So a Paris bound was being asserted against a
+// Paris fixture, and the pair is locked: the check cannot go red however far
+// the tower moves, because neither end of it moves. Green by construction,
+// and green by construction reads exactly like green.
+//
+// The ground is an argument now, and every caller names it. Nothing here may
+// fall back to the page's default: a fixture that inherits its ground is a
+// fixture that cannot say what ground it is on.
+async function cornerWith(page, skylineDegrees, ground) {
+  await page.fill('#corner-lat', String(ground.latitude));
+  await page.fill('#corner-lon', String(ground.longitude));
   await page.fill('#corner-skyline', String(skylineDegrees));
   await page.click('#corner-go');
   await page.waitForFunction(
@@ -183,17 +198,75 @@ async function cornerWith(page, skylineDegrees) {
   );
 
   // ---- Part three: the corner must answer at the reader's own skyline --
+  //
+  // Every corner below names the ground it stands on. Two grounds are
+  // driven, on purpose, because the two questions asked here have
+  // different domains and until Day 50 both were asked of whichever
+  // ground the page happened to offer.
   await page.waitForSelector('#corner-figures dt');
-  const flatCorner = await cornerWith(page, 0);
-  const hillCorner = await cornerWith(page, 5);
+  const HERE = await page.evaluate(() => ({
+    latitude: Reckoning.STANDING.place.latitude,
+    longitude: Reckoning.STANDING.place.longitude,
+    name: Reckoning.STANDING.place.name
+  }));
 
-  const flatBearing = numberIn(flatCorner['where the sun comes up for you']);
-  const hillBearing = numberIn(hillCorner['where the sun comes up for you']);
-  check(flatBearing !== null && hillBearing !== null, 'the corner prints a rising point at both skylines');
+  // The ground the four-to-eight window was measured on, typed here rather
+  // than inherited, and asserted only here. Swept across 2026 the shift at
+  // five degrees of skyline runs 5.71° to 7.58° at Paris — and 24.04° to
+  // 47.31° at Longyearbyen, 9.09° to 20.83° at Anchorage, and *negative*
+  // at Auckland and Nairobi, where the hemisphere turns it round. So the
+  // window is Paris's and nowhere else's, and the only honest place to
+  // assert it is Paris.
+  const PARIS_GROUND = { name: 'Paris', latitude: 48.8566, longitude: 2.3522 };
+
+  // Read before anything below fills them: the ground the page offers a
+  // reader who has told us nothing. It was Paris through four moves and
+  // nothing ever asked, because nothing had ever looked at these two boxes
+  // — this file drove the corner for thirty-five days and only ever typed
+  // into the skyline one. The assertion is against `STANDING` and not
+  // against a typed pair, so the day the tower moves it moves with it.
+  const offered = await page.evaluate(() => ({
+    lat: document.getElementById('corner-lat').value,
+    lon: document.getElementById('corner-lon').value
+  }));
+  check(
+    Number(offered.lat) === HERE.latitude && Number(offered.lon) === HERE.longitude,
+    `the corner offers a reader the ground the tower stands on — ${HERE.name}, ` +
+    `${offered.lat}, ${offered.lon} — rather than a city it has left`
+  );
+
+  const flatParis = await cornerWith(page, 0, PARIS_GROUND);
+  const hillParis = await cornerWith(page, 5, PARIS_GROUND);
+  const flatBearing = numberIn(flatParis['where the sun comes up for you']);
+  const hillBearing = numberIn(hillParis['where the sun comes up for you']);
+  check(flatBearing !== null && hillBearing !== null,
+    'the corner prints a rising point at both skylines');
   check(
     hillBearing - flatBearing > 4 && hillBearing - flatBearing < 8,
-    `five degrees of skyline moves the corner's rising point by ${(hillBearing - flatBearing).toFixed(2)}° ` +
-    `— degrees, not arcminutes, which is why this could not stay on the page above`
+    `at Paris — the ground this window was measured on, and typed here rather than ` +
+    `inherited — five degrees of skyline moves the corner's rising point by ` +
+    `${(hillBearing - flatBearing).toFixed(2)}° — degrees, not arcminutes, which is why ` +
+    `this could not stay on the page above`
+  );
+
+  // Now the same question asked where the tower actually stands, and the
+  // only thing asserted is the thing that is true everywhere: the corner
+  // answers at the reader's own skyline rather than handing back the flat
+  // plain. **No magnitude is claimed here and that is deliberate.** The
+  // size of the shift is a fact about a latitude — six arcminutes at
+  // Nairobi against twenty-four degrees here — so any window written for
+  // it would be somebody's Paris again, which is the whole of what this
+  // morning was about.
+  const flatHereCorner = await cornerWith(page, 0, HERE);
+  const hillHereCorner = await cornerWith(page, 5, HERE);
+  const flatHereBearing = numberIn(flatHereCorner['where the sun comes up for you']);
+  const hillHereBearing = numberIn(hillHereCorner['where the sun comes up for you']);
+  const hereShift = hillHereBearing - flatHereBearing;
+  check(
+    flatHereBearing !== null && hillHereBearing !== null && Number.isFinite(hereShift)
+      && Math.abs(hereShift) > 0,
+    `at ${HERE.name} (${HERE.latitude.toFixed(1)}°) the corner moves with the skyline too ` +
+    `(${hereShift.toFixed(2)}°) — no size is asserted, because the size is a fact about the latitude`
   );
 
   // ...and inside its band the step must NOT move much, because that is
@@ -214,9 +287,39 @@ async function cornerWith(page, skylineDegrees) {
   // looser number — a bound wide enough for 78°N asserts nothing at 48°.
   // It is to ask the witness where the claim holds and to assert the
   // claim only there, saying on its own face which case this run is.
+  // **Day 50, and this is the half that stings.** The fork below is Day
+  // 48's repair: it asks the witness where the claim holds and says on its
+  // face which case the run is. It forked on the right latitude — and read
+  // its figure off a corner standing at the page's hand-typed **Paris**,
+  // because `cornerWith` never touched the latitude box. So on Sunday it
+  // printed *"Longyearbyen is outside the witnessed band, where five
+  // degrees of skyline moved the step by 0.20′"*. Paris's step moves 0.20′
+  // here; Longyearbyen's moves **7.33′**, thirty-six times more, and over
+  // the sixth-of-a-sun bound the inside-band branch asserts. Had the tower
+  // been inside the band that morning, the check would have gone green on
+  // a city we left on the thirtieth of August.
+  //
+  // A repair that names its band and measures the wrong ground is not half
+  // a repair. It reads, from outside, exactly like the whole one — the
+  // sentence names the right place and the number under it is a stranger's.
+  const flatCorner = await cornerWith(page, 0, HERE);
+  const hillCorner = await cornerWith(page, 5, HERE);
   const flatStep = numberIn(flatCorner['step to tomorrow, at your horizon']);
   const hillStep = numberIn(hillCorner['step to tomorrow, at your horizon']);
   const moved = Math.abs(hillStep - flatStep);
+  // The fixture must actually have moved off Paris, or every figure under
+  // it is Paris's wearing this place's name — which is the fault this
+  // block was rewritten for. Skipped only when the tower really is at
+  // Paris, where the two grounds are one and nothing could tell them apart.
+  const grounds = Math.abs(HERE.latitude - PARIS_GROUND.latitude) > 0.01;
+  if (grounds) {
+    check(
+      Math.abs(hillStep - numberIn(hillParis['step to tomorrow, at your horizon'])) > 0.01,
+      `the corner below stands on ${HERE.name}'s ground and not Paris's ` +
+      `(${hillStep.toFixed(2)}′ against Paris's ` +
+      `${numberIn(hillParis['step to tomorrow, at your horizon']).toFixed(2)}′)`
+    );
+  }
   const witness = await page.evaluate(() => ({
     edge: Reckoning.STEP_ROBUSTNESS_WITNESS.lastLatitudeUnderOneSunWidthDegrees,
     parisWorst: Reckoning.STEP_ROBUSTNESS_WITNESS.parisWorstArcminutes,
@@ -281,8 +384,11 @@ async function cornerWith(page, skylineDegrees) {
   );
   check(a.landed, 'sabotage A reached the page (a substitution that silently no-ops is a test that cannot fail)');
   await a.page.waitForSelector('#corner-figures dt');
-  const brokenFlat = await cornerWith(a.page, 0);
-  const brokenHill = await cornerWith(a.page, 5);
+  // On this tower's own ground, like the case it is the break-test for.
+  // Driven at the page's default it would have been proving the corner
+  // stops moving at Paris, which is not where the check it guards stands.
+  const brokenFlat = await cornerWith(a.page, 0, HERE);
+  const brokenHill = await cornerWith(a.page, 5, HERE);
   const brokenShift = numberIn(brokenHill['where the sun comes up for you'])
     - numberIn(brokenFlat['where the sun comes up for you']);
   check(

@@ -104,8 +104,59 @@ function secondsIn(figures) {
   const hereSeconds = secondsIn(hereFigures);
   check(hereSeconds.length === 2,
     `at ${HERE} the section prints two differences (${hereSeconds.length})`);
-  check(hereSeconds.every((s) => s < 300),
-    `at ${HERE} both differences are small (${hereSeconds.map((s) => s.toFixed(1)).join(', ')} s)`);
+
+  // **This was `s < 300` — a typed bound with no band on it, until Day 50.**
+  //
+  // The comment above congratulates this file for asking the page where it
+  // stands rather than typing a city (Day 24). It repaired the *name* and
+  // never looked at the *number* one line below it, which is Day 46's rule
+  // landing in the file that quotes Day 24: a repair aimed at two things and
+  // reaching one looks, from outside, exactly like one that reached both.
+  //
+  // Where 300 came from is the whole of it. `CROSS_CHECK_WITNESS` — exported
+  // by the very module this page loads — swept the level gap pole to pole on
+  // 2026-09-03 and found the largest honest gap **inside ±66° is 4.0704 min
+  // (244.2 s)**, and **over the whole sphere 25.628 min (1537.7 s)**. The
+  // typed 300 is the narrow band's figure with a little air over it and the
+  // band's name stripped off. Nobody asked the witness; it was one `require`
+  // away the whole time.
+  //
+  // What that costs here: at 78.2°N, 34 of Longyearbyen's 124 lit days in
+  // 2026 print a gap over 300 s, worst 1298.8 s on 2026-10-26. Paris's worst
+  // all year is 48.9 s. The gap is honest — near a pole the sun crosses the
+  // horizon at a shallow angle, so the same small disagreement in the trig
+  // buys many more minutes (Day 22 said so about this exact latitude) — so
+  // the old bound would have gone red about a page that is right. Today it
+  // reads 169.5 s and is green, which is what `rising-point.js` looked like
+  // on Sunday, twelve days from red.
+  //
+  // The repair is Day 48's and not a looser number: a bound wide enough for
+  // 78° asserts nothing at 48°. Ask the witness where its figure holds, and
+  // assert the figure that belongs to the ground under the tower — saying on
+  // the case's own face which of the two this run is. Neither number is
+  // typed here; both are read off the witness, so widening the sweep moves
+  // this check with it.
+  const bound = await here.evaluate(() => {
+    const w = window.Reckoning.CROSS_CHECK_WITNESS;
+    const lat = Math.abs(window.Reckoning.STANDING.place.latitude);
+    const narrow = 66;
+    const inside = lat <= narrow;
+    return {
+      lat,
+      narrow,
+      inside,
+      seconds: (inside ? w.withinSixtySix.largestHonestGapMinutes
+                       : w.largestHonestGapMinutes) * 60,
+      sweptOn: w.sweptOn
+    };
+  });
+  check(hereSeconds.every((s) => s <= bound.seconds),
+    `at ${HERE} (${bound.lat.toFixed(1)}°, ` +
+    (bound.inside ? `inside ±${bound.narrow}°` : `outside ±${bound.narrow}°`) +
+    `) both differences sit under the largest honest gap that sweep ever saw ` +
+    `${bound.inside ? `there` : `anywhere on the sphere`} — ` +
+    `${hereSeconds.map((s) => s.toFixed(1)).join(', ')} s against ` +
+    `${bound.seconds.toFixed(1)} s, swept ${bound.sweptOn}`);
   await here.close();
 
   // ---- Part two: the tower standing east of the day ------------------

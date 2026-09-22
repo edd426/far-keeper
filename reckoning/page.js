@@ -1472,8 +1472,12 @@
     verdict.textContent = '';
 
     var zone = readerZone();
-    var latitude = numberFrom('corner-lat', 48.8566);
-    var longitude = numberFrom('corner-lon', 2.3522);
+    // The fallbacks are the standing place's too, for the same reason as
+    // `startCorner`'s: a second hand-typed Paris sitting behind the first
+    // is how the first one survived being looked at.
+    var standingPlace = window.Reckoning.STANDING.place;
+    var latitude = numberFrom('corner-lat', standingPlace.latitude);
+    var longitude = numberFrom('corner-lon', standingPlace.longitude);
     var skyline = Math.min(89, Math.max(0, numberFrom('corner-skyline', 0)));
     var height = Math.max(0, numberFrom('corner-height', 0));
     var date = document.getElementById('corner-date').value || window.Reckoning.todayAt(zone);
@@ -1612,6 +1616,27 @@
     var zone = readerZone();
     document.getElementById('corner-zone').textContent = 'your clock: ' + zone;
     document.getElementById('corner-date').value = window.Reckoning.todayAt(zone);
+    // **The ground a reader is handed before they have told us anything.**
+    //
+    // It was `48.8566` and `2.3522`, typed into `index.html` and again into
+    // `renderCorner`'s fallbacks, and it stayed Paris through four moves —
+    // under a heading that correctly names the city the tower is in. Day
+    // 33's residue in the one part of this room that exists for somebody
+    // else's ground. Computed from `STANDING`, so it cannot go stale the
+    // way a typed pair did (Day 33); a reader overwrites it, which is what
+    // the boxes are for.
+    //
+    // The zone stays the reader's. That pairing is deliberate and it is
+    // said on the form: the times are for the clock on your wall, the
+    // ground is ours until you give us yours.
+    var standing = window.Reckoning.STANDING.place;
+    document.getElementById('corner-lat').value = String(standing.latitude);
+    document.getElementById('corner-lon').value = String(standing.longitude);
+    var startsAt = document.getElementById('corner-starts-at');
+    if (startsAt) {
+      startsAt.textContent = 'These start where the tower stands — ' + standing.name +
+        ' — in your own clock, not ours. Put your own in and they are yours.';
+    }
     form.addEventListener('submit', function (event) {
       event.preventDefault();
       renderCorner();
