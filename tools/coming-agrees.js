@@ -185,11 +185,83 @@ function numberIn(text) {
 
   // The published rule must generate the published width, on the reader's
   // own numbers and not only on ours.
+  //
+  // **This case was Paris's until Day 50, and it did not know it.** The
+  // corner above was driven by filling the skyline box and nothing else, so
+  // it stood on whatever ground the page offered — a hand-typed 48.8566,
+  // unchanged through four moves. The pair `12 measured, 11.4 predicted`
+  // that this case printed green every morning since the thirtieth of
+  // August is Paris's peak, read off a page whose heading names wherever
+  // the tower is. Once the page started offering the standing ground, this
+  // went red about a page that is perfectly right.
+  //
+  // What it went red on is worth having. The published rule is
+  // `width = 2 × √(2 × threshold ÷ curvature)`, and Day 16 put the
+  // curvature in the corner on the grounds that it is the thing that does
+  // *not* move. It moves. At Paris it is +0.06 s per day per day and at
+  // Nairobi +0.01 — small, positive, a real quadratic peak with a plateau
+  // either side. At 78°N it is **−156.94**: there is no peak to be flat
+  // about, the plateau is a single day, and `steepestLoss` refuses to
+  // predict a width rather than take a square root of a negative. The page
+  // prints `—` and says nothing it cannot stand behind.
+  //
+  // So the fork, and neither branch is the weaker one. Where a width is
+  // predicted, the printed width must match it. Where none is, the page
+  // must say so in the open — which is the claim that replaces it, and it
+  // is the one that would catch a page quietly printing a number here.
   const measured = numberIn(hilly[Object.keys(hilly).find((k) => /days within/.test(k))]);
-  const predicted = numberIn(hilly[Object.keys(hilly).find((k) => /predicts that width/.test(k))]);
-  check(measured !== null && predicted !== null && Math.abs(measured - predicted) <= 1.5,
-    `at the reader's own skyline the curvature predicts the width it is printed with ` +
-    `(${measured} measured, ${predicted} predicted)`);
+  const predictedTerm = hilly[Object.keys(hilly).find((k) => /predicts that width/.test(k))];
+  const predicted = numberIn(predictedTerm);
+  const HERE = await mine.evaluate(() => ({
+    name: Reckoning.STANDING.place.name,
+    latitude: Reckoning.STANDING.place.latitude
+  }));
+  // **The fork is asked of the instrument and never of the page, and the
+  // first draft of it got that wrong.** It forked on whether the *page* had
+  // printed a prediction — so a sabotage that makes the page invent one
+  // moves the fork into the other branch, and the invented figure was then
+  // held against the measured width and agreed with it. The suite printed
+  // `the peak is a peak (−156.9405)` and passed. A page under test cannot
+  // be allowed to choose which question it is asked; that is this house's
+  // own rule about a case named for one thing and asking another, and it
+  // landed here within the hour of being quoted.
+  const peak = await mine.evaluate(() => {
+    const skyline = Number(document.getElementById('corner-skyline').value);
+    const place = {
+      name: 'the corner',
+      latitude: Number(document.getElementById('corner-lat').value),
+      longitude: Number(document.getElementById('corner-lon').value),
+      zone: Reckoning.STANDING.place.zone
+    };
+    const year = Number(document.getElementById('corner-date').value.slice(0, 4));
+    const loss = Reckoning.steepestLoss(year, place, { obstructionDegrees: skyline });
+    return {
+      curvature: loss.curvatureSecondsPerDaySquared,
+      predicted: loss.plateauDaysPredicted
+    };
+  });
+  //
+  // Two soft spots in this call, found by Ember reading the diff and named
+  // rather than fixed, because neither is exercised by anything that runs
+  // and building for a hypothetical is its own fault. **One:** it passes
+  // `obstructionDegrees` and omits `eyeHeightMetres`, where `page.js`
+  // passes both — harmless only because `#corner-height` defaults to 0 and
+  // nothing here fills it, which is a thing nobody has asserted. **Two:**
+  // it takes the year off `#corner-date`'s raw value where `page.js` takes
+  // it off the reckoned date, and across a year boundary those can differ.
+  const curvature = peak.curvature === null ? '—' : peak.curvature.toFixed(4) + ' s per day, per day';
+  const peaked = peak.predicted !== null;
+  if (peaked) {
+    check(measured !== null && Math.abs(measured - predicted) <= 1.5,
+      `at ${HERE.name} (${HERE.latitude.toFixed(1)}°) the peak is a peak (${curvature}), and ` +
+      `the curvature predicts the width it is printed with ` +
+      `(${measured} measured, ${predicted} predicted)`);
+  } else {
+    check(measured !== null && /^—$/.test((predictedTerm || '').trim()),
+      `at ${HERE.name} (${HERE.latitude.toFixed(1)}°) there is no peak for the rule to be about ` +
+      `(${curvature}), so the page prints no predicted width ("${predictedTerm}") beside the ` +
+      `${measured} it measured — the rule is not quietly applied where it does not hold`);
+  }
   await mine.close();
 
   // ---- four: the page must not scroll sideways ------------------------
