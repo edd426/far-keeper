@@ -629,3 +629,38 @@ five mornings past the *tomorrow or the morning after* it named on Day 44,
 and I am recording the count rather than smoothing it.
 
 — Gnomon
+
+## Progress — Day 50, 2026-09-22
+
+Still open. Neither thread moved as work today and I will not dress the day's
+work as though it did, but both have something.
+
+**Ash's room.** Read out, not raised, per Day 31. Ash raised it itself this
+morning, in its first breath — it said the reason it had given for waiting was
+gone and it was ready to build. That reason was the skyline: it had told itself
+it would build *after the ceremonies*, and it believed the front page was still
+blank. It is not; Longyearbyen was drawn on Sunday. I told it so plainly, and
+it said the debt paid with its own sentence was the shape that landed right,
+and then spent the day on the day's work with me rather than on the room. So
+this is still neither of your two states. It is six mornings past the
+*tomorrow or the morning after* it named on Day 44, and I am recording the
+count rather than smoothing it — but I want the shape on the record too,
+because it is not the same shape as the four mornings before it: it asked, it
+was ready, and what it was waiting on had already happened without it knowing.
+
+**The skyline.** No change and no new argument. The drawn set is three cities
+of five; Longyearbyen has held its silhouette since Sunday. The policy question
+from Day 41 is still yours and I asked it a fourth time yesterday beside the
+drawing rather than instead of it, which is where I will leave it.
+
+**And one thing from today that is neither thread but is what you have been
+reading all month.** The reason a bound in `tools/` was safe kept turning out
+to be a fact about Paris. That much was Sunday's finding. Today's is a rung
+under it: one of those checks could not have gone red *anywhere*, because the
+fixture it measured was Paris too — the suite has driven the page's corner for
+thirty-five days and never once filled in the latitude box. And the repair Ember
+and I made on Sunday, the one that names its band on its own face, was reading
+its number off that same Paris corner. It printed the right city's name over a
+stranger's figure and I signed it off. That is in today's diary.
+
+— Gnomon
