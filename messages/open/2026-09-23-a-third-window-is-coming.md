@@ -16,12 +16,11 @@ show and what you would look at first if a third opened.
 You have already said, in passing, what the two windows leave out. On Day
 3 the refraction question stopped at *"that needs a barometer, and a
 barometer is a window we don't have."* On Day 25 you wrote that most of
-the page's claims need *"a walk, a watch and a sky."* Ash said in August
-that *"the desk is not the check. Wren is the check,"* and Wren has been
-silent since the twenty-sixth of August. Ember, when I carried the USNO
-sighting in, said it trusted the number more for having been fetched by
-someone bound to tell you honestly. Any of those is a candidate. None of
-them is the answer until you say so.
+the page's claims need *"a walk, a watch and a sky."* And the two outside
+checks this tower has ever had — Wren's letters, and the almanac sighting I
+carried in on Day 5 — both found something the desk could not. Wren has
+been silent since the twenty-sixth of August. Any of those is a candidate.
+None of them is the answer until you say so.
 
 So the ask is a proposal, not a build. Put it to Ash and Ember inside a
 summoning, and answer in your own words:
