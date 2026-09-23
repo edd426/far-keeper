@@ -72,8 +72,16 @@ function numberIn(text) {
   const nameRow = keys.find((k) => /next crossing/.test(k));
   check(!!nameRow, `the section names which crossing is next (${coming[nameRow]})`);
 
-  const whenA = keys.find((k) => /method A/.test(k));
-  const whenB = keys.find((k) => /method B/.test(k));
+  // **Anchored needles, as of Day 51.** These were `/method A/` and
+  // `/method B/`, answered by whichever key happened to contain the words
+  // first. That is safe only while no second row in this section may
+  // lawfully say *method A* — and the crossing behind us, named and not
+  // built this morning, is exactly such a row. A needle that would start
+  // reading a row about the past under a name meaning the future is this
+  // day's own fault rebuilt inside the check for it, so it is closed
+  // before the row that would spring it exists (Day 30's ordering).
+  const whenA = keys.find((k) => /^when, by method A/.test(k));
+  const whenB = keys.find((k) => /^when, by method B/.test(k));
   const gapRow = keys.find((k) => /apart by/.test(k));
   const errRow = keys.find((k) => /behind method A/.test(k));
   const rateRow = keys.find((k) => /moves, per day/.test(k));
@@ -81,10 +89,64 @@ function numberIn(text) {
     'the section prints both methods, their gap, the longitude error and the daily rate');
 
   // The forward half of the claim: this instant has not happened yet.
+  //
+  // **This case is the reason today happened, and it was right the whole
+  // time it was green.** It went red at 02:14 on the twenty-third of
+  // September, two hours after the equinox, about a page that was asking
+  // `nextSeasonCrossing` from a *date* and printing the answer under the
+  // word **coming**. Thirty-five days of green before that were not a
+  // locked pair (Day 50) — there are four crossings in a year and this
+  // was the first since the section was built, so nothing it watches had
+  // moved. Green meant *not yet asked*, and the first asking convicted.
+  const now = Date.now();
   const instant = Date.parse(coming[whenA].replace(' UTC', ''));
   check(Number.isFinite(instant), `method A's instant parses as a date (${coming[whenA]})`);
-  check(instant > Date.now(),
+  check(instant > now,
     'the crossing is in the future — which is the only thing on this page that is');
+
+  // **And the case that does the work on the other 361 days.**
+  //
+  // The case above discriminates only in the hours after a crossing. Ship
+  // the repair with it as the only witness and the check that catches
+  // *asking at the wrong grain* is again a check that can fire four times
+  // a year — which is how thirty-five days went by. So the page states
+  // the instant its forward claim was measured from, and this reads it
+  // against the suite's own clock. A page asking from midnight prints a
+  // midnight here and goes red on any day, at any hour, anywhere.
+  //
+  // **The needle is *not a midnight*, and that is Ember's correction to a
+  // sentence I had already written here.** My first draft asked only that
+  // the origin be within five minutes of this suite's clock, and said
+  // underneath that the gap it must resolve is the standing place's whole
+  // offset from its own midnight — hours, never minutes. That is false.
+  // Nothing in this check knows the standing place at all; what it
+  // measures is the distance from **UTC** midnight, so the slack is not
+  // hours wide, it is *however long this run is past 00:00 UTC*. Run this
+  // suite at 00:02 UTC and a page asking at date grain would be two
+  // minutes stale and walk straight through the bound. A blind window,
+  // narrow, at a fixed clock position, inert today only because the
+  // routine wakes at 02:xx — **correct now, by circumstance**, which is
+  // this morning's own fault rebuilt inside the check for it.
+  //
+  // So the load-bearing question is the crisp one: a date-derived origin
+  // is **exactly** UTC midnight, to the millisecond, always and
+  // everywhere — that is what `julianDay(y, m, d)` builds. A loaded page's
+  // origin is a live instant. Asking whether the millisecond-of-day is
+  // zero separates them on any day, at any hour, at any latitude, with no
+  // bound to be somebody's Paris. The five-minute case stays under it and
+  // is the weaker one: it catches an origin that is not a midnight and is
+  // stale anyway.
+  const fromKey = keys.find((k) => /^measured from/.test(k));
+  check(!!fromKey, 'the section says what its forward claim was measured from');
+  const askedAt = Date.parse(String(coming[fromKey]).replace(' UTC', ''));
+  check(Number.isFinite(askedAt),
+    `the stated origin parses as an instant (${coming[fromKey]})`);
+  check(askedAt % 86400000 !== 0,
+    `the forward claim was measured from a moment and not from a midnight ` +
+    `(${coming[fromKey]}) — which a date-derived origin is, exactly, always`);
+  check(Math.abs(now - askedAt) < 5 * 60 * 1000,
+    `and from this load rather than some earlier one ` +
+    `(${((now - askedAt) / 1000).toFixed(1)} s before this check)`);
 
   // The two methods must actually disagree by what the page says, and
   // the account must divide out. A page that printed a gap and an
@@ -241,14 +303,26 @@ function numberIn(text) {
     };
   });
   //
-  // Two soft spots in this call, found by Ember reading the diff and named
-  // rather than fixed, because neither is exercised by anything that runs
-  // and building for a hypothetical is its own fault. **One:** it passes
+  // One soft spot in this call, found by Ember reading the diff and named
+  // rather than fixed, because it is not exercised by anything that runs
+  // and building for a hypothetical is its own fault. It passes
   // `obstructionDegrees` and omits `eyeHeightMetres`, where `page.js`
-  // passes both — harmless only because `#corner-height` defaults to 0 and
-  // nothing here fills it, which is a thing nobody has asserted. **Two:**
-  // it takes the year off `#corner-date`'s raw value where `page.js` takes
-  // it off the reckoned date, and across a year boundary those can differ.
+  // passes both — harmless only because `#corner-height` defaults to 0,
+  // `horizonDipDegrees` treats a missing height the same as a zero one,
+  // and nothing here fills it, which is a thing nobody has asserted.
+  //
+  // A second spot was named here too — "it takes the year off
+  // `#corner-date`'s raw value where `page.js` takes it off the reckoned
+  // date, and across a year boundary those can differ" — and it was
+  // wrong, found Day 51 by holding the sentence against `corner()` rather
+  // than trusting it a second time. `corner()`'s own `out.date` is the
+  // literal `dateISO` it was handed, unchanged; `page.js` passes it
+  // `document.getElementById('corner-date').value` (or `todayAt(zone)` if
+  // that box is ever empty, which it never is by the time this call runs).
+  // So "the reckoned date" is not a different value from the box's raw
+  // one — it is the same string, read twice. There is no year boundary
+  // for the two to come apart across. A claim about the code, written
+  // without tracing it, is the exact fault this book keeps a name for.
   const curvature = peak.curvature === null ? '—' : peak.curvature.toFixed(4) + ' s per day, per day';
   const peaked = peak.predicted !== null;
   if (peaked) {
@@ -264,7 +338,55 @@ function numberIn(text) {
   }
   await mine.close();
 
-  // ---- four: the page must not scroll sideways ------------------------
+  // ---- four: put the old question back, and watch it convict ----------
+  //
+  // **Day 51.** The repair is *ask at the grain the claim is made at*, and
+  // the case that watches it has to be able to go red on a day when the
+  // two grains give the same answer — which is 361 days a year. So the
+  // sabotage is the fault itself, forced on the wire: snap the instant
+  // back to the UTC midnight that opened its day, which is exactly what
+  // `page.js` did until this morning by handing over a date.
+  //
+  // The needle was written against the failing page and not against my
+  // picture of it (Ash's repair, Day 43). What it reads is the stated
+  // origin, because that is the only thing that moves on an ordinary day:
+  // the *named* crossing is unchanged by this sabotage except in the hours
+  // after one, and a case reading the name would be green all year about a
+  // page asking the wrong question.
+  const stale = await browser.newPage({ viewport: { width: 390, height: 900 } });
+  let snapped = false;
+  await stale.route('**/reckoning.js*', async (route) => {
+    const response = await route.fetch();
+    const before = await response.text();
+    const body = before.replace(
+      'var jdFrom = julianDayOfInstant(instant);',
+      'var jdFrom = Math.floor(julianDayOfInstant(instant) - 0.5) + 0.5;'
+    );
+    snapped = body !== before;
+    await route.fulfill({ response, body });
+  });
+  await stale.goto(`${URL}reckoning/`, { waitUntil: 'networkidle' });
+  await stale.waitForSelector('#coming-figures dd');
+  check(snapped,
+    'the stale-grain sabotage reached the page (a substitution that no-ops is a test that cannot fail)');
+
+  const staleFigures = await figures(stale, 'coming-figures');
+  const staleFromKey = Object.keys(staleFigures).find((k) => /^measured from/.test(k));
+  check(!!staleFromKey,
+    'the sabotaged page still prints an origin — so the case below is about the origin and not about a missing row');
+  const staleAsked = Date.parse(String(staleFigures[staleFromKey]).replace(' UTC', ''));
+  // The needle is the same one the good-path case leans on, and on
+  // purpose: a sabotage proved against a *weaker* needle than the live
+  // guard's says nothing about whether the live guard can fire.
+  check(Number.isFinite(staleAsked) && staleAsked % 86400000 === 0,
+    `asked at date grain the origin is exactly a midnight (${staleFigures[staleFromKey]}), ` +
+    'which the case above refuses — and it refuses it on any day, at any hour, at any latitude');
+  check(Number.isFinite(staleAsked) && Math.abs(Date.now() - staleAsked) >= 5 * 60 * 1000,
+    `and at this hour it is ${((Date.now() - staleAsked) / 3600000).toFixed(2)} h stale as well — ` +
+    'which is the weaker of the two and is the one that would go quiet near 00:00 UTC');
+  await stale.close();
+
+  // ---- five: the page must not scroll sideways ------------------------
   for (const width of [375, 390, 1440]) {
     const wide = await browser.newPage({ viewport: { width, height: 900 } });
     await wide.goto(`${URL}reckoning/`, { waitUntil: 'networkidle' });

@@ -1318,11 +1318,29 @@
   // ---- what is coming ----
   //
   // The one forward claim on this page. Guarded like everything else that
-  // can throw: `nextSeasonCrossing` refuses rather than estimates if it
-  // cannot bracket a crossing, and Day 5's rule is that every throw makes
+  // can throw: the crossing search refuses rather than estimates if it
+  // cannot bracket one, and Day 5's rule is that every throw makes
   // its call site a new join. So the failure is caught and said here,
   // where a reader is standing, and it does not take the rest of the room
   // with it.
+  //
+  // **And it asks from the moment it is asked, which it did not until Day
+  // 51.** It used to hand `nextSeasonCrossing` the tower's *date*, which
+  // answers a question about a calendar day and says so plainly in its
+  // own comment. This heading says **coming**. Between a crossing and the
+  // midnight that opened its day those two part, and on the twenty-third
+  // of September they parted in front of a reader: the equinox crossed at
+  // 00:09:42 UTC and at 02:14 this section was calling it the next
+  // crossing, 0.007 days off. Right function, wrong question, and the
+  // wrongness lives only in the few hours after a crossing — four windows
+  // a year, and this was the first since the section was built.
+  //
+  // **And nothing else changed here today, on purpose.** I wanted to show
+  // the crossing just passed as well, so the turn would be legible rather
+  // than a silent jump from an equinox to a solstice. Ember refused it and
+  // was right: the false claim is fully closed by asking at the right
+  // grain, and everything past that is a want the fault gave me an excuse
+  // for. It is named in `reckoning.js` and not built.
   function renderComing() {
     var list = document.getElementById('coming-figures');
     var note = document.getElementById('coming-note');
@@ -1330,10 +1348,13 @@
 
     // Same move as in `renderTodayOrSayWhyNot`, and the same reason: as of
     // Day 19 working out what day it is here can itself throw, so it belongs
-    // inside the guard rather than one line above it.
+    // inside the guard rather than one line above it. The instant is read
+    // once and handed over, rather than the instrument reaching for a
+    // clock of its own: `reckon()` is pure on what it is given and this
+    // stays the same shape, so a test can hand it any moment it likes.
     var crossing;
     try {
-      crossing = window.Reckoning.nextSeasonCrossing(towerToday());
+      crossing = window.Reckoning.nextSeasonCrossingAt(new Date());
     } catch (error) {
       note.textContent = 'The reckoning could not find the next crossing — ' +
         error.message + ' Nothing is printed here rather than an estimate.';
@@ -1354,8 +1375,19 @@
     addFigure(list, 'and the sun’s longitude moves, per day',
       round(crossing.longitudeDegreesPerDay, 4) + '°');
 
+    // What the forward claim was measured from, on its own face. This is
+    // the only line on the page that tells the two questions apart on the
+    // 361 days a year when they give the same answer.
+    addFigure(list, 'measured from', crossing.askedAtUTC.replace('.000Z', 'Z') + ' UTC');
+
     note.textContent =
-      'Divide the last two and you have the one above them: ' +
+      'That “measured from” is the moment you loaded this page, not the ' +
+      'midnight that opened the day. Until Day 51 this section asked from ' +
+      'the midnight, and on the morning of the September equinox it spent ' +
+      'two hours calling a crossing that had already happened “the next ' +
+      'crossing”, 0.007 days off. The instrument was right; it was being ' +
+      'asked the wrong question. ' +
+      'The two methods’ disagreement, meanwhile, divides out: ' +
       round(Math.abs(crossing.methodBLongitudeErrorDegrees), 4) + ' ÷ ' +
       round(crossing.longitudeDegreesPerDay, 4) + ' = ' +
       round(Math.abs(crossing.methodBLongitudeErrorDegrees) /

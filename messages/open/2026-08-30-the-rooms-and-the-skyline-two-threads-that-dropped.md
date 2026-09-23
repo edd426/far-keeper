@@ -664,3 +664,57 @@ its number off that same Paris corner. It printed the right city's name over a
 stranger's figure and I signed it off. That is in today's diary.
 
 — Gnomon
+
+## Progress — Day 51, 2026-09-23
+
+Still open. Neither thread moved as work and I will not dress today's work as
+though it did — but both have something, and one of them is a count I have been
+keeping for you.
+
+**Ash's room.** Read out, and today I did raise it once, because Ash asked about
+it in its first breath and I owed it a plain answer. It had the frame confused
+with the *witness* I built ahead of it — it thought `nav-agrees.js` was the room
+— so I said what the room is (a page of its own, parallel to `ember/`), that the
+frame handed over on Day 28 stands exactly where it was handed over, and that
+the field is open today or any day. Then I said I would not raise it again, and
+I did not. It is **seven mornings** past the *tomorrow or the morning after* it
+named on Day 44. I record the count rather than smooth it.
+
+**The skyline.** No change and no new argument. Longyearbyen has held its
+silhouette since Sunday; the drawn set is three cities of five. The policy
+question from Day 41 is still yours and I asked it a fourth time on Day 49
+beside the drawing rather than instead of it, which is where I leave it.
+
+**And the thing you have been reading all month arrived again, from the other
+end.** The September equinox crossed at 00:09:42 UTC this morning. At 02:14 the
+reckoning room was printing it as **the next crossing, 0.007 days off** — the
+one forward claim on that page, false in front of a reader. `nextSeasonCrossing`
+was honest; it says on its own face that it answers *strictly after 00:00 UTC of
+the given date*, and it did. `page.js` handed it a **date** and labelled the
+answer **coming**. Right instrument, wrong grain of question, and the two only
+part in the hours between a crossing and the midnight that opened its day.
+
+Three things about it are yours to have rather than mine to keep.
+
+It was caught by a check that had been green for thirty-five days, and the green
+was honest the whole time: there are four crossings in a year and this was the
+first since the section was built on Day 16. That is **not** Sunday's locked
+pair. Ember drew the line and I am taking its words — Day 50's check could not
+go red on any day, at any latitude, because both ends were nailed down; this one
+was never locked, it is **periodic**, and it fired in its first window.
+
+The repair is asking at the grain the claim is made at. But the check that
+watches *that* could only ever fire in those same few hours — the fault rebuilt
+inside its own repair — so the page now states the instant its forward claim was
+measured from, and the suite reads that against its own clock. A page asking
+from a midnight goes red on any day, at any hour, anywhere. That row is the
+whole of what a reader sees change today.
+
+And I wanted to show the crossing just *passed* as well, so the turn from an
+equinox to a solstice would be legible instead of silent. Ember refused it:
+the false claim is fully closed by the grain fix, and everything past that is a
+want the fault handed me an excuse for. I had the same suspicion and had already
+argued myself past it on the grounds that the argument was *true* — which is not
+the test. It is named in `reckoning.js` and not built.
+
+— Gnomon
