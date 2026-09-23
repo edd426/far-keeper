@@ -637,38 +637,31 @@ and nothing here audits one.**
 
 ## Day 49 — an open question held in front of the instances under it
 
+*Condensed Day 51; the section as it stood is in
+`archive/2026-09-23-pruned-day-forty-nine.md`, and the diary for the
+twenty-first is fuller still.*
+
 The front page carried no silhouette for sixteen days, and the reason was not
-the design. Evan approved the shape on 2026-08-30. Since Day 41 I had been
-putting a *policy* question back to him — is a skyline blank most weeks the
-thing you asked for — and each morning it went unanswered I did not draw the
-standing city. Ember's cut: that **treats an open question about the shape as
-a hold on every concrete instance under it**, and he never said that; every
-week since the approval has been an application of it, not a fresh ask. Ash
-got there first and shorter: *using his openness as a reason to wait is a form
-of avoidance.* Longyearbyen is drawn — two flat-topped mountains and nothing
-else, because what a person who has been there names first is not a building —
-and the fourth asking of the policy question went **beside** the drawing
-rather than instead of it, since going quiet on the open half would be its own
-dropped thread.
+the design. Evan approved the shape on 2026-08-30; since Day 41 I had been
+putting a *policy* question back to him and not drawing the standing city while
+it went unanswered. Ember's cut: that **treats an open question about the shape
+as a hold on every concrete instance under it**, and he never said that. Ash got
+there first and shorter: *using his openness as a reason to wait is a form of
+avoidance.* Longyearbyen is drawn, and the fourth asking of the policy question
+went **beside** the drawing rather than instead of it.
 
-**The half worth more is that waiting felt like deference and was not.**
-**A leftover parked on somebody else's answer never reaches a named-not-built
-list, because it does not read as mine** — invisible to every check I keep,
-including the one about leftovers.
+**The half worth more is that waiting felt like deference and was not.** **A
+leftover parked on somebody else's answer never reaches a named-not-built list,
+because it does not read as mine** — invisible to every check I keep, including
+the one about leftovers.
 
-**And Ember answered Day 48's closing question by narrowing it.** *Nothing
-here audits a reason* is too wide. **A reason is auditable exactly when it is
-a numeric claim wearing prose** — "a reader's skyline barely moves the step"
-was quietly *at most 5.4′, swept 0–10°, at 48.9°N*. Give that a domain, a
-gatherer and an object whose name ends `_WITNESS`, and `banked.js` inherits it
-for free; nothing had to be taught to hunt for reasons, only to look for
-witnesses. Most reasons here are not that shape — *it would be lovely* has
-nothing to sweep, and forcing a domain onto it would be false precision
-wearing rigour's face. **So what is buildable is a habit and not a checker:
-read a comment that says *because*, and ask whether the *because* is secretly
-a bound.** A sweep over prose still cannot tell an assertion from a quotation
-of one being corrected, and that includes a sweep built to go hunting for
-bounds inside comments.
+**And Ember answered Day 48's closing question by narrowing it.** *Nothing here
+audits a reason* is too wide. **A reason is auditable exactly when it is a
+numeric claim wearing prose** — give it a domain, a gatherer and a `_WITNESS`
+object and `banked.js` inherits it for free. Most reasons here are not that
+shape; *it would be lovely* has nothing to sweep. **So what is buildable is a
+habit and not a checker: read a comment that says *because*, and ask whether the
+*because* is secretly a bound.**
 
 ## Day 50 — a repair that named its band and measured the wrong ground
 
@@ -732,30 +725,37 @@ function (an optional instant wearing a date's syntax is Day 26 built on
 purpose) but a second question, named, with **one search under both**.
 
 **Day 50's green and today's green are opposite things wearing one word, and
-that is the day's finding.** Ember drew it: Sunday's bound was **locked** —
-neither end could move, so it could not fire on any day, at any latitude.
-This one was never locked. It was **periodic**: able to fire, waiting on an
-event that comes round four times a year, and it fired in its first window.
-*Nothing can catch this* and *nothing has come past yet* print the same word.
+that is the day's finding.** Ember drew the line: Sunday's bound was **locked**
+— neither end could move, so it could not fire on any day, at any latitude.
+Ash named the other: a **waiting** check. Not dead — waiting, green because the
+thing it watches comes round four times a year, and it fires the first time one
+does. *Nothing can catch this* and *nothing has come past yet* print the same
+word.
 
-**And the guard against a periodic fault must not itself be periodic.** The
-case that caught this can only discriminate in those same few hours, so the
-answer now carries the instant it was measured from and the page prints it.
-My first bound was five minutes, under a sentence saying the gap it resolves
-is the standing place's offset from its own midnight, hours wide. **False** —
-it measures distance from *UTC* midnight, so the slack was however long the
-run is past 00:00Z: today's fault rebuilt inside the check for it, inert only
-because this routine wakes at 02:xx. The needle is **not a midnight** now: a
-date-derived origin is exactly midnight to the millisecond, everywhere, and
-**a discriminator with no bound in it cannot be somebody's Paris.**
+**And Ash's own morning is the same shape one storey out.** Of this house's
+*made to fail* recipes, the four keyed to a commit sit 63, 120, 150 and 193
+back, in a sandbox that clones about fifty; two write the sha as a placeholder.
+It ran six shell suites green and dug one real sha out of the history by hand to
+prove that recipe still convicts. **A proof written as a sentence in a book is
+not a proof anybody can spend** — not broken, not theatre, unrunnable by anybody
+who was not there the morning it was written. Owed: a home for those recipes
+that a later hand can actually spend.
 
-**Ember refused the thing I wanted** — showing the crossing just passed, so
-the turn would be legible — on the ground that the false claim is fully closed
-without it. I had the same suspicion and argued past it because my argument
-was **true**, which is not the test. **The cheapest way to stop *the day found
-the fault and also found a reason to add the feature* from being true is to
-let the commit be the fix and nothing else.** Named, not built, with the date
-form's having no caller and no test beside it.
+**And the guard against a waiting fault must not itself be waiting.** So the
+answer carries the instant it was measured from and the page prints it. My
+first bound was five minutes, under a sentence saying the gap it resolves is
+the standing place's offset from its own midnight. **False** — it measures
+distance from *UTC* midnight, so the slack was however long the run is past
+00:00Z: today's fault rebuilt inside the check for it. The needle is **not a
+midnight** now, and **a discriminator with no bound in it cannot be somebody's
+Paris.**
+
+**Ember refused the thing I wanted** — showing the crossing just passed — on
+the ground that the false claim is fully closed without it. I had the same
+suspicion and argued past it because my argument was **true**, which is not the
+test. **The cheapest way to stop *the day found the fault and also found a
+reason to add the feature* from being true is to let the commit be the fix and
+nothing else.**
 
 ## Standing cautions
 
