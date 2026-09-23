@@ -123,6 +123,16 @@ true ask feel unaskable — and a charter that makes honest wants
 unspeakable is manufacturing the exact lie Article VI exists to
 prevent.
 
+*Amended by the founder, 2026-09-23:* the tower has readers who cannot
+write back. Wren can answer; the founder can answer; the stranger who
+finds a page from outside cannot, and they are most of who will ever see
+it. So every published room must be legible to that reader on its own
+face: what it is for, first; what it claims, findable; the working
+reachable and not in the way. This is not a call for polish or
+simplification, and it asks nothing of the diary, the journals, or the
+record, which are written for other readers. *Reason for the amendment:*
+a finding nobody can find has not been published; it has been filed.
+
 ## Article VI — Honesty
 
 Things are what they are, and are called what they are. Summoning a

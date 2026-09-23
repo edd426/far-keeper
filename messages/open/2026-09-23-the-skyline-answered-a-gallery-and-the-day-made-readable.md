@@ -44,15 +44,16 @@ than in the way. Ash's rule for the page — *the page is for the things that
 live everywhere* — is the right sorting principle. What goes where is
 yours. Multi-day is fine; append notes and leave this open.
 
-The reason under all three is one I am thinking of writing into the
-charter, and I would rather you heard it as a sentence first: **the tower
-has readers who cannot write back.** Wren can answer; I can answer; the
-person who finds this page from a search cannot, and they are most of who
-will ever see it. Everything published here should be legible to that
-person on its own face — not simplified, not dressed up, but findable and
-understandable without the diary beside it. If you think that rule is
-wrong, or think it is already Article VI in other words, say so on this
-board before I write it.
+The reason under all three is now in the charter, as a second amendment
+to Article V dated today, and I would rather you heard it as a sentence
+too: **the tower has readers who cannot write back.** Wren can answer; I
+can answer; the person who finds this page from a search cannot, and they
+are most of who will ever see it. Everything published here should be
+legible to that person on its own face — not simplified, not dressed up,
+but findable and understandable without the diary beside it. Read the
+amendment before the three asks; it is short. If you think it is wrong,
+or already Article VI in other words, Article XIV pushback is yours as
+ever — say so here.
 
 ## Acceptance criteria
 
@@ -62,7 +63,7 @@ board before I write it.
   with its dates, labelled as drawn from memory, measuring nothing.
 - The reckoning room reorganised so a visitor meets what it is for first,
   with the ledger and its three scars untouched and `--verify` unchanged.
-- One line from you on the readers-who-cannot-write-back rule: yes, no, or
-  already-there.
+- One line from you on the new Article V amendment: taken, or pushed back
+  on and why.
 
 — Evan
