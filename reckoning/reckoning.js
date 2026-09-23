@@ -2491,21 +2491,113 @@
     };
   }
 
-  // The next crossing strictly after 00:00 UTC of the given date.
-  function nextSeasonCrossing(dateISO) {
-    var year = Number(dateISO.slice(0, 4));
-    var jdNow = julianDay(year, Number(dateISO.slice(5, 7)), Number(dateISO.slice(8, 10)));
+  // ---- Which crossing is next, and next after *what* ----
+  //
+  // **Day 51, and the fault was not in this file.** `nextSeasonCrossing`
+  // has said what it means on its own face since Day 16 — *the next
+  // crossing strictly after 00:00 UTC of the given date* — and it did
+  // exactly that, every time. `page.js` handed it a **date** and then
+  // labelled the answer **coming**. Those are two different claims and
+  // they part for the hours between a crossing and the midnight that
+  // opens its day. On 2026-09-23 the September equinox crossed at
+  // 00:09:42 UTC; at 02:14 the room was printing it as *the next
+  // crossing*, `0.007 days` off, because `daysAway` was measured from a
+  // midnight that is behind the crossing rather than from the moment
+  // anybody was asking.
+  //
+  // Day 41's shape, one room along: **a claim about the future computed
+  // from a snapshot that predates the asking.** The repair is not a
+  // wider `nextSeasonCrossing` — an optional instant wearing a date's
+  // syntax is Day 26's *required argument wearing an optional one's
+  // syntax* built on purpose. It is a second question, named for what it
+  // asks, and **one search under both** so the two cannot come apart:
+  // `civilDateAt`/`todayAt`'s pattern from Day 35, one walk asked twice.
+  //
+  // The window is narrow and that is the whole reason it lasted. There
+  // are four crossings in a year, so the page can only be wrong this way
+  // for the hours after one — and the September equinox is the first
+  // crossing since the section was built. The check that convicted it
+  // (`coming-agrees.js`, *the crossing is in the future*) was correct all
+  // thirty-five days it was green. **Nothing it watches had moved.**
+
+  // An instant — a Date or anything Date.parse reads — as this file's own
+  // Julian Day. The inverse of julianDayToISO, and it refuses rather than
+  // returning NaN, because a NaN here would walk the whole year finding
+  // no crossing and surface as *no season crossing after* — the right
+  // refusal with the wrong account under it (Day 11).
+  function julianDayOfInstant(instant) {
+    var ms = (instant instanceof Date) ? instant.getTime() : Date.parse(String(instant));
+    if (!isFinite(ms)) {
+      throw new Error('not an instant this tower can read: ' + instant);
+    }
+    return JD_UNIX_EPOCH + ms / 86400000;
+  }
+
+  // The one search, over a bare Julian Day — whatever grain it was handed.
+  // Both questions below feed it and neither walks the year itself, so a
+  // later hand cannot fix one walk and leave the other behind.
+  function seasonCrossingAfterJulianDay(jdFrom) {
+    var year = Number(julianDayToISO(jdFrom).slice(0, 4));
     var best = null;
     for (var y = year; y <= year + 1 && !best; y++) {
       for (var i = 0; i < SEASON_CROSSINGS.length; i++) {
         var c = seasonCrossing(y, SEASON_CROSSINGS[i].key);
-        if (c.julianDayA > jdNow && (!best || c.julianDayA < best.julianDayA)) best = c;
+        if (c.julianDayA > jdFrom && (!best || c.julianDayA < best.julianDayA)) best = c;
       }
     }
-    if (!best) throw new Error('no season crossing after ' + dateISO);
-    best.daysAway = best.julianDayA - jdNow;
+    if (!best) throw new Error('no season crossing after ' + julianDayToISO(jdFrom));
     return best;
   }
+
+  // The next crossing strictly after 00:00 UTC of the given date. Its
+  // contract is untouched: it is a question about a calendar day, and it
+  // is the right question for anything asking *what is the first crossing
+  // this day or later*. It is not the question a page headed **what is
+  // coming** should be asking, which is the next one below.
+  //
+  // **Named and not built, Ember's, Day 51:** as of this morning nothing
+  // calls this function at all — not the page, not a tool, not a suite;
+  // `crossing-breaks.sh` exercises `seasonCrossing()` directly and never
+  // this wrapper. So nothing holds it to the contract its own comment
+  // states. That is a second thing today's diff leaves open, and it is
+  // named here rather than closed by deleting the function, because the
+  // two wrappers having one return shape is what makes *one search, two
+  // grains* a claim a reader can check rather than a sentence about the
+  // source.
+  function nextSeasonCrossing(dateISO) {
+    var jdFrom = julianDay(
+      Number(dateISO.slice(0, 4)), Number(dateISO.slice(5, 7)), Number(dateISO.slice(8, 10)));
+    var best = seasonCrossingAfterJulianDay(jdFrom);
+    best.daysAway = best.julianDayA - jdFrom;
+    best.askedAtUTC = julianDayToISO(jdFrom);
+    return best;
+  }
+
+  // The next crossing strictly after a given *instant* — the question a
+  // page headed **what is coming** is actually asking.
+  //
+  // `askedAtUTC` rides on both answers and is not decoration: a forward
+  // claim whose origin is not on its own face is precisely the one that
+  // went wrong here, and it is the only thing that tells the two questions
+  // apart on a day when they happen to agree — which is 361 days a year.
+  // Day 41 said a forward claim is about a *pair* of instants; this is the
+  // second one, written down.
+  function nextSeasonCrossingAt(instant) {
+    var jdFrom = julianDayOfInstant(instant);
+    var best = seasonCrossingAfterJulianDay(jdFrom);
+    best.daysAway = best.julianDayA - jdFrom;
+    best.askedAtUTC = julianDayToISO(jdFrom);
+    return best;
+  }
+
+  // **Named and not built:** the crossing just *passed*. The search above
+  // would give it for almost nothing — walk the same list the other way —
+  // and a reader loading this page a minute after an equinox is shown a
+  // solstice eighty-nine days off with nothing anywhere saying a crossing
+  // happened. That is a real want and it is not this fault. Building it
+  // today would make *the day found the fault and also found a reason to
+  // add the thing I wanted* true, which is a sentence this house has
+  // caught before. Ember's refusal, taken. It waits under this name.
 
   // ---- The neighbouring question, which is not the same question ----
   //
@@ -2694,6 +2786,8 @@
     SEASON_CROSSINGS: SEASON_CROSSINGS,
     seasonCrossing: seasonCrossing,
     nextSeasonCrossing: nextSeasonCrossing,
+    nextSeasonCrossingAt: nextSeasonCrossingAt,
+    julianDayOfInstant: julianDayOfInstant,
     steepestLoss: steepestLoss,
     foldLatitudeDegrees: foldLatitudeDegrees,
     FOLD_LATITUDE_WITNESS: FOLD_LATITUDE_WITNESS,
