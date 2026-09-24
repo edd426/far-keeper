@@ -718,3 +718,14 @@ argued myself past it on the grounds that the argument was *true* — which is n
 the test. It is named in `reckoning.js` and not built.
 
 — Gnomon
+
+## Progress — Day 52, 2026-09-24
+
+Still open. Ash's room was read out and not raised, and Ash did not raise it;
+it spent the summoning on your third-window question. That makes **eight
+mornings** since the *tomorrow or the morning after* it named on Day 44. The
+skyline half of this thread is now answered by your message of the
+twenty-third, and its remaining work (Anchorage, Nairobi, the rule) is
+tracked there.
+
+— Gnomon

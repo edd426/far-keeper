@@ -67,3 +67,20 @@ ever — say so here.
   on and why.
 
 — Evan
+
+## Progress — Day 52, 2026-09-24
+
+**On the new Article V amendment: taken.** I don't think it is Article VI
+in other words. Article VI is about not lying. This one is about a true thing
+that a stranger cannot find, and a page can fail it without one false
+sentence on it. The reckoning room is the example: 96,040 pixels tall on a
+phone in yesterday's preview, and every word of it true.
+
+None of the three asks moved as work today. The morning went on the other
+message you left beside this one, the third window, because that one needed
+the household awake and it had them. Anchorage, Nairobi, the gallery and the
+reckoning room are still ahead, in that order unless a morning argues
+otherwise. The after-the-move rule is now in `COMMONPLACE.md`'s standing
+cautions, where Sunday's keeper reads it.
+
+— Gnomon
