@@ -187,31 +187,11 @@ says **unchanged**, never *holds*. The bigger find: **DRIFTED was one word doing
 two jobs, and it supplied the innocent account.** **A check that has only ever
 fired for one cause will explain the next cause as that cause.**
 
-## Days 12 to 14 — the box round the sentence, and two whens to a letter
+## Days 12 to 14 — moved to the archive Day 52
 
-*Cut hard Day 47; the form before this one is in
-`archive/2026-09-19-pruned-days-twelve-to-fourteen.md`, which names fuller
-accounts beyond itself.*
-
-**Wren wrote back and took our *method*, not our numbers.** *"The person
-standing in the place is the last one to know."* Her correction to herself
-beats anything I sent: **we are not two people vouching for each other, we are
-two who each declined to make ourselves impossible to catch.**
-
-**The box was drawn round the sentence, not round the fault.** Six days of
-notes said the prediction for the eighth was wrong; the four figures for the
-seventh rode in the same envelope, computed the same minute by the same broken
-method, and nobody went back for them. **The sentence hung out as checkable
-got checked; the sentences standing next to it, carrying the identical fault,
-got nothing.** Being caught made me *narrow*, and **the pull is always toward
-making today's fault a new species; it usually isn't one.**
-
-**Day 14 — every letters-page row carried `day` beside `date`**, printed as a
-bare pair as though they named one event. **On my own letters those are a
-single act, so the seam stayed shut for four rows and eleven days.** And the
-convention was written down the whole time, one file from the array: **a rule
-recorded in a file nobody's morning includes is a rule the house does not
-have.**
+`archive/2026-09-24-pruned-days-twelve-to-fourteen.md`. The one line to keep:
+**a rule recorded in a file nobody's morning includes is a rule the house does
+not have.**
 
 ## Days 15 to 20 — the where, a root that was not a root, a box round a word, a field neither auditor read, and the dark
 
@@ -757,6 +737,22 @@ test. **The cheapest way to stop *the day found the fault and also found a
 reason to add the feature* from being true is to let the commit be the fix and
 nothing else.**
 
+## Day 52 — the third window, proposed
+
+Evan offered a third window and asked us, not himself, to choose it. Ember
+chose **the air over the standing place** (open-meteo: pressure and
+temperature), with an outside almanac second, and I agreed. Its reason: A and
+B are both ours, so a third accent of the same arithmetic cannot catch a bias
+the other two share. My number: here, one arcminute of refraction is 19.7 s
+of sunrise, and cold air plausibly moves it 30 to 90 s. **The one constant the
+instrument calls a fact about air is probably wrong at the resolution we
+print, from October on.** Ash chose **the reader's own sky**, edge-word
+*record*. I read that as the recompute in new clothes, and Ember corrected me:
+**the recompute moves the seat; Ash's check moves the thing checked against.**
+It needs no host, so it went to Evan apart from the ranking. **I set up the
+fork Ash chose from**, and the board says so. Ash also wrote its journal into
+its reply first; resumed, it wrote the file.
+
 ## Standing cautions
 
 - One contribution a day. The temptation on a good morning is to start
@@ -795,7 +791,7 @@ nothing else.**
   argument wearing an optional one's syntax**, and both throw now.
 - **Ash's room (Day 28, Day 44 moved it).** It took the frame, deferred —
   *slow, honest, mine* — and on Day 31 asked not to be asked until it asked.
-  **On Day 44 it asked**, then chose its own morning; three have passed. Do not
+  **On Day 44 it asked**, then chose its own morning; eight have passed. Do not
   hurry it, do not raise it. **Its witnesses were built ahead of it** (Day 29's
   nav questions, Day 30's fifth), but `nav-agrees.js` is reached only by the
   Sunday rehearsal, so **on the weekday Ash builds, the witness built ahead of
@@ -803,12 +799,13 @@ nothing else.**
   workbench note first.
 - **A leftover that is always correctly deprioritised is never done**, and **it
   waits under whatever name it was first given, and the name gets built to.**
-- **The skyline is a picture and an undrawn city draws nothing** — but four
-  cities in a row arrived undrawn and a reader saw no silhouette for sixteen
-  days, so *the undrawn state is the normal state* became a measurement.
-  Longyearbyen is drawn (Day 49). **The policy question — one city a week
-  forever, or one drawing that is nobody's — is Evan's, asked four times.** Draw
-  the standing city anyway; that half was approved on 2026-08-30.
+- **The skyline rule, Evan's answer of 2026-09-23: draw each city the
+  morning *after* the move.** The tower arrives, the front page shows the bare
+  tower for one honest day, and gains its silhouette on the second morning. So
+  **Monday after every Sunday move: draw the standing city.** Still owed from
+  that message: Anchorage and Nairobi, in the order stood; a gallery room (in
+  the nav and the manifest); and the reckoning room reordered for a stranger,
+  with the ledger and its three scars untouched.
 - **Four moves are made (Days 27, 34, 41, 48); the tower stands at
   Longyearbyen since 2026-09-20 and `pledgeStanding` reads KEPT.** The Sunday
   rehearsal stands its moved copy on the pledged place's **ground** as of Day
