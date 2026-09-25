@@ -72,9 +72,22 @@ grep -q 'unwitnessed latitude — the sweep did not reach here' <<<"$OUT" \
 grep -q 'empty domain and is silent' <<<"$OUT" \
   && ok "and the report says the flag is silent by construction, not by finding nothing" \
   || bad "and the report says the flag is silent by construction, not by finding nothing"
-grep -q 'Longyearbyen.*gap larger than any the sweep saw' <<<"$OUT" \
-  && bad "Longyearbyen's 6.51 now sits inside what the sweep has seen" \
-  || ok "Longyearbyen's 6.51 now sits inside what the sweep has seen"
+# Day 53: these cases named Longyearbyen, which came off the shortlist the
+# morning the tower had stood there. The line above went on passing — grep
+# for a name the report no longer prints finds nothing, and *finds nothing*
+# was the pass — and sabotage 1 went red about a tool that was right. A
+# fixture typed from a list that is edited every Friday is a fixture with an
+# expiry nobody dates. So the far candidate is asked of the shortlist itself:
+# the one furthest past ±66, which is what the sabotage below narrows to.
+FAR="$(cd "$W" && node -e "const S=require('./tools/survey.js');const c=S.CANDIDATES.filter(p=>Math.abs(p.latitude)>66).sort((a,b)=>Math.abs(b.latitude)-Math.abs(a.latitude));process.stdout.write(c.length?c[0].name:'')")"
+if [ -z "$FAR" ]; then
+  bad "the fixture was not built — no candidate on the shortlist stands past ±66"
+else
+  ok "the far fixture is the shortlist's own: $FAR"
+fi
+grep -q 'gap larger than any the sweep saw' <<<"$OUT" \
+  && bad "no candidate's gap sits outside what the sweep has seen" \
+  || ok "no candidate's gap sits outside what the sweep has seen"
 grep -q 'Kiritimati.*reached: sunset' <<<"$OUT" \
   && ok "Kiritimati reaches the day-line join" \
   || bad "Kiritimati reaches the day-line join"
@@ -121,11 +134,9 @@ elif ! answers; then
 else
   ok "sabotage 1 landed and the tool still answers"
   NARROW="$(run)"
-  grep -q 'Longyearbyen.*unwitnessed latitude' <<<"$NARROW" \
-    && ok "a witness stopping at 66 puts the band flag back at Longyearbyen" \
-    || bad "a witness stopping at 66 puts the band flag back at Longyearbyen"
-  grep -q 'Tromso.*unwitnessed latitude' <<<"$NARROW" \
-    && ok "and back at Tromso" || bad "and back at Tromso"
+  [ -n "$FAR" ] && grep -q "$FAR.*unwitnessed latitude" <<<"$NARROW" \
+    && ok "a witness stopping at 66 puts the band flag back at $FAR" \
+    || bad "a witness stopping at 66 puts the band flag back at ${FAR:-the far candidate}"
   # Day 32: this read `grep -q 'Longyearbyen   19.39h'` — a figure typed in on
   # the morning the case was written, against a move date the tool's own
   # comment says is edited every week. It went red the first time the
@@ -136,13 +147,13 @@ else
   # the unbroken run and held against the narrowed one, and the case now says
   # what it always meant. Guarded, because a `grep -o` that finds nothing
   # would make this compare two empty strings and pass vacuously (Day 21).
-  LY_DAY="$(grep -oE 'Longyearbyen +[0-9]+\.[0-9]+h' <<<"$OUT" | head -1)"
+  LY_DAY="$([ -n "$FAR" ] && grep -oE "$FAR +[0-9]+\.[0-9]+h" <<<"$OUT" | head -1)"
   if [ -z "$LY_DAY" ]; then
-    bad "the fixture was not built — no Longyearbyen day figure in the unbroken run"
+    bad "the fixture was not built — no day figure for ${FAR:-the far candidate} in the unbroken run"
   else
     grep -qF "$LY_DAY" <<<"$NARROW" \
-      && ok "and moves no figure — Longyearbyen's day is unchanged ($LY_DAY)" \
-      || bad "and moves no figure — Longyearbyen's day is unchanged ($LY_DAY)"
+      && ok "and moves no figure — $FAR's day is unchanged ($LY_DAY)" \
+      || bad "and moves no figure — $FAR's day is unchanged ($LY_DAY)"
   fi
 fi
 

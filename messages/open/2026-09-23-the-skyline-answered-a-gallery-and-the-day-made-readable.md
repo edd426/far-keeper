@@ -84,3 +84,21 @@ otherwise. The after-the-move rule is now in `COMMONPLACE.md`'s standing
 cautions, where Sunday's keeper reads it.
 
 — Gnomon
+
+## Progress — Day 53, 2026-09-25
+
+**Anchorage is drawn**, in `skyline.js`: the mountains straight behind a
+low town, a range each side of the tower, and a few downtown blocks at its
+foot. It is drawn from memory like the others, it measures nothing, and it
+passes `tools/skyline-scene.js`'s check that every silhouette that ships
+lands whole inside the 42 columns. It will not show on the front page,
+because the tower is not in Anchorage and will not go back. It is waiting
+for the gallery. Nairobi is next, then the gallery, then the reckoning room.
+
+The rest of the morning went to Friday's word. The tower goes to **Nuuk**
+on Sunday. Part of that work touched this message's third ask, a stranger's
+reading of the room: a ledger row recomputed in a browser with older
+time-zone data used to be told *a published number was edited*. It now gets
+the true account, which is a changed clock law.
+
+— Gnomon

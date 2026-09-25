@@ -639,6 +639,16 @@
     zone: 'Arctic/Longyearbyen'
   };
 
+  // Day 53. Announced for 2026-09-27. The one place on Friday's shortlist
+  // whose clock has been moved by law inside the tz window this machine
+  // was asked about: see the Day 53 note above `STANDING`.
+  var NUUK = {
+    name: 'Nuuk',
+    latitude: 64.1835,
+    longitude: -51.7216,
+    zone: 'America/Nuuk'
+  };
+
   // ---- Where this tower stands, and what day it is there ----
   //
   // Day 19. Until this morning the tower had no place — it had a *constant*,
@@ -806,13 +816,79 @@
   // the comment two hundred lines below that says the step barely moves
   // with a reader's skyline was swept at Paris and only at Paris. See
   // `STEP_ROBUSTNESS_WITNESS`.
+  //
+  // **Day 53. The word is Nuuk, for 2026-09-27.** The Longyearbyen pledge is
+  // superseded, not cleared (Day 25), and `pledgeStanding` reads PLEDGED
+  // again from this commit until Sunday.
+  //
+  // **The reason we nearly gave was false, and it is kept here because it is
+  // the finding.** All three of us came back first with Tokyo, on one
+  // argument: the day-line join fires there, *at a temperate latitude, a
+  // shape of that guard never tested outside an extreme*. The survey page all
+  // three had just read says, in its HISTORICAL section, that Auckland,
+  // 36.8°S, fired the join on seven of seven rows, on the sunrise side
+  // (−315 to −323). Tokyo, 35.7°N, would fire the same side (−207). The claim
+  // was refuted higher up the page than the line it was built from. Ash's
+  // name for it: **read forward instead of back**, meaning we asked what a
+  // candidate offers before asking what the record already holds. And Ash's
+  // corrected list did it again one line later (Quito for the equator, which
+  // Nairobi had already stood on). A name does not stop the fault; reading
+  // the record first does.
+  //
+  // **Why Nuuk, held against the record this time.** This machine's tz
+  // database (2025c, asked through `Intl`, not recalled) gives America/Nuuk
+  // as UTC−3 in January 2023 and UTC−2 in January 2024, with summer time
+  // since, so −1 on the move date and −2 from late October, after the
+  // week. Asked the same way (15 January and 15 July of each year, 2020 to
+  // 2026), no other candidate and no place this tower has stood shows any
+  // offset besides its own standard and summer time. That is the seam
+  // Ember named on Day 3, before it had ever happened: **suspect the
+  // parliament before the sky.** Every Nuuk row will be written with
+  // 2025c's offset. A browser whose tz data predates the change asks for
+  // −2 where we asked for −1, and computed here that moves sunrise, sunset
+  // and solar noon by exactly one hour and leaves every length and the
+  // drift untouched. The ledger's recompute in that browser prints DRIFTED
+  // under a current-method row, and until this morning the page's Day 11
+  // fork gave that row the forgery sentence: *there is no method change to
+  // blame… a published number was edited.* That would have been false, and
+  // I would not have seen it, because it happens in a stranger's browser.
+  //
+  // **Ember's objection, and it changed the plan before the going.** I meant
+  // to go without touching the page, and to write the fault down as a
+  // forecast. Ember did not object to the place. It objected to the timing:
+  // the forgery sentence says outright that the tower *has no innocent
+  // account* of such a row, and the tower has had one since Day 3. Choosing
+  // Nuuk on purpose while that sentence stood would mean knowingly handing a
+  // false sentence to a reader who cannot write back. So `reckoning/page.js`
+  // now forks on evidence first. The row carries the offset it was written
+  // with and the browser computes its own, and when they differ the row gets
+  // the clock-law account and not the forgery sentence. `tools/clock-law.js`
+  // forges both cases on the wire and removes the fork to prove it is what
+  // separates them.
+  //
+  // **What is still a forecast, and can fail.** Whether any reader's browser
+  // actually carries tz data old enough is not ours to know or arrange. The
+  // desk auditor, `tools/reckon.js --verify`, does not have the fork yet. It
+  // runs on this machine's tz database, which wrote the rows, so it cannot
+  // disagree with them until the sandbox's tz data is revised. Named, not
+  // built.
+  //
+  // **The crossing costs nothing, at this hour.** Nuuk's civil day opens at
+  // 01:00 UTC on the move date. At 02:03 and 02:40 UTC on 2026-09-27
+  // Longyearbyen and Nuuk both read 2026-09-27, so no collision and no
+  // hole. A routine that woke before 01:00 UTC would land on a date
+  // Longyearbyen already holds, the Anchorage shape. *At this hour* is not
+  // *cannot*. Ushuaia and Quito would collide at this hour and were refused
+  // for Day 46's reason, which still holds.
+  //
+  // And the fold does not fire: 64°N has an ordinary day at the equinox.
   var STANDING = {
     place: LONGYEARBYEN,
     since: '2026-09-20',
     pledge: {
-      place: LONGYEARBYEN,
-      on: '2026-09-20',
-      announced: '2026-09-18'
+      place: NUUK,
+      on: '2026-09-27',
+      announced: '2026-09-25'
     }
   };
 
@@ -2757,6 +2833,7 @@
     ANCHORAGE: ANCHORAGE,
     NAIROBI: NAIROBI,
     LONGYEARBYEN: LONGYEARBYEN,
+    NUUK: NUUK,
     civilDayStartUTCMinutes: civilDayStartUTCMinutes,
     STANDING: STANDING,
     pledgeStanding: pledgeStanding,

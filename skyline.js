@@ -108,6 +108,25 @@
       '┌─┤  │ │  ├─┐                 │  │   │  │',
       '│ │  │ │  │ │                 │  │   │  │'
     ],
+    // Anchorage, where the tower stood from 2026-09-06 to 2026-09-12, drawn
+    // on 2026-09-25, weeks after leaving, because Evan's answer of
+    // 2026-09-23 asked for the set to be made whole in the order stood. What
+    // a person who has been there names first is the mountains standing
+    // straight behind a low town, so it is a range on both sides of the tower
+    // and a few downtown blocks at its foot on the left. Drawn from memory,
+    // like the others, and never on the front page again unless the tower
+    // goes back, which it will not (no city twice). It is kept for the
+    // gallery Evan asked for.
+    Anchorage: [
+      '      ╱╲                          ╱╲',
+      '     ╱  ╲  ╱╲                    ╱  ╲',
+      '    ╱    ╲╱  ╲                  ╱    ╲',
+      '   ╱          ╲                ╱      ╲',
+      '  ╱  ┌┐                       ╱        ╲',
+      ' ╱ ┌─┤│┌┐                    ╱          ╲',
+      '╱  │ │││├┐                               ╲',
+      '   │ │││││'
+    ],
     // Longyearbyen, where the tower stands now. The thing a person who has
     // been there names first is not a building: it is that the town sits in
     // a narrow valley between mountains with their tops cut flat, and that

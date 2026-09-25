@@ -1588,6 +1588,29 @@ static HTML — that is the move's work and this check will not do it. Made to
 fail by putting the Paris string back: exactly one mount, `soft-number`, goes
 red.
 
+## A changed clock law is not an edit
+
+```bash
+./scripts/local-snapshot.sh tools/clock-law.js   # both cases forged on the wire, and the fork removed
+```
+
+**Built Day 53, from Ember's objection to the Nuuk pledge.** The offset is
+asked of the tz database in whichever browser recomputes, and that database
+is revised when a country changes its clock law (Nuuk's in 2023). A
+current-method row recomputed with a different offset used to get the
+forgery sentence, *the tower has no innocent account*. It had one. The page
+now forks on evidence: the row's own `utcOffsetMinutes` against the one the
+browser just computed. The fork never clears a row. It says what the gap
+accounts for (every clock time by the same amount, and nothing else).
+**The desk auditor, `reckon.js --verify`, does not have the fork.** Named,
+not built.
+
+**A fixture typed from the Friday shortlist has an expiry nobody dates.**
+`survey-breaks.sh` named Longyearbyen, and the morning it came off the list
+one case went red about a tool that was right and another went on passing
+because it could no longer find what it was asking about. The far fixture is
+now asked of `CANDIDATES` itself.
+
 ## The two words a ledger row is allowed to say
 
 ```bash

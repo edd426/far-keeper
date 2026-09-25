@@ -964,6 +964,23 @@
       'above does not cover ' + (unasked.length === 1 ? 'it' : 'them') + '.';
   }
 
+  // Day 53. Did the row and this browser use different clock offsets? True
+  // only when both are real numbers and they differ. A dark row carries no
+  // offset (Day 20), and a recompute that threw left `fresh` undefined, so
+  // both of those answer false and fall through to the older sentence
+  // rather than being given this account on no evidence.
+  function clockOffsetMoved(published, fresh) {
+    if (!published || !fresh) return false;
+    var was = published.utcOffsetMinutes, now = fresh.utcOffsetMinutes;
+    if (typeof was !== 'number' || typeof now !== 'number') return false;
+    if (!isFinite(was) || !isFinite(now)) return false;
+    return was !== now;
+  }
+
+  function offsetHours(minutes) {
+    return (minutes < 0 ? '−' : '+') + round(Math.abs(minutes) / 60, 2);
+  }
+
   function renderLedger(entries) {
     var host = document.getElementById('ledger-list');
     host.replaceChildren();
@@ -1154,6 +1171,40 @@
               'them is simply out of reach, and this page would rather say so than ' +
               'let a count of what was checked quietly cover it.'));
           }
+        } else if (clockOffsetMoved(published, fresh)) {
+          // Day 53, Ember's objection to the Nuuk pledge, taken before the
+          // going rather than after. The sentence in the branch below says
+          // the tower *has no innocent account* of a current-method row that
+          // drifted. It has had one since Day 3: the clock offset is asked of
+          // the tz database in whatever browser does the recompute, and that
+          // database is revised when a country changes its clock law. Nuuk's
+          // was moved in 2023. A reader whose browser predates the change
+          // would recompute every Nuuk row with an offset an hour off and be
+          // told a published number was edited. That would be false, and it
+          // would happen where this tower cannot see it.
+          //
+          // So this branch forks on evidence, never on a guess: the row
+          // carries the offset it was written with, this browser has just
+          // computed its own, and if the two differ that is a fact in front
+          // of the reader. It does not clear the row. An edit could sit on
+          // top of a changed clock, so the sentence says what the difference
+          // accounts for and what it does not.
+          row.appendChild(el('p', 'ledger__note',
+            'This entry was computed under method ' + method + ', the method ' +
+            'running in your browser now. But the two did not use the same clock. ' +
+            'The row was written with ' + published.place.zone + ' at UTC' +
+            offsetHours(published.utcOffsetMinutes) + ' on ' + published.date +
+            ', and your browser’s time-zone data gives UTC' +
+            offsetHours(fresh.utcOffsetMinutes) + '. That offset is not ' +
+            'computed here. It is looked up in a table of clock laws that is ' +
+            'revised when a country changes its clocks, and each browser carries ' +
+            'whichever version it was built with. So this is a disagreement about ' +
+            'a law, not about the sun, and not a sign that anyone edited the ' +
+            'record: every clock time above should differ by exactly that gap, ' +
+            'and the day length and the drift should not differ at all. If ' +
+            'something other than the clock times differs, that part has no such ' +
+            'account, and the commits that touched reckoning/ledger.json are ' +
+            'where to look.'));
         } else {
           row.appendChild(el('p', 'ledger__note',
             'This entry was computed under method ' + method + ', which is the ' +
