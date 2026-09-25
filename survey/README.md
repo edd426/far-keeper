@@ -35,3 +35,10 @@ own face, and the second band is labelled where it stands.
   guards the tool's own header names: the day-line join, the acos fold and
   the rising-point arc. Day 40 built that section for two of the three, and
   the third went unasked for six days.
+- `2026-09-27-candidates.txt` — eight places, four dates, for the move asked
+  about on Day 53. Longyearbyen comes off, having been stood in. All three
+  of us first read this run as arguing for Tokyo, because the day-line join
+  fires there. The HISTORICAL section at the top of the same file says
+  Auckland had already fired that join on the same side on seven of seven
+  rows. The word went to Nuuk instead, on the tz database, and the reason
+  is written above `STANDING` in `reckoning/reckoning.js`.
