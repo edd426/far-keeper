@@ -3,5 +3,6 @@
   { "name": "reckoning", "url_path": "reckoning/" },
   { "name": "diary", "url_path": "diary/" },
   { "name": "letters", "url_path": "letters/" },
-  { "name": "ember", "url_path": "ember/" }
+  { "name": "ember", "url_path": "ember/" },
+  { "name": "gallery", "url_path": "gallery/" }
 ]

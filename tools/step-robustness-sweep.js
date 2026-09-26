@@ -145,6 +145,7 @@ function main() {
 
   var days = daysInYear(YEAR);
   var disagreed = [];
+  var unaskable = false;
 
   // ---- 1. The reproduction, inside the band the figure was banked in ----
   //
@@ -185,8 +186,17 @@ function main() {
       r.datesDroppedByWholeBand);
   });
 
+  // Day 54. The banked standing figure is a claim about `W.standingPlace`,
+  // the place the tower stood in on the morning it was gathered, and it is
+  // held against that place's row — never against wherever the tower stands
+  // today. Until today it was held against `R.STANDING`, so the first
+  // morning after any move it compared a banked Longyearbyen figure with
+  // whatever the new place's row was, or with nothing, and printed DIFFERS —
+  // the alarm, which `banked.js` reserves for *the world no longer says what
+  // we banked* — while the comment beside it said *a hole, not a
+  // disagreement*. Nothing in the world had moved; the tower had.
   var here = null;
-  rows.forEach(function (r) { if (r.place === R.STANDING.place.name) here = r; });
+  rows.forEach(function (r) { if (r.place === W.standingPlace) here = r; });
 
   // ---- 3. Where the band turns ----
   //
@@ -222,25 +232,29 @@ function main() {
   // ---- 4. What we banked, against what the world says now ----
   say('');
   if (here) {
-    say('the standing place, ' + R.STANDING.place.name + ', ' + fmt(here.latitude, 1) + '°:');
+    say('the place the witness was banked at, ' + W.standingPlace + ', ' + fmt(here.latitude, 1) + '°:');
     say('  worst shift ' + fmt(here.anyStep.shift, 2) + '′ = ' + fmt(sw(here.anyStep.shift), 2) +
       ' sun-widths, on ' + here.anyStep.date);
     say('  banked: ' + fmt(W.standingWorstArcminutes, 2) + '′ on ' + W.standingWorstOn +
       ' at ' + W.standingPlace);
-    var holds = here.place === W.standingPlace &&
-      here.anyStep.date === W.standingWorstOn &&
+    var holds = here.anyStep.date === W.standingWorstOn &&
       Math.abs(here.anyStep.shift - W.standingWorstArcminutes) < AGREEMENT_ARCMINUTES;
-    if (!holds) disagreed.push('the standing place\'s worst shift');
+    if (!holds) disagreed.push('the banked standing place\'s worst shift');
+    if (R.STANDING.place.name !== W.standingPlace) {
+      // A reading, not a verdict. The page says so on its own face
+      // (`sweptHere` in page.js) and prints no figure for this place.
+      say('  the tower stands at ' + R.STANDING.place.name + ' now, where this witness banked');
+      say('  no figure. The page says the sweep was not run there. That is neither a');
+      say('  disagreement with the world nor a hole in what was banked.');
+    }
   } else {
-    // Not a fault and not an all-clear. The tower moves weekly; on the day
-    // it stands somewhere this sweep's place list does not name, the banked
-    // standing figure is about a place it has left. Say so rather than let
-    // the check pass by having nothing to compare — an empty domain always
-    // says yes (Day 27).
-    say('the tower stands at ' + R.STANDING.place.name + ', which this sweep\'s place list does');
-    say('  not name, so the banked standing figure is about a place it has left. That is a');
-    say('  hole in the witness, not a disagreement with the world.');
-    disagreed.push('nothing was compared at the standing place');
+    // The witness names a place this sweep does not visit, so its standing
+    // figure cannot be asked. That is a hole, and a hole is not the alarm
+    // (Day 43): say UNASKABLE and exit 2, which `banked.js` carries through.
+    // An empty domain always says yes (Day 27), so it is never an AGREES.
+    say('UNASKABLE — the witness banks a figure for ' + W.standingPlace + ', which this sweep\'s');
+    say('  place list does not name, so nothing here can ask it again.');
+    unaskable = true;
   }
 
   say('');
@@ -253,7 +267,8 @@ function main() {
     say('DIFFERS — the world no longer says what we banked: ' + disagreed.join('; ') + '.');
     return 1;
   }
-  say('AGREES — the Paris figure reproduces and the standing place\'s worst shift is what ' +
+  if (unaskable) return 2;
+  say('AGREES — the Paris figure reproduces and ' + W.standingPlace + '\'s worst shift is what ' +
     'was banked. The 5.4′ bound is still a fact about one band of latitude.');
   return 0;
 }

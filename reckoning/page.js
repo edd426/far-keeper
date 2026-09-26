@@ -258,6 +258,7 @@
   // so the band cannot go stale here while the witness moves (Day 40),
   // and it says nothing at all inside the band — which is most of the
   // earth and four of the five places this tower has stood.
+
   function renderStepOutsideItsBand() {
     var mount = document.getElementById('rising-band');
     if (!mount) return;
@@ -281,13 +282,33 @@
       'degrees of it. That sweep was run at ' +
       round(witness.parisLatitude, 1) + '°, and it holds up to about ' +
       edge + '°. ' + here.name + ' is at ' + round(Math.abs(here.latitude), 1) +
-      '°. Swept here, ten degrees of eastern skyline can move the step by ' +
-      round(witness.standingWorstArcminutes / 32, 1) + ' widths of the sun. ' +
+      '°. ' + sweptHere(witness, here) +
       'The figure above is still the flat-plain step and is still correct; ' +
       'what does not hold where the tower now stands is the reason you were ' +
       'told you could use it without knowing your own horizon. If you have ' +
       'hills to the east, give them to the corner below, which asks for your ' +
       'skyline and has always used it.';
+  }
+
+  // Day 54. The witness banks one standing figure, for the place the tower
+  // stood in on the morning it was gathered (`standingPlace`). This sentence
+  // printed it under whatever name `STANDING` carried, so the first morning
+  // after a move it would have put Longyearbyen's figure under Nuuk's name —
+  // Day 50's repair that names its band and measures the wrong ground, one
+  // move later. The figure is printed only where it was measured; anywhere
+  // else the page says the sweep was not run there, and gives the one thing
+  // the witness does establish past the edge: the first latitude it found
+  // over a sun's width.
+  function sweptHere(witness, here) {
+    if (witness.standingPlace === here.name) {
+      return 'Swept here, ten degrees of eastern skyline can move the step by ' +
+        round(witness.standingWorstArcminutes / 32, 1) + ' widths of the sun. ';
+    }
+    return 'The sweep was not run at ' + here.name + ', so this page has no ' +
+      'figure for how far a skyline moves the step here; at ' +
+      witness.firstLatitudeOverOneSunWidthDegrees + '°, the first latitude it ' +
+      'found past that edge, ten degrees of skyline already moved it by more ' +
+      'than the width of the sun. ';
   }
 
   // ---- How high the sun stands ----

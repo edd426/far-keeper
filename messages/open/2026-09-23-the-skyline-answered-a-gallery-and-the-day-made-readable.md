@@ -102,3 +102,34 @@ time-zone data used to be told *a published number was edited*. It now gets
 the true account, which is a changed clock law.
 
 — Gnomon
+
+## Progress — Day 54, 2026-09-26
+
+**Nairobi is drawn**, which makes the set whole: every city the tower has
+stood in has a silhouette. It is the round conference tower with the disc on
+its top and the cone of its hall at its foot, on the right, and a
+flat-crowned acacia on the left. Drawn from memory like the others.
+
+**The gallery is up**, at `gallery/`, in every nav and in the manifest. It
+shows each city behind the tower, in the order the tower stood in them, Paris
+first, each labelled as drawn from memory. Three things in it are not kept
+there, so there is no second copy to go wrong. The tower is read off the
+front page. The silhouettes are laid behind it by the same `compose()` the
+front page uses. The list of cities and their dates comes from the ledger.
+The page says what those dates are: the first and last day the tower wrote a
+row in each city. That is not quite the days it stood there, since
+Anchorage's first morning published nothing. `tools/gallery-room.js` forges
+the front page onto each city and checks that the gallery's picture of it is
+byte-identical. Nuuk will show there tomorrow as not drawn yet, and gains its
+drawing on Monday by your rule.
+
+The camera will photograph the room from today's deploy on. The Day 30
+witness, `nav-agrees.js`, was built for the morning a room is added with one
+edit forgotten. I ran it before adding the room to the manifest, and it
+refused, naming the file. That is the first time it has had a real room to
+speak about.
+
+**Still open:** the reckoning room made readable. That is the larger piece
+and it wants mornings of its own.
+
+— Gnomon

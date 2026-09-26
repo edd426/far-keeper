@@ -39,16 +39,27 @@ function check(cond, what, why) { if (cond) ok(what); else bad(what, why); }
 
 // Forge STANDING on the wire, never on disk (the ledger-verdicts trick).
 // The module is rewritten as it is served, so nothing in the tree moves.
+//
+// Day 54: the needle is anchored at both ends of the field and names no
+// identifier. It was `/var STANDING = \{\s*place: [A-Z_]+,/`, which matches
+// `place: LONGYEARBYEN,` and nothing else — so in a tower whose place is an
+// inline object (which is what move-rehearsal.sh writes into both copies)
+// the forgery never landed and the suite went red in both, reading BLIND.
+// Day 24's fault, fixed in three shell suites then and in standing-page.js
+// on Day 26, and written again here on Day 48.
+const STANDING_NEEDLE = /(var STANDING = \{\s*place:\s*)([\s\S]*?)(,\s*\n\s*since:)/;
 async function withStanding(page, place, then) {
   let landed = false;
   await page.route('**/reckoning.js*', async (route) => {
     const res = await route.fetch();
     const before = await res.text();
-    const body = before.replace(
-      /var STANDING = \{\s*place: [A-Z_]+,/,
-      'var STANDING = { place: ' + JSON.stringify(place) + ','
-    );
-    landed = body !== before;
+    const body = before.replace(STANDING_NEEDLE,
+      (m, head, _old, tail) => head + JSON.stringify(place) + tail);
+    // Landed means the slot now holds this place — not that the bytes moved.
+    // Forged onto the place a copy already stands in (the rehearsal's control),
+    // the bytes do not move and the forgery has still landed (Day 54).
+    const slot = body.match(STANDING_NEEDLE);
+    landed = !!slot && slot[2] === JSON.stringify(place);
     await route.fulfill({ response: res, body });
   });
   await page.goto(URL + '/reckoning/', { waitUntil: 'networkidle' });
@@ -149,7 +160,49 @@ async function bandText(page) {
         'a flag that drifts toward a diagnosis manufactures an alarm the measurement does not license');
       check(/corner/.test(b.text),
         'and it points at the corner, which has always used the reader\'s own skyline');
+
+      // Day 54. The witness banks a standing figure for one place only
+      // (`standingPlace`), and until today this sentence printed it under
+      // any name: the first morning at Nuuk it would have read *Swept here*
+      // over Longyearbyen's number. Testbed is not where it was swept.
+      const banked = await page.evaluate(() => {
+        const w = Reckoning.STEP_ROBUSTNESS_WITNESS;
+        return { place: w.standingPlace, widths: (Math.round(w.standingWorstArcminutes / 32 * 10) / 10).toString() };
+      });
+      check(!/Swept here/.test(b.text) && !b.text.includes(banked.widths + ' widths'),
+        'and it does not print ' + banked.place + '\'s banked figure (' + banked.widths +
+          ' widths) under a place that was never swept',
+        'a figure measured at one place, printed under another place\'s name');
+      check(/sweep was not run at Testbed/.test(b.text),
+        'and it says the sweep was not run here');
     });
+
+  // ---- 4b. Forged onto the place the witness was swept at: the figure is its own ----
+  //
+  // The other half of the fork, so a page that simply never prints the
+  // figure cannot pass case 4 for free.
+  {
+    const own = await page.evaluate(() => {
+      const w = Reckoning.STEP_ROBUSTNESS_WITNESS;
+      for (const key of Object.keys(Reckoning)) {
+        const v = Reckoning[key];
+        if (v && typeof v === 'object' && v.name === w.standingPlace && v.zone) {
+          return { place: v, widths: (Math.round(w.standingWorstArcminutes / 32 * 10) / 10).toString() };
+        }
+      }
+      return null;
+    });
+    check(!!own, 'the instrument knows the place its witness was swept at');
+    if (own) {
+      await withStanding(page, own.place, async (landed) => {
+        check(landed, 'the forgery onto ' + own.place.name + ' landed in the served module');
+        const b = await bandText(page);
+        check(b && !b.hidden && /Swept here/.test(b.text) && b.text.includes(own.widths + ' widths'),
+          'standing at ' + own.place.name + ', the hedge prints the figure swept there (' + own.widths + ' widths)',
+          'the place the witness measured is told nothing about its own measurement');
+      });
+    }
+  }
 
   // ---- 5. It reads the witness, not a typed latitude ----
   //
@@ -161,11 +214,14 @@ async function bandText(page) {
     await page.route('**/reckoning.js*', async (route) => {
       const res = await route.fetch();
       const before = await res.text();
-      const body = before
-        .replace(/var STANDING = \{\s*place: [A-Z_]+,/,
-          'var STANDING = { place: ' + JSON.stringify({ name: 'Testbed', latitude: 20, longitude: 0, zone: 'Etc/UTC' }) + ',')
+      const testbed = { name: 'Testbed', latitude: 20, longitude: 0, zone: 'Etc/UTC' };
+      const moved = before.replace(STANDING_NEEDLE,
+        (m, head, _old, tail) => head + JSON.stringify(testbed) + tail);
+      const body = moved
         .replace(/lastLatitudeUnderOneSunWidthDegrees: \d+/, 'lastLatitudeUnderOneSunWidthDegrees: 5');
-      landed = body !== before && /lastLatitudeUnderOneSunWidthDegrees: 5\b/.test(body);
+      // Both halves must land, each on its own: before Day 54 this asked only
+      // whether the body changed, and the witness edit alone satisfies that.
+      landed = moved !== before && body !== moved && /lastLatitudeUnderOneSunWidthDegrees: 5\b/.test(body);
       await route.fulfill({ response: res, body });
     });
     await page.goto(URL + '/reckoning/', { waitUntil: 'networkidle' });
