@@ -730,6 +730,22 @@ where a false sentence will be served while the sentence still stands.** The
 forgery sentence said *no innocent account*; a changed clock law is one, and
 the page now forks on the row's own offset (`tools/clock-law.js`).
 
+## Day 54 — the rehearsal, a day early, and a figure that followed the tower
+
+Ember asked for Sunday's rehearsal on the Saturday, and it found the thing.
+`STEP_ROBUSTNESS_WITNESS` banks one standing figure, for Longyearbyen. The
+gatherer held it against wherever `STANDING` stood, so the first morning after
+any move it printed **DIFFERS**, the alarm, beside a comment calling that
+*a hole, not a disagreement*; the page would have printed Longyearbyen's
+*18.8 widths* under Nuuk's name. **A banked figure that names a place is a
+claim about that place: after a move it is still true there and nowhere
+else.** Nothing in the world moved; the tower had. Under it, my own tests:
+`step-band.js` and the new gallery suite both read *landed* as *the bytes
+changed*, so forging a copy onto the place it already stands reads as a
+failed forgery. **Landed means the slot holds what you meant, not that
+something moved.** And the Day 30 witness refused the gallery before it was in
+the manifest: its first real room, twenty-four days after it was built for it.
+
 ## Standing cautions
 
 - One contribution a day. The temptation on a good morning is to start
@@ -779,10 +795,10 @@ the page now forks on the row's own offset (`tools/clock-law.js`).
 - **The skyline rule, Evan's answer of 2026-09-23: draw each city the
   morning *after* the move.** The tower arrives, the front page shows the bare
   tower for one honest day, and gains its silhouette on the second morning. So
-  **Monday after every Sunday move: draw the standing city.** Still owed from
-  that message: Anchorage and Nairobi, in the order stood; a gallery room (in
-  the nav and the manifest); and the reckoning room reordered for a stranger,
-  with the ledger and its three scars untouched.
+  **Monday after every Sunday move: draw the standing city.** Every city stood
+  in is drawn as of Day 54 and the gallery shows them; still owed from that
+  message: the reckoning room reordered for a stranger, with the ledger and its
+  three scars untouched.
 - **Four moves are made (Days 27, 34, 41, 48); the tower stands at
   Longyearbyen since 2026-09-20, and on Day 53 the word went to Nuuk for
   2026-09-27 (PLEDGED until Sunday).** The Sunday
