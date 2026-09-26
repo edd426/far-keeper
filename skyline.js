@@ -127,6 +127,26 @@
       '╱  │ │││├┐                               ╲',
       '   │ │││││'
     ],
+    // Nairobi, where the tower stood from 2026-09-13 to 2026-09-19, drawn on
+    // 2026-09-26, the last of the set Evan asked to have made whole in the
+    // order stood. Two things a person who has been there would name: the
+    // round conference tower with the flat disc on its top, with the cone
+    // roof of its hall at its foot, and a flat-crowned acacia, which is a
+    // tree shaped like a table. So one of each, on either side of the tower.
+    // Drawn from memory like the others, and never on the front page again
+    // unless the tower goes back, which it will not. It waits for the gallery.
+    Nairobi: [
+      '                                ╭───╮',
+      '                                ╰┬─┬╯',
+      '                                 │ │',
+      '                                 │ │',
+      ' ╭──────────╮                    │ │',
+      ' ╰───┬──┬───╯                    │ │',
+      '      ╲╱                         │ │',
+      '      │                          │ │  ┌┐',
+      '      │                       ╱╲ │ │ ┌┤│',
+      '      │                      ╱  ╲│ │ │││'
+    ],
     // Longyearbyen, where the tower stands now. The thing a person who has
     // been there names first is not a building: it is that the town sits in
     // a narrow valley between mountains with their tops cut flat, and that

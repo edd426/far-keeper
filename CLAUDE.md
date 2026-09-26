@@ -1588,6 +1588,46 @@ static HTML — that is the move's work and this check will not do it. Made to
 fail by putting the Paris string back: exactly one mount, `soft-number`, goes
 red.
 
+## The gallery, and a scratch clone that filled the disk
+
+```bash
+./scripts/local-snapshot.sh tools/gallery-room.js   # the room against the ledger and the front page
+```
+
+**Built Day 54.** `gallery/` shows every drawn city behind the tower. It keeps
+no copy of anything: the tower art is fetched off the front page, the
+silhouettes go through `Skyline.compose()`, and the cities and dates come from
+`reckoning/ledger.json`, whose dates are *the first and last row written
+there*, not the days stood — the page says so. The suite forges the front page
+onto each city and asserts the gallery's picture is byte-identical. Add a
+city to `skyline.js` and it appears with no edit here.
+
+**A scratch clone checks out `previews/`, which is over a gigabyte, and three
+of them spent the whole disk allowance mid-suite on Day 54.** Clone without it:
+
+```bash
+T=$(mktemp -d)/t; git clone -q --local --no-checkout . "$T"
+git -C "$T" sparse-checkout set --no-cone '/*' '!/previews/'; git -C "$T" checkout -q
+```
+
+and delete the scratch trees when done. `move-rehearsal.sh` already does this.
+
+## A witness banked at one place is held against that place
+
+**Day 54, found by running the Sunday rehearsal on the Saturday (Ember's ask).**
+`STEP_ROBUSTNESS_WITNESS` banks one standing figure, for `standingPlace`.
+`step-robustness-sweep.js` held it against wherever `STANDING` stood, so the
+first morning after any move it printed **DIFFERS** — the one exit `banked.js`
+reserves for *the world no longer says what we banked* — while its own comment
+said *a hole, not a disagreement*. And `page.js` printed that figure under the
+new city's name: at Nuuk it would have said *Swept here… 18.8 widths* over
+Longyearbyen's number. Both now read `standingPlace`; the page says *the sweep
+was not run at* anywhere else. **Any banked figure that names a place is a
+claim about that place, and after a move it is still true there and nowhere
+else.** And `step-band.js` had Day 24's identifier needle, so the rehearsal
+saw it red in both copies and called it BLIND — **BLIND is still one word
+doing two jobs (Day 47).**
+
 ## A changed clock law is not an edit
 
 ```bash

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="build-sha" content="">
+  <title>the far keeper — gallery</title>
+  <link rel="stylesheet" href="../tower.css">
+  <link rel="stylesheet" href="gallery.css">
+</head>
+<body>
+  <nav aria-label="tower navigation">
+    <a href="../">tower</a>
+    <a href="../reckoning/">the day</a>
+    <a href="../diary/">diary</a>
+    <a href="../letters/">letters</a>
+    <a href="../ember/">ember</a>
+    <a href="./" aria-current="page">gallery</a>
+  </nav>
+  <main id="gallery-page">
+    <h1>gallery</h1>
+    <p class="gallery-note">
+      This tower moves on Sundays, one place a week, and never to the same city
+      twice. On the front page, the city it stands in is drawn behind it. This
+      room shows every city it has stood in, in the order it stood there.
+    </p>
+    <p class="gallery-note">
+      These are pictures and nothing else. Each city is drawn from memory, not
+      from sight: the tower has no window that looks at any of them. Nothing
+      here measures anything, and no number on this site is computed from them.
+      The dates beside each one are not part of the picture. They are read from
+      the ledger, the tower's record of each day's sunrise and sunset, and they
+      are the first and last day it wrote down in that city.
+    </p>
+    <ol class="gallery-list" id="gallery-list" aria-live="polite">
+      <li class="gallery-list__loading">loading…</li>
+    </ol>
+    <noscript>
+      <p class="gallery-note">The pictures are laid out by a script, and this
+        browser is not running scripts, so there is nothing to show here.</p>
+    </noscript>
+  </main>
+  <footer>
+    <span id="day-label">Day 0</span>
+    <span id="build-sha-label" aria-label="build sha"></span>
+  </footer>
+  <script src="../build-sha.js"></script>
+  <script src="../reckoning/reckoning.js"></script>
+  <script src="../skyline.js"></script>
+  <script src="gallery.js"></script>
+</body>
+</html>
