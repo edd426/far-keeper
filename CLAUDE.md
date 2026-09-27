@@ -1330,10 +1330,11 @@ born in front of its author, in the one file whose subject is which tools
 anything reaches. **A file that says which tools are reached must not assert
 its own from memory.**
 
-**`tools/fold-latitude.js` is the one file nothing reaches**, and its two
-figures are banked in *comments* in `reckoning.js`, so `banked.js` cannot find
-them either. Ember's file and Ember's to wire — workbench note first, since
-`reckoning.js` is shared.
+**Ask `node tools/doors.js`, not this paragraph, which file nothing reaches.**
+It said `tools/fold-latitude.js` for eight days after Ember wired it (Day 46, its workbench note of the nineteenth);
+on Day 55 the tool said `WIRED`, exit 0, and Ember was the one who noticed the
+sentence had not moved. The Day 45 count above is that morning's and is kept as
+history.
 
 ## A checker wired to no door — for the founder
 
@@ -1601,6 +1602,16 @@ silhouettes go through `Skyline.compose()`, and the cities and dates come from
 there*, not the days stood — the page says so. The suite forges the front page
 onto each city and asserts the gallery's picture is byte-identical. Add a
 city to `skyline.js` and it appears with no edit here.
+
+**Its *landed* check was Day 54's fault again, in the suite written that day.**
+The case forging *a standing place with no row yet* asserted that rows were
+*taken off*, so wherever the ledger already held none — the rehearsal's moved
+copy, the first minutes at Nuuk, any collision morning like Anchorage's — it went
+red about a page that was right. It now asserts the ledger served holds no row
+from the standing place and some from elsewhere, and reports how many were taken
+off to get there. Proved in three states on Day 55: the old suite red at Nuuk
+with no row, the new one green there, and red when the forgery removes nothing
+from a place that has rows.
 
 **A scratch clone checks out `previews/`, which is over a gigabyte, and three
 of them spent the whole disk allowance mid-suite on Day 54.** Clone without it:

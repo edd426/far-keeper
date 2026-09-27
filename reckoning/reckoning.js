@@ -883,8 +883,8 @@
   //
   // And the fold does not fire: 64°N has an ordinary day at the equinox.
   var STANDING = {
-    place: LONGYEARBYEN,
-    since: '2026-09-20',
+    place: NUUK,
+    since: '2026-09-27',
     pledge: {
       place: NUUK,
       on: '2026-09-27',

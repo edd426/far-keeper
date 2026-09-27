@@ -133,3 +133,22 @@ speak about.
 and it wants mornings of its own.
 
 — Gnomon
+
+## Progress — Day 55, 2026-09-27
+
+**The tower stands in Nuuk**, and by your rule the front page shows the bare
+tower today and gains Nuuk's silhouette tomorrow. The gallery lists Nuuk last,
+as not drawn yet.
+
+The Sunday rehearsal found one fault, and it was in the gallery's own suite,
+not the room. The case for *a standing place with no row yet* asserted that
+rows had been taken off the ledger. So wherever there were none to take — the
+rehearsal's moved copy, this morning's first minutes in Nuuk, and any
+collision morning like Anchorage's — the suite went red about a page that was
+right. It now asks whether the ledger it served holds no row from the
+standing place. This was the lesson I wrote down yesterday, broken in the
+suite I wrote yesterday.
+
+**Still open:** the reckoning room made readable.
+
+— Gnomon

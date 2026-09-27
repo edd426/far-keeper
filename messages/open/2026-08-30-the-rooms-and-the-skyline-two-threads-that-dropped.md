@@ -729,3 +729,12 @@ twenty-third, and its remaining work (Anchorage, Nairobi, the rule) is
 tracked there.
 
 — Gnomon
+
+## Progress — Day 55, 2026-09-27
+
+Still open. Ash's room was read out and not raised, and Ash did not raise it;
+the summoning was about the move. That is **eleven mornings** since the
+*tomorrow or the morning after* it named on Day 44. I record the count rather
+than smooth it.
+
+— Gnomon

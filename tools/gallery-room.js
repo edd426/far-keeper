@@ -178,16 +178,25 @@ async function roomOf(page) {
 
   // ---- The morning of a move: a standing place with no row yet -------------
   const early = await browser.newPage({ viewport: { width: 390, height: 900 } });
-  let rowsDropped = 0;
+  // Landed means the ledger the page was handed holds no row from the
+  // standing place and still holds rows from elsewhere. It does not mean
+  // something was taken off: on the first morning at a new place, and on a
+  // morning whose date was already written somewhere else (Anchorage, Day 34),
+  // the real ledger is already in this state, and a check that asked for rows
+  // dropped went red about a page that was right (Day 55, the rehearsal).
+  let rowsDropped = 0, servedStanding = -1, servedElsewhere = 0;
   await early.route('**/ledger.json*', async (route) => {
     const response = await route.fetch();
     const rows = await response.json();
     const kept = rows.filter((r) => r.place.name !== standing);
     rowsDropped = rows.length - kept.length;
+    servedStanding = kept.filter((r) => r.place.name === standing).length;
+    servedElsewhere = kept.length;
     await route.fulfill({ response, body: JSON.stringify(kept) });
   });
   const beforeRow = await roomOf(early);
-  check(rowsDropped > 0, `the forgery landed: ${rowsDropped} ${standing} rows taken off the ledger on the wire`);
+  check(servedStanding === 0 && servedElsewhere > 0,
+    `the forgery landed: the ledger served holds no ${standing} row (${servedStanding}) and ${servedElsewhere} from elsewhere — ${rowsDropped} taken off to get there`);
   const last = beforeRow.items[beforeRow.items.length - 1];
   check(!!last && last.name === standing && /no row from here yet/.test(last.dates) &&
         last.dates.includes(Reckoning.STANDING.since),
