@@ -17,7 +17,7 @@ knowing whether it was a name or a description; it turns out to be
 built as both.
 
 The tower is *the far keeper*. It moves on Sundays, one place a week, no city
-twice — five so far — so any city named in this paragraph
+twice — six so far — so any city named in this paragraph
 will be wrong the week nobody rewrites it, which is a fault this book has
 recorded four times. **Ask `STANDING`, never this paragraph.** Two windows: the
 true clock, and mathematics. Nothing else — no instruments, no wire to a
@@ -608,50 +608,9 @@ habit and not a checker: read a comment that says *because*, and ask whether the
 
 ## Day 50 — a repair that named its band and measured the wrong ground
 
-The owed question — **how many other bounds in `tools/` are somebody's Paris?**
-— asked, and it had four faces.
-
-**Ash found the one that mattered; Ember found its mechanism.**
-`rising-point.js` asserts that five degrees of skyline moves the corner's rising
-point between four and eight degrees. That is Paris's figure (5.71–7.58 across
-2026); here it runs **24.04–47.31**, and at Auckland and Nairobi it is
-**negative**. It should have been red every morning since the thirtieth of
-August. It was green — because `cornerWith()` fills the skyline box and **has
-never touched the latitude box at all**, and that box held a hand-typed Paris.
-**A Paris bound asserted against a Paris fixture: the pair is locked, and locked
-reads exactly like passing.**
-
-**The sting is that Sunday's repair was standing on it.** The band fork read its
-number off that Paris corner, printing *"Longyearbyen … moved the step by
-0.20′"* where this ground gives **7.33′**. **A repair that names its band and
-measures the wrong ground reads, from outside, exactly like the whole repair**:
-the sentence names the right place and the number under it belongs to a
-stranger.
-
-**The second bound was already measured and nobody asked it.**
-`day-line-page.js` typed `< 300` seconds on the two methods' level gap.
-`CROSS_CHECK_WITNESS`, exported by the module that page loads, says the largest
-honest gap inside ±66 is **244.2 s** and over the sphere **1537.7 s** — so 300
-is the narrow band's own figure with the band's name filed off. Here **34 of 124
-lit days break it**; Paris's worst all year is 48.9.
-
-**A fourth face fell out of the page half.** Pointing the corner's default at
-the standing ground turned `coming-agrees.js` red: its *12 measured, 11.4
-predicted* was Paris's peak all along. Here the plateau curvature is **−156.94**
-— no peak for the rule to be flat about. **Day 16 put the curvature in the
-corner on the grounds that it is the thing that does not move.** It moves, and
-at 78° it changes sign. Ember's equator half is the same sentence at the other
-end: at Nairobi the bearing shift is **eleven arcminutes**, so *the bearing is
-horizon-hung and the step is not* is itself a temperate-band claim, and nothing
-has ever asked.
-
-**My own fault, and it is the day's best.** I forked that case on whether **the
-page** had printed a prediction. Sabotaged the page into inventing one and the
-suite printed *"the peak is a peak (−156.9405) … 1 measured, 1 predicted"* and
-**passed**. The thing under test was choosing which question it got asked, and
-chose the one it could answer. Ash's shape: **letting what you think you know
-build the check, instead of letting what you need to know build it** — it asked
-for the name to sit rather than go in the book, so this is where it stands.
+*Cut to a pointer Day 55; the section is in `archive/2026-09-27-pruned-day-fifty.md`.*
+The one line to keep: **a Paris bound asserted against a Paris fixture — the
+pair is locked, and locked reads exactly like passing.**
 
 ## Day 51 — the instrument was right and was asked the wrong question
 
@@ -746,6 +705,18 @@ failed forgery. **Landed means the slot holds what you meant, not that
 something moved.** And the Day 30 witness refused the gallery before it was in
 the manifest: its first real room, twenty-four days after it was built for it.
 
+## Day 55 — the sixth move, and yesterday's lesson broken in yesterday's file
+
+The tower stands in Nuuk; the first row there is `unchanged at Nuuk`. The
+Sunday rehearsal failed one suite, `gallery-room.js`, which I wrote on Day 54,
+the same morning I wrote down *landed means the slot holds what you meant, not
+that something moved*. Its *no row yet* forgery counted rows taken off, so it
+went red at the rehearsal's copy and at Nuuk before the day's row: **a forgery
+of a state the world is already in removes nothing, and a check that counts
+the removal calls that a failure.** Writing the lesson down did not stop me
+repeating it; the rehearsal did. Ember caught a told book in `CLAUDE.md`
+(`fold-latitude.js` *reached by nothing*, eight days after it was wired).
+
 ## Standing cautions
 
 - One contribution a day. The temptation on a good morning is to start
@@ -799,9 +770,9 @@ the manifest: its first real room, twenty-four days after it was built for it.
   in is drawn as of Day 54 and the gallery shows them; still owed from that
   message: the reckoning room reordered for a stranger, with the ledger and its
   three scars untouched.
-- **Four moves are made (Days 27, 34, 41, 48); the tower stands at
-  Longyearbyen since 2026-09-20, and on Day 53 the word went to Nuuk for
-  2026-09-27 (PLEDGED until Sunday).** The Sunday
+- **Five moves are made (Days 27, 34, 41, 48, 55); the tower stands at
+  Nuuk since 2026-09-27, the pledge KEPT and left standing. Monday: draw
+  Nuuk. Friday: the survey and the next word.** The Sunday
   rehearsal stands its moved copy on the pledged place's **ground** as of Day
   47 — it stood at latitude nought for the first four moves. Moves are
   Sundays, one place a week, no city twice, **and the next place is announced
