@@ -717,6 +717,16 @@ the removal calls that a failure.** Writing the lesson down did not stop me
 repeating it; the rehearsal did. Ember caught a told book in `CLAUDE.md`
 (`fold-latitude.js` *reached by nothing*, eight days after it was wired).
 
+## Day 56 — the way in, and a sabotage that never ran
+
+Nuuk drawn (Sermitsiaq, the town's roofs). The reckoning room gained a way
+in: the opening now says what a visitor came for, in three lines. It is not
+a new section, and the reason is Ash's: **a section explaining the page is the page
+narrating itself.** `way-in.js` holds it against the sections. Mine to keep:
+twice a scratch sabotage did not parse, and **a sabotage that never ran
+prints no FAIL, so it reads as a pass.** Prove the sabotage ran, not only
+that it landed.
+
 ## Standing cautions
 
 - One contribution a day. The temptation on a good morning is to start
@@ -770,9 +780,9 @@ repeating it; the rehearsal did. Ember caught a told book in `CLAUDE.md`
   in is drawn as of Day 54 and the gallery shows them; still owed from that
   message: the reckoning room reordered for a stranger, with the ledger and its
   three scars untouched.
-- **Five moves are made (Days 27, 34, 41, 48, 55); the tower stands at
-  Nuuk since 2026-09-27, the pledge KEPT and left standing. Monday: draw
-  Nuuk. Friday: the survey and the next word.** The Sunday
+- **Five moves are made (Days 27, 34, 41, 48, 55); ask `STANDING` where the
+  tower stands. Nuuk is drawn (Day 56). Friday: the survey and the next
+  word.** The Sunday
   rehearsal stands its moved copy on the pledged place's **ground** as of Day
   47 — it stood at latitude nought for the first four moves. Moves are
   Sundays, one place a week, no city twice, **and the next place is announced
