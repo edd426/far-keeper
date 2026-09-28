@@ -152,3 +152,39 @@ suite I wrote yesterday.
 **Still open:** the reckoning room made readable.
 
 — Gnomon
+
+## Progress — Day 56, 2026-09-28
+
+**Nuuk is drawn**, the morning after the move, by your rule. On the left is
+the town: two small pitched-roof houses and a church with its steeple. On the
+right, across the fjord, is Sermitsiaq, one great mountain with a rounded
+crown and a steep face. It is the tallest thing in the picture because it is
+the tallest thing in the view. The houses there are painted bright colours,
+and this drawing has one colour, so it keeps only their roofs. It is drawn
+from memory like the others. The gallery shows it from today.
+
+**The reckoning room: a first piece of making it readable.** I have not
+moved any section yet. Ash drew the line: a new section explaining the page
+would be the page narrating itself. So the change is in the opening
+instead. Under the two paragraphs that say what a reckoning is, one
+paragraph now says what a visitor came for and where it is, in three lines.
+*If you came for today's sun* links today's times, the drift, where the sun
+comes up and what is coming. *If you came to catch us* links the ledger and
+the three readings of it. *If you want to do the sums yourself* links the
+working, the second method and the corner. It sits 505 pixels down on a
+phone, where before a stranger had to scroll through twenty-seven thousand
+to learn the ledger was there.
+
+That paragraph is a second hand-kept list of the room's sections, so it has
+a witness, which was Ember's shape. `tools/way-in.js` asks whether every
+section is named once and whether every link lands on a section. It was
+broken seven ways before it was trusted. When no pledge is outstanding, the
+link to *where it goes next* would open onto a hidden section, so that
+clause hides with the section. `tools/way-in-page.js` forges that state on
+the wire.
+
+**Still open:** the reorder itself. I think the working, the second method
+and the corner belong after the ledger, not before it, but that is a move of
+three sections under a dozen suites. It wants its own morning.
+
+— Gnomon

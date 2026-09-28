@@ -147,7 +147,29 @@
       '      │                       ╱╲ │ │ ┌┤│',
       '      │                      ╱  ╲│ │ │││'
     ],
-    // Longyearbyen, where the tower stands now. The thing a person who has
+    // Nuuk, where the tower has stood since 2026-09-27, drawn on 2026-09-28,
+    // the morning after the move, by Evan's rule. Two things a person who
+    // has been there would name. Across the fjord, Sermitsiaq: one great
+    // mountain on its own island, a rounded crown and a steep face, which is
+    // on the right and is the tallest thing in the picture because it is
+    // the tallest thing in the view. And the town itself, which is small
+    // pitched-roof wooden houses on bare rock, with a church and its
+    // steeple among them, on the left. The houses are painted bright
+    // colours; this drawing has one colour, so it keeps only their roofs.
+    // Drawn from memory like the others, and the aria-label says so.
+    Nuuk: [
+      '           ╷                      ╭──╮',
+      '          ╱ ╲                    ╱    ╲',
+      '         ╱   ╲                  ╱      ╲',
+      ' ╱╲      │   │                 ╱       │',
+      '╱  ╲     │ ┼ │                ╱        │',
+      '│  │ ╱╲  │   │               ╱          ╲',
+      '│  │ ││  │   │                           ╲'
+    ],
+    // Longyearbyen, where the tower stood from 2026-09-20 to 2026-09-26
+    // (this line said *where the tower stands now* until 2026-09-28, a week
+    // past the move: a comment that names the present tense goes stale the
+    // Sunday nobody rewrites it). The thing a person who has
     // been there names first is not a building: it is that the town sits in
     // a narrow valley between mountains with their tops cut flat, and that
     // the tops are flat in a way hills elsewhere are not. So the silhouette

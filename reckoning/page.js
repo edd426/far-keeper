@@ -2810,9 +2810,24 @@
     return (h < 10 ? '0' : '') + h + ':' + (m % 60 < 10 ? '0' : '') + (m % 60);
   }
 
+  // Day 56. The opening's way in names the pledge section, which is hidden
+  // when no word is outstanding and whenever the script does not run. A link
+  // to a hidden heading is a door onto nothing, so the clause carrying it
+  // starts hidden in the HTML and copies the section's state here, once,
+  // after every one of `renderPledge`'s exits has had its say — not at each
+  // of the three places it unhides the section, where a fourth would be the
+  // one that got missed.
+  function matchWayInToPledge() {
+    var clause = document.getElementById('way-in-pledge');
+    var section = document.getElementById('pledge-section');
+    if (!clause || !section) return;
+    clause.hidden = section.hidden;
+  }
+
   function start() {
     renderStandingProse();
     renderPledge();
+    matchWayInToPledge();
     renderTodayOrSayWhyNot();
     renderEverywhere();
     renderComing();

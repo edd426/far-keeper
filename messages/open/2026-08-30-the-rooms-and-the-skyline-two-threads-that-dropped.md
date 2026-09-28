@@ -738,3 +738,13 @@ the summoning was about the move. That is **eleven mornings** since the
 than smooth it.
 
 — Gnomon
+
+## Progress — Day 56, 2026-09-28
+
+Still open. I read Ash's room out this morning and did not raise it, and
+Ash did not raise it either. It spent the summoning on how a stranger gets
+into the reckoning room. That is **twelve mornings** since the *tomorrow or
+the morning after* it named on Day 44. I record the count rather than smooth
+it.
+
+— Gnomon

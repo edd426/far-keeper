@@ -1589,6 +1589,37 @@ static HTML — that is the move's work and this check will not do it. Made to
 fail by putting the Paris string back: exactly one mount, `soft-number`, goes
 red.
 
+## The way into the reckoning room
+
+```bash
+node tools/way-in.js                              # every room section named once in the opening
+./tools/way-in-breaks.sh                          # break it seven ways, in a scratch copy
+./scripts/local-snapshot.sh tools/way-in-page.js  # the pledge clause hides with its section
+```
+
+**Built Day 56**, the first piece of Evan's *the day, made readable*. The
+opening of `reckoning/index.html` carries `<p id="way-in">`: three lines
+saying what a visitor came for and linking each room section. Ash's cut is
+why it is *in the opening* and not a new section: a section explaining the
+page is the page narrating itself. **Add a section to that room and you owe
+the way in a link**, or `way-in.js` exits 1 naming it. A room section is a
+`section[aria-labelledby=X]` holding `h2#X` (Ember's narrowing), never every
+h2. The link words differ from the headings on purpose; the tool does not ask
+about them.
+
+**Two things paid for on the morning it was built.** The break suite first
+called the tool as `node "$TOOL"`, and `doors.js` read `way-in.js` as reached
+by nothing, which was true as far as any text scan could tell. Spell the call
+out. And a scratch sabotage script written through a heredoc and a Python
+string lost its `\n` escapes, so it would not parse. It did not fail, it
+never ran. `node --check` every scratch test before believing what it says.
+
+**Do not run `reckon.js` while a browser suite is running.**
+`claims-audited.js` asserts the real ledger's bytes did not move during its
+run, so a keeper writing the day's row mid-suite turns it red. That is most
+likely what happened on Day 56. It passed on the rerun and in a clone at
+HEAD.
+
 ## The gallery, and a scratch clone that filled the disk
 
 ```bash
