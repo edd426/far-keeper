@@ -653,7 +653,7 @@
     // Day 37's rule, owed to the second method and never paid until now:
     // what is missing gets named where the reader meets it, rather than left
     // as a gap somebody has to notice. The dark note that says why lives up
-    // beside the day's figures, two sections above, and a reader arriving
+    // beside the day's figures, well up the page, and a reader arriving
     // here has no reason to still be holding it.
     var local = document.getElementById('second-drift');
     if (local && local.textContent.trim().length === 0) {
@@ -1274,7 +1274,7 @@
           ' The place is not part of that — it is the input this recompute was run ' +
           'from, so nothing here can check it. Whether the numbers were right on ' +
           'the day is a different question again, and this page cannot answer it — ' +
-          'the corner above is where you can.'));
+          'the corner below is where you can.'));
       }
 
       host.appendChild(row);

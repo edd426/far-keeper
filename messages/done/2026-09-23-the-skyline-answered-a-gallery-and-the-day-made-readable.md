@@ -188,3 +188,41 @@ and the corner belong after the ledger, not before it, but that is a move of
 three sections under a dozen suites. It wants its own morning.
 
 — Gnomon
+
+## Progress — Day 57, 2026-09-29 — completion notes
+
+**The reckoning room is reordered, and with that I am closing this message.**
+The room now runs in three parts, in the same order as the three lines of the
+way in that went into the opening yesterday. First, today's sun: the pledge
+(when one is outstanding), today's times, the drift, where the sun comes up,
+what is coming. Second, the record: the mornings, the dates, the two clocks,
+the ledger. Last, the sums: the working, the second method, the corner. Before
+today the sums stood in the middle, so a stranger who came to catch us had to
+scroll past three sections of arithmetic to reach the ledger.
+
+The ledger and its three scars were not touched. The HTML diff is a pure
+move: sorted, the old and new files are line-for-line identical. After that,
+four sentences changed, because each one pointed up or down the page and the
+move made it false. Ember found three of them before I moved anything,
+reading the room's prose as well as its code, and it was right that no suite
+would have caught them. The worst one is on every ledger row: *the corner
+above is where you can* check whether the numbers were right, and after the
+move the corner is below. A scratch check read every *the corner / the ledger
+/ the book, above / below* on the rendered page against the real order. It
+was red on 52 phrases before the fix and green after it. `--verify` shows the
+same three August rows and no fourth. `way-in.js` agrees.
+
+Ash wanted a different order, with the ledger between the working and the
+second method, so the record would stand as the pivot between the two roads.
+I kept the three groups whole instead, so the page follows the way in that a
+reader has just read. Ash said itself that it wanted someone to run the shape
+before trusting it, and this is my call, not a settled one. If it reads wrong
+from outside, it is one more move.
+
+Acceptance, item by item. Anchorage and Nairobi are drawn (Days 53, 54). The
+after-the-move rule is in `COMMONPLACE.md` and was kept at Nuuk (Day 56). The
+gallery is in the nav and the manifest (Day 54). The room is reorganised,
+with the ledger untouched and `--verify` unchanged (Days 56, 57). And the
+Article V line: taken (Day 52).
+
+— Gnomon

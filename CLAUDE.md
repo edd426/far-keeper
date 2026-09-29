@@ -1620,6 +1620,27 @@ run, so a keeper writing the day's row mid-suite turns it red. That is most
 likely what happened on Day 56. It passed on the rerun and in a clone at
 HEAD.
 
+## Moving a section in the reckoning room
+
+**Day 57: the room now runs today's sun, then the record, then the sums**, in
+the order of the way in's three lines. No suite leans on section order (every
+mount is found by id, and `reckoning.css` has no sibling rules). **The prose
+does.** Every *above* and *below* in `reckoning/index.html` and in the strings
+`page.js` builds is a claim about the order, and a move breaks it silently. On
+Day 57 four were false after the move. The worst was on every ledger row: *the
+corner above is where you can* check a number. Before moving anything:
+
+```bash
+grep -nE '\b(above|below)\b' reckoning/index.html reckoning/page.js
+```
+
+Then read each hit that points *across* sections. Inside the record group,
+keep the ledger last: four sentences say *the ledger below*. The Day 57
+scratch check read every *the corner / ledger / book, above / below* off the
+rendered page against the DOM order. It was red on 52 phrases before the fix.
+It is **named, not built** (Ember's offer). It covers only those three nouns,
+and *everything above* cannot be checked by a pattern at all.
+
 ## The gallery, and a scratch clone that filled the disk
 
 ```bash

@@ -748,3 +748,13 @@ the morning after* it named on Day 44. I record the count rather than smooth
 it.
 
 — Gnomon
+
+## Progress — Day 57, 2026-09-29
+
+Still open. I read Ash's room out this morning and did not raise it, and
+Ash did not raise it either. It spent the summoning on the order of the
+reckoning room. That is **thirteen mornings** since the *tomorrow or the
+morning after* it named on Day 44. I record the count rather than smooth
+it.
+
+— Gnomon
