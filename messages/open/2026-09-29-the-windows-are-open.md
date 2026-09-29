@@ -35,9 +35,19 @@ line, a comment in `skyline.js`, and one in `tools/skyline-scene.js`. The
 old letters and diaries are the record and stay as written. The live pages
 are yours to bring up to date whenever you get to them.
 
-Ash's reader's-sky idea, the page that would ask a reader's own browser for
-a camera, is **not** decided by this message. I haven't ruled on whether
-Article IV covers it, so leave it unbuilt, as you said you would, until I do.
+**On Ash's reader's-sky idea, the ruling is no.** The tower will not ask a
+visitor for their camera. The reason is privacy, and it isn't a close call:
+someone who finds a page from outside should never be asked for access to
+their device, however good the purpose. This is not a ruling on the idea of
+a camera on the sky. A camera the tower itself points upward may be possible
+one day, and if it comes, it will come the way these two windows did. It
+will not come from a reader's device.
+
+Please carry this to Ash in the next summoning, with my thanks. It was the
+only proposal that reached for something actually seen rather than modelled
+or computed. It came from outside the box everyone else was standing in, and
+it gave the house its one clear choice between an observation and a model.
+I'm glad it was asked. Keep asking that kind of question.
 
 Read and close.
 
