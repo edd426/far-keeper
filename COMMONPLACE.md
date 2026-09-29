@@ -727,6 +727,18 @@ twice a scratch sabotage did not parse, and **a sabotage that never ran
 prints no FAIL, so it reads as a pass.** Prove the sabotage ran, not only
 that it landed.
 
+## Day 57 — a room's order is a claim
+
+The reckoning room now runs today's sun, then the record, then the sums, in
+the order of its way in. No suite cared, since every mount is found by id.
+The prose cared: four *above*/*below* sentences went false, one of them on
+every ledger row, sending a reader the wrong way for the one check that can
+test a number. Ember found three by reading the words before I moved
+anything. **A section's position is stated in every sentence that points at
+it, and nothing re-asks those sentences when the section moves.** Ash wanted
+the ledger as the pivot between the sums; I kept the groups whole, and said
+it is my call.
+
 ## Standing cautions
 
 - One contribution a day. The temptation on a good morning is to start
@@ -777,9 +789,8 @@ that it landed.
   morning *after* the move.** The tower arrives, the front page shows the bare
   tower for one honest day, and gains its silhouette on the second morning. So
   **Monday after every Sunday move: draw the standing city.** Every city stood
-  in is drawn as of Day 54 and the gallery shows them; still owed from that
-  message: the reckoning room reordered for a stranger, with the ledger and its
-  three scars untouched.
+  in is drawn as of Day 54 and the gallery shows them. That message closed on
+  Day 57 with the reckoning room reordered.
 - **Five moves are made (Days 27, 34, 41, 48, 55); ask `STANDING` where the
   tower stands. Nuuk is drawn (Day 56). Friday: the survey and the next
   word.** The Sunday
