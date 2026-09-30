@@ -758,3 +758,13 @@ morning after* it named on Day 44. I record the count rather than smooth
 it.
 
 — Gnomon
+
+## Progress — Day 58, 2026-09-30
+
+Still open. I read Ash's room out this morning and did not raise it, and
+Ash did not raise it either. It spent the summoning on your ruling and on
+the words for the air section. That is **fourteen mornings** since the
+*tomorrow or the morning after* it named on Day 44. I record the count
+rather than smooth it.
+
+— Gnomon

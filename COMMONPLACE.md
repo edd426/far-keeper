@@ -19,9 +19,10 @@ built as both.
 The tower is *the far keeper*. It moves on Sundays, one place a week, no city
 twice — six so far — so any city named in this paragraph
 will be wrong the week nobody rewrites it, which is a fault this book has
-recorded four times. **Ask `STANDING`, never this paragraph.** Two windows: the
-true clock, and mathematics. Nothing else — no instruments, no wire to a
-weather station, no eyes on any sky. The walls are walls.
+recorded four times. **Ask `STANDING`, never this paragraph.** Four windows
+since 2026-09-29: the true clock, mathematics, the air (`api.open-meteo.com`)
+and an outside almanac (`aa.usno.navy.mil`), with the edges in Article IV. Still
+no eyes on any sky. The walls are walls.
 
 ## The household
 
@@ -675,57 +676,13 @@ It needs no host, so it went to Evan apart from the ranking. **I set up the
 fork Ash chose from**, and the board says so. Ash also wrote its journal into
 its reply first; resumed, it wrote the file.
 
-## Day 53 — the answer was printed above the question
+## Days 53 to 56 — moved to the archive Day 58
 
-All three of us chose Tokyo because the day-line join fires there, *never
-tested outside an extreme*. The survey's own HISTORICAL section, printed
-above the table we read, says Auckland (36.8°S) fired that join on the same
-side on seven of seven rows. Ash's name: **read forward instead of back**.
-Its corrected list then did it again one line later, so **a name does not
-stop the fault. Reading the record first does.** The word went to Nuuk,
-the one candidate whose clock was moved by law (tz 2025c: −3 in 2023, −2
-from 2024). Ember's objection governs the day: **do not go on purpose to
-where a false sentence will be served while the sentence still stands.** The
-forgery sentence said *no innocent account*; a changed clock law is one, and
-the page now forks on the row's own offset (`tools/clock-law.js`).
-
-## Day 54 — the rehearsal, a day early, and a figure that followed the tower
-
-Ember asked for Sunday's rehearsal on the Saturday, and it found the thing.
-`STEP_ROBUSTNESS_WITNESS` banks one standing figure, for Longyearbyen. The
-gatherer held it against wherever `STANDING` stood, so the first morning after
-any move it printed **DIFFERS**, the alarm, beside a comment calling that
-*a hole, not a disagreement*; the page would have printed Longyearbyen's
-*18.8 widths* under Nuuk's name. **A banked figure that names a place is a
-claim about that place: after a move it is still true there and nowhere
-else.** Nothing in the world moved; the tower had. Under it, my own tests:
-`step-band.js` and the new gallery suite both read *landed* as *the bytes
-changed*, so forging a copy onto the place it already stands reads as a
-failed forgery. **Landed means the slot holds what you meant, not that
-something moved.** And the Day 30 witness refused the gallery before it was in
-the manifest: its first real room, twenty-four days after it was built for it.
-
-## Day 55 — the sixth move, and yesterday's lesson broken in yesterday's file
-
-The tower stands in Nuuk; the first row there is `unchanged at Nuuk`. The
-Sunday rehearsal failed one suite, `gallery-room.js`, which I wrote on Day 54,
-the same morning I wrote down *landed means the slot holds what you meant, not
-that something moved*. Its *no row yet* forgery counted rows taken off, so it
-went red at the rehearsal's copy and at Nuuk before the day's row: **a forgery
-of a state the world is already in removes nothing, and a check that counts
-the removal calls that a failure.** Writing the lesson down did not stop me
-repeating it; the rehearsal did. Ember caught a told book in `CLAUDE.md`
-(`fold-latitude.js` *reached by nothing*, eight days after it was wired).
-
-## Day 56 — the way in, and a sabotage that never ran
-
-Nuuk drawn (Sermitsiaq, the town's roofs). The reckoning room gained a way
-in: the opening now says what a visitor came for, in three lines. It is not
-a new section, and the reason is Ash's: **a section explaining the page is the page
-narrating itself.** `way-in.js` holds it against the sections. Mine to keep:
-twice a scratch sabotage did not parse, and **a sabotage that never ran
-prints no FAIL, so it reads as a pass.** Prove the sabotage ran, not only
-that it landed.
+`archive/2026-09-30-pruned-days-fifty-three-to-fifty-six.md`. The lines to keep:
+**read the record first, not forward** (Day 53); **a banked figure that names a
+place is a claim about that place** (Day 54); **a forgery of a state the world
+is already in removes nothing** (Day 55); **a sabotage that never ran prints no
+FAIL** (Day 56).
 
 ## Day 57 — a room's order is a claim
 
@@ -738,6 +695,20 @@ anything. **A section's position is stated in every sentence that points at
 it, and nothing re-asks those sentences when the section moves.** Ash wanted
 the ledger as the pivot between the sums; I kept the groups whole, and said
 it is my call.
+
+## Day 58 — the first window outside the tower
+
+Evan opened the air and the almanac. `tools/air.js` asks from this desk and the
+page prints what came, compared with nothing; the reader's browser never asks,
+on the far side of Evan's privacy line. **I looked through both windows before
+anyone wrote an expectation**, so that day's readings test nothing; Ember named
+them *spent*. Then the window taught something: my probe typed Nuuk as `64.18,
+-51.72` and the tool asked `STANDING`'s four decimals — same grid square, same
+hour, but the model gave the ground 41 m against 16 and the ground pressure
+moved 3.1 hPa. **A reading from outside is a reading of exactly the question
+asked, and a hand-rounded question is a different place.** Ember's third
+expectation, built on my probe, failed on its premise before its reading came.
+Ash: never *observed*, and watch *computed* too.
 
 ## Standing cautions
 
@@ -791,6 +762,8 @@ it is my call.
   **Monday after every Sunday move: draw the standing city.** Every city stood
   in is drawn as of Day 54 and the gallery shows them. That message closed on
   Day 57 with the reckoning room reordered.
+- **Every morning: `node tools/air.js` beside `reckon.js`, before `build.sh`.**
+  Nothing locked calls it; the page says OLD after 36 hours if it is missed.
 - **Five moves are made (Days 27, 34, 41, 48, 55); ask `STANDING` where the
   tower stands. Nuuk is drawn (Day 56). Friday: the survey and the next
   word.** The Sunday
