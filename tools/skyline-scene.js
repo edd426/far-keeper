@@ -31,8 +31,9 @@
 //      aria-label is the first inch of an instrument's face.
 //
 // What it deliberately does NOT check: whether the silhouette resembles the
-// city. Nothing in this tower can check that. Article IV gives two windows,
-// the clock and mathematics, and a skyline comes through neither — the
+// city. Nothing in this tower can check that. Article IV gave two windows,
+// the clock and mathematics, and a skyline comes through neither; the two
+// it added on 2026-09-29, the air and an outside almanac, show no city — the
 // shapes are drawn from a memory of cities this tower has never seen, which
 // is said outright in `skyline.js` and in the scene's own aria-label. Ash's
 // second half stands as a thing a reader may hold us to and no suite can:

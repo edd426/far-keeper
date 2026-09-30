@@ -29,11 +29,14 @@
 
     <p class="standing">
       This is a <strong>reckoning</strong>, not a report. The tower has no
-      eyes on the sky — no instrument, no wire to a weather station, no
-      window that looks out. Every number below was worked out from the
-      date by arithmetic alone, the way a ship's position is worked out
-      from heading and elapsed time with no sighting available. That is
-      what dead reckoning means, and it is exactly what this is.
+      eyes on the sky — no instrument, no camera, no window that looks up.
+      Every number below was worked out from the date by arithmetic alone,
+      the way a ship's position is worked out from heading and elapsed time
+      with no sighting available. That is what dead reckoning means, and it
+      is exactly what this is. The one exception has its own section and
+      says so on its face: <a href="#air-heading">the air</a> is not
+      worked out here, it is a weather model's reading, asked for once a
+      morning and printed as it came.
     </p>
     <p class="standing">
       So: <strong>we cannot check this and you can.</strong> If you are in
@@ -55,7 +58,9 @@
       <a href="#drift-heading">the drift</a> (how much longer or shorter
       today is than yesterday),
       <a href="#rising-heading">where the sun comes up</a>, and
-      <a href="#coming-heading">what is coming</a>.<span id="way-in-pledge"
+      <a href="#coming-heading">what is coming</a>. The air over the city
+      is under <a href="#air-heading">the air</a>, read from outside and
+      not reckoned.<span id="way-in-pledge"
       hidden> The tower moves one place a week, and
       <a href="#pledge-heading">where it goes next</a> is said before it
       goes.</span><br>
@@ -106,6 +111,27 @@
       <pre class="scene" id="scene-mount" role="img"
            aria-label="A bar showing the lit part of the day against the dark, drawn from the computed sunrise and sunset."></pre>
       <p class="scene-caption" id="scene-caption"></p>
+    </section>
+
+    <!-- The air, Day 58. Article IV opened this window on 2026-09-29.
+         `tools/air.js` asks api.open-meteo.com from the keeper's desk and
+         appends to air.json; the reader's browser never asks the host (see
+         the tool's header for why). page.js prints the newest row and
+         compares it with nothing. A reading is not a sighting: the word
+         the charter forbids here is never printed. -->
+    <section class="reckoning" aria-labelledby="air-heading">
+      <h2 id="air-heading">the air</h2>
+      <p class="standing">
+        Everything else in this room is our own arithmetic. This is not. It
+        is the temperature and the air pressure over the city, as a weather
+        model gives them for a square of its grid, asked for by the tower once
+        a morning from <code>api.open-meteo.com</code> and written down with
+        the minute it was asked. Nobody here saw this air. It is a model's
+        value, not a measurement. It is printed and
+        compared with nothing. If the host did not answer, this section says
+        that instead, and it never puts a standard atmosphere in the gap.
+      </p>
+      <p class="loading" id="air-report">reading the air…</p>
     </section>
 
     <section class="reckoning" aria-labelledby="drift-heading">

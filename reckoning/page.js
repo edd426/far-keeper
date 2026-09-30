@@ -2824,6 +2824,117 @@
     clause.hidden = section.hidden;
   }
 
+  // --- The air, Day 58 -------------------------------------------------------
+  // Article IV's third window. `tools/air.js` asks api.open-meteo.com from the
+  // keeper's desk and appends to air.json; this prints the newest row for the
+  // place the tower stands in, and compares it with nothing. The reader's
+  // browser never asks the host: Evan's privacy ruling of 2026-09-29 is about
+  // a camera, and a page that sends every stranger's address to a third party
+  // to show them a number sits on the same side of it.
+  //
+  // Four states, each with its own sentence, because a window that goes quiet
+  // has to say it went quiet (the charter: fail loud and specific):
+  //   the file would not open · no row for this place yet · the newest ask
+  //   failed · a reading.
+  // A failed newest ask is never covered by an older good row. And a row from
+  // another place is never printed here, however recent: the air over the
+  // city the tower left is not this city's air.
+  //
+  // Ember's cut, from the morning it was built: the surface figures are for a
+  // height the model picks for the exact coordinates asked, not for the city.
+  // Rounding the coordinates to two places moved that height 25 m and the
+  // surface pressure 3.1 hPa. So sea level leads, the height and the
+  // coordinates asked are printed beside the surface figures, and the page
+  // says which figures belong to that height.
+  var AIR_STALE_HOURS = 36;
+
+  function airPlaceIsStanding(row) {
+    var here = window.Reckoning.STANDING.place;
+    return !!row && !!row.place && row.place.name === here.name &&
+      row.place.latitude === here.latitude && row.place.longitude === here.longitude;
+  }
+
+  function signedDegrees(value, pos, neg) {
+    return Math.abs(value).toFixed(4) + '°' + (value < 0 ? neg : pos);
+  }
+
+  function hhmmUTC(iso) {
+    return iso.slice(0, 10) + ' ' + iso.slice(11, 16) + ' UTC';
+  }
+
+  function renderAir(rows, now) {
+    var host = document.getElementById('air-report');
+    if (!host) return;
+    host.replaceChildren();
+    host.className = '';
+    var place = window.Reckoning.STANDING.place.name;
+    var mine = Array.isArray(rows) ? rows.filter(airPlaceIsStanding) : [];
+    if (!Array.isArray(rows)) {
+      host.appendChild(el('p', 'standing', 'The record of the air would not ' +
+        'open, so there is no reading here. It remains at reckoning/air.json. ' +
+        'Nothing has been put in its place.'));
+      return;
+    }
+    if (mine.length === 0) {
+      host.appendChild(el('p', 'standing', 'No reading of the air over ' +
+        place + ' has been written yet. The tower asks once a morning; ' +
+        'until it has asked here, this section stays empty rather than ' +
+        'showing another city’s air.'));
+      return;
+    }
+    var row = mine[mine.length - 1];
+    var asked = Date.parse(row.fetchedAt);
+    if (row.failed) {
+      host.appendChild(el('p', 'standing air-failed', 'NOT READ. The tower ' +
+        'asked ' + row.source + ' for the air over ' + place + ' at ' +
+        hhmmUTC(row.fetchedAt) + ', and did not get a reading: ' + row.failed +
+        '. Nothing is printed in its place — not an older reading, and not ' +
+        'a standard atmosphere.'));
+      return;
+    }
+    var figures = el('dl', 'figures');
+    figures.id = 'air-figures';
+    addFigure(figures, 'pressure at sea level', row.seaLevelPressureHPa.toFixed(1) + ' hPa', 'big');
+    addFigure(figures, 'pressure at the ground', row.surfacePressureHPa.toFixed(1) + ' hPa');
+    addFigure(figures, 'temperature', row.temperatureC.toFixed(1) + ' °C');
+    addFigure(figures, 'ground height the model used', row.grid.elevationM + ' m');
+    addFigure(figures, 'coordinates asked', signedDegrees(row.place.latitude, 'N', 'S') + ', ' +
+      signedDegrees(row.place.longitude, 'E', 'W'));
+    addFigure(figures, 'model grid square', signedDegrees(row.grid.latitude, 'N', 'S') + ', ' +
+      signedDegrees(row.grid.longitude, 'E', 'W'));
+    addFigure(figures, 'the model’s time', hhmmUTC(row.modelTime));
+    addFigure(figures, 'asked at', hhmmUTC(row.fetchedAt));
+    addFigure(figures, 'source', row.source + ', a weather model');
+    host.appendChild(figures);
+
+    host.appendChild(el('p', 'standing note', 'The ground pressure and the ' +
+      'temperature are for a ground ' + row.grid.elevationM + ' m high, ' +
+      'which is the height the model gives the exact coordinates asked. Ask ' +
+      'the same city with its coordinates rounded and the model can pick ' +
+      'another height and give different figures: on the morning this ' +
+      'section was built, rounding to two decimal places moved the height ' +
+      '25 m and the ground pressure 3.1 hPa. Sea level did not move, which ' +
+      'is why it comes first.'));
+
+    var hours = (now - asked) / 3600000;
+    if (isFinite(hours) && hours > AIR_STALE_HOURS) {
+      var days = Math.floor(hours / 24);
+      host.appendChild(el('p', 'standing air-stale', 'OLD. This reading was ' +
+        'asked for ' + days + ' day' + (days === 1 ? '' : 's') + ' ago, and ' +
+        'the tower has not asked since. It is the air as it was then.'));
+    }
+  }
+
+  function startAir() {
+    fetch('air.json', { cache: 'no-cache' })
+      .then(function (response) {
+        if (!response.ok) throw new Error(String(response.status));
+        return response.json();
+      })
+      .then(function (rows) { renderAir(rows, Date.now()); })
+      .catch(function () { renderAir(null, Date.now()); });
+  }
+
   function start() {
     renderStandingProse();
     renderPledge();
@@ -2832,6 +2943,7 @@
     renderEverywhere();
     renderComing();
     startCorner();
+    startAir();
 
     fetch('ledger.json', { cache: 'no-cache' })
       .then(function (response) {

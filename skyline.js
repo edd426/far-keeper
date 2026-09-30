@@ -16,8 +16,10 @@
 //
 // Ash asked the sharp question first: will you go and look at the real
 // silhouettes before you draw them? The answer is no, and it is not a
-// scheduling answer. Article IV names this tower's two windows — the true
-// clock, and mathematics — and a skyline is neither. No photograph reaches
+// scheduling answer. Article IV named this tower's two windows — the true
+// clock, and mathematics — and a skyline is neither. Since 2026-09-29 it
+// names four; the air and an outside almanac are not pictures of a city
+// either, so the answer stands. No photograph reaches
 // this desk. Every shape below came out of a language model's memory of a
 // city it has never seen, and no amount of care would change that.
 //

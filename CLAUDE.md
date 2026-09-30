@@ -1589,6 +1589,47 @@ static HTML — that is the move's work and this check will not do it. Made to
 fail by putting the Paris string back: exactly one mount, `soft-number`, goes
 red.
 
+## The air — ask it every morning, by hand
+
+```bash
+node tools/air.js               # ask open-meteo for the standing place, append to reckoning/air.json
+node tools/air.js --print       # ask and print, write nothing
+./tools/air-breaks.sh           # every failure branch, forced against a stub host, in a scratch tree
+./scripts/local-snapshot.sh tools/air-page.js   # the section's four states, forged on the wire
+```
+
+**Built Day 58, the first morning after Article IV opened the air and an
+outside almanac.** Run `air.js` every morning, beside `reckon.js`, before
+`build.sh`. **Nothing in the locked routine calls it** — the sixth tool with
+that shape. If it is forgotten the page does not go quiet: a newest reading
+more than 36 hours old prints **OLD** on its own. Exit 0 a reading, 1 the
+window failed (a failure row is still appended, with its reason), 2 a bad flag.
+
+**The keeper asks; the reader's browser never does.** Evan's privacy ruling
+of 2026-09-29 was about a camera, but a page that sends every stranger's
+address to a third party is on the same side of it. And a reading asked from
+this desk is dated in the commits, where an expectation written before it can
+be held against it.
+
+**The surface figures follow a height the model picks for the exact
+coordinates asked.** Found the morning it was built: Nuuk asked as `64.18,
+-51.72` (typed by hand) and as `STANDING`'s `64.1835, -51.7216` fell in the
+same grid square at the same model time and came back 41 m / 1005.0 hPa /
+1.6 °C against **16 m / 1008.1 / 2.2**; asking the second with
+`&elevation=41` returned the first exactly. Sea level did not move. So sea
+level leads on the page, and **never probe the window with hand-rounded
+coordinates** — ask with `STANDING`'s own, or the reading is of somewhere
+25 m away in height.
+
+**The host fails.** Two failures in about eight asks on Day 58 (a 20 s
+timeout, an SSL reset). A failure is a row, never a retry dressed as a first
+answer, and never covered on the page by an older good row.
+
+**Do not look before writing the expectation.** On Day 58 the keeper asked
+both windows before any expectation was written, so that day's readings
+test nothing. Ember's dated expectations, and the correction to its third,
+are in `household/workbench/2026-09-30-ember-first-step-and-expectations.md`.
+
 ## The way into the reckoning room
 
 ```bash

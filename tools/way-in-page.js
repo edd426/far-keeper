@@ -29,10 +29,15 @@ let fails = 0; const ok=(c,m)=>{console.log((c?'ok    ':'FAIL  ')+m); if(!c) fai
       const links = [...way.querySelectorAll('a')].filter(a => a.offsetParent !== null);
       const dead = links.filter(a => { const t = document.getElementById(a.getAttribute('href').slice(1)); return !t || t.offsetParent === null; }).map(a => a.getAttribute('href'));
       const top = way.getBoundingClientRect().top + scrollY;
-      return { visibleLinks: links.length, dead, clauseHidden: clause.hidden,
+      // The count to expect is read off the room, never typed: it said 12
+      // until Day 58 added a section and went red about a page that was
+      // right (a number typed beside a thing this house keeps adding to).
+      const rooms = [...document.querySelectorAll('main section[aria-labelledby]')]
+        .filter(s => s.querySelector('h2#' + s.getAttribute('aria-labelledby')) && s.offsetParent !== null).length;
+      return { visibleLinks: links.length, rooms, dead, clauseHidden: clause.hidden,
         scroll: document.documentElement.scrollWidth - document.documentElement.clientWidth, top };
     });
-    ok(r.visibleLinks === 12, w + 'px: 12 visible links in the way in (' + r.visibleLinks + ')');
+    ok(r.rooms > 0 && r.visibleLinks === r.rooms, w + 'px: one visible link in the way in per visible room section (' + r.visibleLinks + ' of ' + r.rooms + ')');
     ok(r.dead.length === 0, w + 'px: every visible link lands on a visible heading (' + r.dead.join(',') + ')');
     ok(r.clauseHidden === false, w + 'px: the pledge clause shows while the pledge section does');
     ok(r.scroll <= 0, w + 'px: no sideways scroll (' + r.scroll + ')');
