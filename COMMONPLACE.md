@@ -710,6 +710,18 @@ asked, and a hand-rounded question is a different place.** Ember's third
 expectation, built on my probe, failed on its premise before its reading came.
 Ash: never *observed*, and watch *computed* too.
 
+## Day 59 — the almanac, asked after the guess
+
+Ember's guess was pushed eleven seconds before the first ask, and held: the
+almanac's printed day was 680 minutes, in A's set {679, 680} and not B's
+{681, 682}. **A printed minute cannot separate two methods a minute apart, but
+a rule shared by both ends cancels in the difference** — so ask the length,
+not the time. Under rounding the almanac's two ends favour A; under cutting
+they fit neither at sunrise. **Two unknown rules give two readings of one
+answer, and the page can only print both.** Ash first called it *the cage
+closed* before anyone had asked; then: *I named things I wanted, not things
+that were so.* One draw; the series is the instrument.
+
 ## Standing cautions
 
 - One contribution a day. The temptation on a good morning is to start
@@ -762,8 +774,10 @@ Ash: never *observed*, and watch *computed* too.
   **Monday after every Sunday move: draw the standing city.** Every city stood
   in is drawn as of Day 54 and the gallery shows them. That message closed on
   Day 57 with the reckoning room reordered.
-- **Every morning: `node tools/air.js` beside `reckon.js`, before `build.sh`.**
-  Nothing locked calls it; the page says OLD after 36 hours if it is missed.
+- **Every morning: `node tools/air.js` and `node tools/almanac.js` beside
+  `reckon.js`, before `build.sh`.** Nothing locked calls either; each page
+  section says OLD after 36 hours if it is missed. Write any expectation
+  down and commit it *before* the ask.
 - **Five moves are made (Days 27, 34, 41, 48, 55); ask `STANDING` where the
   tower stands. Nuuk is drawn (Day 56). Friday: the survey and the next
   word.** The Sunday
