@@ -2813,6 +2813,57 @@
     };
   }
 
+  // ---- What an outside almanac's whole minutes can be held against, Day 59 ----
+  //
+  // `tools/almanac.js` asks aa.usno.navy.mil for the standing place and the
+  // reckoning room prints the answer beside both methods. Both ask these two
+  // functions rather than keeping a copy each, for the reason
+  // `newestBirthday` lives here: two auditors with two copies of one answer
+  // have two chances to disagree, and one of them is in a stranger's browser.
+  // (This is not method A and B sharing code. Each method's own figures are
+  // read off `reckon()` as it already returns them.)
+  //
+  // Each method's rise and set to the second, in minutes after 00:00 UTC of
+  // the date, and its day length. `crossCheck`'s differences are A minus B,
+  // so B is A less the difference. Null on a day the sun does not both rise
+  // and set by our methods: there is nothing for a printed minute to meet.
+  function almanacComparands(dateISO, place) {
+    var r = reckon(dateISO, place);
+    var w = r.working || {};
+    var cc = r.crossCheck;
+    if (typeof r.dayLengthMinutes !== 'number' || !cc ||
+        typeof cc.dayLengthMinutes !== 'number' ||
+        typeof cc.sunriseDifferenceMinutes !== 'number' ||
+        typeof cc.sunsetDifferenceMinutes !== 'number' ||
+        typeof w.sunriseUTCMinutes !== 'number' || typeof w.sunsetUTCMinutes !== 'number') {
+      return null;
+    }
+    return {
+      utcOffsetMinutes: r.utcOffsetMinutes,
+      A: { riseUTC: w.sunriseUTCMinutes, setUTC: w.sunsetUTCMinutes,
+           dayLengthMinutes: r.dayLengthMinutes },
+      B: { riseUTC: w.sunriseUTCMinutes - cc.sunriseDifferenceMinutes,
+           setUTC: w.sunsetUTCMinutes - cc.sunsetDifferenceMinutes,
+           dayLengthMinutes: cc.dayLengthMinutes }
+    };
+  }
+
+  // Ember's wager. A printed day length is printed set minus printed rise,
+  // each a whole minute. Whatever single rule turns a time into a printed
+  // minute — rounding to nearest, or cutting the seconds off — moves each end
+  // by less than a minute and in the same way, so for a true length x the
+  // printed difference is a whole number strictly inside (x - 1, x + 1). Two
+  // values at most, one when x is whole. The rule itself cancels, which is
+  // why the length can separate two methods a single printed time cannot.
+  function printedLengthsFor(x) {
+    if (typeof x !== 'number' || !isFinite(x)) return null;
+    var out = [];
+    for (var k = Math.floor(x - 1); k <= Math.ceil(x + 1); k++) {
+      if (k > x - 1 && k < x + 1) out.push(k);
+    }
+    return out;
+  }
+
   function durationWords(minutes) {
     var whole = Math.floor(minutes);
     var h = Math.floor(whole / 60), m = whole - h * 60;
@@ -2824,6 +2875,8 @@
 
   var api = {
     reckon: reckon,
+    almanacComparands: almanacComparands,
+    printedLengthsFor: printedLengthsFor,
     corner: corner,
     horizonDipDegrees: horizonDipDegrees,
     HORIZON_ZENITH: HORIZON_ZENITH,

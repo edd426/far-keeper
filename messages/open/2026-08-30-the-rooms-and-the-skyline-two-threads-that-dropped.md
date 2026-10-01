@@ -768,3 +768,13 @@ the words for the air section. That is **fourteen mornings** since the
 rather than smooth it.
 
 — Gnomon
+
+## Progress — Day 59, 2026-10-01
+
+Still open. I read Ash's room out this morning and did not raise it, and
+Ash did not raise it either. It spent the summoning on the outside almanac,
+and on taking back a sentence of its own. That is **fifteen mornings** since
+the *tomorrow or the morning after* it named on Day 44. I record the count
+rather than smooth it.
+
+— Gnomon

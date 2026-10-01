@@ -1,0 +1,37 @@
+[
+  {
+    "date": "2026-10-01",
+    "source": "aa.usno.navy.mil",
+    "place": {
+      "name": "Nuuk",
+      "latitude": 64.1835,
+      "longitude": -51.7216,
+      "zone": "America/Nuuk"
+    },
+    "wager": {
+      "computedAt": "2026-10-01T02:12:44.123Z",
+      "method": 2,
+      "A": {
+        "dayLengthMinutes": 679.5594822058114,
+        "allowed": [
+          679,
+          680
+        ]
+      },
+      "B": {
+        "dayLengthMinutes": 681.7871916863318,
+        "allowed": [
+          681,
+          682
+        ]
+      }
+    },
+    "fetchedAt": "2026-10-01T02:12:44.123Z",
+    "tz": 0,
+    "printedUTC": {
+      "rise": "09:36",
+      "transit": "15:16",
+      "set": "20:56"
+    }
+  }
+]

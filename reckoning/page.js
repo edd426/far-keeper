@@ -2935,6 +2935,262 @@
       .catch(function () { renderAir(null, Date.now()); });
   }
 
+  // --- The outside almanac, Day 59 -----------------------------------------
+  // Article IV's fourth window. `tools/almanac.js` asks aa.usno.navy.mil from
+  // the keeper's desk, in UTC, for the standing place, and appends to
+  // almanac.json; the reader's browser never asks the host, for the air's
+  // reason. This prints the newest row for the standing place beside both of
+  // our methods, recomputed here from `reckon()`.
+  //
+  // The charter's edge decides the shape: neither window is a third vote, and
+  // no comparison is reported as bare agreement. So the word *agrees* is never
+  // printed. Each printed minute is set against each method's seconds, with
+  // what a printed minute can mean under the two rules an almanac might use,
+  // and the rule this one uses is said to be unknown to us — because it is.
+  //
+  // What a printed minute *can* separate is the day's length (Ember's wager):
+  // a rule shared by both ends cancels in set minus rise, so the printed length
+  // must fall in `printedLengthsFor` of a method's own length if the almanac
+  // and that method say the same thing. The page recomputes both sets and holds
+  // them against the ones the tool wrote into the row before it asked. When the
+  // two sets share a value the day cannot separate the methods, and that has
+  // its own sentence rather than a verdict.
+  //
+  // And one day is a draw. The series line counts every row in the file and
+  // gives the mean of printed-minus-ours with its rough spread, 0.41/√N
+  // minutes, which is how wide the error of a difference of two whole-minute
+  // readings is when the seconds fall anywhere.
+  var ALMANAC_STALE_HOURS = 36;
+
+  function almanacPlaceIsStanding(row) {
+    var here = window.Reckoning.STANDING.place;
+    return !!row && !!row.place && row.place.name === here.name &&
+      row.place.latitude === here.latitude && row.place.longitude === here.longitude;
+  }
+
+  function hhmmToMinutes(t) {
+    return Number(t.slice(0, 2)) * 60 + Number(t.slice(3, 5));
+  }
+
+  function clockOf(minutes, withSeconds) {
+    var total = withSeconds ? Math.round(minutes * 60) : Math.round(minutes) * 60;
+    total = ((total % 86400) + 86400) % 86400;
+    var h = Math.floor(total / 3600), m = Math.floor(total / 60) % 60, sec = total % 60;
+    return pad2(h) + ':' + pad2(m) + (withSeconds ? ':' + pad2(sec) : '');
+  }
+
+  function pad2(n) { return (n < 10 ? '0' : '') + n; }
+
+  function signedSeconds(minutes) {
+    var sec = Math.round(minutes * 60);
+    return (sec > 0 ? '+' : sec < 0 ? '−' : '±') + Math.abs(sec) + ' s';
+  }
+
+  function setWords(list) {
+    return '{' + list.join(', ') + '}';
+  }
+
+  function sameList(a, b) {
+    return Array.isArray(a) && Array.isArray(b) && a.length === b.length &&
+      a.every(function (v, i) { return v === b[i]; });
+  }
+
+  // Which side of the wager a printed length falls on. Four answers, each
+  // its own word, so a later hand cannot fold one into another.
+  function wagerSide(printed, allowedA, allowedB) {
+    var inA = allowedA.indexOf(printed) >= 0, inB = allowedB.indexOf(printed) >= 0;
+    if (inA && inB) return 'both';
+    if (inA && !inB) return 'A';
+    if (inB && !inA) return 'B';
+    return 'neither';
+  }
+
+  function oneEnd(name, printedUTC, ours, offset) {
+    var m = hhmmToMinutes(printedUTC);
+    var a = ours.A[name + 'UTC'], b = ours.B[name + 'UTC'];
+    function under(t) {
+      var rounded = t >= m - 0.5 && t < m + 0.5;
+      var cut = t >= m && t < m + 1;
+      return { rounded: rounded, cut: cut };
+    }
+    var ua = under(a), ub = under(b);
+    function inside(u, rule) { return u[rule] ? 'inside' : 'outside'; }
+    var label = name === 'rise' ? 'sunrise' : 'sunset';
+    return label + ': the almanac prints ' + printedUTC + ' UTC (' +
+      clockOf(m + offset, false) + ' on the city’s clock). Method A says ' +
+      clockOf(a, true) + ' UTC and method B ' + clockOf(b, true) +
+      ' UTC, so the printed minute less each is ' + signedSeconds(m - a) +
+      ' and ' + signedSeconds(m - b) + '. If the almanac rounds to the ' +
+      'nearest minute, its ' + printedUTC + ' means a time from ' +
+      clockOf(m - 0.5, true) + ' to ' + clockOf(m + 0.5, true) + ': A is ' +
+      inside(ua, 'rounded') + ' that, B is ' + inside(ub, 'rounded') +
+      '. If it cuts the seconds off, it means ' + clockOf(m, true) + ' to ' +
+      clockOf(m + 1, true) + ': A is ' + inside(ua, 'cut') + ', B is ' +
+      inside(ub, 'cut') + '.';
+  }
+
+  function renderAlmanac(rows, now) {
+    var host = document.getElementById('almanac-report');
+    if (!host) return;
+    host.replaceChildren();
+    var R = window.Reckoning;
+    var place = R.STANDING.place.name;
+    if (!Array.isArray(rows)) {
+      host.appendChild(el('p', 'standing', 'The record of the almanac would ' +
+        'not open, so nothing is set beside our figures here. It remains at ' +
+        'reckoning/almanac.json. Nothing has been put in its place.'));
+      return;
+    }
+    var mine = rows.filter(almanacPlaceIsStanding);
+    if (mine.length === 0) {
+      host.appendChild(el('p', 'standing', 'The outside almanac has not yet ' +
+        'been asked about ' + place + '. The tower asks once a morning; ' +
+        'until it has asked here, this section stays empty rather than ' +
+        'showing another city’s answer.'));
+      return;
+    }
+    var row = mine[mine.length - 1];
+    if (row.failed) {
+      host.appendChild(el('p', 'standing almanac-failed', 'NOT READ. The ' +
+        'tower asked ' + row.source + ' for sunrise and sunset over ' + place +
+        ' on ' + row.date + ' at ' + hhmmUTC(row.fetchedAt) + ', and did not ' +
+        'get an answer it could use: ' + row.failed + '. Nothing is printed ' +
+        'in its place — not an older answer, and not our own figures.'));
+      renderAlmanacSeries(host, rows);
+      return;
+    }
+    var ours = null;
+    try { ours = R.almanacComparands(row.date, row.place); } catch (e) { ours = null; }
+    if (row.noRiseSet || !row.printedUTC || !ours) {
+      host.appendChild(el('p', 'standing', 'On ' + row.date + ' ' +
+        (row.noRiseSet ? 'the almanac printed no sunrise or sunset for ' + place +
+          ' (it said: ' + row.noRiseSet + ')' :
+          'our methods have no sunrise and sunset for ' + place) +
+        ', so there is nothing here to set a printed minute against.'));
+      renderAlmanacSeries(host, rows);
+      return;
+    }
+
+    var figures = el('dl', 'figures');
+    figures.id = 'almanac-figures';
+    addFigure(figures, 'the date asked about', row.date);
+    addFigure(figures, 'asked at', hhmmUTC(row.fetchedAt));
+    addFigure(figures, 'source', row.source + ', the U.S. Naval Observatory’s computation');
+    addFigure(figures, 'what it prints', 'whole minutes, on a clock we asked for in UTC');
+    host.appendChild(figures);
+
+    var ends = el('div', 'almanac-ends');
+    ends.id = 'almanac-ends';
+    ends.appendChild(el('p', 'standing', oneEnd('rise', row.printedUTC.rise, ours, ours.utcOffsetMinutes)));
+    ends.appendChild(el('p', 'standing', oneEnd('set', row.printedUTC.set, ours, ours.utcOffsetMinutes)));
+    ends.appendChild(el('p', 'standing note', 'Which rule the almanac uses to ' +
+      'turn a time into a printed minute is not known to us, and one day ' +
+      'cannot tell the two apart. So the two lines above can only be read ' +
+      'rule by rule, and we cannot choose the rule: neither is a verdict on ' +
+      'which method the almanac is nearer.'));
+    host.appendChild(ends);
+
+    var printed = hhmmToMinutes(row.printedUTC.set) - hhmmToMinutes(row.printedUTC.rise);
+    var allowA = R.printedLengthsFor(ours.A.dayLengthMinutes);
+    var allowB = R.printedLengthsFor(ours.B.dayLengthMinutes);
+    var side = wagerSide(printed, allowA, allowB);
+    var wager = el('p', 'standing almanac-wager almanac-' + side);
+    wager.id = 'almanac-wager';
+    var said = 'The day’s length is the part a printed minute can test. Set ' +
+      'less rise, the almanac’s day is ' + printed + ' minutes. Method A’s ' +
+      'day is ' + ours.A.dayLengthMinutes.toFixed(2) + ' minutes, so if the ' +
+      'almanac says what A says its printed length must be one of ' +
+      setWords(allowA) + ', whichever rule it uses at both ends. Method B’s ' +
+      'is ' + ours.B.dayLengthMinutes.toFixed(2) + ', so ' + setWords(allowB) + '. ';
+    if (side === 'A') said += printed + ' is in A’s set and not in B’s.';
+    else if (side === 'B') said += printed + ' is in B’s set and not in A’s.';
+    else if (side === 'both') said += 'The two sets share ' + printed +
+      ', so the almanac’s minute cannot separate the methods today. That is ' +
+      'not a verdict either way.';
+    else said += printed + ' is in neither set: the almanac says something ' +
+      'neither of our methods says. It is printed as it came, not moved to the ' +
+      'nearest.';
+    wager.textContent = said;
+    host.appendChild(wager);
+
+    var stored = row.wager || {};
+    if (stored.A && stored.B &&
+        (!sameList(stored.A.allowed, allowA) || !sameList(stored.B.allowed, allowB))) {
+      host.appendChild(el('p', 'standing almanac-drifted', 'DRIFTED. Before ' +
+        'it asked, the tool wrote the wager into this row as A ' +
+        setWords(stored.A.allowed) + ' and B ' + setWords(stored.B.allowed) +
+        '. Recomputed in your browser now it is A ' + setWords(allowA) +
+        ' and B ' + setWords(allowB) + '. Our arithmetic, or the clock law it ' +
+        'reads, has moved since the row was written.'));
+    }
+
+    renderAlmanacSeries(host, rows);
+
+    var hours = (now - Date.parse(row.fetchedAt)) / 3600000;
+    if (isFinite(hours) && hours > ALMANAC_STALE_HOURS) {
+      var days = Math.floor(hours / 24);
+      host.appendChild(el('p', 'standing almanac-stale', 'OLD. The almanac ' +
+        'was last asked ' + days + ' day' + (days === 1 ? '' : 's') + ' ago, ' +
+        'and the tower has not asked since.'));
+    }
+  }
+
+  // Every row in the file with a usable answer, at whatever place it was
+  // asked: a row's comparison is a fact about its own date and place.
+  function renderAlmanacSeries(host, rows) {
+    var R = window.Reckoning;
+    var tally = { A: 0, B: 0, both: 0, neither: 0 };
+    var sumA = 0, sumB = 0, n = 0;
+    rows.forEach(function (row) {
+      if (!row || row.failed || row.noRiseSet || !row.printedUTC || !row.place) return;
+      var ours = null;
+      try { ours = R.almanacComparands(row.date, row.place); } catch (e) { ours = null; }
+      if (!ours) return;
+      var printed = hhmmToMinutes(row.printedUTC.set) - hhmmToMinutes(row.printedUTC.rise);
+      tally[wagerSide(printed, R.printedLengthsFor(ours.A.dayLengthMinutes),
+        R.printedLengthsFor(ours.B.dayLengthMinutes))] += 1;
+      sumA += printed - ours.A.dayLengthMinutes;
+      sumB += printed - ours.B.dayLengthMinutes;
+      n += 1;
+    });
+    var p = el('p', 'standing note');
+    p.id = 'almanac-series';
+    if (n === 0) {
+      p.textContent = 'No answer in the record can be set against our methods ' +
+        'yet, so there is no series.';
+      host.appendChild(p);
+      return;
+    }
+    var spread = 0.41 / Math.sqrt(n);
+    p.textContent = 'Across the record: ' + n + ' day' + (n === 1 ? '' : 's') +
+      ' with an answer. The printed length fell in A’s set only on ' + tally.A +
+      ', B’s only on ' + tally.B + ', both on ' + tally.both + ', neither on ' +
+      tally.neither + '. Printed length less ours, on average: ' +
+      signedFixed(sumA / n) + ' minutes against A, ' + signedFixed(sumB / n) +
+      ' against B, each give or take about ' + spread.toFixed(2) + '. ' +
+      (n < 10 ? 'That is ' + (n === 1 ? 'one draw' : n + ' draws') + ', not a ' +
+        'verdict: whole minutes jitter, and only a run of days lets their ' +
+        'average resolve a gap smaller than a minute.' :
+        'The rough spread assumes the seconds fall anywhere in the minute; ' +
+        'it says how far chance alone would carry the average, and nothing ' +
+        'about whether the almanac is right.');
+    host.appendChild(p);
+  }
+
+  function signedFixed(x) {
+    return (x < 0 ? '−' : '+') + Math.abs(x).toFixed(2);
+  }
+
+  function startAlmanac() {
+    fetch('almanac.json', { cache: 'no-cache' })
+      .then(function (response) {
+        if (!response.ok) throw new Error(String(response.status));
+        return response.json();
+      })
+      .then(function (rows) { renderAlmanac(rows, Date.now()); })
+      .catch(function () { renderAlmanac(null, Date.now()); });
+  }
+
   function start() {
     renderStandingProse();
     renderPledge();
@@ -2944,6 +3200,7 @@
     renderComing();
     startCorner();
     startAir();
+    startAlmanac();
 
     fetch('ledger.json', { cache: 'no-cache' })
       .then(function (response) {

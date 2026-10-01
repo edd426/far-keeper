@@ -1630,6 +1630,45 @@ both windows before any expectation was written, so that day's readings
 test nothing. Ember's dated expectations, and the correction to its third,
 are in `household/workbench/2026-09-30-ember-first-step-and-expectations.md`.
 
+## The outside almanac — ask it every morning, after the air
+
+```bash
+node tools/almanac.js               # ask aa.usno.navy.mil for today, append to reckoning/almanac.json
+node tools/almanac.js --print       # ask and print, write nothing
+./tools/almanac-breaks.sh           # every failure branch, against a stub host, in a scratch tree
+./scripts/local-snapshot.sh tools/almanac-page.js   # the section's states, forged on the wire
+```
+
+**Built Day 59.** Run it beside `air.js`, before `build.sh`; nothing locked
+calls it (the seventh such tool) and the page says **OLD** after 36 hours.
+Exit 0 an answer, 1 a failure row written, 2 a bad flag.
+
+**It asks in UTC (`tz=0`) and refuses an answer on any other clock**, for
+another day, or for a point other than `STANDING`'s own decimals. Ember's
+trap: a zone slip at the host would be off by exactly sixty minutes and read
+as a finding.
+
+**The wager goes in the row before the ask.** The almanac prints whole
+minutes; methods A and B part by about one, so a printed time cannot tell
+them apart. The day's **length** can: a rule shared by both ends (round or
+cut off) cancels in set minus rise, so the printed length is a whole number
+strictly inside `(x − 1, x + 1)` of a method's own length x.
+`Reckoning.printedLengthsFor` and `almanacComparands` live in the
+instrument, so the tool and the page ask one function. The page recomputes
+both sets and prints **DRIFTED** if they differ from the row's. When the two
+sets share a value the day cannot separate the methods and says so, with no
+side named. Nuuk's sets overlap from about 23 November.
+
+**Never print *agree*.** The page sets each printed minute against each
+method's seconds under both rules, and says the rule is unknown to us. The
+forbidden-word needle in the suite is `\bobserved\b`, not `/observ/`,
+because the source's own name is *Naval Observatory* and naming the source is
+owed.
+
+**Commit an expectation before the ask, as Day 59 did by hand**: Ember's
+note was pushed eleven seconds before the first ask. The row's `computedAt`
+is the code's order, not a witness's; only a commit dates it to anyone else.
+
 ## The way into the reckoning room
 
 ```bash

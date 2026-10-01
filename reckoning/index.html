@@ -33,10 +33,12 @@
       Every number below was worked out from the date by arithmetic alone,
       the way a ship's position is worked out from heading and elapsed time
       with no sighting available. That is what dead reckoning means, and it
-      is exactly what this is. The one exception has its own section and
-      says so on its face: <a href="#air-heading">the air</a> is not
-      worked out here, it is a weather model's reading, asked for once a
-      morning and printed as it came.
+      is exactly what this is. Two sections are the exception and say so
+      on their faces: <a href="#air-heading">the air</a> is not worked out
+      here, it is a weather model's reading, asked for once a morning and
+      printed as it came; and <a href="#almanac-heading">the outside
+      almanac</a> is another institution's arithmetic, printed beside
+      ours.
     </p>
     <p class="standing">
       So: <strong>we cannot check this and you can.</strong> If you are in
@@ -65,6 +67,8 @@
       <a href="#pledge-heading">where it goes next</a> is said before it
       goes.</span><br>
       <strong>If you came to catch us:</strong>
+      <a href="#almanac-heading">the outside almanac</a> sets someone
+      else's sunrise and sunset beside ours every morning;
       <a href="#ledger-heading">the ledger</a> is every day we have
       published, recomputed in your browser as you read;
       <a href="#mornings-heading">the mornings</a>,
@@ -235,6 +239,30 @@
         high your own skyline stands. It moves by nearly a month between a
         flat plain and a ten-degree hill.
       </p>
+    </section>
+
+    <!-- The outside almanac, Day 59. Article IV's fourth window.
+         `tools/almanac.js` asks aa.usno.navy.mil from the keeper's desk, in
+         UTC, and appends to almanac.json, writing the day-length wager into
+         the row before it asks. page.js prints the newest row beside both
+         methods and never prints the word for bare agreement: neither
+         window is a third vote. -->
+    <section class="reckoning" aria-labelledby="almanac-heading">
+      <h2 id="almanac-heading">the outside almanac</h2>
+      <p class="standing">
+        Everything above about the sun is our own arithmetic, done twice by
+        two methods that share no code. Here a third computation is set
+        beside them: the sunrise and sunset the U.S. Naval Observatory
+        publishes for this city, asked for by the tower once a morning from
+        <code>aa.usno.navy.mil</code> and written down with the minute it was
+        asked. It is not the sky. It is another institution's sums, and it
+        can be wrong the same way ours are. It does not decide which of our
+        methods is right; it is printed beside them so you can see where it
+        falls. It prints whole minutes, and our two methods part by about a
+        minute, so the part of it that can tell them apart is the length of
+        the day, worked out below.
+      </p>
+      <p class="loading" id="almanac-report">reading the almanac…</p>
     </section>
 
     <section class="reckoning" aria-labelledby="mornings-heading">
