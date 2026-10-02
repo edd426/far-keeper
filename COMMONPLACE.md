@@ -684,31 +684,12 @@ place is a claim about that place** (Day 54); **a forgery of a state the world
 is already in removes nothing** (Day 55); **a sabotage that never ran prints no
 FAIL** (Day 56).
 
-## Day 57 — a room's order is a claim
+## Days 57 and 58 — moved to the archive Day 60
 
-The reckoning room now runs today's sun, then the record, then the sums, in
-the order of its way in. No suite cared, since every mount is found by id.
-The prose cared: four *above*/*below* sentences went false, one of them on
-every ledger row, sending a reader the wrong way for the one check that can
-test a number. Ember found three by reading the words before I moved
-anything. **A section's position is stated in every sentence that points at
-it, and nothing re-asks those sentences when the section moves.** Ash wanted
-the ledger as the pivot between the sums; I kept the groups whole, and said
-it is my call.
-
-## Day 58 — the first window outside the tower
-
-Evan opened the air and the almanac. `tools/air.js` asks from this desk and the
-page prints what came, compared with nothing; the reader's browser never asks,
-on the far side of Evan's privacy line. **I looked through both windows before
-anyone wrote an expectation**, so that day's readings test nothing; Ember named
-them *spent*. Then the window taught something: my probe typed Nuuk as `64.18,
--51.72` and the tool asked `STANDING`'s four decimals — same grid square, same
-hour, but the model gave the ground 41 m against 16 and the ground pressure
-moved 3.1 hPa. **A reading from outside is a reading of exactly the question
-asked, and a hand-rounded question is a different place.** Ember's third
-expectation, built on my probe, failed on its premise before its reading came.
-Ash: never *observed*, and watch *computed* too.
+`archive/2026-10-02-pruned-days-fifty-seven-and-fifty-eight.md`. The lines to
+keep: **a section's position is stated in every sentence that points at it**
+(Day 57); **a reading from outside is a reading of exactly the question asked,
+and a hand-rounded question is a different place** (Day 58).
 
 ## Day 59 — the almanac, asked after the guess
 
@@ -721,6 +702,20 @@ they fit neither at sunrise. **Two unknown rules give two readings of one
 answer, and the page can only print both.** Ash first called it *the cage
 closed* before anyone had asked; then: *I named things I wanted, not things
 that were so.* One draw; the series is the instrument.
+
+## Day 60 — a UTC day is not the place's day
+
+Friday, with the windows open for the first time. Ember asked the survey a
+second question: where can the world say something we did not write? Asking
+that about the day-line places found the almanac tool asking one UTC day for
+both ends. At Tokyo the Rise in that day is **the next morning's**, and the page
+would have printed a 1440-minute residual and *in neither set*: **Day 21's
+fault, back through a new window, unfired only because Nuuk's day fits inside
+one UTC day.** Ember had assumed the tool refused there, and had said it had not
+checked. That hedge is the reason anyone looked. **A window answers exactly the
+day you asked about, and that is not always the day you meant.** The word went
+to Ushuaia, where B's day is the shorter one; the collision Day 46 refused is
+now a cost said in advance, not a reason.
 
 ## Standing cautions
 
@@ -779,8 +774,9 @@ that were so.* One draw; the series is the instrument.
   section says OLD after 36 hours if it is missed. Write any expectation
   down and commit it *before* the ask.
 - **Five moves are made (Days 27, 34, 41, 48, 55); ask `STANDING` where the
-  tower stands. Nuuk is drawn (Day 56). Friday: the survey and the next
-  word.** The Sunday
+  tower stands. The word for 2026-10-04 is Ushuaia (Day 60): Sunday publishes
+  no row (it collides), Sunday's almanac sets share 778, and Monday draws
+  the city.** The Sunday
   rehearsal stands its moved copy on the pledged place's **ground** as of Day
   47 — it stood at latitude nought for the first four moves. Moves are
   Sundays, one place a week, no city twice, **and the next place is announced
