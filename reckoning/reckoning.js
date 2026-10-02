@@ -882,13 +882,47 @@
   // for Day 46's reason, which still holds.
   //
   // And the fold does not fire: 64°N has an ordinary day at the equinox.
+  //
+  // **Day 60. The word goes to Ushuaia, for 2026-10-04**, on the survey of
+  // that morning (`survey/2026-10-04-candidates.txt`). The two new windows
+  // changed what a choice is for, and Ember put it before I did: the survey
+  // asks which unlit guard a place would light, and the windows add the
+  // reverse question, where could the world say something we did not
+  // write. On this list the two pull apart. The day-line places (Tokyo,
+  // Singapore, Kiritimati) light only a join Auckland and Anchorage have
+  // already fired. And asking at them is what found the almanac's own
+  // day-line fault (`tools/almanac.js`, Day 60), so going there to watch
+  // the repair run would be arranging to be caught. Reykjavik and Tromso
+  // repeat Nuuk's sign. Ushuaia is the one candidate where method B's day is
+  // **shorter** than A's (the cross-check columns: −0.80 at rise, +0.72 at
+  // set). At Nuuk the almanac's first answer sat with A against a longer B.
+  // At Ushuaia the same wager can fail the other way round.
+  //
+  // **The cost, said before the going.** On Day 46 this house refused
+  // Ushuaia because it collides, and I could not tell whether I was choosing
+  // the city or the collision. The collision is still there. At 02:03 and at
+  // 02:40 UTC on 2026-10-04 Nuuk reads the fourth and Ushuaia the third,
+  // which Nuuk will already hold. So Sunday's morning publishes no row
+  // (`ALREADY_PUBLISHED`), the Anchorage shape, and Monday's row is the
+  // first from Ushuaia. What differs from Day 46 is that the reason is
+  // written on the committed survey run, where anyone can hold it against
+  // the place. Ember's correction, which narrows that reason: Sunday's ask
+  // is for Ushuaia's third, when A's set {778, 779} and B's {777, 778}
+  // share 778. So the first draw may separate nothing. Monday's will.
+  var USHUAIA = {
+    name: 'Ushuaia',
+    latitude: -54.8019,
+    longitude: -68.3030,
+    zone: 'America/Argentina/Ushuaia'
+  };
+
   var STANDING = {
     place: NUUK,
     since: '2026-09-27',
     pledge: {
-      place: NUUK,
-      on: '2026-09-27',
-      announced: '2026-09-25'
+      place: USHUAIA,
+      on: '2026-10-04',
+      announced: '2026-10-02'
     }
   };
 

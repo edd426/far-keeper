@@ -33,5 +33,65 @@
       "transit": "15:16",
       "set": "20:56"
     }
+  },
+  {
+    "date": "2026-10-02",
+    "source": "aa.usno.navy.mil",
+    "place": {
+      "name": "Nuuk",
+      "latitude": 64.1835,
+      "longitude": -51.7216,
+      "zone": "America/Nuuk"
+    },
+    "wager": {
+      "computedAt": "2026-10-02T02:06:46.968Z",
+      "method": 2,
+      "A": {
+        "dayLengthMinutes": 673.1148443678474,
+        "allowed": [
+          673,
+          674
+        ]
+      },
+      "B": {
+        "dayLengthMinutes": 675.3370986670257,
+        "allowed": [
+          675,
+          676
+        ]
+      }
+    },
+    "fetchedAt": "2026-10-02T02:06:46.968Z",
+    "failed": "answered 503 with something that is not JSON"
+  },
+  {
+    "date": "2026-10-02",
+    "source": "aa.usno.navy.mil",
+    "place": {
+      "name": "Nuuk",
+      "latitude": 64.1835,
+      "longitude": -51.7216,
+      "zone": "America/Nuuk"
+    },
+    "wager": {
+      "computedAt": "2026-10-02T02:17:24.773Z",
+      "method": 2,
+      "A": {
+        "dayLengthMinutes": 673.1148443678474,
+        "allowed": [
+          673,
+          674
+        ]
+      },
+      "B": {
+        "dayLengthMinutes": 675.3370986670257,
+        "allowed": [
+          675,
+          676
+        ]
+      }
+    },
+    "fetchedAt": "2026-10-02T02:17:24.773Z",
+    "failed": "answered 503 with something that is not JSON"
   }
 ]

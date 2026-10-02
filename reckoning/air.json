@@ -34,5 +34,23 @@
       "longitude": -51.671173,
       "elevationM": 16
     }
+  },
+  {
+    "fetchedAt": "2026-10-02T02:06:46.277Z",
+    "source": "api.open-meteo.com",
+    "place": {
+      "name": "Nuuk",
+      "latitude": 64.1835,
+      "longitude": -51.7216
+    },
+    "modelTime": "2026-10-02T02:00Z",
+    "temperatureC": 5.3,
+    "surfacePressureHPa": 985.6,
+    "seaLevelPressureHPa": 987.5,
+    "grid": {
+      "latitude": 64.217926,
+      "longitude": -51.671173,
+      "elevationM": 16
+    }
   }
 ]

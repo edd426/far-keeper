@@ -60,11 +60,47 @@ class H(http.server.BaseHTTPRequestHandler):
             dat["sundata"] = [{"phen": "Sun continuously above horizon", "time": None}]
             return self.send(200, json.dumps(g))
         if p == "/hang": time.sleep(5); return self.send(200, json.dumps(g))
+        if p in ("/dayline", "/dayline-once", "/dayline-oneask"):
+            days = json.load(open(sys.argv[2]))
+            day = q["date"][0]
+            if p == "/dayline-once" and day != sorted(days)[0]:
+                return self.send(503, "<html>unavailable</html>", "text/html")
+            if p == "/dayline-oneask" and day != sorted(days)[-1]:
+                day = sorted(days)[-1]; y, m, d = [int(x) for x in day.split("-")]
+                dat["year"], dat["month"], dat["day"] = y, m, d
+            ev = days[day]
+            dat["sundata"] = [{"phen": "Rise", "time": ev["rise"]}, {"phen": "Upper Transit", "time": ev["transit"]},
+                              {"phen": "Set", "time": ev["set"]}]
+            return self.send(200, json.dumps(g))
         self.send(404, "{}")
 http.server.ThreadingHTTPServer(("127.0.0.1", int(sys.argv[1])), H).serve_forever()
 PY
+# Day 60. A UTC day is not the standing place's day. The stub's day-line
+# answers are what an almanac asked in UTC prints for each UTC day at Tokyo:
+# that day's Rise belongs to the NEXT local morning, its Set to this one. They
+# are built from method A, rounded, for the UTC days either side of the date.
+TOKYO='{ name: "Tokyo", latitude: 35.6762, longitude: 139.6503, zone: "Asia/Tokyo" }'
+DL_DATE=2026-10-04
+node -e "
+const R=require('$ROOT/reckoning/reckoning.js');const P=$TOKYO;
+const hm=m=>{m=Math.round(((m%1440)+1440)%1440);return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0')};
+const out={};
+for(const [utc,local] of [['2026-10-03','2026-10-03'],['2026-10-04','2026-10-04'],['2026-10-05','2026-10-05']]){
+  const here=R.almanacComparands(local,P), next=R.almanacComparands(new Date(Date.parse(local)+864e5).toISOString().slice(0,10),P);
+  // the UTC day's rise is the next local morning's (A's rise there is negative); its set is this local day's
+  out[utc]={rise:hm(next.A.riseUTC+1440),set:hm(here.A.setUTC),transit:'02:30'};
+}
+require('fs').writeFileSync('$T/dayline.json',JSON.stringify(out));
+"
+mkdir -p "$T/tokyo/tools" "$T/tokyo/reckoning"
+cp "$ROOT/tools/almanac.js" "$T/tokyo/tools/almanac.js"
+cp "$ROOT/reckoning/reckoning.js" "$T/tokyo/reckoning/reckoning.js"
+node -e "
+const fs=require('fs'),f='$T/tokyo/reckoning/reckoning.js';
+fs.writeFileSync(f,fs.readFileSync(f,'utf8').replace(/var STANDING = \{\s*place:[\s\S]*?since:/,'var STANDING = { place: $TOKYO, since:'));"
+
 PORT=$(python3 -c 'import socket;s=socket.socket();s.bind(("127.0.0.1",0));print(s.getsockname()[1])')
-python3 "$T/stub.py" "$PORT" & STUB=$!
+python3 "$T/stub.py" "$PORT" "$T/dayline.json" & STUB=$!
 for _ in $(seq 50); do python3 -c "import socket;socket.create_connection(('127.0.0.1',$PORT),0.1)" 2>/dev/null && break; sleep 0.1; done
 
 rows() { node -e "try{console.log(require('$T/reckoning/almanac.json').length)}catch(e){console.log(0)}"; }
@@ -125,9 +161,62 @@ if(!rows[0].printedUTC||rows[0].printedUTC.rise!=='09:36'){console.log('FAIL  th
 console.log('ok    the first row is untouched after '+(rows.length-1)+' more runs');
 " || fails=$((fails + 1))
 
+# --- the day-line join, Day 60 ---
+# The fixture must straddle, or every case below has an empty domain (Ember).
+STRADDLE="$(cd "$T/tokyo" && node -e "
+const R=require('./reckoning/reckoning.js');const p=R.STANDING.place;
+const c=R.almanacComparands('$DL_DATE',p);
+process.stdout.write(p.name+' '+(c&&c.A.riseUTC<0&&c.A.setUTC>=0&&c.A.setUTC<1440?'straddles':'does not straddle'));")"
+if [ "$STRADDLE" = "Tokyo straddles" ]; then ok "the scratch tower stands at Tokyo and its sunrise falls on the UTC day before"
+else bad "the day-line fixture was not built: $STRADDLE"; fi
+
+dl() { FAR_KEEPER_ALMANAC_URL="http://127.0.0.1:$PORT$1" FAR_KEEPER_ALMANAC_TIMEOUT_MS=1000 \
+       FAR_KEEPER_ALMANAC_DATE="$DL_DATE" node "$T/tokyo/tools/almanac.js" 2>&1; }
+TROWS() { node -e "try{const r=require('$T/tokyo/reckoning/almanac.json');console.log(JSON.stringify(r[r.length-1]))}catch(e){console.log('{}')}"; }
+
+out=$(dl /dayline); code=$?
+last=$(TROWS)
+if [ "$code" = 0 ] && node -e "
+const r=$last;const R=require('$T/tokyo/reckoning/reckoning.js');
+const c=R.almanacComparands(r.date,r.place);
+const m=(n)=>{const t=r.printedUTC[n];const off=(Date.parse(r.utcDates[n])-Date.parse(r.date))/864e5;return +t.slice(0,2)*60+ +t.slice(3)+1440*off};
+const len=m('set')-m('rise');
+const okA=R.printedLengthsFor(c.A.dayLengthMinutes).includes(len);
+if(r.utcDates.rise!=='2026-10-03'||r.utcDates.set!=='2026-10-04'||!okA){console.log(JSON.stringify({utcDates:r.utcDates,len}));process.exit(1)}
+console.log('len '+len);" >/dev/null; then
+  ok "at Tokyo the rise is asked of UTC 2026-10-03 and the set of 2026-10-04, and the printed length lands in A's set"
+else bad "day-line ask: exit $code — $out — $last"; fi
+
+out=$(dl /dayline-once); code=$?
+last=$(TROWS)
+if [ "$code" = 1 ] && grep -q "asked about UTC 2026-10-04" <<<"$out" && node -e "const r=$last;process.exit(r.failed&&!('printedUTC' in r)?0:1)"; then
+  ok "one of two asks failing is a failure row naming the day, with no half-filled minute"
+else bad "second ask failing: exit $code — $out"; fi
+
+out=$(dl /dayline-oneask); code=$?
+if [ "$code" = 1 ] && grep -q "not 2026-10-03" <<<"$out"; then
+  ok "an answer about the wrong UTC day for one end is refused"
+else bad "wrong-day answer for the rise: exit $code — $out"; fi
+
+# The half-day guard, forced: rewrite the tool so it asks the row's own date for
+# both ends (the Day 59 behaviour). The guard must then refuse the rise.
+cp "$T/tokyo/tools/almanac.js" "$T/tokyo/tools/almanac.js.orig"
+perl -0pi -e 's/rise: Math\.floor\(ours\.A\.riseUTC \/ 1440\)/rise: 0/' "$T/tokyo/tools/almanac.js"
+if cmp -s "$T/tokyo/tools/almanac.js" "$T/tokyo/tools/almanac.js.orig"; then
+  bad "sabotage did NOT land: the rise is still asked of its own UTC day"
+elif ! node --check "$T/tokyo/tools/almanac.js" 2>/dev/null; then
+  bad "the sabotaged tool does not parse"
+else
+  out=$(dl /dayline); code=$?
+  if [ "$code" = 1 ] && grep -q "not the rise of the day asked about" <<<"$out"; then
+    ok "asked once, as on Day 59, the next morning's rise is refused as another day's event"
+  else bad "the half-day guard did not refuse: exit $code — $out"; fi
+fi
+mv "$T/tokyo/tools/almanac.js.orig" "$T/tokyo/tools/almanac.js"
+
 NOW_SUM="$( [ -f "$REAL" ] && sha256sum "$REAL" | cut -d' ' -f1 || echo absent)"
 if [ "$REAL_SUM" = "$NOW_SUM" ]; then ok "the real reckoning/almanac.json did not move"; else bad "the real reckoning/almanac.json CHANGED"; fi
 
 echo
 if [ "$fails" -gt 0 ]; then echo "FAIL — $fails problem(s)."; exit 1; fi
-echo "PASS — every way the almanac can fail is a failure row with its reason, and every row carries its wager."
+echo "PASS — every way the almanac can fail is a failure row with its reason, every row carries its wager, and each end is asked of its own UTC day."

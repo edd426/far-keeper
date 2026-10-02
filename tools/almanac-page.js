@@ -17,6 +17,14 @@
 //   H  the file will not open    says so
 //   I  the stored wager differs  DRIFTED
 //   J  an answer 5 days old      OLD
+//   K  Tokyo, asked two UTC days the printed length is set less rise across
+//                                the two days, and lands in A's set (Day 60)
+//   L  Tokyo, asked one UTC day  NOT COMPARED: the rise is the next morning's
+//                                (Day 59's single ask, as it would have been)
+//
+// K and L stand the tower at Tokyo on the wire, where the sunrise falls on
+// the UTC day before; both assert the forgery landed and that the place
+// really straddles, or they would have an empty domain (Ember, Day 60).
 //
 // Ember's caution, kept as a check: D needs a date whose two sets really
 // overlap and B/C a date whose sets do not. Both are searched for over the
@@ -88,7 +96,7 @@ function answer(date, c, length, over) {
   }, over);
 }
 
-async function section(browser, { body, status, sabotage }) {
+async function section(browser, { body, status, sabotage, standAt }) {
   const page = await browser.newPage({ viewport: { width: 390, height: 900 } });
   const errors = [];
   page.on('pageerror', (e) => errors.push(String(e)));
@@ -97,6 +105,17 @@ async function section(browser, { body, status, sabotage }) {
     await page.route('**/reckoning/almanac.json*', (route) => route.fulfill({
       status: status || 200, contentType: 'application/json', body: body === undefined ? '' : body,
     }));
+  }
+  let stood = null;
+  if (standAt) {
+    await page.route('**/reckoning/reckoning.js*', async (route) => {
+      const res = await route.fetch();
+      const before = await res.text();
+      const after = before.replace(/var STANDING = \{\s*place:[\s\S]*?since:/,
+        'var STANDING = { place: ' + JSON.stringify(standAt) + ', since:');
+      stood = after !== before;
+      await route.fulfill({ response: res, body: after });
+    });
   }
   if (sabotage) {
     await page.route('**/reckoning/page.js*', async (route) => {
@@ -125,6 +144,7 @@ async function section(browser, { body, status, sabotage }) {
     };
   });
   got.landed = landed;
+  got.stood = stood;
   got.errors = errors;
   await page.close();
   return got;
@@ -223,6 +243,46 @@ async function section(browser, { body, status, sabotage }) {
   check(/OLD\. The almanac was last asked 5 days ago/.test(j.report), 'J: five days old says OLD');
   check(!/OLD\./.test(b.report), 'J: a fresh answer does not');
 
+  // K and L — a place whose day straddles midnight UTC (Day 60).
+  const TOKYO = { name: 'Tokyo', latitude: 35.6762, longitude: 139.6503, zone: 'Asia/Tokyo' };
+  const kDate = '2026-10-04';
+  const kc = R.almanacComparands(kDate, TOKYO);
+  check(!!kc && kc.A.riseUTC < 0 && kc.A.setUTC >= 0 && kc.A.setUTC < 1440,
+    `K: domain — at Tokyo on ${kDate} the sunrise falls on the UTC day before (${kc && kc.A.riseUTC.toFixed(1)} min)`);
+  const kAllowA = R.printedLengthsFor(kc.A.dayLengthMinutes), kAllowB = R.printedLengthsFor(kc.B.dayLengthMinutes);
+  const kOnlyA = kAllowA.find((k) => !kAllowB.includes(k));
+  const kRise = Math.round(kc.A.riseUTC);
+  function tokyoRow(over) {
+    return Object.assign({
+      date: kDate, source: 'aa.usno.navy.mil', place: TOKYO,
+      wager: { computedAt: new Date(Date.now() - 3600000).toISOString(), method: R.METHOD,
+        A: { dayLengthMinutes: kc.A.dayLengthMinutes, allowed: kAllowA },
+        B: { dayLengthMinutes: kc.B.dayLengthMinutes, allowed: kAllowB } },
+      fetchedAt: new Date(Date.now() - 3600000).toISOString(), tz: 0,
+      printedUTC: { rise: hhmm(kRise), transit: null, set: hhmm(kRise + kOnlyA) },
+      utcDates: { rise: shift(kDate, -1), set: kDate },
+    }, over);
+  }
+  check(kOnlyA !== undefined, `K: domain — a length in A's set and not B's at Tokyo (${kOnlyA})`);
+  const kBody = JSON.stringify([tokyoRow()]);
+  const k = await section(browser, { body: kBody, standAt: TOKYO });
+  check(k.stood === true, 'K: the tower was stood at Tokyo on the wire');
+  check(k.errors.length === 0, `K: no page errors (${k.errors.join('; ') || 'none'})`);
+  check(new RegExp(`almanac’s day is ${kOnlyA} minutes`).test(k.wager) && /almanac-A/.test(k.wagerClass),
+    `K: set less rise across two UTC days is ${kOnlyA}, in A's set`);
+  check(k.ends.includes(`UTC on ${shift(kDate, -1)}`), 'K: the sunrise is labelled with the UTC day it was printed for');
+  check(!/NOT COMPARED/.test(k.report), 'K: and is compared');
+  // L — the same place asked once, as the Day 59 tool did: that UTC day's Rise
+  // is the next local morning's.
+  const lc = R.almanacComparands(shift(kDate, 1), TOKYO);
+  const lBody = JSON.stringify([tokyoRow({ printedUTC: { rise: hhmm(lc.A.riseUTC + 1440), transit: null,
+    set: hhmm(kc.A.setUTC) }, utcDates: undefined })]);
+  check(!lBody.includes('utcDates'), 'L: the forged row has no utcDates, so it reads as one ask of its own date');
+  const l = await section(browser, { body: lBody, standAt: TOKYO });
+  check(l.stood === true, 'L: the tower was stood at Tokyo on the wire');
+  check(/NOT COMPARED\./.test(l.report) && /sunrise this row holds/.test(l.report), 'L: the next morning\'s sunrise is NOT COMPARED');
+  check(!l.wager && !/in neither set/.test(l.report), 'L: and no wager is drawn, so no finding is manufactured');
+
   // Sabotage 1 — the section is never started.
   const s1 = await section(browser, { body: bBody, sabotage: (t) => t.replace('    startAlmanac();\n', '\n') });
   check(s1.landed === true, 'sabotage 1: the startAlmanac() call was removed on the wire');
@@ -244,11 +304,25 @@ async function section(browser, { body, status, sabotage }) {
   check(s3.ran, 'sabotage 3: the rest of the page still ran');
   check(!/cannot separate the methods today/.test(s3.wager), 'sabotage 3: with typed sets case D goes wrong, so case D was measuring the computation');
 
+  // Sabotage 4 — the page ignores which UTC day a printed time belongs to.
+  const s4 = await section(browser, { body: kBody, standAt: TOKYO,
+    sabotage: (t) => t.replace('var day = row.utcDates && row.utcDates[name];', 'var day = null;') });
+  check(s4.landed === true && s4.stood === true, 'sabotage 4: utcDates ignored, and the tower at Tokyo, both on the wire');
+  check(s4.ran, 'sabotage 4: the rest of the page still ran');
+  check(!/almanac-A/.test(s4.wagerClass), 'sabotage 4: case K no longer lands in A, so case K was measuring the day offset');
+
+  // Sabotage 5 — the wrong-day guard removed.
+  const s5 = await section(browser, { body: lBody, standAt: TOKYO,
+    sabotage: (t) => t.replace('var wrongEnd = wrongDayEnd(row, ours);', 'var wrongEnd = null;') });
+  check(s5.landed === true && s5.stood === true, 'sabotage 5: the wrong-day guard removed, the tower at Tokyo');
+  check(s5.ran, 'sabotage 5: the rest of the page still ran');
+  check(/in neither set/.test(s5.wager), 'sabotage 5: without the guard case L manufactures a finding, so case L was measuring the guard');
+
   await browser.close();
   console.log('');
   if (problems.length) {
     console.log(`FAIL — ${problems.length} problem(s).`);
     process.exit(1);
   }
-  console.log('PASS — the almanac is printed beside both methods, the wager is computed and forked four ways, and nothing says agree.');
+  console.log('PASS — the almanac is printed beside both methods, the wager is computed and forked four ways, a day across midnight UTC is joined or refused, and nothing says agree.');
 })().catch((error) => { console.error(error); process.exit(2); });

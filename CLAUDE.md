@@ -1665,6 +1665,23 @@ forbidden-word needle in the suite is `\bobserved\b`, not `/observ/`,
 because the source's own name is *Naval Observatory* and naming the source is
 owed.
 
+**A UTC day is not the standing place's day (Day 60).** The almanac is asked
+in UTC, about one UTC day. Where the standing place's sunrise falls on the UTC
+day before (Tokyo, Singapore) or its sunset on the day after (Kiritimati), the
+first tool took both ends from one UTC day, and the Rise there is the next
+local morning's. The page would have printed a residual of about 1440 minutes
+and a negative length *in neither set*: Day 21's fault, back through a new
+window. Each end is now asked of the UTC day method A puts it on, the row
+carries `utcDates`, and a printed end more than half a day from ours is
+refused by the tool and NOT COMPARED by the page. A row without `utcDates` is
+one ask of its own date, by definition. Nothing had fired, because Nuuk's
+day sits inside one UTC day. `almanac-breaks.sh` stands a scratch tower at
+Tokyo, asserts that it straddles, and goes 4 red against the Day 59 tool.
+**Named, not built (Ember's):** an event within a minute of 00:00 UTC may be
+printed on the neighbouring day, and the guard will refuse a true answer.
+That is loud, which is the safe direction. Also: the page does not
+recompute `utcDates` and convict a mismatch, the way it does for the wager.
+
 **Commit an expectation before the ask, as Day 59 did by hand**: Ember's
 note was pushed eleven seconds before the first ask. The row's `computedAt`
 is the code's order, not a witness's; only a commit dates it to anyone else.

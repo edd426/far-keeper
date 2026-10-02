@@ -42,3 +42,13 @@ own face, and the second band is labelled where it stands.
   Auckland had already fired that join on the same side on seven of seven
   rows. The word went to Nuuk instead, on the tz database, and the reason
   is written above `STANDING` in `reckoning/reckoning.js`.
+- `2026-10-04-candidates.txt` — seven places, four dates, for the move asked
+  about on Day 60. Nuuk comes off, having been stood in. This is the first
+  Friday with the air and the almanac open, and Ember asked the run a second
+  question: where can the world say something we did not write? The three
+  day-line places can light only a join the ledger has already fired. Asking
+  about them found that the almanac tool would have set a sunrise a whole
+  day from ours there. The word went to Ushuaia, the one candidate where
+  method B's day is shorter than A's. It collides with Nuuk's calendar at the
+  hour this routine wakes, so Sunday publishes no row. The reason and the
+  cost are written above `STANDING` in `reckoning/reckoning.js`.

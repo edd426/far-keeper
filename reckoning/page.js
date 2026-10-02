@@ -2972,6 +2972,29 @@
     return Number(t.slice(0, 2)) * 60 + Number(t.slice(3, 5));
   }
 
+  // A printed time in minutes after 00:00 UTC of the row's date. The almanac
+  // is asked about UTC days, and where the standing place's day crosses
+  // midnight UTC one end is asked of the day before or after (Day 60). The
+  // row says which in `utcDates`; a row without it was one ask of its own
+  // date, by definition, as an absent `method` is method 1.
+  function printedMinutes(row, name) {
+    var day = row.utcDates && row.utcDates[name];
+    var offset = day ? Math.round((Date.parse(day + 'T00:00:00Z') -
+      Date.parse(row.date + 'T00:00:00Z')) / 86400000) : 0;
+    return hhmmToMinutes(row.printedUTC[name]) + 1440 * offset;
+  }
+
+  // A printed end more than half a day from method A's is another day's
+  // event, not a disagreement about this one. Not a bound on accuracy: it
+  // tells the same day from a different one.
+  function wrongDayEnd(row, ours) {
+    var ends = ['rise', 'set'];
+    for (var i = 0; i < ends.length; i++) {
+      if (Math.abs(printedMinutes(row, ends[i]) - ours.A[ends[i] + 'UTC']) > 720) return ends[i];
+    }
+    return null;
+  }
+
   function clockOf(minutes, withSeconds) {
     var total = withSeconds ? Math.round(minutes * 60) : Math.round(minutes) * 60;
     total = ((total % 86400) + 86400) % 86400;
@@ -3005,8 +3028,11 @@
     return 'neither';
   }
 
-  function oneEnd(name, printedUTC, ours, offset) {
-    var m = hhmmToMinutes(printedUTC);
+  function oneEnd(name, row, ours, offset) {
+    var printedUTC = row.printedUTC[name];
+    var m = printedMinutes(row, name);
+    var dayWords = row.utcDates && row.utcDates[name] && row.utcDates[name] !== row.date ?
+      ' on ' + row.utcDates[name] : '';
     var a = ours.A[name + 'UTC'], b = ours.B[name + 'UTC'];
     function under(t) {
       var rounded = t >= m - 0.5 && t < m + 0.5;
@@ -3016,7 +3042,7 @@
     var ua = under(a), ub = under(b);
     function inside(u, rule) { return u[rule] ? 'inside' : 'outside'; }
     var label = name === 'rise' ? 'sunrise' : 'sunset';
-    return label + ': the almanac prints ' + printedUTC + ' UTC (' +
+    return label + ': the almanac prints ' + printedUTC + ' UTC' + dayWords + ' (' +
       clockOf(m + offset, false) + ' on the city’s clock). Method A says ' +
       clockOf(a, true) + ' UTC and method B ' + clockOf(b, true) +
       ' UTC, so the printed minute less each is ' + signedSeconds(m - a) +
@@ -3071,6 +3097,17 @@
       return;
     }
 
+    var wrongEnd = wrongDayEnd(row, ours);
+    if (wrongEnd) {
+      host.appendChild(el('p', 'standing almanac-wrong-day', 'NOT COMPARED. ' +
+        'The ' + (wrongEnd === 'rise' ? 'sunrise' : 'sunset') + ' this row holds ' +
+        'for ' + row.date + ' is more than half a day from ours, so it is ' +
+        'another day’s event: the almanac was asked about a UTC day that does ' +
+        'not hold that end of ' + place + '’s day. Nothing is set against it.'));
+      renderAlmanacSeries(host, rows);
+      return;
+    }
+
     var figures = el('dl', 'figures');
     figures.id = 'almanac-figures';
     addFigure(figures, 'the date asked about', row.date);
@@ -3081,8 +3118,8 @@
 
     var ends = el('div', 'almanac-ends');
     ends.id = 'almanac-ends';
-    ends.appendChild(el('p', 'standing', oneEnd('rise', row.printedUTC.rise, ours, ours.utcOffsetMinutes)));
-    ends.appendChild(el('p', 'standing', oneEnd('set', row.printedUTC.set, ours, ours.utcOffsetMinutes)));
+    ends.appendChild(el('p', 'standing', oneEnd('rise', row, ours, ours.utcOffsetMinutes)));
+    ends.appendChild(el('p', 'standing', oneEnd('set', row, ours, ours.utcOffsetMinutes)));
     ends.appendChild(el('p', 'standing note', 'Which rule the almanac uses to ' +
       'turn a time into a printed minute is not known to us, and one day ' +
       'cannot tell the two apart. So the two lines above can only be read ' +
@@ -3090,7 +3127,7 @@
       'which method the almanac is nearer.'));
     host.appendChild(ends);
 
-    var printed = hhmmToMinutes(row.printedUTC.set) - hhmmToMinutes(row.printedUTC.rise);
+    var printed = printedMinutes(row, 'set') - printedMinutes(row, 'rise');
     var allowA = R.printedLengthsFor(ours.A.dayLengthMinutes);
     var allowB = R.printedLengthsFor(ours.B.dayLengthMinutes);
     var side = wagerSide(printed, allowA, allowB);
@@ -3140,13 +3177,14 @@
   function renderAlmanacSeries(host, rows) {
     var R = window.Reckoning;
     var tally = { A: 0, B: 0, both: 0, neither: 0 };
-    var sumA = 0, sumB = 0, n = 0;
+    var sumA = 0, sumB = 0, n = 0, wrongDay = 0;
     rows.forEach(function (row) {
       if (!row || row.failed || row.noRiseSet || !row.printedUTC || !row.place) return;
       var ours = null;
       try { ours = R.almanacComparands(row.date, row.place); } catch (e) { ours = null; }
       if (!ours) return;
-      var printed = hhmmToMinutes(row.printedUTC.set) - hhmmToMinutes(row.printedUTC.rise);
+      if (wrongDayEnd(row, ours)) { wrongDay += 1; return; }
+      var printed = printedMinutes(row, 'set') - printedMinutes(row, 'rise');
       tally[wagerSide(printed, R.printedLengthsFor(ours.A.dayLengthMinutes),
         R.printedLengthsFor(ours.B.dayLengthMinutes))] += 1;
       sumA += printed - ours.A.dayLengthMinutes;

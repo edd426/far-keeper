@@ -39,6 +39,21 @@
 // hour out, every figure would be off by exactly sixty minutes and look like
 // a finding. So the ask carries `tz=0` and the answer must say `tz` 0.
 //
+// **A UTC day is not the standing place's day (Day 60, Ember's question).**
+// Asked in UTC, the almanac answers about one UTC day. Where the standing
+// place's sunrise falls on the UTC day before (Tokyo, Singapore) or its
+// sunset on the day after (Kiritimati), one ask holds only one end of the
+// day we mean, and the Rise it prints for that UTC day belongs to the next
+// local morning. The first version asked once and took both: at Tokyo the
+// page would have set a printed sunrise a whole day from ours and called the
+// negative length *something neither of our methods says*. Day 21's 1440,
+// reached through the new window. So each end is asked of the UTC day method
+// A puts it on (one ask, or two), the row records which UTC date each printed
+// time belongs to (`utcDates`), and a printed time more than half a day from
+// ours is refused as the wrong event. That half-day is not a bound on
+// disagreement. It tells a different day from the same day, and any width
+// from minutes to most of a day would do the same.
+//
 //   node tools/almanac.js           ask, append, print
 //   node tools/almanac.js --print   ask and print; write nothing
 //   node tools/almanac.js --help
@@ -107,6 +122,8 @@ function answerProblem(body, dateISO, place) {
   const data = body.properties && body.properties.data;
   if (!data || typeof data !== 'object') return 'the answer carried no data';
   if (data.tz !== 0) return `the answer is on clock offset ${JSON.stringify(data.tz)}, not the 0 asked`;
+  // `dateISO` here is the UTC date asked, which is the row's date except on
+  // the side of a day that crosses midnight UTC.
   const [y, m, d] = dateISO.split('-').map(Number);
   if (data.year !== y || data.month !== m || data.day !== d) {
     return `the answer is for ${data.year}-${data.month}-${data.day}, not ${dateISO}`;
@@ -126,15 +143,27 @@ function phen(data, name) {
   return e && typeof e.time === 'string' ? e.time : null;
 }
 
-async function ask(place, dateISO) {
-  const row = {
-    date: dateISO,
-    source: SOURCE,
-    place: { name: place.name, latitude: place.latitude, longitude: place.longitude, zone: place.zone },
-    wager: wagerFor(dateISO, place),
+// The UTC date `offset` days from a date, as YYYY-MM-DD.
+function shiftDate(dateISO, offset) {
+  const t = Date.parse(`${dateISO}T00:00:00Z`) + offset * 86400000;
+  return new Date(t).toISOString().slice(0, 10);
+}
+
+// Which UTC day each end of the standing place's day falls on, by method A:
+// −1, 0 or +1 from the row's date. Null when our methods have no rise and set.
+function endDays(dateISO, place) {
+  const ours = ourTimes(dateISO, place);
+  if (!ours) return null;
+  return {
+    ours,
+    rise: Math.floor(ours.A.riseUTC / 1440),
+    set: Math.floor(ours.A.setUTC / 1440),
   };
-  const url = `${BASE}/api/rstt/oneday?date=${dateISO}&coords=${place.latitude},${place.longitude}&tz=0`;
-  row.fetchedAt = new Date().toISOString();
+}
+
+// One ask of one UTC day. Returns { data } or { failed }.
+async function askDay(place, utcDate) {
+  const url = `${BASE}/api/rstt/oneday?date=${utcDate}&coords=${place.latitude},${place.longitude}&tz=0`;
   let response;
   try {
     response = await fetch(url, { signal: AbortSignal.timeout(TIMEOUT_MS) });
@@ -142,26 +171,73 @@ async function ask(place, dateISO) {
     const why = err && err.name === 'TimeoutError'
       ? `no answer within ${TIMEOUT_MS / 1000} seconds`
       : `the host could not be reached (${(err && err.cause && err.cause.code) || (err && err.message) || 'unknown'})`;
-    return Object.assign(row, { failed: why });
+    return { failed: why };
   }
   let body;
   try {
     body = await response.json();
   } catch (err) {
-    return Object.assign(row, { failed: `answered ${response.status} with something that is not JSON` });
+    return { failed: `answered ${response.status} with something that is not JSON` };
   }
   if (!response.ok) {
     const reason = body && typeof body.error === 'string' ? `: ${body.error}` : '';
-    return Object.assign(row, { failed: `answered ${response.status}${reason}` });
+    return { failed: `answered ${response.status}${reason}` };
   }
-  const problem = answerProblem(body, dateISO, place);
-  if (problem) return Object.assign(row, { failed: `answered, but ${problem}` });
-  const data = body.properties.data;
-  const printed = { rise: phen(data, 'Rise'), transit: phen(data, 'Upper Transit'), set: phen(data, 'Set') };
-  Object.assign(row, { tz: 0, printedUTC: printed });
+  const problem = answerProblem(body, utcDate, place);
+  if (problem) return { failed: `answered, but ${problem}` };
+  return { data: body.properties.data };
+}
+
+const HALF_A_DAY = 720;
+
+async function ask(place, dateISO) {
+  const row = {
+    date: dateISO,
+    source: SOURCE,
+    place: { name: place.name, latitude: place.latitude, longitude: place.longitude, zone: place.zone },
+    wager: wagerFor(dateISO, place),
+  };
+  // With no rise and set of ours there is no end to place on a UTC day; ask
+  // the row's own date and let the answer say what it prints.
+  const ends = endDays(dateISO, place);
+  const riseOffset = ends ? ends.rise : 0;
+  const setOffset = ends ? ends.set : 0;
+  const utcDates = { rise: shiftDate(dateISO, riseOffset), set: shiftDate(dateISO, setOffset) };
+  row.fetchedAt = new Date().toISOString();
+  const answers = {};
+  for (const day of [...new Set([utcDates.rise, utcDates.set])]) {
+    const got = await askDay(place, day);
+    if (got.failed) {
+      const which = utcDates.rise === utcDates.set ? '' : ` (asked about UTC ${day})`;
+      return Object.assign(row, { failed: `${got.failed}${which}` });
+    }
+    answers[day] = got.data;
+  }
+  const printed = {
+    rise: phen(answers[utcDates.rise], 'Rise'),
+    transit: phen(answers[utcDates.rise], 'Upper Transit'),
+    set: phen(answers[utcDates.set], 'Set'),
+  };
   if (!printed.rise || !printed.set) {
-    row.noRiseSet = data.sundata.map((e) => e.phen).join('; ');
+    Object.assign(row, { tz: 0, printedUTC: printed, utcDates });
+    row.noRiseSet = answers[utcDates.rise].sundata.map((e) => e.phen).join('; ');
+    return row;
   }
+  // The wrong-day guard. Minutes after 00:00 UTC of the row's date.
+  if (ends) {
+    for (const [name, offset] of [['rise', riseOffset], ['set', setOffset]]) {
+      const t = printed[name];
+      const m = Number(t.slice(0, 2)) * 60 + Number(t.slice(3, 5)) + 1440 * offset;
+      const a = ends.ours.A[`${name}UTC`];
+      if (Math.abs(m - a) > HALF_A_DAY) {
+        return Object.assign(row, {
+          failed: `answered, but its ${name} on UTC ${utcDates[name]} is ${t}, ` +
+            `${Math.round(Math.abs(m - a))} minutes from ours: not the ${name} of the day asked about`,
+        });
+      }
+    }
+  }
+  Object.assign(row, { tz: 0, printedUTC: printed, utcDates });
   return row;
 }
 
@@ -172,7 +248,8 @@ function describe(row) {
   const wager = w.none ? `no wager: ${w.none}` :
     `wager A {${w.A.allowed.join(', ')}}  B {${w.B.allowed.join(', ')}}`;
   const p = row.printedUTC;
-  return `almanac: ${row.place.name} ${row.date}, asked ${row.fetchedAt}: rise ${p.rise}, set ${p.set} UTC` +
+  const on = (name) => (row.utcDates && row.utcDates[name] !== row.date ? ` on ${row.utcDates[name]}` : '');
+  return `almanac: ${row.place.name} ${row.date}, asked ${row.fetchedAt}: rise ${p.rise}${on('rise')}, set ${p.set}${on('set')} UTC` +
     ` — another institution's computation, not a sighting; ${wager}`;
 }
 
@@ -209,4 +286,4 @@ if (require.main === module) {
   main().then((code) => process.exit(code));
 }
 
-module.exports = { parseArgs, allowedLengths, answerProblem, ourTimes };
+module.exports = { parseArgs, allowedLengths, answerProblem, ourTimes, endDays, shiftDate };
