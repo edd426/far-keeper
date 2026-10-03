@@ -3004,7 +3004,15 @@
 
   function pad2(n) { return (n < 10 ? '0' : '') + n; }
 
-  function signedSeconds(minutes) {
+  // Its own name, and the name is the repair (Day 61). From 2026-10-01 to
+  // 2026-10-03 this was a second `function signedSeconds`, taking minutes,
+  // and a function declared twice in one scope is one function: the later
+  // body answered every caller of the earlier, which takes seconds. So the
+  // epoch corrections, the refraction shift and method B's drift were all
+  // printed sixty times too large — the drift as −23228 s for −387 — with
+  // nothing wrong on any line that was edited. Found by `second-drift.js`
+  // in the Saturday rehearsal; nothing that runs daily loads the page.
+  function minutesAsSignedSeconds(minutes) {
     var sec = Math.round(minutes * 60);
     return (sec > 0 ? '+' : sec < 0 ? '−' : '±') + Math.abs(sec) + ' s';
   }
@@ -3045,8 +3053,8 @@
     return label + ': the almanac prints ' + printedUTC + ' UTC' + dayWords + ' (' +
       clockOf(m + offset, false) + ' on the city’s clock). Method A says ' +
       clockOf(a, true) + ' UTC and method B ' + clockOf(b, true) +
-      ' UTC, so the printed minute less each is ' + signedSeconds(m - a) +
-      ' and ' + signedSeconds(m - b) + '. If the almanac rounds to the ' +
+      ' UTC, so the printed minute less each is ' + minutesAsSignedSeconds(m - a) +
+      ' and ' + minutesAsSignedSeconds(m - b) + '. If the almanac rounds to the ' +
       'nearest minute, its ' + printedUTC + ' means a time from ' +
       clockOf(m - 0.5, true) + ' to ' + clockOf(m + 0.5, true) + ': A is ' +
       inside(ua, 'rounded') + ' that, B is ' + inside(ub, 'rounded') +

@@ -953,6 +953,44 @@ and throw.
 **What is still outside it:** `check-sight.sh` reads the working tree, so
 moving a copy dirties it and it abstains every run. BLIND is not an all-clear.
 
+**A stopwatch is not a verdict (Day 61).** Every suite runs under a cap, and
+until Day 61 a suite the cap killed (exit 124) got a red suite's word: BLIND
+if the control was stopped, and **FAIL, *red where it does not*, if only the
+moved copy was**. That is the clock accusing the move. Found running the
+rehearsal the Saturday before Ushuaia: `banked-breaks.sh` is green, 19 ok, and
+takes **633 s on an idle desk** against a cap of 600. The cap now has its own
+word, **UNFINISHED**, asked before the other two, and it exits 2, never 1. A
+copy counts as stopped only on 124 *and* elapsed ≥ cap − 1, because a suite
+can exit 124 on its own. The cap is `MOVE_REHEARSAL_CAP`, default **1500**,
+and every ok line prints both copies' seconds, so the margin can be read off
+the run before it runs out. A rehearsal killed from outside prints
+`UNFINISHED the rehearsal itself`. **The whole run takes most of an hour
+now.** Start it in the background with a timeout of at least 7200000 ms. A
+30-minute background limit killed the first Saturday run with twelve browser
+suites never asked, and its last line was just the last ok it reached.
+`./tools/rehearsal-cap-breaks.sh` proves all of this in about a minute
+(Ember's cases A–F, the sabotage first). Cut the elapsed half and case C alone
+goes red. Its home zone is read off the **scratch tower it built, never
+`$ROOT`**. A clone carries the commits and not the working tree, so inside a
+moved copy `$ROOT` stands somewhere its clone does not. The first draft got
+this wrong, and the rehearsal convicted it the same hour.
+
+**What the same Saturday run found on the page.** `second-drift.js` was red
+in both copies, so it landed BLIND, and it was red on the real tree too.
+`reckoning/page.js` declared `function signedSeconds` twice: line 94 takes
+seconds, and the almanac's helper, added 2026-10-01, takes minutes. **A
+function declared twice in one scope is one function, the later one.** So for
+three days six callers printed seconds sixty times too large: the epoch
+correction read **+4233 s for +70.6**, and B's drift read −23228 s for −387.
+Nothing was wrong on any line that was edited, and nothing that runs daily
+loads the page. The almanac's helper is `minutesAsSignedSeconds` now.
+**Named, not built:** a check for a name declared twice in one page script.
+It is not `parses.sh`'s question, since the file parses, so it wants a tool of
+its own. Today the only duplicate in any page script was this one.
+**BLIND hid a real red here.** It means *red in the control too*, and a suite
+that is red on the real tree is red in the control too. Before calling a
+BLIND line nothing to do with the move, run the suite alone.
+
 ## The drift got a second method, and what it disclosed
 
 ```bash

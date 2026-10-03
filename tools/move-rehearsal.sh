@@ -123,7 +123,7 @@ set -u
 # proceeding with its default because it never refused the unknown — still
 # standing in a second file two mornings after Day 44 put it back in a
 # third. The radius here is wider than a read tool's: the default action
-# clones two towers and runs the whole battery for five minutes, so a
+# clones two towers and runs the whole battery for most of an hour, so a
 # mistyped flag spends the keeper's morning and then answers a question
 # nobody asked.
 #
@@ -236,11 +236,67 @@ CTL="$(mktemp -d)"
 MOV="$(mktemp -d)"
 trap 'rm -rf "$CTL" "$MOV"' EXIT
 
+# **A stopwatch is not a verdict (Day 61).** Every suite runs under
+# `timeout`, and `timeout` exits 124 when it kills one. Until Day 61 that
+# 124 went down the same fork as a red: in the control it printed BLIND,
+# *red in the control copy too*, and in the moved copy alone it would have
+# printed FAIL, *green where the tower stands, red where it does not* — a
+# charge of move-fragility brought by the clock. Found the Saturday before
+# the Ushuaia move: `banked-breaks.sh` is green, 19 ok, and takes 633 s on
+# an idle desk against a cap of 600, so the rehearsal had stopped testing it
+# and said so in a word that blamed the suite. So the cap has its own word,
+# UNFINISHED, asked *before* either of the others, and it is an abstention
+# (exit 2) like BLIND, never a FAIL. And the cap is named and wider: a cap
+# a green suite cannot fit under is a rehearsal that never asks it anything.
+# Override with MOVE_REHEARSAL_CAP (seconds).
+#
+# The 1500 is dated: on 2026-10-03 `banked-breaks.sh` took 633 s on an idle
+# desk, 19 ok, and that is the slowest suite here by about ten times. So
+# Sunday 2026-09-27 passed under 600 on a faster machine, not on a margin
+# (Ember). The seconds each suite took are printed on its line now, so the
+# margin is read off every run rather than found when it runs out.
+#
+# **And 124 alone is not the cap.** A suite can exit 124 for reasons of its
+# own, so a copy is called stopped only when it exited 124 *and* ran to
+# within a second of the cap (Ember, Day 61).
+CAP="${MOVE_REHEARSAL_CAP:-1500}"
+case "$CAP" in
+  ''|*[!0-9]*|0) echo "$SELF: INVALID — MOVE_REHEARSAL_CAP must be a whole number of seconds above nought, not '$CAP'" >&2; exit 3 ;;
+esac
+
 fails=0
 blind=0
+unfinished=0
 ok()    { echo "ok    $1"; }
 bad()   { echo "FAIL  $1"; fails=$((fails + 1)); }
 blind() { echo "BLIND $1"; blind=$((blind + 1)); }
+unfin() { echo "UNFINISHED $1"; unfinished=$((unfinished + 1)); }
+# The copy (or copies) a stopped suite was stopped in, for the sentence.
+stopped_in() {
+  if [ "$1" -eq 1 ] && [ "$2" -eq 1 ]; then echo "both copies"
+  elif [ "$1" -eq 1 ]; then echo "the control copy"
+  else echo "the moved copy"; fi
+}
+# Run one copy of a suite under the cap. Sets rc, took (seconds), and capped
+# (1 only when the cap is what stopped it).
+run_capped() {
+  local start=$SECONDS
+  (cd "$1" && shift && timeout "$CAP" "$@" >/dev/null 2>&1); rc=$?
+  took=$((SECONDS - start))
+  capped=0
+  if [ "$rc" -eq 124 ] && [ "$took" -ge $((CAP - 1)) ]; then capped=1; fi
+}
+
+# **A killed run prints no verdict, and must say so** (Ember, Day 61: the
+# first Saturday run was stopped at a 30-minute background limit with twelve
+# browser suites unasked, and its last line was the last ok it had reached).
+asked=0
+on_kill() {
+  echo
+  echo "UNFINISHED the rehearsal itself — stopped from outside after $asked suite(s) asked. This is no verdict about anything below the last line printed."
+  exit 2
+}
+trap on_kill TERM INT HUP
 stop()  { echo "FAIL  $1"; echo; echo "move-rehearsal: could not conclude."; exit 2; }
 
 REAL_LEDGER="$SRC/reckoning/ledger.json"
@@ -443,16 +499,19 @@ echo
 
 # ---- every shell suite, in both copies ----
 for suite in $(shell_suites); do
-  (cd "$CTL" && timeout 600 "./tools/$suite" >/dev/null 2>&1); ctl=$?
-  (cd "$MOV" && timeout 600 "./tools/$suite" >/dev/null 2>&1); mov=$?
+  run_capped "$CTL" "./tools/$suite"; ctl=$rc; ctl_s=$took; ctl_cap=$capped
+  run_capped "$MOV" "./tools/$suite"; mov=$rc; mov_s=$took; mov_cap=$capped
+  asked=$((asked + 1))
 
-  if [ "$ctl" -ne 0 ]; then
+  if [ "$ctl_cap" -eq 1 ] || [ "$mov_cap" -eq 1 ]; then
+    unfin "$suite — stopped by the ${CAP}s cap in $(stopped_in "$ctl_cap" "$mov_cap"), so this rehearsal learned nothing about it or about the move"
+  elif [ "$ctl" -ne 0 ]; then
     blind "$suite — red in the control copy too (exit $ctl), so this rehearsal learned nothing about it"
   elif [ "$mov" -ne 0 ]; then
     bad "$suite — green where the tower stands, red where it does not (exit $mov)"
-    (cd "$MOV" && timeout 600 "./tools/$suite" 2>&1 | grep '^FAIL' | head -4 | sed 's/^/        /')
+    (cd "$MOV" && timeout "$CAP" "./tools/$suite" 2>&1 | grep '^FAIL' | head -4 | sed 's/^/        /')
   else
-    ok "$suite"
+    ok "$suite  (${ctl_s}s, ${mov_s}s of ${CAP}s)"
   fi
 done
 
@@ -529,18 +588,21 @@ for suite in $(browser_suites); do
   browser_count=$((browser_count + 1))
 
   wait_for_port || stop "$suite — no port came free in 8765-8770; nothing below this line ran"
-  (cd "$CTL" && timeout 600 ./scripts/local-snapshot.sh "tools/$suite" >/dev/null 2>&1); ctl=$?
+  run_capped "$CTL" ./scripts/local-snapshot.sh "tools/$suite"; ctl=$rc; ctl_s=$took; ctl_cap=$capped
   wait_for_port || stop "$suite — no port came free in 8765-8770; the moved copy never ran"
-  (cd "$MOV" && timeout 600 ./scripts/local-snapshot.sh "tools/$suite" >/dev/null 2>&1); mov=$?
+  run_capped "$MOV" ./scripts/local-snapshot.sh "tools/$suite"; mov=$rc; mov_s=$took; mov_cap=$capped
+  asked=$((asked + 1))
 
-  if [ "$ctl" -ne 0 ]; then
+  if [ "$ctl_cap" -eq 1 ] || [ "$mov_cap" -eq 1 ]; then
+    unfin "$suite — stopped by the ${CAP}s cap in $(stopped_in "$ctl_cap" "$mov_cap"), so this rehearsal learned nothing about it or about the move"
+  elif [ "$ctl" -ne 0 ]; then
     blind "$suite — red in the control copy too (exit $ctl), so this rehearsal learned nothing about it"
   elif [ "$mov" -ne 0 ]; then
     bad "$suite — green where the tower stands, red where it does not (exit $mov)"
     wait_for_port \
-      && (cd "$MOV" && timeout 600 ./scripts/local-snapshot.sh "tools/$suite" 2>&1 | grep '^FAIL' | head -4 | sed 's/^/        /')
+      && (cd "$MOV" && timeout "$CAP" ./scripts/local-snapshot.sh "tools/$suite" 2>&1 | grep '^FAIL' | head -4 | sed 's/^/        /')
   else
-    ok "$suite"
+    ok "$suite  (${ctl_s}s, ${mov_s}s of ${CAP}s)"
   fi
 done
 
@@ -567,11 +629,11 @@ echo "move-rehearsal: every run. BLIND is not an all-clear."
 echo
 
 if [ "$fails" -gt 0 ]; then
-  echo "move-rehearsal: $fails suite(s) do not survive the move; $blind blind."
+  echo "move-rehearsal: $fails suite(s) do not survive the move; $blind blind; $unfinished unfinished."
   exit 1
 fi
-if [ "$blind" -gt 0 ]; then
-  echo "move-rehearsal: no suite failed the move, but $blind could not be rehearsed at all."
+if [ "$blind" -gt 0 ] || [ "$unfinished" -gt 0 ]; then
+  echo "move-rehearsal: no suite failed the move, but $blind could not be rehearsed at all and $unfinished did not finish inside the ${CAP}s cap."
   exit 2
 fi
 echo "move-rehearsal: every shell suite survives a move."
