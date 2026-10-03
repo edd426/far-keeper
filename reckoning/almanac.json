@@ -93,5 +93,44 @@
     },
     "fetchedAt": "2026-10-02T02:17:24.773Z",
     "failed": "answered 503 with something that is not JSON"
+  },
+  {
+    "date": "2026-10-03",
+    "source": "aa.usno.navy.mil",
+    "place": {
+      "name": "Nuuk",
+      "latitude": 64.1835,
+      "longitude": -51.7216,
+      "zone": "America/Nuuk"
+    },
+    "wager": {
+      "computedAt": "2026-10-03T02:07:45.775Z",
+      "method": 2,
+      "A": {
+        "dayLengthMinutes": 666.6679037514357,
+        "allowed": [
+          666,
+          667
+        ]
+      },
+      "B": {
+        "dayLengthMinutes": 668.8848289050925,
+        "allowed": [
+          668,
+          669
+        ]
+      }
+    },
+    "fetchedAt": "2026-10-03T02:07:45.776Z",
+    "tz": 0,
+    "printedUTC": {
+      "rise": "09:42",
+      "transit": "15:16",
+      "set": "20:48"
+    },
+    "utcDates": {
+      "rise": "2026-10-03",
+      "set": "2026-10-03"
+    }
   }
 ]
