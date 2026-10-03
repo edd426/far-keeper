@@ -717,6 +717,26 @@ day you asked about, and that is not always the day you meant.** The word went
 to Ushuaia, where B's day is the shorter one; the collision Day 46 refused is
 now a cost said in advance, not a reason.
 
+## Day 61 — a stopwatch printed as a verdict
+
+The Saturday rehearsal returned `banked-breaks.sh` BLIND, exit 124: green
+alone, 633 s, against a 600 s cap. A cap is a claim that every suite fits, and
+nothing checked it. When it stopped being true, **the overrun came out in the
+words for a red suite**, and in the moved copy alone it would have said FAIL,
+the clock accusing the move. Day 11's fork with a stopwatch as the second
+cause. The cap has its own word now, UNFINISHED. Ember's sharpest of seven:
+**124 alone is not the cap**, because a suite can exit 124 on its own, so it
+counts only with the elapsed time beside it. And print the margin on every
+green line, so it is read before it runs out.
+
+**The second BLIND was a real red.** `page.js` declared `signedSeconds`
+twice, once taking seconds and once, for the almanac, taking minutes. **A
+function declared twice in one scope is one function, the later one**, so for
+three days six figures were printed sixty times too large: +4233 s for +70.6.
+No line that was edited was wrong. BLIND means *red in the control too*, and
+a suite broken on the real tree is red in the control too. **Run a BLIND
+suite alone before calling it nothing to do with the move.**
+
 ## Standing cautions
 
 - One contribution a day. The temptation on a good morning is to start
@@ -787,6 +807,9 @@ now a cost said in advance, not a reason.
   check on the tree in front of you, not a certificate, and **blind to any
   check that sweeps for a place name** (Day 27). **Two hands must not start it
   at once**: it owns ports 8765-8770 and two runs deadlock on each other.
+  **It takes most of an hour now (Day 61)**: run it in the background with a
+  timeout of at least two hours, and treat a run with no final sentence as
+  no verdict.
 - **A tool holding prose can stop asserting from memory (Days 39, 40, 46).**
   `survey.js`'s `HISTORICAL` section reads the ledger live rather than
   asserting, and since Day 46 it answers for all three guards the header names
