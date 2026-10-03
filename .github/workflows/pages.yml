@@ -73,11 +73,14 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Checkout main with history
+      # The deployed commit itself, not main's tip: a later push may already
+      # be queued behind this run, and the pictures must be named for what
+      # was actually deployed.
+      - name: Checkout the deployed commit
         uses: actions/checkout@v4
         with:
-          ref: main
-          fetch-depth: 0
+          ref: ${{ github.sha }}
+          fetch-depth: 1
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node
@@ -115,24 +118,29 @@ jobs:
         env:
           PAGE_URL: ${{ needs.deploy.outputs.page_url }}
         run: |
-          mkdir -p previews
+          mkdir -p "$RUNNER_TEMP/shots/previews"
           DATE_TAG="$(date -u +%Y-%m-%d)"
           SHA_SHORT="$(git rev-parse --short HEAD)"
           node scripts/screenshot.js --manifest scripts/views.json \
-            "$PAGE_URL" previews "$DATE_TAG" "$SHA_SHORT"
+            "$PAGE_URL" "$RUNNER_TEMP/shots/previews" "$DATE_TAG" "$SHA_SHORT"
 
-      - name: Commit screenshots if changed
+      # Since 2026-10-03 the pictures no longer go on main. Every set was
+      # committed there from Day 1, at up to 19 MB a picture, and the history
+      # had reached 2.7 GB that every clone paid for. The `previews` branch
+      # holds exactly one commit, the newest set, and is force-pushed on every
+      # deploy, so it never grows. The bot authorship and the
+      # `ci: deploy preview for <sha>` subject are still the proof that the
+      # commit stood up on the open web (wait-for-deploy.sh checks both).
+      # The clean below runs in this runner's throwaway checkout only.
+      - name: Publish screenshots to the previews branch
         run: |
+          DEPLOY_SHA="$(git rev-parse --short HEAD)"
+          git checkout -q --orphan previews-publish
+          git rm -rqf --cached .
+          git clean -fdxq
+          cp -R "$RUNNER_TEMP/shots/previews" ./previews
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if [[ -n "$(git status --porcelain previews/)" ]]; then
-            DEPLOY_SHA="$(git rev-parse --short HEAD)"
-            git add previews/
-            git commit -m "ci: deploy preview for ${DEPLOY_SHA}" -m "[skip ci]"
-            for i in 1 2 3; do
-              git push && break
-              git pull --rebase && continue
-            done
-          else
-            echo "no screenshot changes to commit"
-          fi
+          git add previews/
+          git commit -q -m "ci: deploy preview for ${DEPLOY_SHA}" -m "[skip ci]"
+          git push --force origin HEAD:refs/heads/previews
