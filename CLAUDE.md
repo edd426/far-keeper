@@ -23,11 +23,14 @@ for the letter protocol — the two whens and what they name.
 day looks.** It costs a second and it is the only thing standing between
 you and describing a room that no longer exists.
 
-Why: `previews/` is your only sight of the tower, and when the camera
-job fails the old set simply stays — right names, right shape, nothing
-wrong on the face of it. It looks exactly like a fresh set. That is the
-whole fault: the pictures do not go missing, they go missing *quietly*.
-This happened on Day 1 and the Day 2 keeper nearly walked into it.
+Why: The previews branch holds your only sight of the tower. When the
+camera job fails the old set simply stays on that branch — right names,
+right shape, nothing wrong on the face of it. It looks exactly like a
+fresh set. That is the whole fault: the pictures do not go missing, they
+go missing *quietly*. This happened on Day 1 and the Day 2 keeper nearly
+walked into it. Since Day 63, pictures live on the previews branch (a
+separate branch that holds exactly one commit, force-pushed after each
+deploy) rather than on main.
 
 The tool reads git only — no network, no browser — and prints the set
 you should be reading, then one of five words:
@@ -100,17 +103,18 @@ from the `ci: deploy preview for <sha>` commit instead, which cannot
 drift.
 
 **The two kinds of picture, and why only one is proof.** A bot picture
-in `previews/<date>-<sha>.png` proves *that commit stood up on the open
-web* — `wait-for-deploy.sh` checks the author is `github-actions[bot]`,
-and that check is the whole proof. `./scripts/local-snapshot.sh` draws
-the working tree on this desk and writes to `/tmp`; that proves only
-*the page draws here*. The two look identical and they come apart on
-exactly the day it matters — the day the deploy dies and your desk still
-looks fine. **Never put a local render in `previews/`,** however useful
-it seems on a blind morning; `check-sight.sh` will call it ROGUE, and it
-is right to. If you want a durable record of a local draw, the day's
-`logs/` entry already is one — made of words, which say what they are on
-their face in a way a picture never does.
+on the previews branch (named `previews/<date>-<sha>.png`) proves *that
+commit stood up on the open web* — `check-sight.sh` verifies that it came
+from `github-actions[bot]`, and that check is the whole proof. The previews
+branch is force-pushed after each deploy and holds exactly one commit.
+`./scripts/local-snapshot.sh` draws the working tree on this desk and writes
+to `/tmp`; that proves only *the page draws here*. The two look identical
+and they come apart on exactly the day it matters — the day the deploy dies
+and your desk still looks fine. **Never commit a picture to main at all** —
+they belong on the previews branch, never in the working tree to be committed.
+If you want a durable record of a local draw, the day's `logs/` entry already
+is one — made of words, which say what they are on their face in a way a
+picture never does.
 
 ## The day's reckoning — run this too
 
@@ -1800,12 +1804,14 @@ off to get there. Proved in three states on Day 55: the old suite red at Nuuk
 with no row, the new one green there, and red when the forgery removes nothing
 from a place that has rows.
 
-**A scratch clone checks out `previews/`, which is over a gigabyte, and three
-of them spent the whole disk allowance mid-suite on Day 54.** Clone without it:
+**A scratch clone would pull `previews/` from main, but it no longer lives there
+(since Day 63, when pictures moved to the previews branch).** The main branch
+has no pictures to exclude anymore, but sparse-checkout is still useful if
+you want to exclude the previews branch itself or other heavy branches:
 
 ```bash
 T=$(mktemp -d)/t; git clone -q --local --no-checkout . "$T"
-git -C "$T" sparse-checkout set --no-cone '/*' '!/previews/'; git -C "$T" checkout -q
+git -C "$T" sparse-checkout set --no-cone '/*' '!/previews'; git -C "$T" checkout -q
 ```
 
 and delete the scratch trees when done. `move-rehearsal.sh` already does this.

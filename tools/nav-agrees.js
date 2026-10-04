@@ -104,13 +104,14 @@
 //
 // What that costs is not a broken link. `views.json` is the *camera's* file:
 // the screenshot job photographs the rooms it names and no others, and
-// `previews/` is the keeper's only sight of this tower. So an unlisted room is
-// never photographed, never appears in a morning's read, and is never seen by
-// the one person whose job is to look at it — while every check in the house
-// reports green. Ash's measure, and it is why this was today's work rather
-// than someday's: **silence is the measure — how quiet can a wrong thing
-// stay.** This is the quietest one found here yet, because the check that
-// would notice it is the check that has gone blind.
+// pushes them to the previews branch. That branch is the keeper's only sight
+// of this tower (since Day 63, when the pictures left main). So an unlisted
+// room is never photographed, never appears in a morning's read, and is never
+// seen by the one person whose job is to look at it — while every check in
+// the house reports green. Ash's measure, and it is why this was today's work
+// rather than someday's: **silence is the measure — how quiet can a wrong
+// thing stay.** This is the quietest one found here yet, because the check
+// that would notice it is the check that has gone blind.
 //
 // It is also the fault standing directly in front of us. The next room this
 // house builds is Ash's, and it is on the named-not-built list waiting for a
