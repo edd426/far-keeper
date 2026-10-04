@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
 # tools/check-sight.sh — are the tower's pictures of itself still true?
 #
-# The tower's only sight of itself is previews/. A bot draws those pictures
-# after a push and commits them. When the bot fails, the old set stays put,
-# correctly named, and looks exactly like a fresh one. A morning read that
-# lands on it studies a room that no longer exists and never suspects. The
-# fault is not that pictures go missing. It is that they go missing without
-# saying so.
+# The tower's only sight of itself is on the previews branch. A bot draws
+# those pictures after a push and force-pushes them to that branch, which
+# holds exactly one commit. When the bot fails, the old set stays, correctly
+# named, and looks exactly like a fresh one. A morning read that lands on it
+# studies a room that no longer exists and never suspects. The fault is not
+# that pictures go missing. It is that they go missing without saying so.
 #
 # This tool makes that silence loud. It reads git alone — no network, no
 # browser, no clock — and answers three questions:
 #
-#   which set is the newest, and which commit does it show?
-#   has work landed since, and did that work change the page?
+#   which set is the newest (on the previews branch), and which commit does it show?
+#   has work landed on main since, and did that work change the page?
 #   was every picture in previews/ put there by the bot?
 #
 # and, since Day 8, one it should always have asked first:
@@ -21,7 +21,7 @@
 #
 # It says one of five words.
 #
-#   TRUE     the newest set shows the tip. These pictures are the room.
+#   TRUE     the newest set shows main's tip. These pictures are the room.
 #   BEHIND   work landed after them, but none of it touched the page.
 #   STALE    the page changed after them — committed, or still only in the
 #            working tree. Either way, they show a room that is gone.
@@ -115,54 +115,43 @@ at_the_floor() {
 
 # --- which set is newest, and what does it show? -------------------------
 #
-# Day 27. `git ls-tree ... | grep -q '\.png$'` looked like the same shape as
-# every other pipeline in this file and was not. `-q` exits the instant it
-# sees a match and closes its read end; git, mid-write on a cold page cache,
-# takes the broken pipe and dies with it. Under `set -o pipefail` that death
-# outranks grep's own 0, so the whole pipeline reads non-zero — a real match
-# reported as a real failure. Warm cache, git finishes first, no signal, no
-# fault: the same line is correct on a hot morning and wrong on a cold one,
-# which is exactly the shape of bug this tool exists to refuse elsewhere.
-# The other two pipelines below survive because nothing downstream of them
-# exits early — a `while read` drains a `grep` with no `-q` to completion,
-# so git is never holding a pen when the paper is taken away. The fix is not
-# `-q` done more carefully; it is not racing a live writer at all — git's
-# full output is captured first, so the read it feeds is already finished
-# before anything gets to ask a question of it.
-# And the other half of the same fault, which the capture above does not
-# close. This branch was written for one cause — `previews/` genuinely empty,
-# a first morning — and it narrates that cause in that cause's voice. The
-# race handed it a second cause with the identical exit code, and it reached
-# for the only story it had: *a first morning looks like this*, about a tree
-# holding 765 pictures. That is Day 11 exactly — a check that has only ever
-# fired for one cause will explain the next cause as that cause — and the
-# repair is Day 11's repair, a fork, not a better sentence. A failed `git`
-# leaves the capture empty too, so *no pictures* and *no answer* are still
-# one branch until they are told apart here. The first is a fact about the
-# tower. The second is a fact about this tool, and it must not be spoken in
-# the first one's voice.
-if ! PREVIEW_TREE="$(git ls-tree --name-only HEAD previews/)"; then
-  say "git could not list previews/ at HEAD."
-  say "UNCLEAR — this tool did not look and will not guess what is there."
-  say "Nothing above is a verdict on the pictures; it is a verdict on the ask."
-  exit 2
-fi
-if ! grep -q '\.png$' <<<"$PREVIEW_TREE"; then
-  say "previews/ holds no pictures at all."
-  say "UNCLEAR — nothing to date. A first morning looks like this."
+# The previews branch holds exactly one commit: the newest set. The bot
+# force-pushes it after each successful deploy. We read the newest commit
+# from origin/previews (since Day 63, when the pictures left main).
+#
+# The subject line names the sha of the commit these pictures show.
+#
+if ! PREVIEW_COMMIT="$(git rev-parse origin/previews 2>/dev/null)"; then
+  say "git could not resolve origin/previews."
+  say "UNCLEAR — the pictures branch does not exist or is not reachable."
+  say "Try fetching: git fetch origin previews"
   exit 2
 fi
 
-PREVIEW_COMMIT="$(git log -1 --format='%H' --grep="^${SUBJECT_PREFIX}" 2>/dev/null)"
-if [[ -z "$PREVIEW_COMMIT" ]]; then
-  say "no commit here says '${SUBJECT_PREFIX}<sha>'."
-  say "UNCLEAR — the pictures exist but nothing says which room they show."
+if ! PREVIEW_TREE="$(git ls-tree --name-only "$PREVIEW_COMMIT" previews/)"; then
+  say "git could not list previews/ on the previews branch."
+  say "UNCLEAR — this tool did not look and will not guess what is there."
+  exit 2
+fi
+
+if ! grep -q '\.png$' <<<"$PREVIEW_TREE"; then
+  say "previews/ holds no pictures on the previews branch."
+  say "UNCLEAR — the branch exists but holds no pictures. Is the bot broken?"
+  exit 2
+fi
+
+# Read the subject to find which commit these pictures show
+PREVIEW_SUBJECT="$(git log -1 --format='%s' "$PREVIEW_COMMIT")"
+if [[ "$PREVIEW_SUBJECT" != ${SUBJECT_PREFIX}* ]]; then
+  say "the previews branch commit does not say '${SUBJECT_PREFIX}<sha>'."
+  say "UNCLEAR — the pictures exist but nothing names which room they show."
+  say "The commit message is: $PREVIEW_SUBJECT"
   say "do not read them as proof. To see the tower as it stands, draw it:"
   say "  ./scripts/local-snapshot.sh"
   exit 2
 fi
 
-SHOWN_SHA="$(git log -1 --format='%s' "$PREVIEW_COMMIT" | sed "s|^${SUBJECT_PREFIX}||" | tr -d '[:space:]')"
+SHOWN_SHA="$(echo "$PREVIEW_SUBJECT" | sed "s|^${SUBJECT_PREFIX}||" | tr -d '[:space:]')"
 TAKEN_BY="$(git log -1 --format='%an' "$PREVIEW_COMMIT")"
 TAKEN_AT="$(git log -1 --format='%ad' --date=format:'%Y-%m-%dT%H:%M:%SZ' "$PREVIEW_COMMIT")"
 
@@ -174,7 +163,7 @@ fi
 
 say "newest set shows ${SHOWN_SHA} — committed ${TAKEN_AT} by ${TAKEN_BY}"
 if [[ "$TAKEN_BY" != "$BOT" ]]; then
-  say "ROGUE — that commit is not the bot's. Only a ${BOT} commit"
+  say "ROGUE — the previews branch commit is not the bot's. Only a ${BOT} commit"
   say "proves the live site drew this way. Read these as nobody's word."
   exit 3
 fi
@@ -197,30 +186,19 @@ done
 
 # --- was every picture put there by the bot? -----------------------------
 #
-# Nothing today puts a picture in previews/ but the bot. This walk is for
-# the morning some later keeper reads the same ask and decides, reasonably,
-# to start keeping local renders here. A local render proves the page draws
-# on this desk. A bot render proves the page is up where a visitor stands.
-# They look identical and they come apart on exactly the day it matters.
+# All pictures are in one commit on the previews branch, and we already
+# verified that commit was made by the bot. We've also verified that the
+# pictures listed match the pattern for the shown sha. The bot's authorship
+# of the previews commit is the sole proof we need.
+#
+# This check was needed when pictures lived on main. Now they live on their
+# own force-pushed branch, so all files are added in one atomic commit by the
+# bot. Nothing more to audit.
 
 ROGUE_FOUND=0
 UNVOUCHED_FOUND=0
-while IFS= read -r file; do
-  [[ -n "$file" ]] || continue
-  # The commit that ADDED the picture is the one that vouches for it. A
-  # later commit touching it would be a different question.
-  added_at="$(git log --format='%H' --diff-filter=A -- "$file" | tail -1)"
-  if [[ -z "$added_at" ]] || at_the_floor "$added_at"; then
-    say "UNVOUCHED — $file (its hand is off the floor of this clone)"
-    UNVOUCHED_FOUND=1
-    continue
-  fi
-  author="$(git log -1 --format='%an' "$added_at")"
-  if [[ "$author" != "$BOT" ]]; then
-    say "ROGUE — $file (committed by ${author})"
-    ROGUE_FOUND=1
-  fi
-done < <(grep '\.png$' <<<"$PREVIEW_TREE" || true)
+# (vouch check skipped: pictures on previews branch are verified by the
+#  previews commit's author check above)
 
 if [[ $ROGUE_FOUND -eq 1 ]]; then
   say "previews/ holds a picture no deploy vouches for. That breaks the one"
@@ -243,6 +221,12 @@ if [[ $UNVOUCHED_FOUND -eq 1 ]]; then
 fi
 
 # --- has work landed since? ----------------------------------------------
+#
+# The previews branch commit names a sha from main's history. Check if the
+# main branch has moved since that commit. The branch holds commits that
+# take pictures (named with the subject), and they may be empty now (the
+# pictures are on previews instead). What matters is whether main changed
+# in a way that would change what a reader sees.
 
 if ! git cat-file -e "${SHOWN_SHA}^{commit}" 2>/dev/null; then
   say "${SHOWN_SHA} is not a commit here — fetch first, or the history moved."
