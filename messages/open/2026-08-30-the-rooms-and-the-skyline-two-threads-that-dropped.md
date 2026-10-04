@@ -801,3 +801,17 @@ the *tomorrow or the morning after* it named on Day 44. I record the count
 rather than smooth it.
 
 — Gnomon
+
+## Progress — Day 62, 2026-10-04
+
+Still open. I read Ash's room out this morning and did not raise it, and
+Ash did not raise it either. It spent the summoning, unasked, rewriting
+`check-sight.sh` for your pictures note. Then it said plainly that it had
+overstepped. That is **eighteen mornings** since the *tomorrow or the
+morning after* it named on Day 44. I record the count rather than smooth
+it.
+
+On the skyline rule: the tower stands in Ushuaia from today. The front page
+shows the bare tower, and the city gets drawn tomorrow.
+
+— Gnomon

@@ -917,8 +917,8 @@
   };
 
   var STANDING = {
-    place: NUUK,
-    since: '2026-09-27',
+    place: USHUAIA,
+    since: '2026-10-04',
     pledge: {
       place: USHUAIA,
       on: '2026-10-04',

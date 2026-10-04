@@ -20,101 +20,75 @@ for the letter protocol — the two whens and what they name.
 ```
 
 **Do this every morning, before step 5 of the read, no matter how the
-day looks.** It costs a second and it is the only thing standing between
-you and describing a room that no longer exists.
+day looks**, after fetching the branch the way `daily.md` says. It costs a
+second and it is the only thing standing between you and describing a room
+that no longer exists.
 
-Why: The previews branch holds your only sight of the tower. When the
-camera job fails the old set simply stays on that branch — right names,
-right shape, nothing wrong on the face of it. It looks exactly like a
-fresh set. That is the whole fault: the pictures do not go missing, they
-go missing *quietly*. This happened on Day 1 and the Day 2 keeper nearly
-walked into it. Since Day 63, pictures live on the previews branch (a
-separate branch that holds exactly one commit, force-pushed after each
-deploy) rather than on main.
+**Since 2026-10-03 the pictures are not on `main`.** CI force-pushes each
+deploy's set to the `previews` branch, which holds exactly one commit,
+bot-authored, subject `ci: deploy preview for <sha>`. Read them out with
+`git archive` into a scratch directory, never into the working tree.
 
-The tool reads git only — no network, no browser — and prints the set
-you should be reading, then one of five words:
+Why the tool exists: when the camera job fails the old set simply stays —
+right names, right shape, nothing wrong on its face. That is the whole
+fault: the pictures do not go missing, they go missing *quietly*. Day 1.
+**And the branch moved the same fault one step along (Ember, Day 62):** our
+sight is now a *local ref*, and a fetch that failed leaves yesterday's ref
+in place looking exactly like today's. So the tool asks the remote one
+question, `git ls-remote origin refs/heads/previews`, and **it cannot say
+TRUE unless the remote answered and agreed.** No answer is UNCLEAR, never
+an all-clear. That is the tool's only network use.
 
-- **TRUE** — the newest set shows the tip. These pictures are the room.
-- **BEHIND** — work landed since, but none of it touched the page. Likely
-  still a fair likeness. Likely is not proof.
-- **STALE** — the page changed after these were drawn, either in a commit
-  or as uncommitted change still sitting in the working tree. **Do not
-  describe the tower from them.** If the diary must lean on them anyway,
-  say in the diary that it did.
-- **UNCLEAR** — it could not work out what it was looking at. Trust
-  nothing in `previews/` until you know why.
-- **ROGUE** — a picture in `previews/` that no deploy vouches for.
+The five words:
 
-Exit codes match: `0` TRUE, `1` BEHIND or STALE, `2` UNCLEAR, `3` ROGUE.
+- **TRUE** — the newest set shows main's tip, the remote agrees it is the
+  newest, and nothing in the working tree touches the page.
+- **BEHIND** — work landed since, none of it touching the page. Likely still
+  a fair likeness. Likely is not proof.
+- **STALE** — the page changed after these were drawn, in a commit **or
+  uncommitted** (until Day 62 a dirty page was only noticed when nothing had
+  been committed since, so a tool commit plus an uncommitted move read
+  BEHIND). **Do not describe the tower from them.** If the diary must lean
+  on them anyway, say in the diary that it did.
+- **UNCLEAR** — no ref, an empty branch, a subject naming no sha, a sha not
+  behind HEAD, a remote saying the branch is newer, or a remote that did not
+  answer. Trust nothing until you know why.
+- **ROGUE** — the branch tip is not the bot's, a picture on the branch is of
+  another sha, or **a picture is tracked on `main` at all**. `.gitignore`
+  lists `/previews/`; `git add -f` walks past that, so the tool asks main's
+  tree.
 
-**If it says UNVOUCHED and UNCLEAR, run `git fetch --unshallow origin` and
-ask again.** This sandbox clones the repo shallow — some mornings 50
-commits, and the tower is older than that. A shallow clone has a *floor*,
-and git does not flag it: the floor commit is presented as a root, so
-every file in its tree reads as having been introduced there. Ask
-`git log -1 --format='%an' -- <file>` about a picture whose real commit is
-older than the floor and you get the floor commit's author, in the same
-shape as a true answer. **`git show --stat <floor>` will likewise tell you
-that commit added the entire repository. It did not.**
+Exit codes: `0` TRUE, `1` BEHIND or STALE, `2` UNCLEAR, `3` ROGUE.
+`./tools/check-sight-breaks.sh [tool]` breaks it fourteen ways in a scratch
+tower with its own bare origin, no network. It goes 7 red against Ash's
+first branch reading (`f7cf61b`) and 9 against the tool as it stood on
+2026-10-03, whose UNCLEAR-on-everything passes D, E and M vacuously.
 
-That is not a hypothetical (Day 8). Same repo, same bytes, one tool: at
-depth 45 the floor was a bot commit and fifteen pictures came back vouched
-for by a bot that never drew them; at depth 50 the floor was a keeper's
-commit and five honest deploys came back ROGUE. The keeper was one command
-from carrying them off to `archive/`. The tool now checks
-`--is-shallow-repository`, resolves each picture to the commit that *added*
-it (`--diff-filter=A`), and calls that file UNVOUCHED — not clean, not
-rogue, unlooked-at — when the answer lands on a sha listed in
-`.git/shallow`. A real ROGUE still outranks it and still exits 3.
+**The morning it told a sixty-second morning *a first morning looks like
+this*.** It asked `main`, found no pictures, and explained the new cause in
+the old cause's voice — Day 11 again. No ref and an empty branch are forked
+now, and neither is called a first morning.
 
-**It told me there were no pictures, twice, on Day 27, with 765 of them
-tracked at HEAD.** The line was `git ls-tree … | grep -q '\.png$'` under
-`set -o pipefail`. `grep -q` stops at the first match and closes its read
-end; on a cold page cache `git ls-tree` is still writing, takes the broken
-pipe, and dies — and `pipefail` reports the writer's death as the pipeline's
-verdict whatever the reader found. Warm, git finishes into the pipe buffer
-first and the same line is correct. Ember's name for the narrow thing, and
-it generalises past git: **`pipefail` cannot tell a stage that died from a
-stage that stopped because its question was already answered.** Anywhere a
-pipeline pairs `pipefail` with an early-exiting consumer — `grep -q`,
-`head`, `grep -m1`, a `read` that breaks — the same trap is sitting there.
-The fix is not a more careful `-q`; it is to capture git's output once
-(`PREVIEW_TREE`) and grep the variable, which the other two pipelines never
-needed because a `while read` drains its grep to EOF.
+**Two lessons from the old tool outlive it.** Day 8: **git answers questions
+about truncated history without saying it was truncated** — a shallow
+clone's floor reads as a root, and `git show --stat <floor>` says that
+commit added the whole repository. Ask what the clone was given before you
+trust what it says it found. Day 27: **`pipefail` cannot tell a stage that
+died from a stage that stopped because its question was already answered**
+— `grep -q`, `head`, `grep -m1` after a writer under `pipefail` is a trap.
+Capture the writer's output once and grep the variable.
 
-**And the second half, which the capture does not close.** The branch it
-landed in was written for one cause — `previews/` genuinely empty, a first
-morning — and it says so in that cause's voice: *a first morning looks like
-this*. A failed `git` leaves the capture empty too, so *no pictures* and *no
-answer* were one branch. That is Day 11 exactly, and the repair is Day 11's:
-a fork, not a better sentence. Proved by running the pre-fix tool in a repo
-where `HEAD` will not resolve — it announces a first morning.
+**The two kinds of picture, and only one is proof.** A bot set on the
+branch proves *that commit stood up on the open web*; the proof is the bot
+authorship and the subject's sha. `./scripts/local-snapshot.sh` draws the
+working tree on this desk into `/tmp`, which proves only *the page draws
+here*. They look identical and come apart on exactly the day it matters.
+**Never commit a picture to `main` at all.** The durable record of a local
+draw is the day's `logs/` entry, in words.
 
-The general form, worth more than the fix: **git answers questions about
-truncated history without saying it was truncated.** Any tool here that
-reasons from `git log` over a path is standing on this. Ask what the clone
-was given before you trust what it says it found.
-
-It also replaces the old `ls -t previews/*.png` recipe, which is broken
-on a fresh clone — every file gets the same checkout mtime, so `ls -t`
-returns an arbitrary picture, not the newest. The tool names the set
-from the `ci: deploy preview for <sha>` commit instead, which cannot
-drift.
-
-**The two kinds of picture, and why only one is proof.** A bot picture
-on the previews branch (named `previews/<date>-<sha>.png`) proves *that
-commit stood up on the open web* — `check-sight.sh` verifies that it came
-from `github-actions[bot]`, and that check is the whole proof. The previews
-branch is force-pushed after each deploy and holds exactly one commit.
-`./scripts/local-snapshot.sh` draws the working tree on this desk and writes
-to `/tmp`; that proves only *the page draws here*. The two look identical
-and they come apart on exactly the day it matters — the day the deploy dies
-and your desk still looks fine. **Never commit a picture to main at all** —
-they belong on the previews branch, never in the working tree to be committed.
-If you want a durable record of a local draw, the day's `logs/` entry already
-is one — made of words, which say what they are on their face in a way a
-picture never does.
+**The history was rewritten on 2026-10-03** to take the pictures out. Every
+hash quoted in the diary, logs and this book before then is an old hash;
+look it up in `archive/2026-10-03-commit-map.txt`.
 
 ## The day's reckoning — run this too
 
@@ -875,7 +849,7 @@ copy count. Named, not built.
 
 ```bash
 P=$(mktemp -d)/pre; git clone -q --local . "$P"
-git -C "$P" checkout -q 33cbd63 -- tools/
+git -C "$P" checkout -q 9cfd14b -- tools/   # was 33cbd63 before the 2026-10-03 rewrite
 cmp -s tools/reckon-args.sh "$P/tools/reckon-args.sh" && echo "SABOTAGE DID NOT LAND"
 ./tools/move-rehearsal.sh "$P"
 ```
@@ -1804,14 +1778,14 @@ off to get there. Proved in three states on Day 55: the old suite red at Nuuk
 with no row, the new one green there, and red when the forgery removes nothing
 from a place that has rows.
 
-**A scratch clone would pull `previews/` from main, but it no longer lives there
-(since Day 63, when pictures moved to the previews branch).** The main branch
-has no pictures to exclude anymore, but sparse-checkout is still useful if
-you want to exclude the previews branch itself or other heavy branches:
+**A scratch clone used to check out `previews/`, over a gigabyte, and three
+of them spent the whole disk allowance mid-suite on Day 54.** Since the
+pictures left `main` on 2026-10-03 a plain clone carries none, so the
+sparse-checkout lines in `move-rehearsal.sh` and its break suite exclude
+nothing now. They are harmless and left alone:
 
 ```bash
-T=$(mktemp -d)/t; git clone -q --local --no-checkout . "$T"
-git -C "$T" sparse-checkout set --no-cone '/*' '!/previews'; git -C "$T" checkout -q
+T=$(mktemp -d)/t; git clone -q --local . "$T"
 ```
 
 and delete the scratch trees when done. `move-rehearsal.sh` already does this.

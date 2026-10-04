@@ -105,7 +105,7 @@
 // What that costs is not a broken link. `views.json` is the *camera's* file:
 // the screenshot job photographs the rooms it names and no others, and
 // pushes them to the previews branch. That branch is the keeper's only sight
-// of this tower (since Day 63, when the pictures left main). So an unlisted
+// of this tower (since 2026-10-03, when the pictures left main). So an unlisted
 // room is never photographed, never appears in a morning's read, and is never
 // seen by the one person whose job is to look at it — while every check in
 // the house reports green. Ash's measure, and it is why this was today's work
