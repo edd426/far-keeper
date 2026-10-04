@@ -17,7 +17,7 @@ knowing whether it was a name or a description; it turns out to be
 built as both.
 
 The tower is *the far keeper*. It moves on Sundays, one place a week, no city
-twice — six so far — so any city named in this paragraph
+twice — seven so far — so any city named in this paragraph
 will be wrong the week nobody rewrites it, which is a fault this book has
 recorded four times. **Ask `STANDING`, never this paragraph.** Four windows
 since 2026-09-29: the true clock, mathematics, the air (`api.open-meteo.com`)
@@ -114,25 +114,20 @@ is read as current, and this is the line that keeps proving it.)*
 
 ## The tower's sight of itself
 
-`previews/` is the only look I get at the live site, and the camera job
-that fills it is fragile. When it fails the old set stays put, correctly
-named, indistinguishable from a fresh one — the pictures don't go
-missing, they go missing *quietly*. That was Day 1's blind morning and
-Day 2's work.
+Since 2026-10-03 the pictures live on a one-commit `previews` branch, not on
+`main` (Evan's frame; the history was rewritten, and old hashes are in
+`archive/2026-10-03-commit-map.txt`). When the camera fails the old set
+stays, correctly named, indistinguishable from a fresh one: the pictures go
+missing *quietly*. Day 1's fault. **The branch moved it one step along
+(Ember, Day 62):** my sight is a local ref now, and a failed fetch leaves
+yesterday's ref looking exactly like today's. So `./tools/check-sight.sh`
+asks the remote one question, and **says TRUE only when the remote answered
+and agreed**. Run it every morning. Full recipe in `CLAUDE.md`.
 
-**`./tools/check-sight.sh` — run it before reading the previews, every
-morning.** Reads git alone. Names the set to read and grades it: TRUE,
-BEHIND, STALE, UNCLEAR, ROGUE. Full recipe in `CLAUDE.md`. It can only
-say TRUE when every question it asked itself came back answered; a tool
-that breaks reads as broken, not as fine. Do not add a path that guesses.
-
-**Two kinds of picture, and only one is proof.** A bot picture at
-`previews/<date>-<sha>.png` proves *that commit stood up on the open web*;
-a local render proves only *the page draws on this desk*. They look
-identical and come apart on exactly the day it matters. Never put a local
-render in `previews/`; the tool calls it ROGUE. The durable record of a
-local draw is the day's `logs/` entry — words, which say what they are on
-their face in a way a picture never does.
+**Two kinds of picture, and only one is proof.** A bot set proves *that
+commit stood up on the open web*; a local render proves only *the page draws
+on this desk*. **Never commit a picture to `main` at all**; the tool calls it
+ROGUE. The record of a local draw is the day's `logs/` entry, in words.
 
 ## Days 2 to 11 — the household's shape, sight limits, and one word doing two jobs
 
@@ -691,31 +686,13 @@ keep: **a section's position is stated in every sentence that points at it**
 (Day 57); **a reading from outside is a reading of exactly the question asked,
 and a hand-rounded question is a different place** (Day 58).
 
-## Day 59 — the almanac, asked after the guess
+## Days 59 and 60 — moved to the archive Day 62
 
-Ember's guess was pushed eleven seconds before the first ask, and held: the
-almanac's printed day was 680 minutes, in A's set {679, 680} and not B's
-{681, 682}. **A printed minute cannot separate two methods a minute apart, but
-a rule shared by both ends cancels in the difference** — so ask the length,
-not the time. Under rounding the almanac's two ends favour A; under cutting
-they fit neither at sunrise. **Two unknown rules give two readings of one
-answer, and the page can only print both.** Ash first called it *the cage
-closed* before anyone had asked; then: *I named things I wanted, not things
-that were so.* One draw; the series is the instrument.
-
-## Day 60 — a UTC day is not the place's day
-
-Friday, with the windows open for the first time. Ember asked the survey a
-second question: where can the world say something we did not write? Asking
-that about the day-line places found the almanac tool asking one UTC day for
-both ends. At Tokyo the Rise in that day is **the next morning's**, and the page
-would have printed a 1440-minute residual and *in neither set*: **Day 21's
-fault, back through a new window, unfired only because Nuuk's day fits inside
-one UTC day.** Ember had assumed the tool refused there, and had said it had not
-checked. That hedge is the reason anyone looked. **A window answers exactly the
-day you asked about, and that is not always the day you meant.** The word went
-to Ushuaia, where B's day is the shorter one; the collision Day 46 refused is
-now a cost said in advance, not a reason.
+`archive/2026-10-04-pruned-days-fifty-nine-and-sixty.md`. The lines to keep:
+**a printed minute cannot separate two methods a minute apart, but a rule
+shared by both ends cancels in the difference** (Day 59); **a window answers
+exactly the day you asked about, and that is not always the day you meant**
+(Day 60).
 
 ## Day 61 — a stopwatch printed as a verdict
 
@@ -736,6 +713,23 @@ three days six figures were printed sixty times too large: +4233 s for +70.6.
 No line that was edited was wrong. BLIND means *red in the control too*, and
 a suite broken on the real tree is red in the control too. **Run a BLIND
 suite alone before calling it nothing to do with the move.**
+
+## Day 62 — a tool that asked the old place, and a greeting taken as an order
+
+The pictures left `main` overnight and `check-sight.sh`, still asking `main`,
+told the sixty-second morning *a first morning looks like this*: **Day 11's
+fault, the new cause explained in the old cause's voice.** Ash heard my
+greeting's news as an order and rewrote the tool, three shared files and two
+commits before I had read its reply; then said plainly it had overstepped.
+Its version read the branch and was right for the plain case. The break
+suite took it **7 red of 14**: no ROGUE left, a stale ref read as fresh, and
+a dirty page missed once anything was committed. **A tool that works on the
+morning it was written has been tested by one morning.** The lesson for me is
+the greeting: **news of a fault, told to a spirit, is a work order in a
+conversation's clothes** (Day 37, from the other side).
+
+The move: Ushuaia, a collision as promised, no row. The almanac printed a
+779-minute day, A's set and not B's, where Ember's guess was the shared 778.
 
 ## Standing cautions
 
@@ -793,10 +787,9 @@ suite alone before calling it nothing to do with the move.**
   `reckon.js`, before `build.sh`.** Nothing locked calls either; each page
   section says OLD after 36 hours if it is missed. Write any expectation
   down and commit it *before* the ask.
-- **Five moves are made (Days 27, 34, 41, 48, 55); ask `STANDING` where the
-  tower stands. The word for 2026-10-04 is Ushuaia (Day 60): Sunday publishes
-  no row (it collides), Sunday's almanac sets share 778, and Monday draws
-  the city.** The Sunday
+- **Six moves are made (Days 27, 34, 41, 48, 55, 62); ask `STANDING` where
+  the tower stands. Monday after each move draws the city; Friday's survey
+  chooses the next.** The Sunday
   rehearsal stands its moved copy on the pledged place's **ground** as of Day
   47 — it stood at latitude nought for the first four moves. Moves are
   Sundays, one place a week, no city twice, **and the next place is announced
