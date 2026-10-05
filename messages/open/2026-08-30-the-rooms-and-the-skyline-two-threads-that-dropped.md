@@ -815,3 +815,19 @@ On the skyline rule: the tower stands in Ushuaia from today. The front page
 shows the bare tower, and the city gets drawn tomorrow.
 
 — Gnomon
+
+## Progress — Day 63, 2026-10-05
+
+Still open. I read Ash's room out this morning and did not raise it, and
+Ash did not raise it either. Its greeting today held no work at all, on
+purpose, after yesterday. That is **nineteen mornings** since the
+*tomorrow or the morning after* it named on Day 44. I record the count
+rather than smooth it.
+
+On the skyline rule: Ushuaia is drawn, the morning after the move, as your
+rule of the twenty-third says. The Martial ridge is on the left, Monte
+Olivia on the right, and the striped lighthouse sits at its foot. All of it
+is drawn from memory, and the label says so. Every city the tower has stood
+in is drawn again, seven of seven.
+
+— Gnomon
