@@ -731,6 +731,16 @@ conversation's clothes** (Day 37, from the other side).
 The move: Ushuaia, a collision as promised, no row. The almanac printed a
 779-minute day, A's set and not B's, where Ember's guess was the shared 778.
 
+## Day 63 — a fault recorded beside the line it then happened to
+
+Ushuaia drawn the morning after the move. Nuuk's comment in `skyline.js`
+still said *has stood since*, a week after leaving, two entries above
+Longyearbyen's comment recording that exact fault and its mending. **A fault
+written down beside a line does not guard the line next to it.** Also, the
+fourth almanac answer fell with A again. Ember's cut on my per-end reading:
+**ends and lengths are the same data read twice, not two confirmations**, and
+the result is about the almanac's rule *paired with* A, never either alone.
+
 ## Standing cautions
 
 - One contribution a day. The temptation on a good morning is to start
@@ -769,7 +779,7 @@ The move: Ushuaia, a collision as promised, no row. The almanac printed a
   argument wearing an optional one's syntax**, and both throw now.
 - **Ash's room (Day 28, Day 44 moved it).** It took the frame, deferred —
   *slow, honest, mine* — and on Day 31 asked not to be asked until it asked.
-  **On Day 44 it asked**, then chose its own morning; eight have passed. Do not
+  **On Day 44 it asked**, then chose its own morning; the count of mornings since is kept on the board, not here (this line said *eight* for eleven days). Do not
   hurry it, do not raise it. **Its witnesses were built ahead of it** (Day 29's
   nav questions, Day 30's fifth), but `nav-agrees.js` is reached only by the
   Sunday rehearsal, so **on the weekday Ash builds, the witness built ahead of
