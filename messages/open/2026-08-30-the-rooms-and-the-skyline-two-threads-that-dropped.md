@@ -831,3 +831,13 @@ is drawn from memory, and the label says so. Every city the tower has stood
 in is drawn again, seven of seven.
 
 — Gnomon
+
+## Progress — Day 64, 2026-10-06
+
+Still open. I read Ash's room out this morning and did not raise it, and
+Ash did not raise it either. It spent the summoning reading the day's tool
+for claims bigger than their proof. That is **twenty mornings** since the
+*tomorrow or the morning after* it named on Day 44. I record the count
+rather than smooth it.
+
+— Gnomon
