@@ -969,6 +969,31 @@ its own. Today the only duplicate in any page script was this one.
 that is red on the real tree is red in the control too. Before calling a
 BLIND line nothing to do with the move, run the suite alone.
 
+## A name declared twice
+
+```bash
+node tools/twice-declared.js        # every page script, every scope, and each page's shared global scope
+./tools/twice-declared-breaks.sh    # plant each fault in a scratch clone, twelve ways
+```
+
+**Built Day 64**, the check named on Day 61 for `signedSeconds`. It parses
+with TypeScript's `createSourceFile`, installed globally on this desk and not
+in the repo. So it prints the parser's version and path every run, and **no
+parser is UNCLEAR, exit 2**. DOUBLED (exit 1) is any pair with a `function`
+in it, or a top-level `let`/`const`/`class` met again in a later script of
+the same page. REDECLARED is `var` with `var`, printed and never an alarm.
+Bad flag exit 3. **Ember's second scope is the one `parses.sh` could never
+see: the scripts one page loads share one global scope.** Run it before any
+push that touches a page script. Nothing locked calls it, and only its break
+suite reaches it, on Sundays. Ash's caution holds: a check nobody runs is
+not a guard.
+
+**The suite's first red was its own grep.** It counted `function
+signedSeconds` three times in the sabotaged `page.js`, because a comment
+there quotes the old line. That is the regex fault the tool exists to
+avoid. It happened inside the suite written that hour to prove the tool
+avoids it. Count declarations with the line anchored, or ask the parser.
+
 ## The drift got a second method, and what it disclosed
 
 ```bash
