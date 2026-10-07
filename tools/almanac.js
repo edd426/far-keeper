@@ -56,7 +56,17 @@
 //
 //   node tools/almanac.js           ask, append, print
 //   node tools/almanac.js --print   ask and print; write nothing
+//   node tools/almanac.js --wager   ask nothing, write nothing: the date and
+//                                   both sets the next ask would carry
 //   node tools/almanac.js --help
+//
+// **`--wager` is for the hand that writes an expectation before the ask (Day
+// 65).** That note had always been worked out by hand, from a date the hand
+// chose. On Day 65 it was chosen as UTC's today, 2026-10-07, while the
+// standing place was still on the sixth, so the note wagered on a day the
+// ask was never going to be about, and called a shared 796 the test when the
+// day asked had no shared value at all. `--wager` takes the date from the
+// same line the ask takes it from, and the sets from the same `wagerFor`.
 //
 // Exit 0 a reading was written (or printed), 1 the window did not give one
 // (a failure row is still written), 2 a bad argument.
@@ -74,21 +84,44 @@ const ALMANAC_FILE = path.join(ROOT, 'reckoning', 'almanac.json');
 const SOURCE = 'aa.usno.navy.mil';
 const BASE = process.env.FAR_KEEPER_ALMANAC_URL || 'https://aa.usno.navy.mil';
 const TIMEOUT_MS = Number(process.env.FAR_KEEPER_ALMANAC_TIMEOUT_MS) || 30000;
-const USAGE = 'usage: node tools/almanac.js [--print] [--help]';
+const USAGE = 'usage: node tools/almanac.js [--print | --wager] [--help]';
 const HHMM = /^([01]\d|2[0-3]):[0-5]\d$/;
 
 function parseArgs(argv) {
   let print = false;
+  let wager = false;
   for (const token of argv) {
     if (token === '--help' || token === '-h') return { help: true };
-    if (token === '--print') {
-      if (print) return { error: '--print was given twice' };
-      print = true;
+    if (token === '--print' || token === '--wager') {
+      const name = token.slice(2);
+      if ((name === 'print' && print) || (name === 'wager' && wager)) return { error: `${token} was given twice` };
+      if (name === 'print') print = true; else wager = true;
+      if (print && wager) return { error: '--print asks the host and --wager asks nothing; give one' };
       continue;
     }
     return { error: `${JSON.stringify(token)} is not an argument this tool knows` };
   }
-  return { print };
+  return { print, wager };
+}
+
+// The wager as a sentence a hand can copy into a note. The date is the one
+// the ask would use, and it is printed with the zone that chose it, so a note
+// written from it says which calendar it was in.
+// A forced date bends the wager and the ask together, so they agree on a day
+// that need not be today; it is said on the line rather than looking like
+// consistency (Ember, Day 65).
+function describeWager(w, dateISO, place, forced) {
+  if (w.none) return `almanac wager: ${place.name} ${dateISO} (${place.zone}): ${w.none}`;
+  const shared = w.A.allowed.filter((n) => w.B.allowed.includes(n));
+  const fmt = (n) => n.toFixed(2);
+  return [
+    `almanac wager: ${place.name} ${dateISO}, ${forced ? 'FORCED by FAR_KEEPER_ALMANAC_DATE, not read off the clock' : `today in ${place.zone}`}, computed ${w.computedAt}; nothing asked, nothing written`,
+    `  A  day ${fmt(w.A.dayLengthMinutes)} min  printed length in [${w.A.allowed.join(', ')}]`,
+    `  B  day ${fmt(w.B.dayLengthMinutes)} min  printed length in [${w.B.allowed.join(', ')}]`,
+    shared.length
+      ? `  shared ${shared.join(', ')}: that length cannot separate the methods`
+      : '  the sets do not touch: any length in either separates the methods',
+  ].join('\n');
 }
 
 // The comparands and the allowed lengths are the instrument's
@@ -265,6 +298,10 @@ async function main() {
   }
   const place = Reckoning.STANDING.place;
   const dateISO = process.env.FAR_KEEPER_ALMANAC_DATE || Reckoning.todayAt(place.zone);
+  if (args.wager) {
+    process.stdout.write(`${describeWager(wagerFor(dateISO, place), dateISO, place, Boolean(process.env.FAR_KEEPER_ALMANAC_DATE))}\n`);
+    return 0;
+  }
   const row = await ask(place, dateISO);
   process.stdout.write(`${describe(row)}\n`);
   if (!args.print) {

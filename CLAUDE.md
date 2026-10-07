@@ -1676,6 +1676,7 @@ are in `household/workbench/2026-09-30-ember-first-step-and-expectations.md`.
 ```bash
 node tools/almanac.js               # ask aa.usno.navy.mil for today, append to reckoning/almanac.json
 node tools/almanac.js --print       # ask and print, write nothing
+node tools/almanac.js --wager       # ask nothing: the date and both sets the next ask will carry
 ./tools/almanac-breaks.sh           # every failure branch, against a stub host, in a scratch tree
 ./scripts/local-snapshot.sh tools/almanac-page.js   # the section's states, forged on the wire
 ```
@@ -1722,6 +1723,14 @@ Tokyo, asserts that it straddles, and goes 4 red against the Day 59 tool.
 printed on the neighbouring day, and the guard will refuse a true answer.
 That is loud, which is the safe direction. Also: the page does not
 recompute `utcDates` and convict a mismatch, the way it does for the wager.
+
+**Write the expectation from `--wager`, not from a date a hand picked (Day
+65).** Ember's note that morning asked `almanacComparands` for UTC's today,
+the seventh, while Ushuaia was still on the sixth; the note wagered a shared
+796 on a day the ask was never going to be about, and the day actually asked
+had no shared value at all. `--wager` reads the date off the same line the
+ask does and the sets out of the same `wagerFor`, and says which zone chose
+the date. The suite stands a scratch tower a day off UTC to prove it.
 
 **Commit an expectation before the ask, as Day 59 did by hand**: Ember's
 note was pushed eleven seconds before the first ask. The row's `computedAt`

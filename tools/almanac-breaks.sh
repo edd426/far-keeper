@@ -214,9 +214,65 @@ else
 fi
 mv "$T/tokyo/tools/almanac.js.orig" "$T/tokyo/tools/almanac.js"
 
+# --- the wager, asked of the tool and not of a hand, Day 65 ---
+# Ember's note that morning was worked from UTC's today while the standing
+# place was still on the day before. `--wager` must ask nothing, write nothing,
+# and name the date the ask would name.
+case_run "--wager and --print together"          /good       2 "give one" 0 --wager --print
+case_run "a repeated --wager"                     /good       2 "INVALID" 0 --wager --wager
+before=$(rows)
+out=$(FAR_KEEPER_ALMANAC_URL="http://127.0.0.1:$DEAD" FAR_KEEPER_ALMANAC_DATE="$DATE" node "$T/tools/almanac.js" --wager 2>&1); code=$?
+if [ "$code" = 0 ] && grep -q "nothing asked, nothing written" <<<"$out" && [ $(( $(rows) - before )) = 0 ]; then
+  ok "--wager answers with no host at all and writes no row"
+else bad "--wager against a dead host: exit $code — $out"; fi
+
+# The sets it prints are the sets the ask writes into its row.
+FAR_KEEPER_ALMANAC_URL="http://127.0.0.1:$PORT/good" FAR_KEEPER_ALMANAC_DATE="$DATE" node "$T/tools/almanac.js" >/dev/null 2>&1
+out=$(FAR_KEEPER_ALMANAC_URL="http://127.0.0.1:$DEAD" FAR_KEEPER_ALMANAC_DATE="$DATE" node "$T/tools/almanac.js" --wager 2>&1)
+if node -e "
+const rows=require('$T/reckoning/almanac.json');const r=rows[rows.length-1];
+const o=process.argv[1];const a=/A .*in \[([^\]]*)\]/.exec(o), b=/B .*in \[([^\]]*)\]/.exec(o);
+if(!r.wager||!a||!b){console.log('no wager to compare');process.exit(1)}
+process.exit(a[1]===r.wager.A.allowed.join(', ')&&b[1]===r.wager.B.allowed.join(', ')&&o.includes(r.date+',')?0:1)" "$out"; then
+  ok "the sets and date --wager prints are the ones the ask wrote into its row"
+else bad "--wager and the ask's row part: $out"; fi
+
+# The date, with no override, is the standing place's today. Stand a scratch
+# tower in a zone whose calendar disagrees with UTC's right now (one of these
+# two always does), and assert the domain is non-empty before judging it.
+mkdir -p "$T/far/tools" "$T/far/reckoning"
+cp "$T/tools/almanac.js" "$T/far/tools/almanac.js"
+FAR="$(node -e "
+const R=require('$ROOT/reckoning/reckoning.js');const utc=new Date().toISOString().slice(0,10);
+const c=[{name:'Kiritimati',latitude:1.8721,longitude:-157.4278,zone:'Pacific/Kiritimati'},{name:'Pago Pago',latitude:-14.2756,longitude:-170.702,zone:'Pacific/Pago_Pago'}]
+  .find(p=>R.todayAt(p.zone)!==utc);process.stdout.write(c?JSON.stringify(c):'')")"
+if [ -z "$FAR" ]; then bad "no zone disagrees with UTC's calendar now; the date case has no domain"
+else
+  node -e "
+const fs=require('fs');let s=fs.readFileSync('$ROOT/reckoning/reckoning.js','utf8');
+const t=s.replace(/var STANDING = \{\s*place:[\s\S]*?since:/,'var STANDING = { place: '+process.argv[1]+', since:');
+if(t===s)process.exit(1);fs.writeFileSync('$T/far/reckoning/reckoning.js',t)" "$FAR" || bad "the far scratch tower was not moved"
+  WANT="$(cd "$T/far" && node -e "const R=require('./reckoning/reckoning.js');process.stdout.write(R.STANDING.place.name+' '+R.todayAt(R.STANDING.place.zone))")"
+  UTC="$(date -u +%F)"
+  out=$(FAR_KEEPER_ALMANAC_URL="http://127.0.0.1:$DEAD" node "$T/far/tools/almanac.js" --wager 2>&1); code=$?
+  if [ "${WANT##* }" = "$UTC" ]; then bad "the far tower ($WANT) agrees with UTC; the case has no domain"
+  elif [ "$code" = 0 ] && grep -qF "almanac wager: $WANT," <<<"$out"; then
+    ok "standing in a zone a day off UTC ($WANT, UTC $UTC), --wager names the standing day"
+  else bad "--wager named another date than $WANT: $out"; fi
+  # Ember's second hole: the case above holds --wager to the clock and not to
+  # the ask. Ask too, with nothing forced (a dead host still writes a row with
+  # its date), and hold the row's date against the date --wager printed.
+  FAR_KEEPER_ALMANAC_URL="http://127.0.0.1:$DEAD" node "$T/far/tools/almanac.js" >/dev/null 2>&1
+  ROWDATE="$(node -e "const r=require('$T/far/reckoning/almanac.json');process.stdout.write(r[r.length-1].date||'')" 2>/dev/null)"
+  if [ -n "$ROWDATE" ] && grep -qF "almanac wager: ${WANT% *} $ROWDATE, today in" <<<"$out"; then
+    ok "unforced, the ask's row is dated $ROWDATE, the day --wager named"
+  else bad "the ask wrote ${ROWDATE:-no row} and --wager said: $out"; fi
+fi
+case_run "a forced date says so on the wager line" /good      0 "FORCED by FAR_KEEPER_ALMANAC_DATE" 0 --wager
+
 NOW_SUM="$( [ -f "$REAL" ] && sha256sum "$REAL" | cut -d' ' -f1 || echo absent)"
 if [ "$REAL_SUM" = "$NOW_SUM" ]; then ok "the real reckoning/almanac.json did not move"; else bad "the real reckoning/almanac.json CHANGED"; fi
 
 echo
 if [ "$fails" -gt 0 ]; then echo "FAIL — $fails problem(s)."; exit 1; fi
-echo "PASS — every way the almanac can fail is a failure row with its reason, every row carries its wager, and each end is asked of its own UTC day."
+echo "PASS — every way the almanac can fail is a failure row with its reason, every row carries its wager, each end is asked of its own UTC day, and --wager names the day the ask will."

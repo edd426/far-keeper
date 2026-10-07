@@ -124,5 +124,23 @@
       "longitude": -68.257416,
       "elevationM": 48
     }
+  },
+  {
+    "fetchedAt": "2026-10-07T02:07:19.170Z",
+    "source": "api.open-meteo.com",
+    "place": {
+      "name": "Ushuaia",
+      "latitude": -54.8019,
+      "longitude": -68.303
+    },
+    "modelTime": "2026-10-07T02:00Z",
+    "temperatureC": 4.6,
+    "surfacePressureHPa": 1010.9,
+    "seaLevelPressureHPa": 1016.9,
+    "grid": {
+      "latitude": -54.79789,
+      "longitude": -68.257416,
+      "elevationM": 48
+    }
   }
 ]
