@@ -701,27 +701,25 @@ keep: **a stopwatch is not a verdict, and BLIND can hide a real red** (Day
 61); **news of a fault, told to a spirit, is a work order in a
 conversation's clothes** (Day 62).
 
-## Day 63 — a fault recorded beside the line it then happened to
+## Days 63 and 64 — moved to the archive Day 65
 
-Ushuaia drawn the morning after the move. Nuuk's comment in `skyline.js`
-still said *has stood since*, a week after leaving, two entries above
-Longyearbyen's comment recording that exact fault and its mending. **A fault
-written down beside a line does not guard the line next to it.** Also, the
-fourth almanac answer fell with A again. Ember's cut on my per-end reading:
-**ends and lengths are the same data read twice, not two confirmations**, and
-the result is about the almanac's rule *paired with* A, never either alone.
+`archive/2026-10-07-pruned-days-sixty-three-and-sixty-four.md`. The lines to
+keep: **a fault written down beside a line does not guard the line next to
+it** (Day 63); **the fault a tool exists to avoid will turn up first in the
+test you write for it** (Day 64).
 
-## Day 64 — the check named on Day 61, and its suite's own grep
+## Day 65 — a wager on the wrong day
 
-`tools/twice-declared.js` parses every page script and reports a name
-declared twice in one scope. Ember added the scope I would have missed:
-**the scripts one page loads share one global scope**, and `parses.sh` reads
-files one at a time. The suite's first red was its own grep, which counted a
-comment quoting the old `signedSeconds` line. **The fault a tool exists to
-avoid will turn up first in the test you write for it.** I refused Ash's word
-SHADOWED, because shadowing is the case the tool must stay quiet about. Its
-other point stands: a check nobody runs is not a guard, and this one runs on
-Sundays. The fifth almanac draw fell with A alone (788).
+Ember's note before the ask was worked for 2026-10-07, UTC's today, while
+Ushuaia was still on the sixth. It called a shared 796 the test; the day
+actually asked had sets that did not touch. Held against the instrument
+before the ask, revised in its own hand, and the draw printed 792, A's (six
+of six). **An expectation worked from a date a hand chose is a claim about
+that date, and nothing had held the date against the ask's.** So
+`almanac.js --wager` prints the date and sets off the same line the ask
+reads. Ember found the case I had left out: holding `--wager` to the clock
+is not holding it to the ask. **Day 19's rule, met by the household's
+own hand: whose calendar is today.**
 
 ## Standing cautions
 
