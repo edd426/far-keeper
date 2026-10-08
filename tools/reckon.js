@@ -275,6 +275,61 @@ function differences(published, recomputed) {
   return found;
 }
 
+// ---- A changed clock law is not an edit (Day 66) ----
+//
+// Day 53 gave the page this fork and the desk never had it. Ember's holes,
+// taken the morning it was built: (1) the row stores only the offset at
+// sunrise (`offsetRise`); sunset and noon use their own, unstored, so a law
+// that changes between sunrise and sunset moves `sunset` with
+// `utcOffsetMinutes` equal, this fork stays shut, and the row gets the
+// sentence below. Named, not built: the row carries no evidence to fork on.
+// (2) The evidence is inside the row it judges, so a hand moving the offset
+// and the clock times together is read as a law. The sentence says so and
+// the exit stays 1. (3) A dark row carries an offset too (taken at solar
+// noon since Day 20) and takes the fork like any other. The offset in a
+// row is asked of the tz database at the moment of computing, and that
+// database is revised when a country changes its clock law (Nuuk's, 2023).
+// A current-method row recomputed on a desk whose tzdata moved used to get
+// the sentence below — *read the commits before you believe anything
+// kinder* — while the page, about the same row, said the gap was a law. Two
+// auditors, one row, two stories (Day 15: the copy we cannot reach is the
+// one that would disagree).
+//
+// The evidence is the row's own `utcOffsetMinutes` against the one computed
+// here: both finite numbers and different. Nothing is guessed.
+function clockOffsetMoved(published, fresh) {
+  if (!published || !fresh) return false;
+  const was = published.utcOffsetMinutes, now = fresh.utcOffsetMinutes;
+  if (typeof was !== 'number' || typeof now !== 'number') return false;
+  if (!Number.isFinite(was) || !Number.isFinite(now)) return false;
+  return was !== now;
+}
+
+function valueAt(obj, dotted) {
+  return dotted.split('.').reduce((o, k) => (o == null ? undefined : o[k]), obj);
+}
+
+// Which drifted fields the gap accounts for, asked of each field and never of
+// a list kept here. A list would be wrong on the morning it was written:
+// `crossCheck.sunrise` and `crossCheck.sunset` are clock times too, deep in
+// the row, and a list of the claims that look like clock times misses them.
+// So a field is accounted for only if it is the offset itself, or a clock
+// time whose published value moved by exactly the gap is what was recomputed.
+// Anything else — a day length, a drift, a clock time moved by some other
+// amount — is not, and keeps the older sentence.
+function clockMinutes(value) {
+  const m = typeof value === 'string' && /^(\d{2}):(\d{2})$/.exec(value);
+  return m ? Number(m[1]) * 60 + Number(m[2]) : null;
+}
+
+function accountedByClock(key, published, fresh, gap) {
+  if (key === 'utcOffsetMinutes') return true;
+  const was = clockMinutes(valueAt(published, key));
+  const now = clockMinutes(valueAt(fresh, key));
+  if (was === null || now === null) return false;
+  return (((was + gap - now) % 1440) + 1440) % 1440 === 0;
+}
+
 function verify(entries) {
   if (entries.length === 0) {
     console.log('reckon: the ledger is empty — nothing to verify.');
@@ -296,6 +351,8 @@ function verify(entries) {
   // scratch copy on Day 11 by forging exactly that row.
   let sameMethod = 0;
   let methodMoved = 0;
+  let clockLaw = 0;
+  let clockLawOnly = 0;
   let unplaced = 0;
   let dark = 0;
   let deepUncheckable = 0;
@@ -374,15 +431,39 @@ function verify(entries) {
     } else {
       const entryMethod = entry.method || 1;
       const current = entryMethod === METHOD;
-      if (current) sameMethod += 1; else methodMoved += 1;
       console.log(`reckon: ${entry.date} HAS DRIFTED, recomputed at ${where.name}` +
         (current
           ? ` — under method ${entryMethod}, which is the method running now`
           : ` — published under method ${entryMethod}; the tower now runs method ${METHOD}`));
-      for (const line of diffs) console.log(`reckon:   ${line}`);
+      if (current && clockOffsetMoved(entry, fresh)) {
+        // Day 66. It does not clear the row: an edit can sit on top of a
+        // changed clock, so the fields the gap does not account for are
+        // printed apart and keep the older sentence.
+        const gap = fresh.utcOffsetMinutes - entry.utcOffsetMinutes;
+        const keyOf = (line) => line.slice(0, line.indexOf(':'));
+        const accounted = diffs.filter((line) => accountedByClock(keyOf(line), entry, fresh, gap));
+        const rest = diffs.filter((line) => !accounted.includes(line));
+        clockLaw += 1;
+        console.log(`reckon:   CLOCK LAW — the row was written with ${where.zone} at UTC` +
+          `${entry.utcOffsetMinutes / 60 >= 0 ? '+' : ''}${entry.utcOffsetMinutes / 60}` +
+          ` and this desk's tz data gives UTC${fresh.utcOffsetMinutes / 60 >= 0 ? '+' : ''}` +
+          `${fresh.utcOffsetMinutes / 60}. The gap accounts for:`);
+        for (const line of accounted) console.log(`reckon:     ${line}`);
+        if (rest.length === 0) {
+          clockLawOnly += 1;
+          console.log('reckon:   and for nothing else, because nothing else moved.');
+        } else {
+          sameMethod += 1;
+          console.log(`reckon:   It does NOT account for ${rest.length === 1 ? 'this' : 'these'}:`);
+          for (const line of rest) console.log(`reckon:     ${line}`);
+        }
+      } else {
+        if (current) sameMethod += 1; else methodMoved += 1;
+        for (const line of diffs) console.log(`reckon:   ${line}`);
+      }
     }
   }
-  const drifted = sameMethod + methodMoved;
+  const drifted = sameMethod + methodMoved + clockLawOnly;
   if (deepUncheckable > 0) {
     console.log('');
     console.log(`reckon: ${deepUncheckable} entr${deepUncheckable === 1 ? 'y shows' : 'ies show'} a working this file can never check.`);
@@ -404,6 +485,19 @@ function verify(entries) {
     if (methodMoved > 0) {
       console.log(`reckon: ${methodMoved} of them ${methodMoved === 1 ? 'was' : 'were'} computed under a method the tower no longer runs.`);
       console.log('reckon: work out what changed in the method, and write it in the diary.');
+    }
+    if (clockLaw > 0) {
+      console.log(`reckon: ${clockLaw} of them ${clockLaw === 1 ? 'was' : 'were'} written under a clock offset this desk's tz data`);
+      console.log('reckon: no longer gives. That offset is looked up, not computed: it is a law,');
+      console.log('reckon: revised when a country changes its clocks, and the fields listed under');
+      console.log('reckon: CLOCK LAW moved by exactly that gap, which is consistent with a revision.');
+      console.log('reckon: Consistent is all it is. The offset is a field of the row being judged,');
+      console.log('reckon: so a hand that moved it and the clock times together reads the same way');
+      console.log('reckon: here. Check the tz data first, then the commits; this clears nothing.');
+      if (clockLaw > clockLawOnly) {
+        console.log(`reckon: ${clockLaw - clockLawOnly} of those also moved in a field the gap does not account for,`);
+        console.log('reckon: and that part is counted with the rows below.');
+      }
     }
     if (sameMethod > 0) {
       console.log(`reckon: ${sameMethod} of them ${sameMethod === 1 ? 'was' : 'were'} computed under method ${METHOD}, which is the method running now.`);

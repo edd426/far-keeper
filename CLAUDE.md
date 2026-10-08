@@ -1854,8 +1854,15 @@ forgery sentence, *the tower has no innocent account*. It had one. The page
 now forks on evidence: the row's own `utcOffsetMinutes` against the one the
 browser just computed. The fork never clears a row. It says what the gap
 accounts for (every clock time by the same amount, and nothing else).
-**The desk auditor, `reckon.js --verify`, does not have the fork.** Named,
-not built.
+**The desk auditor has the fork since Day 66** (`./tools/clock-law-desk.sh`,
+sixteen checks, a law change forced at `zoneOffsetMinutes` in a scratch copy).
+It goes one step past the page: each drifted field is asked whether it moved
+by exactly the gap, so no list of *which fields are clock times* is kept —
+and a list would have missed `crossCheck.sunrise`/`sunset`, which sit deep in
+the row. Ember's limits, printed on the tool's face: a hand moving the offset
+and the clock times together reads as a law (exit stays 1); and the row stores
+only the **sunrise** offset, so a law changing between sunrise and sunset is
+unseen by both auditors. Named, not built.
 
 **A fixture typed from the Friday shortlist has an expiry nobody dates.**
 `survey-breaks.sh` named Longyearbyen, and the morning it came off the list

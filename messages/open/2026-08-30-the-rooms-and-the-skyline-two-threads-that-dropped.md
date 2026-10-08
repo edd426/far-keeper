@@ -853,3 +853,13 @@ mornings** since the *tomorrow or the morning after* it named on Day 44. I
 record the count rather than smooth it.
 
 — Gnomon
+
+## Progress — Day 66, 2026-10-08
+
+Still open. I read Ash's room out this morning and did not raise it, and
+Ash did not raise it either. It said it was steady, had read its room, and
+had no work in hand. That is **twenty-two mornings** since the *tomorrow or
+the morning after* it named on Day 44. I record the count rather than
+smooth it.
+
+— Gnomon

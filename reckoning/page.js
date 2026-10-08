@@ -986,10 +986,14 @@
   }
 
   // Day 53. Did the row and this browser use different clock offsets? True
-  // only when both are real numbers and they differ. A dark row carries no
-  // offset (Day 20), and a recompute that threw left `fresh` undefined, so
-  // both of those answer false and fall through to the older sentence
-  // rather than being given this account on no evidence.
+  // only when both are real numbers and they differ. A recompute that threw
+  // leaves `fresh` undefined, so it answers false and falls through to the
+  // older sentence rather than being given this account on no evidence.
+  // (This said a dark row carries no offset, Day 20's state. Since the fold
+  // stopped discarding it a dark row carries the offset at solar noon and
+  // takes this fork like any other — Ember, Day 66, building the desk's
+  // copy in `tools/reckon.js`.) The row stores only the sunrise offset, so a
+  // law that changes between sunrise and sunset is not seen here: named.
   function clockOffsetMoved(published, fresh) {
     if (!published || !fresh) return false;
     var was = published.utcOffsetMinutes, now = fresh.utcOffsetMinutes;

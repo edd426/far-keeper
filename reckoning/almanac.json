@@ -288,5 +288,44 @@
       "rise": "2026-10-06",
       "set": "2026-10-06"
     }
+  },
+  {
+    "date": "2026-10-07",
+    "source": "aa.usno.navy.mil",
+    "place": {
+      "name": "Ushuaia",
+      "latitude": -54.8019,
+      "longitude": -68.303,
+      "zone": "America/Argentina/Ushuaia"
+    },
+    "wager": {
+      "computedAt": "2026-10-08T02:06:11.940Z",
+      "method": 2,
+      "A": {
+        "dayLengthMinutes": 796.492990646019,
+        "allowed": [
+          796,
+          797
+        ]
+      },
+      "B": {
+        "dayLengthMinutes": 794.9847395079663,
+        "allowed": [
+          794,
+          795
+        ]
+      }
+    },
+    "fetchedAt": "2026-10-08T02:06:11.941Z",
+    "tz": 0,
+    "printedUTC": {
+      "rise": "09:43",
+      "transit": "16:21",
+      "set": "23:00"
+    },
+    "utcDates": {
+      "rise": "2026-10-07",
+      "set": "2026-10-07"
+    }
   }
 ]
