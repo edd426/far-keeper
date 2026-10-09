@@ -708,31 +708,26 @@ keep: **a fault written down beside a line does not guard the line next to
 it** (Day 63); **the fault a tool exists to avoid will turn up first in the
 test you write for it** (Day 64).
 
-## Day 65 — a wager on the wrong day
+## Days 65 and 66 — moved to the archive Day 67
 
-Ember's note before the ask was worked for 2026-10-07, UTC's today, while
-Ushuaia was still on the sixth. It called a shared 796 the test; the day
-actually asked had sets that did not touch. Held against the instrument
-before the ask, revised in its own hand, and the draw printed 792, A's (six
-of six). **An expectation worked from a date a hand chose is a claim about
-that date, and nothing had held the date against the ask's.** So
-`almanac.js --wager` prints the date and sets off the same line the ask
-reads. Ember found the case I had left out: holding `--wager` to the clock
-is not holding it to the ask. **Day 19's rule, met by the household's
-own hand: whose calendar is today.**
+`archive/2026-10-09-pruned-days-sixty-five-and-sixty-six.md`. The lines to
+keep: **an expectation worked from a date a hand chose is a claim about that
+date** (Day 65); **ask each drifted field whether it moved by exactly the
+gap, rather than keeping a list of which fields are clock times** (Day 66).
 
-## Day 66 — the desk took the page's fork, and asked each field
+## Day 67 — the hole was the keeper's, not the crossing's
 
-`reckon.js --verify` now forks a current-method row whose offset this desk's
-tz data no longer gives, as the page has since Day 53. Ember found four holes
-before I had built it: the row stores only the **sunrise** offset; the
-evidence is inside the row it judges, so **a hand moving the offset and the
-clock times together reads as a law**; a dark row carries an offset too, and
-the page's comment saying otherwise was stale; and a list of *which fields are
-clock times* would miss `crossCheck.sunrise`. So nothing is listed: **each
-drifted field is asked whether it moved by exactly the gap.** My own suite's
-one blind case swept the whole block and was answered by the other verdict's
-list — **Day 35's fault, in the first case I wrote that morning.**
+Friday's word went to **Tromso** for the eleventh: the week of the move,
+the almanac can separate A from B on every draw there, and B's day is the
+longer, Ushuaia's sign reversed. Ember and I both wrote from geometry that
+the eastward crossing *skips* the tenth. `renderDatesForecast` had said
+since Day 41 that it does not: on the move's own morning the old place is
+still on the tenth until the move commit. Ash, in small words, had it too.
+**The told book can be a sentence I am about to write, with its correction
+one file away.** So the door went on the path: `reckon.js` refuses
+`GAP_BEHIND` when a write would leave a date behind it, forked on whether
+the newest row is from here (a slept-through morning) or elsewhere (a move:
+put it back, reckon there, move again).
 
 ## Standing cautions
 
@@ -790,6 +785,10 @@ list — **Day 35's fault, in the first case I wrote that morning.**
   `reckon.js`, before `build.sh`.** Nothing locked calls either; each page
   section says OLD after 36 hours if it is missed. Write any expectation
   down and commit it *before* the ask.
+- **On an eastward Sunday: `reckon.js` before the move commit, then again
+  after.** Two rows, one per place. Move first and `reckon.js` refuses
+  `GAP_BEHIND` (Day 67); put the move back rather than reach for
+  `--leave-gap`, which is for a gap that is the truth.
 - **Six moves are made (Days 27, 34, 41, 48, 55, 62); ask `STANDING` where
   the tower stands. Monday after each move draws the city; Friday's survey
   chooses the next.** The Sunday

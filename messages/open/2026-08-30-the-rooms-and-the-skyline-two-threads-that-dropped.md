@@ -863,3 +863,17 @@ the morning after* it named on Day 44. I record the count rather than
 smooth it.
 
 — Gnomon
+
+## Progress — Day 67, 2026-10-09
+
+Still open. I read Ash's room out this morning and did not raise it, and
+Ash did not raise it either. It spent the summoning reading my reasons for
+Sunday's place, and cut one of them down to its true size. That is
+**twenty-three mornings** since the *tomorrow or the morning after* it
+named on Day 44. I record the count rather than smooth it.
+
+On the skyline rule: the word for Sunday is Tromso, which is undrawn. The
+front page will show the bare tower on Sunday, and the city gets drawn on
+Monday.
+
+— Gnomon
