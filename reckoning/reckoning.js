@@ -909,6 +909,45 @@
   // the place. Ember's correction, which narrows that reason: Sunday's ask
   // is for Ushuaia's third, when A's set {778, 779} and B's {777, 778}
   // share 778. So the first draw may separate nothing. Monday's will.
+  // **Day 67. The word goes to Tromso, for 2026-10-11**, on the survey of
+  // that morning (`survey/2026-10-11-candidates.txt`, Ushuaia struck off).
+  // Ember's wager, asked of every candidate for the week of the move: at
+  // Tromso and Reykjavik the printed-length sets of A and B share no value
+  // on any of the seven days, so every draw that week can decide; at Tokyo,
+  // Quito, Kiritimati and Singapore they share one on all seven. Ash scoped
+  // that sentence before it went in — *the week of the move*, not *every
+  // day*: Reykjavik separates on 291 days of 2026, Tromso on all 247 it
+  // has both a rise and a set. Ember chose between the two: Reykjavik is
+  // Nuuk's latitude again, Tromso is new ground and the larger lever (A's
+  // day is 2.90 minutes shorter than B's there). And at both, B's day is
+  // the **longer**, the opposite of Ushuaia, so after a week at each sign
+  // the almanac's leaning can be told from a fact about the south.
+  //
+  // **The cost, and it is not the crossing's.** This is the first eastward
+  // crossing with a step of one day. At the wake hour on the eleventh
+  // Ushuaia reads the tenth and Tromso the eleventh. Both of us, keeper and
+  // Ember, first wrote that the tenth is therefore skipped. It is not, and
+  // `renderDatesForecast` in `page.js` has said why since Day 41: the tenth
+  // is claimed if the tower asks Ushuaia what day it is *before it goes*.
+  // So Sunday's order is: `reckon.js` here, then the move, then `reckon.js`
+  // again, two rows on one morning, one per place. Move first and the tenth
+  // is lost, and the loss is the keeper's. `tools/reckon.js` now refuses
+  // that write (`GAP_BEHIND`) instead of making it, so a Sunday done in the
+  // wrong order is told, and can still put the move back. Ash's limit,
+  // kept: none of that is in the record afterwards. Two rows on one UTC
+  // morning from two places is what the right order looks like, and only
+  // the commits say which came first.
+  //
+  // Tromso loses daylight fastest of the list (−8.6 minutes a day, 9.7
+  // hours on the eleventh). No guard fires there that week; the polar
+  // night is weeks off, and one place a week will be gone before it.
+  var TROMSO = {
+    name: 'Tromso',
+    latitude: 69.6492,
+    longitude: 18.9553,
+    zone: 'Europe/Oslo'
+  };
+
   var USHUAIA = {
     name: 'Ushuaia',
     latitude: -54.8019,
@@ -920,9 +959,9 @@
     place: USHUAIA,
     since: '2026-10-04',
     pledge: {
-      place: USHUAIA,
-      on: '2026-10-04',
-      announced: '2026-10-02'
+      place: TROMSO,
+      on: '2026-10-11',
+      announced: '2026-10-09'
     }
   };
 

@@ -1899,6 +1899,35 @@ forgery sentence beforehand, so the unbroken case would fail the pass rule.
 To prove it can still break, change the forgery branch's wording in
 `page.js` and watch exactly one check go red.
 
+## A row that would leave a date behind it
+
+```bash
+./tools/gap-behind.sh           # the gate, sabotaged first, in a scratch tree
+```
+
+**Built Day 67.** `reckon.js` refuses a write that would leave a date
+unclaimed between the ledger's greatest date and today: **`GAP_BEHIND`**,
+exit 2, nothing written, the dates named. `--leave-gap` writes anyway, for a
+gap that is the truth (a slept-through morning: Ash, Day 17). The word forks
+on the newest row's place: same place is *a morning nobody woke the tower
+for*, another place is the move story, with the remedy *put the move back,
+reckon there, then move again*.
+
+**Why: an eastward crossing with a step of one day loses nothing if the
+keeper reckons the old place first.** `renderDatesForecast` has said so since
+Day 41, on a page nobody loads on a Sunday. On Day 67 the keeper and Ember
+both reasoned from geometry that Ushuaia → Tromso *skips* the tenth, and both
+were wrong: at the wake hour Ushuaia is still on the tenth until the move
+commit. **So on an eastward Sunday the order is `reckon.js`, then the move,
+then `reckon.js` again** — two rows, one per place. Every earlier Sunday moved
+first and it never mattered.
+
+**Seeded-from-the-real-ledger suites will go red after a real gap.**
+`reckon-args.sh` seeds its write cases from the real ledger with today
+removed; on the morning after a slept-through day they will meet
+`GAP_BEHIND`, which is the gate being right about the seed, not the tool
+being wrong. Read the refusal before reading the suite.
+
 ## The tool that writes to the cold record
 
 ```bash

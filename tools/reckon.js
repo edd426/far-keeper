@@ -28,6 +28,10 @@
 //
 // `tools/reckon-args.sh` walks that surface, in a scratch copy of the tower.
 //
+// A write that would leave a date unclaimed behind it is refused GAP_BEHIND,
+// exit 2, unless `--leave-gap` is given (Day 67; the note above the gate in
+// `main`, and `tools/gap-behind.sh`).
+//
 // The ledger is cold. An entry that has been written is never rewritten by
 // this tool — not to correct it, not to improve it. If the arithmetic
 // changes under us, the right outcome is that --verify starts failing
@@ -624,14 +628,57 @@ function refuseNotToday(date, today) {
   console.error('reckon: days the tower actually had.');
 }
 
+// The dates strictly between the greatest date in the ledger and `date`.
+// Day counts through Date.UTC, never string arithmetic, so a month's end, a
+// year's end and a leap day are the calendar's business and not this file's.
+function unclaimedBehind(entries, date) {
+  let newest = null;
+  for (const e of entries) {
+    if (e && typeof e.date === 'string' && isCalendarDate(e.date) &&
+        (newest === null || e.date > newest.date)) newest = e;
+  }
+  const out = { newest, dates: [] };
+  if (!newest || newest.date >= date) return out;
+  const day = (iso) => { const [y, m, d] = iso.split('-').map(Number); return Date.UTC(y, m - 1, d); };
+  const span = Math.round((day(date) - day(newest.date)) / 86400000);
+  for (let i = 1; i < span; i++) {
+    out.dates.push(new Date(day(newest.date) + i * 86400000).toISOString().slice(0, 10));
+  }
+  return out;
+}
+
+function refuseGapBehind(behind, date) {
+  const n = behind.dates.length;
+  const list = behind.dates.join(', ');
+  const from = behind.newest.place && behind.newest.place.name;
+  console.error(`reckon: GAP_BEHIND — writing ${date} would leave ${n === 1 ? 'a date' : n + ' dates'} unclaimed behind it: ${list}.`);
+  console.error(`reckon: The newest row is ${behind.newest.date}, written at ${from || 'a place with no name'}. Nothing is written.`);
+  const sameHere = behind.newest.place && samePlace(behind.newest.place, STANDING.place);
+  if (sameHere) {
+    console.error(`reckon: That row is from ${STANDING.place.name}, where the tower stands now, so this is no move:`);
+    console.error('reckon: it is a morning nobody woke the tower for. It cannot be reckoned now —');
+    console.error('reckon: the ledger takes only today — and the honest record of it is the gap.');
+  } else {
+    console.error(`reckon: That row is from ${from}, and the tower stands at ${STANDING.place.name} now, so it has`);
+    console.error(`reckon: moved since. If it moved this morning, ${from} may still be standing on`);
+    console.error(`reckon: ${behind.dates[n - 1]}: put the move back, reckon there, then move again. Once the`);
+    console.error('reckon: row is written nothing in the record will say which order the acts');
+    console.error('reckon: were done in; the commits are the only witness to that.');
+  }
+  console.error('reckon: If the gap is the truth of what happened, run again with --leave-gap.');
+}
+
 function printUsage() {
-  console.log('usage: reckon.js [--verify | [YYYY-MM-DD] | -h | --help]');
+  console.log('usage: reckon.js [--verify | [YYYY-MM-DD] [--leave-gap] | -h | --help]');
   console.log('');
   console.log('  reckon.js              write today\'s reckoning to the ledger');
   console.log('  reckon.js YYYY-MM-DD   the same, but say which day you believe it is');
   console.log('                         (only today where the tower stands is accepted; any');
   console.log('                          other real day is refused NOT_TODAY, and nothing');
   console.log('                          is written)');
+  console.log('  reckon.js --leave-gap  write today even though it leaves a date unclaimed');
+  console.log('                         behind it (without it, such a write is refused');
+  console.log('                         GAP_BEHIND, and nothing is written)');
   console.log('  reckon.js --verify     audit the ledger against today\'s arithmetic');
   console.log('  reckon.js -h, --help   show this message');
 }
@@ -646,12 +693,15 @@ function main(argv) {
   // Parse argv into intent: exactly one of --verify, one date, or neither.
   // The guard is: what can we accept before writing to a cold record?
   let hasVerify = false;
+  let leaveGap = 0;
   const dateArgs = [];
   const unknownArgs = [];
 
   for (const arg of argv) {
     if (arg === '--verify') {
       hasVerify = true;
+    } else if (arg === '--leave-gap') {
+      leaveGap += 1;
     } else if (isCalendarDate(arg)) {
       dateArgs.push(arg);
     } else {
@@ -684,6 +734,15 @@ function main(argv) {
 
   if (dateArgs.length > 1) {
     console.error(`reckon: INVALID — only one date allowed, not ${dateArgs.length}.`);
+    process.exit(2);
+  }
+
+  if (leaveGap > 1) {
+    console.error('reckon: INVALID — --leave-gap given more than once.');
+    process.exit(2);
+  }
+  if (leaveGap && hasVerify) {
+    console.error('reckon: INVALID — --leave-gap is about a write, and --verify writes nothing.');
     process.exit(2);
   }
 
@@ -789,6 +848,45 @@ function main(argv) {
   // learn to recompute a row at the place the row names before the write
   // was allowed to write a row from anywhere else, or every such row would
   // have been DRIFTED forever by construction.
+  // ---- GAP_BEHIND: a date this row would leave unclaimed behind it ----
+  //
+  // Day 67, and it is Day 41's repair carried onto the path. The page's
+  // forecast (`renderDatesForecast`) has said since Day 41 that an eastward
+  // crossing with a step of one day loses nothing *if the tower asks the
+  // place it is leaving what day it is before it goes* — and that "move
+  // first and reckon after" loses that date, the keeper's loss and not the
+  // crossing's. Every Sunday so far has moved first and reckoned after, and
+  // it never mattered, because no crossing was eastward with a step of one.
+  // The Ushuaia → Tromso crossing is. The sentence that knew this lived on a
+  // page the keeper does not load on a Sunday; the keeper and Ember both
+  // reasoned past it on Friday from geometry, and both called the hole the
+  // crossing's. So the door is here, on the one act every morning makes.
+  //
+  // It refuses rather than warns: the default action is a write to a cold
+  // record, and a warning printed after the write names a loss it can no
+  // longer prevent. The refusal fires only past every older gate (INVALID,
+  // NOWHERE, NOT_TODAY, ALREADY_PUBLISHED), so a westward collision — a new
+  // date at or before the newest — keeps its own word. Newest means the
+  // greatest date in the ledger, never the last element or the latest stamp.
+  //
+  // The word forks, Day 11's rule (Ember's): a gap behind a row from the
+  // same place as the newest row is a morning nobody woke the tower for,
+  // and the move story would be false of it. A different place gets the
+  // move story. Either way `--leave-gap` writes the row and leaves the gap,
+  // because a slept-through morning is a gap and the honest record of a gap
+  // is a gap (Ash, Day 17). It is named last in the refusal on purpose: a
+  // refusal should not open with its own bypass.
+  //
+  // What it cannot see, said on its face: whether the order was kept on a
+  // Sunday is not in the record afterwards — the commits are its only
+  // witness (Day 18) — and a gap left *ahead* of the newest row, after the
+  // last morning anyone ran this, is not inside anything it can look at.
+  const behind = unclaimedBehind(entries, date);
+  if (behind.dates.length > 0 && !leaveGap) {
+    refuseGapBehind(behind, date);
+    process.exit(2);
+  }
+
   const entry = reckon(date, STANDING.place);
   entry.publishedAt = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
   entries.push(entry);
@@ -886,4 +984,4 @@ if (require.main === module) {
   process.exit(main(process.argv.slice(2)));
 }
 
-module.exports = { main, isCalendarDate };
+module.exports = { main, isCalendarDate, unclaimedBehind };

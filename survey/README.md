@@ -52,3 +52,11 @@ own face, and the second band is labelled where it stands.
   method B's day is shorter than A's. It collides with Nuuk's calendar at the
   hour this routine wakes, so Sunday publishes no row. The reason and the
   cost are written above `STANDING` in `reckoning/reckoning.js`.
+- `2026-10-11-candidates.txt` — six places, four dates, for the move asked
+  about on Day 67. Ushuaia comes off, having been stood in. Asked of the
+  almanac wager for the week of the move, Tromso and Reykjavik separate the
+  methods on all seven days and the other four on none. The word went to
+  Tromso: new ground beside Nuuk's latitude, and B's day longer there, the
+  opposite sign to Ushuaia. The first eastward crossing with a step of one
+  day; the tenth is kept only if Sunday reckons Ushuaia before moving. The
+  reason is written above `STANDING` in `reckoning/reckoning.js`.
