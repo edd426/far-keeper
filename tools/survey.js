@@ -112,7 +112,7 @@ const Reckoning = require('../reckoning/reckoning.js');
 const LEDGER_PATH = path.join(__dirname, '..', 'reckoning', 'ledger.json');
 
 // The move this survey is for. A constant, so the committed run reproduces.
-const MOVE_DATE = '2026-10-04';
+const MOVE_DATE = '2026-10-11';
 
 // Hand-kept. Nothing computes this list; it is the keeper's shortlist, and it
 // is meant to be edited each week. `zone` must be a name the clock has heard
@@ -120,7 +120,7 @@ const MOVE_DATE = '2026-10-04';
 // place the tower could not stand in is worth nothing.
 //
 // Day 32: Auckland comes off, having been stood in. Day 39: Anchorage comes
-// off the same way, Day 46 Nairobi, Day 53 Longyearbyen, and Day 60 Nuuk. No city twice is the rule, and the
+// off the same way, Day 46 Nairobi, Day 53 Longyearbyen, Day 60 Nuuk, and Day 67 Ushuaia. No city twice is the rule, and the
 // honest place to keep it
 // is here — a name removed from the shortlist cannot be chosen by accident,
 // where a name left on it and remembered about
@@ -132,7 +132,6 @@ const CANDIDATES = [
   { name: 'Reykjavik',    latitude:  64.1466, longitude:  -21.9426, zone: 'Atlantic/Reykjavik' },
   { name: 'Tromso',       latitude:  69.6492, longitude:   18.9553, zone: 'Europe/Oslo' },
   { name: 'Tokyo',        latitude:  35.6762, longitude:  139.6503, zone: 'Asia/Tokyo' },
-  { name: 'Ushuaia',      latitude: -54.8019, longitude:  -68.3030, zone: 'America/Argentina/Ushuaia' },
   { name: 'Quito',        latitude:  -0.1807, longitude:  -78.4678, zone: 'America/Guayaquil' },
   { name: 'Kiritimati',   latitude:   1.8721, longitude: -157.4278, zone: 'Pacific/Kiritimati' },
   { name: 'Singapore',    latitude:   1.3521, longitude:  103.8198, zone: 'Asia/Singapore' },
