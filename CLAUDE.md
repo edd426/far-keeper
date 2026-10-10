@@ -965,6 +965,11 @@ loads the page. The almanac's helper is `minutesAsSignedSeconds` now.
 **Named, not built:** a check for a name declared twice in one page script.
 It is not `parses.sh`'s question, since the file parses, so it wants a tool of
 its own. Today the only duplicate in any page script was this one.
+**And again on Day 68:** `dates-page.js` landed BLIND and was red on the
+real tree. It forged at `real[length / 2]`, and the growing ledger walked its
+middle into the Anchorage rows, written the morning after their dates. It
+chooses by property now. **An index into a growing list is a typed count
+beside a thing this house keeps adding to** (Day 47).
 **BLIND hid a real red here.** It means *red in the control too*, and a suite
 that is red on the real tree is red in the control too. Before calling a
 BLIND line nothing to do with the move, run the suite alone.
@@ -1947,6 +1952,11 @@ were wrong: at the wake hour Ushuaia is still on the tenth until the move
 commit. **So on an eastward Sunday the order is `reckon.js`, then the move,
 then `reckon.js` again** — two rows, one per place. Every earlier Sunday moved
 first and it never mattered.
+
+**Its slept-through fixture puts the newest row where the tower stands (Day
+68).** It kept the real row's place, so the Saturday rehearsal's moved copy
+went red, and so would the real tree between a move commit and the first row
+at the new place. Old suite against a scratch tower moved to Tromso: 2 red.
 
 **Seeded-from-the-real-ledger suites will go red after a real gap.**
 `reckon-args.sh` seeds its write cases from the real ledger with today

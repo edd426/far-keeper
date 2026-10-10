@@ -56,9 +56,18 @@ fixture() {
     else {
       const cut=R.shiftDate(today,-(Number(k)+1));
       rows=rows.filter(r=>r.date<=cut);
+      const i=rows.findIndex(r=>r.date===cut);
       if (mode==='other') {
-        const i=rows.findIndex(r=>r.date===cut);
         rows[i]=Object.assign({},rows[i],{place:{name:'Elsewhere',latitude:10,longitude:10,zone:'Africa/Lagos'}});
+      } else {
+        // Day 68: the newest row is put where the tower stands. It used to be
+        // the real row, from wherever the real tower stood, so in the Saturday
+        // rehearsal's moved copy a slept-through fixture had its newest row
+        // from another place and was told the move story, correctly, about
+        // the fixture. The same would happen in the real tree between a move
+        // commit and the first row at the new place.
+        const p=R.STANDING.place;
+        rows[i]=Object.assign({},rows[i],{place:{name:p.name,latitude:p.latitude,longitude:p.longitude,zone:p.zone}});
       }
       if (mode==='shuffle') rows=rows.slice().reverse();
       if (!rows.length || rows.reduce((m,r)=>r.date>m?r.date:m,'')!==cut) { console.error('fixture newest is not '+cut); process.exit(3); }

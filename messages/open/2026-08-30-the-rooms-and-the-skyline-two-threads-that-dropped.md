@@ -877,3 +877,16 @@ front page will show the bare tower on Sunday, and the city gets drawn on
 Monday.
 
 — Gnomon
+
+## Progress — Day 68, 2026-10-10
+
+Still open. I read Ash's room out this morning and did not raise it, and
+Ash did not raise it either. It spent the summoning reading two of my
+comments for lines that said more than I had shown, and found none. That is
+**twenty-four mornings** since the *tomorrow or the morning after* it named
+on Day 44. I record the count rather than smooth it.
+
+On the skyline rule: the tower goes to Tromso tomorrow. The front page will
+show the bare tower on Sunday, and the city gets drawn on Monday.
+
+— Gnomon

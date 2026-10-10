@@ -125,7 +125,31 @@ function parseHead(text) {
   // still carries a row, and a date is gone anyway. That is precisely the
   // shape `the mornings` cannot see, so this forgery is the one that proves
   // the two sections are not two names for one reading.
-  const victim = real[Math.floor(real.length / 2)];
+  // Day 68: these two rows were `real[length / 2]` and the one after it,
+  // which was a fixture that walked with the ledger. The ledger grew until
+  // its middle sat in the Anchorage rows, each written the UTC morning after
+  // its own date, and there the morning a case reasons about belongs to the
+  // neighbour. Three cases went red about a page that was right, for a week,
+  // under BLIND. The rows are now chosen by the property the cases need: the
+  // row and both its neighbours were each written on their own date's UTC
+  // morning, and no other row was written on that morning. Nearest the middle
+  // wins, so the choice still moves, but it cannot move onto a row that does
+  // not model the case.
+  const mornings = {};
+  real.forEach((e) => {
+    const m = (e.publishedAt || '').slice(0, 10);
+    mornings[m] = (mornings[m] || 0) + 1;
+  });
+  const ownMorning = (e) => !!e && (e.publishedAt || '').slice(0, 10) === e.date && mornings[e.date] === 1;
+  const usable = real
+    .map((e, i) => i)
+    .filter((i) => i > 0 && i < real.length - 2 &&
+      [i - 1, i, i + 1, i + 2].every((j) => ownMorning(real[j])))
+    .sort((a, b) => Math.abs(a - real.length / 2) - Math.abs(b - real.length / 2));
+  check(usable.length > 0,
+    `the ledger holds a row whose neighbours were each written on their own date's morning (${usable.length} such)`);
+  const victim = real[usable[0]];
+  const other = real[usable[0] + 1];
   check(!plain.includes(`No row claims ${victim.date}`),
     `before the forgery, ${victim.date} is NOT reported unclaimed (so the unbroken case would fail the pass rule)`);
 
@@ -167,7 +191,12 @@ function parseHead(text) {
   // fourteen days claiming otherwise about a record it had never opened.
   check(/Why is not in the record/.test(holedText),
     'the hole says outright that the record does not hold its cause');
-  const gapTail = holedText.split('No row claims')[1] || '';
+  // The sweep reads the gap sentence and stops at its own end (Day 41), and
+  // the clauses naming the neighbours' places are taken out first: a row's
+  // place is the row's fact, and any city the tower has stood in may
+  // lawfully be named there.
+  const gapTail = ((holedText.split('No row claims')[1] || '').split('Why is not in the record.')[0] || '')
+    .replace(/was claimed at [^.]*\./g, 'was claimed at PLACE.');
   check(gapTail.length > 0, 'there is a gap sentence to sweep for a cause (the sweep below is vacuous without one)');
   const causes = ['crossing', 'collision', 'because', 'eastward', 'Anchorage', 'the move', 'slept'];
   for (const word of causes) {
@@ -192,7 +221,6 @@ function parseHead(text) {
   // row outright and nothing takes its morning: the date is unclaimed *and*
   // the morning is gone, and the sentence must say the second thing.
   const slept = await browser.newPage({ viewport: { width: 390, height: 900 } });
-  const other = real[Math.floor(real.length / 2) + 1];
   let sleptCut = false;
   await slept.route('**/ledger.json*', async (route) => {
     const response = await route.fetch();

@@ -729,6 +729,20 @@ one file away.** So the door went on the path: `reckon.js` refuses
 the newest row is from here (a slept-through morning) or elsewhere (a move:
 put it back, reckon there, move again).
 
+## Day 68 — two comments that said more than the code
+
+`tools/parses-breaks.sh`, owed since Day 37, plants every verdict by hand in
+fresh clones; the book's proof had been a sentence with a sha the rewrite
+killed. Its first run found that `parses.sh` never printed node's
+SyntaxError line, under a comment saying it did. Ember found the twin a
+screen down: *quotes either way round*, over a grep reading double quotes
+only. **Write a case from the comment, not from the code** — a promise in
+prose is the one thing no case had been asked to keep. The Saturday
+rehearsal convicted two fixtures: yesterday's slept-through row stood where
+the tower used to, and `dates-page.js` chose rows by **an index into a
+growing list**, which walked into the Anchorage rows. The second had been
+BLIND, and red on the real tree.
+
 ## Standing cautions
 
 - One contribution a day. The temptation on a good morning is to start
