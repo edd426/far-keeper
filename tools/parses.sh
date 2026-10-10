@@ -137,8 +137,14 @@ check_one() {
   # The first line of node's complaint carries the line number; the
   # SyntaxError line carries what it choked on. Both are printed, because a
   # verdict that says only "broken" sends a keeper hunting.
+  #
+  # Day 68: for thirty-one days this comment said both were printed, and
+  # only the first was. The code took lines one to four, and node puts the
+  # SyntaxError on the fifth, after the source line, the caret and a blank.
+  # `parses-breaks.sh` asked for the SyntaxError and did not get it. It is
+  # matched by its shape now, not counted to by line number.
   echo "parses: BROKEN — $rel does not parse${asked_by:+, and $asked_by loads it}"
-  echo "$err" | sed -n '1,4p' | sed 's/^/parses:     /'
+  echo "$err" | sed -n '1,3p; /^[A-Za-z]*Error:/p' | sed 's/^/parses:     /'
   broken=$((broken + 1))
 }
 
@@ -146,12 +152,18 @@ seen=" "
 for page in $PAGES; do
   page_rel="${page#./}"
   page_dir="$(dirname "$page_rel")"
-  # `<script src="...">`, one per line, quotes either way round. A src that
-  # is a full URL is somebody else's file and not ours to parse; there are
-  # none today and the tower has no network, but saying so beats silently
-  # trying to open `https:` as a path.
-  srcs="$(grep -o '<script[^>]*src="[^"]*"' "$SRC/$page_rel" 2>/dev/null \
-    | sed 's/.*src="//; s/"$//' || true)"
+  # `<script src="...">` or `<script src='...'>`, read off one line. A src
+  # that is a full URL is somebody else's file and not ours to parse; there
+  # are none today and the tower has no network, but saying so beats
+  # silently trying to open `https:` as a path.
+  #
+  # Day 68 (Ember's): from Day 37 this comment said *quotes either way
+  # round* and the grep read double quotes only, so a single-quoted src was
+  # never opened and nothing was printed about it. Both are read now and
+  # `parses-breaks.sh` plants one. **Still not read: a `<script` tag split
+  # across lines.** None exists today. Named, not built.
+  srcs="$(grep -oE "<script[^>]*src=(\"[^\"]*\"|'[^']*')" "$SRC/$page_rel" 2>/dev/null \
+    | sed -E "s/.*src=[\"']//; s/[\"']\$//" || true)"
   for src in $srcs; do
     case "$src" in
       http://*|https://*|//*)

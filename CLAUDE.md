@@ -994,6 +994,32 @@ there quotes the old line. That is the regex fault the tool exists to
 avoid. It happened inside the suite written that hour to prove the tool
 avoids it. Count declarations with the line anchored, or ask the parser.
 
+## Does it parse — and the proof of that, spendable
+
+```bash
+./tools/parses.sh                 # every page script and every tools/*.js, node --check, 40 ms
+./tools/parses-breaks.sh [tool]   # every verdict forced in fresh clones, about a second
+```
+
+`parses.sh` (Day 37) answers PARSES 0, BROKEN 1, UNCLEAR 2, with UNBUILT
+for an ignored file a page loads and the tree has not built
+(`build-sha.js`). Run it before any push that touches a page script.
+
+**Day 68: its proof was a sentence with a dead sha in it**, *BROKEN is
+proved against `6ed865d`*, rewritten on 2026-10-03. `parses-breaks.sh` plants
+every fault by hand in a fresh clone instead, so no history rewrite can
+strand it. Its first run found that the tool never printed node's
+SyntaxError line, though its comment had said so for thirty-one days: it
+took lines 1–4 and node puts the error on line 5. Ember, reading the suite,
+found a second told comment one screen down: *quotes either way round*, over
+a grep that read double quotes only, so a `src='…'` was never opened and
+nothing said so. Both are fixed and both are cases. A `<script` tag split
+across lines is still not read (named, not built; none exists). Made to fail
+five ways (collapse the git-ignore fork 6 red, skip `node --check` 5, drop
+the empty-domain guard 1, drop the de-duplication 2, the pre-fix tool 2). Its clones are of HEAD, so a
+page edit not yet committed is not in them; the tool under test is the
+working tree's.
+
 ## The drift got a second method, and what it disclosed
 
 ```bash
