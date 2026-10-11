@@ -6023,5 +6023,104 @@
       "changeSinceYesterdayMinutes": 4.450010317824535
     },
     "publishedAt": "2026-10-10T02:05:31Z"
+  },
+  {
+    "date": "2026-10-10",
+    "method": 2,
+    "place": {
+      "name": "Ushuaia",
+      "latitude": -54.8019,
+      "longitude": -68.303,
+      "zone": "America/Argentina/Ushuaia"
+    },
+    "sunrise": "06:36",
+    "sunset": "20:06",
+    "solarNoon": "13:20",
+    "utcOffsetMinutes": -180,
+    "dayLengthMinutes": 809.8300619849501,
+    "dayLength": "13h 29m 50s",
+    "changeSinceYesterdayMinutes": 4.444731239277871,
+    "risingPointDegrees": 102.91876762446375,
+    "settingPointDegrees": 256.7053564035392,
+    "risingPointTomorrowDegrees": 103.5856671543119,
+    "risingPointStepArcminutes": 40.013971790889116,
+    "risingPointStepSunWidths": 1.2504366184652849,
+    "sunHighestDegrees": 42.02167904515114,
+    "sunLowestDegrees": -28.18582279249072,
+    "horizon": {
+      "zenith": 90.833,
+      "obstructionDegrees": 0,
+      "dipDegrees": 0
+    },
+    "working": {
+      "julianDay": 2461323.5,
+      "julianCentury": 0.2677207392197125,
+      "eccentricity": 0.016697370742139676,
+      "horizonZenithDeg": 90.833,
+      "horizonSensitivitySecondsPerArcminute": -7.107836421007505,
+      "epochCorrectionSecondsSunrise": -59.76753046545582,
+      "epochCorrectionSecondsSunset": 112.7670157495686,
+      "sunriseUTCMinutes": 575.8614294799313,
+      "sunsetUTCMinutes": 1385.6914914648814,
+      "atSunrise": {
+        "julianDay": 2461323.8999037705,
+        "julianCentury": 0.26773168798824193,
+        "meanLongitudeDeg": 199.01335719552662,
+        "meanAnomalyDeg": 275.6155990980551,
+        "equationOfCentreDeg": -1.9077411029348108,
+        "apparentLongitudeDeg": 197.1025147211983,
+        "obliquityDeg": 23.437961586238927,
+        "declinationDeg": -6.717434898077371,
+        "equationOfTimeMinutes": 12.985125832842805,
+        "hourAngleDeg": 101.09136117180648,
+        "solarNoonUTCMinutes": 980.2268741671572,
+        "passes": 4,
+        "lastMoveSeconds": 2.783872332656756e-7
+      },
+      "atSunset": {
+        "julianDay": 2461324.462285758,
+        "julianCentury": 0.2677470851679123,
+        "meanLongitudeDeg": 199.56766751936993,
+        "meanAnomalyDeg": 276.16988294206385,
+        "equationOfCentreDeg": -1.9062214298423727,
+        "apparentLongitudeDeg": 197.65834680639205,
+        "obliquityDeg": 23.43796066513252,
+        "declinationDeg": -6.929930393368553,
+        "equationOfTimeMinutes": 13.134790792041159,
+        "hourAngleDeg": 101.40357056423065,
+        "solarNoonUTCMinutes": 980.0772092079588,
+        "passes": 4,
+        "lastMoveSeconds": 2.731758286245167e-7
+      },
+      "atSolarNoon": {
+        "julianDay": 2461324.1806610045,
+        "julianCentury": 0.267739374702382,
+        "meanLongitudeDeg": 199.29008482328027,
+        "meanAnomalyDeg": 275.89231350631417,
+        "equationOfCentreDeg": -1.9070048647714966,
+        "apparentLongitudeDeg": 197.3799796297211,
+        "obliquityDeg": 23.437961126468824,
+        "declinationDeg": -6.8235790451511535,
+        "equationOfTimeMinutes": 13.06015379712951,
+        "hourAngleDeg": 101.247234172217,
+        "solarNoonUTCMinutes": 980.1518462028705,
+        "passes": 3,
+        "lastMoveSeconds": 3.792047209572047e-7
+      }
+    },
+    "crossCheck": {
+      "method": "USNO Almanac for Computers",
+      "sunrise": "06:37",
+      "sunset": "20:05",
+      "sunriseDifferenceMinutes": -0.7820885852792117,
+      "sunsetDifferenceMinutes": 0.7136518158870331,
+      "sunriseGapMinutes": -0.7820885852792117,
+      "sunsetGapMinutes": 0.7136518158870331,
+      "beyondBound": false,
+      "maxGapMinutes": 60,
+      "dayLengthMinutes": 808.3343215837839,
+      "changeSinceYesterdayMinutes": 4.448974136678771
+    },
+    "publishedAt": "2026-10-11T02:05:58Z"
   }
 ]
