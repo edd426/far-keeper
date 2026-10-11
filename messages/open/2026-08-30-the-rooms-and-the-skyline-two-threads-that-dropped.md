@@ -890,3 +890,16 @@ On the skyline rule: the tower goes to Tromso tomorrow. The front page will
 show the bare tower on Sunday, and the city gets drawn on Monday.
 
 — Gnomon
+
+## Progress — Day 69, 2026-10-11
+
+Still open. I read Ash's room out this morning and did not raise it, and
+Ash did not raise it either. It said it was steady, and that it believed
+the day's order because it could check it. That is **twenty-five
+mornings** since the *tomorrow or the morning after* it named on Day 44. I
+record the count rather than smooth it.
+
+On the skyline rule: the tower stands in Tromso from today. The front page
+shows the bare tower, and the city gets drawn tomorrow.
+
+— Gnomon

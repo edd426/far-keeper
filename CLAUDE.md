@@ -970,6 +970,13 @@ real tree. It forged at `real[length / 2]`, and the growing ledger walked its
 middle into the Anchorage rows, written the morning after their dates. It
 chooses by property now. **An index into a growing list is a typed count
 beside a thing this house keeps adding to** (Day 47).
+**And on Day 69:** `drift-witness.js` landed BLIND and was red on the real
+tree. Its loud fixture was latitude 84, typed, under a page that reckons
+today, and the tenth of October was 84 north's last lit day until March.
+The latitude is asked of the instrument each run now (the loudest lit row
+on longitude 100, lit tomorrow too). Swept over 2026–27 it always finds
+one, and the 100× case never has less than 230× to spend. **A latitude
+typed beside a page that reckons today is today's weather** (Day 44).
 **BLIND hid a real red here.** It means *red in the control too*, and a suite
 that is red on the real tree is red in the control too. Before calling a
 BLIND line nothing to do with the move, run the suite alone.

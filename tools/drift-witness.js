@@ -47,8 +47,9 @@
 // which is also the truer model of the fault: the hand this case is
 // watching for is a later hand reading `largestInYearGapMinutes` as a
 // threshold, and shrinking that number puts an ordinary morning past it
-// wherever the tower happens to stand. The far-north row is kept as well,
-// under a name it can hold — three orders of magnitude louder than the
+// wherever the tower happens to stand. The far row is kept as well (its
+// latitude asked of the instrument each run since Day 69), under a name it
+// can hold — three orders of magnitude louder than the
 // standing place, and still not graded — and it now asserts that it is
 // actually louder rather than assuming the latitude did its job.
 //
@@ -182,6 +183,33 @@ async function readMount(page, id) {
   // have landed *and* to have produced the state the case is named for
   // before anything under them is believed.
 
+  // The far fixture's ground, asked of the instrument the page runs. The
+  // page forged onto zone UTC reckons UTC's today, so that is the date.
+  function farLoudPlace() {
+    const R = require(require('path').join(__dirname, '..', 'reckoning', 'reckoning.js'));
+    const today = R.todayAt('UTC');
+    const t = new Date(today + 'T00:00:00Z');
+    t.setUTCDate(t.getUTCDate() + 1);
+    const tomorrow = t.toISOString().slice(0, 10);
+    const gapOf = (row) => row && row.crossCheck &&
+      Number.isFinite(row.changeSinceYesterdayMinutes) &&
+      Number.isFinite(row.crossCheck.changeSinceYesterdayMinutes)
+      ? Math.abs(row.changeSinceYesterdayMinutes - row.crossCheck.changeSinceYesterdayMinutes) * 60
+      : null;
+    let best = null;
+    for (let lat = -88; lat <= 88; lat += 1) {
+      const place = { name: 'Farnorth', latitude: lat, longitude: 100, zone: 'UTC' };
+      let a, b;
+      try { a = R.reckon(today, place); b = R.reckon(tomorrow, place); } catch (e) { continue; }
+      const gap = gapOf(a);
+      if (gap === null || gapOf(b) === null) continue;
+      if (best === null || gap > best.gap) best = { place, gap };
+    }
+    if (best === null) return null;
+    if (best.place.latitude < 0) best.place.name = 'Farsouth';
+    return best.place;
+  }
+
   const STANDING_NEEDLE = /(var STANDING = \{\s*place:\s*)([\s\S]*?)(,\s*\n\s*since:)/;
 
   async function driftGapSeconds(page) {
@@ -232,7 +260,26 @@ async function readMount(page, id) {
 
   // 4a — a genuinely loud row, named for what it is rather than for what
   // would have been convenient.
-  const FAR = { name: 'Farnorth', latitude: 84, longitude: 100, zone: 'UTC' };
+  //
+  // Day 69. This was latitude 84, typed, and the page reckons **today**.
+  // At 84 north the tenth of October was the last lit day of 2026: from the
+  // eleventh the row folds dark until about 5 March, the section draws
+  // nothing, and the case went red on the real tree the Sunday morning the
+  // rehearsal ran — red for five months, about a page that was right. A
+  // latitude typed beside a page that reckons today is a fixture borrowing
+  // today's weather (Day 44), and its expiry was the polar night. So the
+  // latitude is asked of the instrument at run time, on the date the page
+  // will reckon: the loudest lit row on the meridian, both hemispheres, lit
+  // tomorrow too so a run across midnight cannot walk it into the dark.
+  const FAR = farLoudPlace();
+  check(FAR !== null,
+    `the fixture has ground to stand on: a lit row on longitude 100 today ` +
+    `(${FAR ? 'latitude ' + FAR.latitude : 'none found'})`);
+  if (FAR === null) {
+    await browser.close();
+    console.log('\ndrift-witness: no lit far row today; the loud case cannot be built.');
+    process.exit(1);
+  }
   const far = await browser.newPage();
   let farLanded = false;
   await far.route('**/reckoning.js*', async (route) => {
@@ -244,14 +291,14 @@ async function readMount(page, id) {
     await route.fulfill({ response, body });
   });
   await far.goto(`${URL}reckoning/`, { waitUntil: 'networkidle' });
-  check(farLanded, 'the forgery landed: the instrument on the wire stands at latitude 84');
+  check(farLanded, `the forgery landed: the instrument on the wire stands at latitude ${FAR.latitude}`);
 
   const farText = await readSection(far);
   const farGap = await driftGapSeconds(far);
   check(farText.trim().length > 0,
-    `the fixture was built: the section drew at latitude 84 (${farText.trim().length} characters)`);
+    `the fixture was built: the section drew at latitude ${FAR.latitude} (${farText.trim().length} characters)`);
   check(farGap !== null && quietGap !== null && farGap > quietGap * 100,
-    `and the fixture is the case it is named for: the gap at latitude 84 is far ` +
+    `and the fixture is the case it is named for: the gap at latitude ${FAR.latitude} is far ` +
     `louder than the quiet end (${farGap} s against ${quietGap} s)`);
 
   if (farText.trim().length > 0) {
