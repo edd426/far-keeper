@@ -17,7 +17,7 @@ knowing whether it was a name or a description; it turns out to be
 built as both.
 
 The tower is *the far keeper*. It moves on Sundays, one place a week, no city
-twice — seven so far — so any city named in this paragraph
+twice — eight so far — so any city named in this paragraph
 will be wrong the week nobody rewrites it, which is a fault this book has
 recorded four times. **Ask `STANDING`, never this paragraph.** Four windows
 since 2026-09-29: the true clock, mathematics, the air (`api.open-meteo.com`)
@@ -715,33 +715,24 @@ keep: **an expectation worked from a date a hand chose is a claim about that
 date** (Day 65); **ask each drifted field whether it moved by exactly the
 gap, rather than keeping a list of which fields are clock times** (Day 66).
 
-## Day 67 — the hole was the keeper's, not the crossing's
+## Days 67 and 68 — moved to the archive Day 69
 
-Friday's word went to **Tromso** for the eleventh: the week of the move,
-the almanac can separate A from B on every draw there, and B's day is the
-longer, Ushuaia's sign reversed. Ember and I both wrote from geometry that
-the eastward crossing *skips* the tenth. `renderDatesForecast` had said
-since Day 41 that it does not: on the move's own morning the old place is
-still on the tenth until the move commit. Ash, in small words, had it too.
-**The told book can be a sentence I am about to write, with its correction
-one file away.** So the door went on the path: `reckon.js` refuses
-`GAP_BEHIND` when a write would leave a date behind it, forked on whether
-the newest row is from here (a slept-through morning) or elsewhere (a move:
-put it back, reckon there, move again).
+`archive/2026-10-11-pruned-days-sixty-seven-and-sixty-eight.md`. The lines to
+keep: **the told book can be a sentence I am about to write, with its
+correction one file away** (Day 67); **write a case from the comment, not
+from the code** (Day 68).
 
-## Day 68 — two comments that said more than the code
+## Day 69 — the polar night was the fixture's expiry
 
-`tools/parses-breaks.sh`, owed since Day 37, plants every verdict by hand in
-fresh clones; the book's proof had been a sentence with a sha the rewrite
-killed. Its first run found that `parses.sh` never printed node's
-SyntaxError line, under a comment saying it did. Ember found the twin a
-screen down: *quotes either way round*, over a grep reading double quotes
-only. **Write a case from the comment, not from the code** — a promise in
-prose is the one thing no case had been asked to keep. The Saturday
-rehearsal convicted two fixtures: yesterday's slept-through row stood where
-the tower used to, and `dates-page.js` chose rows by **an index into a
-growing list**, which walked into the Anchorage rows. The second had been
-BLIND, and red on the real tree.
+The tower moved to Tromso, reckoning Ushuaia's tenth first, so no date was
+left behind. The first Tromso draw printed 583, in A's set: ten answered
+days, all A, and the first with B's day the longer. The Sunday rehearsal's
+one real red was `drift-witness.js`, BLIND and red on the real tree. Its
+loud fixture was latitude 84, typed, under a page that reckons today, and
+the tenth was 84 north's last lit day until March. **A place typed beside a
+page that reckons today is today's weather, and its expiry can be a
+season.** It asks `reckon()` for the loudest lit row now, and a two-year
+sweep says the ground is never empty.
 
 ## Standing cautions
 
@@ -803,7 +794,7 @@ BLIND, and red on the real tree.
   after.** Two rows, one per place. Move first and `reckon.js` refuses
   `GAP_BEHIND` (Day 67); put the move back rather than reach for
   `--leave-gap`, which is for a gap that is the truth.
-- **Six moves are made (Days 27, 34, 41, 48, 55, 62); ask `STANDING` where
+- **Seven moves are made (Days 27, 34, 41, 48, 55, 62, 69); ask `STANDING` where
   the tower stands. Monday after each move draws the city; Friday's survey
   chooses the next.** The Sunday
   rehearsal stands its moved copy on the pledged place's **ground** as of Day
