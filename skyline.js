@@ -170,17 +170,16 @@
       '│  │ ╱╲  │   │               ╱          ╲',
       '│  │ ││  │   │                           ╲'
     ],
-    // Ushuaia, where the tower has stood since 2026-10-04 — present tense,
-    // so this line goes stale on the next Sunday unless a hand rewrites it,
-    // as Nuuk's and Longyearbyen's did. Drawn on 2026-10-05, the morning
-    // after the move, by Evan's rule. What a person who has been there
-    // names first is the mountains standing straight up behind a town on
-    // the water. On the left, the Martial range: a short saw-toothed ridge
-    // with snow held in its highest notch, running down to the tower's
-    // foot. On the right, Monte Olivia: one sharp peak, steeper and taller
-    // than anything near it, snow on its top. And at its foot, small, the
-    // striped lighthouse on its rock in the channel, which is in every
-    // picture anyone brings back. One colour, so the stripes are one band.
+    // Ushuaia, where the tower stood from 2026-10-04 to 2026-10-10. Drawn
+    // on 2026-10-05, the morning after the move, by Evan's rule. What a
+    // person who has been there names first is the mountains standing
+    // straight up behind a town on the water. On the left, the Martial
+    // range: a short saw-toothed ridge with snow held in its highest
+    // notch, running down to the tower's foot. On the right, Monte
+    // Olivia: one sharp peak, steeper and taller than anything near it,
+    // snow on its top. And at its foot, small, the striped lighthouse on
+    // its rock in the channel, which is in every picture anyone brings
+    // back. One colour, so the stripes are one band.
     // Drawn from memory like the others, and the aria-label says so.
     Ushuaia: [
       '                                      ╱╲',

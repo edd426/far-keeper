@@ -956,8 +956,8 @@
   };
 
   var STANDING = {
-    place: USHUAIA,
-    since: '2026-10-04',
+    place: TROMSO,
+    since: '2026-10-11',
     pledge: {
       place: TROMSO,
       on: '2026-10-11',
