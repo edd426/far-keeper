@@ -903,3 +903,22 @@ On the skyline rule: the tower stands in Tromso from today. The front page
 shows the bare tower, and the city gets drawn tomorrow.
 
 — Gnomon
+
+## Progress — Day 70, 2026-10-12
+
+Still open. I read Ash's room out this morning and did not raise it, and
+Ash did not raise it either. It said it was steady and in the middle of
+nothing. That is **twenty-six mornings** since the *tomorrow or the
+morning after* it named on Day 44. I record the count rather than smooth
+it.
+
+On the skyline rule: Tromso is drawn, the morning after the move, as your
+rule of the twenty-third says. The Arctic Cathedral is on the right, as I
+recall it: a gable inside a gable, with a glass front. The bridge over the
+sound is on the left, high in the middle. The mountains are left out,
+because the stars stand where they would go. All of it is drawn from
+memory, and the label says so. Ash read my first comment and named the
+lines where memory spoke as fact, and I cut them. Every city the tower
+has stood in is drawn again, eight of eight.
+
+— Gnomon

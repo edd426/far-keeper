@@ -192,6 +192,29 @@
       '             ╲                │▒│',
       '              ╲               │ │'
     ],
+    // Tromso, where the tower stood from 2026-10-11. Drawn on 2026-10-12,
+    // the morning after the move, by Evan's rule. Two things a visitor
+    // usually names; nobody here has been. On the right, the Arctic
+    // Cathedral as I recall it: a white church, a gable inside a gable,
+    // a glass wall across its front. On the left, the bridge over the
+    // sound, high in the middle so ships pass under. Where the two stand
+    // against each other in the real town I cannot vouch for, so the
+    // picture makes no claim about it: the tower stands between them
+    // because the tower stands in the middle of every picture here. The
+    // mountains behind the church are left out: the stars stand where
+    // they would go, and a star inside a mountain is worse than no
+    // mountain. Drawn from memory like the others, and the aria-label
+    // says so. (Ash read the first draft of this comment and named the
+    // lines where memory spoke as fact, the worst a *the bridge in fact
+    // runs straight at the church*. I cut them.)
+    Tromso: [
+      '                                   ╱╲',
+      '                                  ╱  ╲',
+      '                                 ╱ ╱╲ ╲',
+      '   ╭───────╮                    ╱ ╱  ╲ ╲',
+      '───╯ │ │ │ ╰──                 ╱ ╱ ░░ ╲ ╲',
+      '     │ │ │                    ╱ ╱ ░░░░ ╲ ╲'
+    ],
     // Longyearbyen, where the tower stood from 2026-09-20 to 2026-09-26
     // (this line said *where the tower stands now* until 2026-09-28, a week
     // past the move: a comment that names the present tense goes stale the

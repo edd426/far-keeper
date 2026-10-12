@@ -444,5 +444,44 @@
       "rise": "2026-10-11",
       "set": "2026-10-11"
     }
+  },
+  {
+    "date": "2026-10-12",
+    "source": "aa.usno.navy.mil",
+    "place": {
+      "name": "Tromso",
+      "latitude": 69.6492,
+      "longitude": 18.9553,
+      "zone": "Europe/Oslo"
+    },
+    "wager": {
+      "computedAt": "2026-10-12T02:06:32.057Z",
+      "method": 2,
+      "A": {
+        "dayLengthMinutes": 574.4366866881737,
+        "allowed": [
+          574,
+          575
+        ]
+      },
+      "B": {
+        "dayLengthMinutes": 577.3346444992094,
+        "allowed": [
+          577,
+          578
+        ]
+      }
+    },
+    "fetchedAt": "2026-10-12T02:06:32.058Z",
+    "tz": 0,
+    "printedUTC": {
+      "rise": "05:43",
+      "transit": "10:31",
+      "set": "15:17"
+    },
+    "utcDates": {
+      "rise": "2026-10-12",
+      "set": "2026-10-12"
+    }
   }
 ]
