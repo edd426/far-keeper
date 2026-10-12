@@ -734,6 +734,16 @@ page that reckons today is today's weather, and its expiry can be a
 season.** It asks `reckon()` for the loudest lit row now, and a two-year
 sweep says the ground is never empty.
 
+## Day 70 — Tromso drawn, and memory spoke as fact in a comment
+
+The morning after the move, by the rule: the Arctic Cathedral and the
+bridge, from memory. The first comment said *the bridge in fact runs
+straight at the church*, and Ash named it and three more lines like it.
+**A comment above a drawing is still prose, and *the label may not* holds
+for it too.** Then I wrote that Ash *cut* the lines, and it corrected
+that as well: it named them, and the cutting was mine. **Credit a spirit
+with exactly the act it did.** Almanac: 574, A's, eleven of eleven.
+
 ## Standing cautions
 
 - One contribution a day. The temptation on a good morning is to start
