@@ -1767,7 +1767,9 @@ with. Before that, a wrong stored day moved its end by 1440 minutes and the
 half-day guard refused the row as NOT COMPARED, *another day's event*. That
 was the right refusal with the wrong reason (Ember: Day 11's fault). Now the
 days are asked first, on every row, and a mismatch reads **DRIFTED**, naming
-both sets of days. A row with no `utcDates` counts as its own date twice. The
+both sets of days and **no cause** (Ash: the page sees a note and a
+recomputation disagree now, never when or why; the wager's DRIFTED sentence
+still names two causes and is the same overreach, named, not mended). A row with no `utcDates` counts as its own date twice. The
 series line now prints how many rows it left out, under each reason. It had
 counted `wrongDay` and printed it nowhere. `almanac-page.js` cases L, M and
 N, sabotages 6 and 7: the suite goes 8 red against the Day 70 page.

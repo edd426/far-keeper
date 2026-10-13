@@ -3007,6 +3007,11 @@
   // as *another day's event*, which is not what happened (Ember, Day 71 —
   // Day 11's fault, one cause explaining another).
   function askDaysDrift(row) {
+    // Every caller has already had `almanacComparands` answer for this row,
+    // and `almanacAskDays` is that answer read off, so it cannot be null or
+    // throw here. If that ever stops being so, a null below reads as *no
+    // drift*, which is not true; Ash named it on Day 71 and it is left
+    // unbuilt because no path reaches it today.
     var now = null;
     try { now = window.Reckoning.almanacAskDays(row.date, row.place); } catch (e) { now = null; }
     if (!now) return null;
@@ -3127,17 +3132,20 @@
 
     var drift = askDaysDrift(row);
     if (drift) {
+      // Says what was compared and names no cause (Ash, Day 71): the page
+      // sees a note and a recomputation that disagree now, never when or why.
       host.appendChild(el('p', 'standing almanac-days-drifted', 'DRIFTED. ' +
-        (drift.recorded ? 'Before it asked, the tool wrote into this row that it ' +
-          'asked the almanac about UTC ' + drift.stored.rise + ' for the sunrise ' +
-          'and UTC ' + drift.stored.set + ' for the sunset.' :
-          'This row carries no note of which UTC days were asked, so it asked ' +
-          'about its own date, ' + row.date + ', for both ends.') +
-        ' Recomputed in your browser now, ' + place + '’s sunrise on ' +
-        row.date + ' falls on UTC ' + drift.now.rise + ' and its sunset on UTC ' +
-        drift.now.set + '. Our arithmetic, or the clock law it reads, has moved ' +
-        'since the row was written, so the printed times stand on days ours no ' +
-        'longer puts those ends on. Nothing is set against them.'));
+        (drift.recorded ? 'The row says the almanac was asked about UTC ' +
+          drift.stored.rise + ' for the sunrise and UTC ' + drift.stored.set +
+          ' for the sunset.' :
+          'The row carries no note of which UTC days were asked, and by this ' +
+          'page’s convention that means its own date, ' + row.date + ', for ' +
+          'both ends.') +
+        ' Recomputed here from the row’s own date and place (' + row.place.name +
+        '), the sunrise falls on UTC ' + drift.now.rise + ' and the sunset on ' +
+        'UTC ' + drift.now.set + '. The two disagree, and this page cannot tell ' +
+        'which changed: the note, the row’s date or place, our arithmetic, or ' +
+        'the clock data it reads. Nothing is set against the printed times.'));
       renderAlmanacSeries(host, rows);
       return;
     }
@@ -3242,8 +3250,8 @@
     // Rows left out are counted aloud, each under its own reason. Until Day
     // 71 `wrongDay` was counted here and printed nowhere.
     var left = [];
-    if (daysDrifted) left.push(daysDrifted + ' whose asked UTC days our ' +
-      'arithmetic no longer gives (DRIFTED)');
+    if (daysDrifted) left.push(daysDrifted + ' whose recorded UTC days do ' +
+      'not match the days recomputed here (DRIFTED)');
     if (wrongDay) left.push(wrongDay + ' holding another day’s sunrise or ' +
       'sunset (NOT COMPARED)');
     var leftWords = left.length ? ' Left out: ' + left.join('; ') + '.' : '';

@@ -287,11 +287,11 @@ async function section(browser, { body, status, sabotage, standAt }) {
   const l = await section(browser, { body: lBody, standAt: TOKYO });
   check(l.stood === true, 'L: the tower was stood at Tokyo on the wire');
   check(/DRIFTED\./.test(l.report) && /carries no note of which UTC days were asked/.test(l.report) &&
-    l.report.includes(`sunrise on ${kDate} falls on UTC ${shift(kDate, -1)}`),
+    l.report.includes(`the sunrise falls on UTC ${shift(kDate, -1)}`),
     'L: a row with no utcDates, where the instrument puts the rise on the day before, is DRIFTED and says why');
   check(!/NOT COMPARED/.test(l.report), 'L: and not NOT COMPARED, whose account (another day\'s event) is not what happened');
   check(!l.wager && !/in neither set/.test(l.report), 'L: and no wager is drawn, so no finding is manufactured');
-  check(/Left out: 1 whose asked UTC days/.test(l.series), 'L: the series counts the row it left out, by its reason');
+  check(/Left out: 1 whose recorded UTC days/.test(l.series), 'L: the series counts the row it left out, by its reason');
 
   // M — the stored days forged a day off, at the standing place.
   const mStored = { rise: shift(apart.date, -1), set: apart.date };
@@ -303,9 +303,11 @@ async function section(browser, { body, status, sabotage, standAt }) {
   const m = await section(browser, { body: mBody });
   check(m.errors.length === 0, `M: no page errors (${m.errors.join('; ') || 'none'})`);
   check(/DRIFTED\./.test(m.report) && m.report.includes(`about UTC ${mStored.rise} for the sunrise`) &&
-    m.report.includes(`sunrise on ${apart.date} falls on UTC ${apart.date}`),
+    m.report.includes(`the sunrise falls on UTC ${apart.date}`),
     'M: a forged rise day is DRIFTED, quoting the stored day and the recomputed one');
   check(!/NOT COMPARED/.test(m.report) && !m.wager, 'M: and is neither NOT COMPARED nor compared');
+  check(/cannot tell\s+which changed/.test(m.report) && !/has moved since/.test(m.report),
+    'M: and names no cause it cannot see (Ash)');
   check(!/DRIFTED/.test(b.report) && !/Left out/.test(b.series), 'M: and an honest row is neither, and the series leaves nothing out');
 
   // N — the stored days are right and a printed end is still another day's:
@@ -367,7 +369,7 @@ async function section(browser, { body, status, sabotage, standAt }) {
   const s7 = await section(browser, { body: mBody,
     sabotage: (t) => t.replace('      if (askDaysDrift(row)) { daysDrifted += 1; return; }\n', '') });
   check(s7.landed === true, 'sabotage 7: the series\' days check removed on the wire');
-  check(!/Left out: 1 whose asked UTC days/.test(s7.series), 'sabotage 7: the series no longer counts M under its own reason');
+  check(!/Left out: 1 whose recorded UTC days/.test(s7.series), 'sabotage 7: the series no longer counts M under its own reason');
 
   await browser.close();
   console.log('');
