@@ -201,7 +201,10 @@ else bad "wrong-day answer for the rise: exit $code — $out"; fi
 # The half-day guard, forced: rewrite the tool so it asks the row's own date for
 # both ends (the Day 59 behaviour). The guard must then refuse the rise.
 cp "$T/tokyo/tools/almanac.js" "$T/tokyo/tools/almanac.js.orig"
-perl -0pi -e 's/rise: Math\.floor\(ours\.A\.riseUTC \/ 1440\)/rise: 0/' "$T/tokyo/tools/almanac.js"
+# Since Day 71 the days are the instrument's (`almanacAskDays`) and the
+# offsets are read back off them, so the rise's day is overridden where the
+# tool takes them.
+perl -0pi -e 's/const days = Reckoning\.almanacAskDays\(dateISO, place\);/const days = Object.assign(Reckoning.almanacAskDays(dateISO, place) || {}, { rise: dateISO });/' "$T/tokyo/tools/almanac.js"
 if cmp -s "$T/tokyo/tools/almanac.js" "$T/tokyo/tools/almanac.js.orig"; then
   bad "sabotage did NOT land: the rise is still asked of its own UTC day"
 elif ! node --check "$T/tokyo/tools/almanac.js" 2>/dev/null; then

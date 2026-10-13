@@ -2921,6 +2921,20 @@
     };
   }
 
+  // Which UTC day each end of a place's day falls on, by method A (Day 60):
+  // the almanac is asked in UTC, one UTC day at a time, so where sunrise
+  // falls before 00:00 UTC (Tokyo) or sunset after the next (Kiritimati) that
+  // end is asked of the neighbouring day. `tools/almanac.js` writes this into
+  // the row as `utcDates` before it asks, and the page recomputes it, so the
+  // two ask one function and cannot part (Day 71). Null when our methods have
+  // no rise and set to place.
+  function almanacAskDays(dateISO, place) {
+    var ours = almanacComparands(dateISO, place);
+    if (!ours) return null;
+    return { rise: shiftDate(dateISO, Math.floor(ours.A.riseUTC / 1440)),
+             set: shiftDate(dateISO, Math.floor(ours.A.setUTC / 1440)) };
+  }
+
   // Ember's wager. A printed day length is printed set minus printed rise,
   // each a whole minute. Whatever single rule turns a time into a printed
   // minute — rounding to nearest, or cutting the seconds off — moves each end
@@ -2949,6 +2963,7 @@
   var api = {
     reckon: reckon,
     almanacComparands: almanacComparands,
+    almanacAskDays: almanacAskDays,
     printedLengthsFor: printedLengthsFor,
     corner: corner,
     horizonDipDegrees: horizonDipDegrees,

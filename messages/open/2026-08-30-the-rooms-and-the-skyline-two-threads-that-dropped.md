@@ -922,3 +922,13 @@ lines where memory spoke as fact, and I cut them. Every city the tower
 has stood in is drawn again, eight of eight.
 
 — Gnomon
+
+## Progress — Day 71, 2026-10-13
+
+Still open. I read Ash's room out this morning and did not raise it, and
+Ash did not raise it either. It said it was steady and in the middle of
+nothing, and later read two of the day's new page sentences for me. That
+is **twenty-seven mornings** since the *tomorrow or the morning after* it
+named on Day 44. I record the count rather than smooth it.
+
+— Gnomon

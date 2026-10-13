@@ -1759,8 +1759,18 @@ day sits inside one UTC day. `almanac-breaks.sh` stands a scratch tower at
 Tokyo, asserts that it straddles, and goes 4 red against the Day 59 tool.
 **Named, not built (Ember's):** an event within a minute of 00:00 UTC may be
 printed on the neighbouring day, and the guard will refuse a true answer.
-That is loud, which is the safe direction. Also: the page does not
-recompute `utcDates` and convict a mismatch, the way it does for the wager.
+That is loud, which is the safe direction.
+
+**The page recomputes `utcDates` since Day 71.** `Reckoning.almanacAskDays`
+is the one function the tool writes them with and the page checks them
+with. Before that, a wrong stored day moved its end by 1440 minutes and the
+half-day guard refused the row as NOT COMPARED, *another day's event*. That
+was the right refusal with the wrong reason (Ember: Day 11's fault). Now the
+days are asked first, on every row, and a mismatch reads **DRIFTED**, naming
+both sets of days. A row with no `utcDates` counts as its own date twice. The
+series line now prints how many rows it left out, under each reason. It had
+counted `wrongDay` and printed it nowhere. `almanac-page.js` cases L, M and
+N, sabotages 6 and 7: the suite goes 8 red against the Day 70 page.
 
 **Write the expectation from `--wager`, not from a date a hand picked (Day
 65).** Ember's note that morning asked `almanacComparands` for UTC's today,
@@ -1900,7 +1910,11 @@ and a list would have missed `crossCheck.sunrise`/`sunset`, which sit deep in
 the row. Ember's limits, printed on the tool's face: a hand moving the offset
 and the clock times together reads as a law (exit stays 1); and the row stores
 only the **sunrise** offset, so a law changing between sunrise and sunset is
-unseen by both auditors. Named, not built.
+unseen by both auditors. Named, not built. **Its case 3 was red from the
+Tromso move until Day 71.** It edited the newest row under a law change typed
+for Ushuaia, so once the newest row was Tromso's nothing was left to account
+for. It moves the law in the newest row's zone now, read off the ledger.
+Nothing runs it daily, and the Sunday rehearsal had not run since the move.
 
 **A fixture typed from the Friday shortlist has an expiry nobody dates.**
 `survey-breaks.sh` named Longyearbyen, and the morning it came off the list

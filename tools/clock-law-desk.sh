@@ -130,7 +130,13 @@ printf '%s\n' "$OUT2" | grep -q 'a hand that moved it and the clock times togeth
 [ "$CODE2" -eq 1 ] && note "2: exit 1" || bad "2: exit $CODE2, wanted 1"
 
 # ---- 3. a law change with an edit on top of it --------------------------------
-T3="$(tower lawplus "$USHUAIA")"
+# The edit lands on the newest row, so the law must move in the newest row's
+# zone, read off the ledger. Until Day 71 it was typed as Ushuaia, which held
+# only while the newest row was Ushuaia's: from the Tromso move on, the edited
+# row stood outside the law change and this case was red about a tool that was
+# right (Day 47: a place typed beside a thing this house keeps adding to).
+NEWEST_ZONE="$(node -e "const l=require('$SRC/reckoning/ledger.json'); console.log(l[l.length-1].place.zone)")"
+T3="$(tower lawplus "$NEWEST_ZONE")"
 node -e "
   const fs = require('fs'), f = '$T3/reckoning/ledger.json';
   const l = JSON.parse(fs.readFileSync(f, 'utf8')); l[l.length - 1].dayLengthMinutes += 1;

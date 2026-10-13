@@ -2999,6 +2999,22 @@
     return null;
   }
 
+  // Which UTC days the row says it asked, against the days the instrument
+  // puts the two ends on now (`almanacAskDays`, the tool's own function). A
+  // row with no `utcDates` asked its own date for both, by Day 60's
+  // definition. Asked before `wrongDayEnd`: a stored day that is wrong moves
+  // that end by 1440 minutes, and the wrong-day guard would then refuse it
+  // as *another day's event*, which is not what happened (Ember, Day 71 —
+  // Day 11's fault, one cause explaining another).
+  function askDaysDrift(row) {
+    var now = null;
+    try { now = window.Reckoning.almanacAskDays(row.date, row.place); } catch (e) { now = null; }
+    if (!now) return null;
+    var stored = row.utcDates || { rise: row.date, set: row.date };
+    if (stored.rise === now.rise && stored.set === now.set) return null;
+    return { stored: stored, now: now, recorded: !!row.utcDates };
+  }
+
   function clockOf(minutes, withSeconds) {
     var total = withSeconds ? Math.round(minutes * 60) : Math.round(minutes) * 60;
     total = ((total % 86400) + 86400) % 86400;
@@ -3109,6 +3125,23 @@
       return;
     }
 
+    var drift = askDaysDrift(row);
+    if (drift) {
+      host.appendChild(el('p', 'standing almanac-days-drifted', 'DRIFTED. ' +
+        (drift.recorded ? 'Before it asked, the tool wrote into this row that it ' +
+          'asked the almanac about UTC ' + drift.stored.rise + ' for the sunrise ' +
+          'and UTC ' + drift.stored.set + ' for the sunset.' :
+          'This row carries no note of which UTC days were asked, so it asked ' +
+          'about its own date, ' + row.date + ', for both ends.') +
+        ' Recomputed in your browser now, ' + place + '’s sunrise on ' +
+        row.date + ' falls on UTC ' + drift.now.rise + ' and its sunset on UTC ' +
+        drift.now.set + '. Our arithmetic, or the clock law it reads, has moved ' +
+        'since the row was written, so the printed times stand on days ours no ' +
+        'longer puts those ends on. Nothing is set against them.'));
+      renderAlmanacSeries(host, rows);
+      return;
+    }
+
     var wrongEnd = wrongDayEnd(row, ours);
     if (wrongEnd) {
       host.appendChild(el('p', 'standing almanac-wrong-day', 'NOT COMPARED. ' +
@@ -3189,12 +3222,13 @@
   function renderAlmanacSeries(host, rows) {
     var R = window.Reckoning;
     var tally = { A: 0, B: 0, both: 0, neither: 0 };
-    var sumA = 0, sumB = 0, n = 0, wrongDay = 0;
+    var sumA = 0, sumB = 0, n = 0, wrongDay = 0, daysDrifted = 0;
     rows.forEach(function (row) {
       if (!row || row.failed || row.noRiseSet || !row.printedUTC || !row.place) return;
       var ours = null;
       try { ours = R.almanacComparands(row.date, row.place); } catch (e) { ours = null; }
       if (!ours) return;
+      if (askDaysDrift(row)) { daysDrifted += 1; return; }
       if (wrongDayEnd(row, ours)) { wrongDay += 1; return; }
       var printed = printedMinutes(row, 'set') - printedMinutes(row, 'rise');
       tally[wagerSide(printed, R.printedLengthsFor(ours.A.dayLengthMinutes),
@@ -3205,9 +3239,17 @@
     });
     var p = el('p', 'standing note');
     p.id = 'almanac-series';
+    // Rows left out are counted aloud, each under its own reason. Until Day
+    // 71 `wrongDay` was counted here and printed nowhere.
+    var left = [];
+    if (daysDrifted) left.push(daysDrifted + ' whose asked UTC days our ' +
+      'arithmetic no longer gives (DRIFTED)');
+    if (wrongDay) left.push(wrongDay + ' holding another day’s sunrise or ' +
+      'sunset (NOT COMPARED)');
+    var leftWords = left.length ? ' Left out: ' + left.join('; ') + '.' : '';
     if (n === 0) {
       p.textContent = 'No answer in the record can be set against our methods ' +
-        'yet, so there is no series.';
+        'yet, so there is no series.' + leftWords;
       host.appendChild(p);
       return;
     }
@@ -3223,7 +3265,7 @@
         'average resolve a gap smaller than a minute.' :
         'The rough spread assumes the seconds fall anywhere in the minute; ' +
         'it says how far chance alone would carry the average, and nothing ' +
-        'about whether the almanac is right.');
+        'about whether the almanac is right.') + leftWords;
     host.appendChild(p);
   }
 

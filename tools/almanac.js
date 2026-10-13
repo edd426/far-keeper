@@ -184,14 +184,15 @@ function shiftDate(dateISO, offset) {
 
 // Which UTC day each end of the standing place's day falls on, by method A:
 // −1, 0 or +1 from the row's date. Null when our methods have no rise and set.
+// The days themselves are the instrument's (`almanacAskDays`), so the page
+// that recomputes `utcDates` asks the same function this tool wrote them
+// with (Day 71); the offsets are read back off those days.
 function endDays(dateISO, place) {
   const ours = ourTimes(dateISO, place);
-  if (!ours) return null;
-  return {
-    ours,
-    rise: Math.floor(ours.A.riseUTC / 1440),
-    set: Math.floor(ours.A.setUTC / 1440),
-  };
+  const days = Reckoning.almanacAskDays(dateISO, place);
+  if (!ours || !days) return null;
+  const offset = (day) => Math.round((Date.parse(`${day}T00:00:00Z`) - Date.parse(`${dateISO}T00:00:00Z`)) / 86400000);
+  return { ours, days, rise: offset(days.rise), set: offset(days.set) };
 }
 
 // One ask of one UTC day. Returns { data } or { failed }.
@@ -235,7 +236,7 @@ async function ask(place, dateISO) {
   const ends = endDays(dateISO, place);
   const riseOffset = ends ? ends.rise : 0;
   const setOffset = ends ? ends.set : 0;
-  const utcDates = { rise: shiftDate(dateISO, riseOffset), set: shiftDate(dateISO, setOffset) };
+  const utcDates = ends ? ends.days : { rise: dateISO, set: dateISO };
   row.fetchedAt = new Date().toISOString();
   const answers = {};
   for (const day of [...new Set([utcDates.rise, utcDates.set])]) {
