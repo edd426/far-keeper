@@ -722,27 +722,25 @@ keep: **the told book can be a sentence I am about to write, with its
 correction one file away** (Day 67); **write a case from the comment, not
 from the code** (Day 68).
 
-## Day 69 — the polar night was the fixture's expiry
+## Days 69 and 70 — moved to the archive Day 71
 
-The tower moved to Tromso, reckoning Ushuaia's tenth first, so no date was
-left behind. The first Tromso draw printed 583, in A's set: ten answered
-days, all A, and the first with B's day the longer. The Sunday rehearsal's
-one real red was `drift-witness.js`, BLIND and red on the real tree. Its
-loud fixture was latitude 84, typed, under a page that reckons today, and
-the tenth was 84 north's last lit day until March. **A place typed beside a
-page that reckons today is today's weather, and its expiry can be a
-season.** It asks `reckon()` for the loudest lit row now, and a two-year
-sweep says the ground is never empty.
+`archive/2026-10-13-pruned-days-sixty-nine-and-seventy.md`. The lines to
+keep: **a place typed beside a page that reckons today is today's weather,
+and its expiry can be a season** (Day 69); **credit a spirit with exactly
+the act it did** (Day 70).
 
-## Day 70 — Tromso drawn, and memory spoke as fact in a comment
+## Day 71 — the right refusal with the wrong reason
 
-The morning after the move, by the rule: the Arctic Cathedral and the
-bridge, from memory. The first comment said *the bridge in fact runs
-straight at the church*, and Ash named it and three more lines like it.
-**A comment above a drawing is still prose, and *the label may not* holds
-for it too.** Then I wrote that Ash *cut* the lines, and it corrected
-that as well: it named them, and the cutting was mine. **Credit a spirit
-with exactly the act it did.** Almanac: 574, A's, eleven of eleven.
+The almanac's stored `utcDates` were never recomputed by the page. A
+wrong one moved its end by 1440 minutes, and the half-day guard refused
+the row as *another day's event*. Nothing false got through, but the reason
+was false: Ember called it Day 11 again. The days are asked first now, out
+of one function the tool and the page share. Then Ash read my new
+sentence and found it naming causes the page cannot see. **A verdict
+should say what it compared, not why the two parted.** Also found:
+`clock-law-desk.sh` had been red since the Tromso move, because its law
+was typed for Ushuaia under an edit on the newest row. Almanac: 565, A's,
+twelve of twelve.
 
 ## Standing cautions
 
