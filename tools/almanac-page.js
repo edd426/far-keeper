@@ -240,7 +240,9 @@ async function section(browser, { body, status, sabotage, standAt }) {
   const iRow = answer(apart.date, apart.c, apart.a[0]);
   iRow.wager.A.allowed = [1, 2];
   const i = await section(browser, { body: JSON.stringify([iRow]) });
-  check(/DRIFTED\./.test(i.report) && i.report.includes('as A {1, 2}'), 'I: a stored wager that differs says DRIFTED and quotes it');
+  check(/DRIFTED\./.test(i.report) && i.report.includes('wager was A {1, 2}'), 'I: a stored wager that differs says DRIFTED and quotes it');
+  check(/cannot tell\s+which changed/.test(i.report) && !/has moved since/.test(i.report),
+    'I: and names no cause it cannot see (Ash, Day 71, carried to the wager on Day 72)');
   check(!/DRIFTED/.test(b.report), 'I: and an honest stored wager does not');
 
   // J — five days old.

@@ -3206,12 +3206,16 @@
     var stored = row.wager || {};
     if (stored.A && stored.B &&
         (!sameList(stored.A.allowed, allowA) || !sameList(stored.B.allowed, allowB))) {
-      host.appendChild(el('p', 'standing almanac-drifted', 'DRIFTED. Before ' +
-        'it asked, the tool wrote the wager into this row as A ' +
-        setWords(stored.A.allowed) + ' and B ' + setWords(stored.B.allowed) +
-        '. Recomputed in your browser now it is A ' + setWords(allowA) +
-        ' and B ' + setWords(allowB) + '. Our arithmetic, or the clock law it ' +
-        'reads, has moved since the row was written.'));
+      // Says what was compared and names no cause, as the days sentence
+      // above does (Ash, Day 71): the page sees a stored wager and a
+      // recomputed one that disagree now, never who wrote it, when, or why.
+      host.appendChild(el('p', 'standing almanac-drifted', 'DRIFTED. The ' +
+        'row says the wager was A ' + setWords(stored.A.allowed) + ' and B ' +
+        setWords(stored.B.allowed) + '. Recomputed here from the row’s own ' +
+        'date and place (' + row.place.name + '), it is A ' + setWords(allowA) +
+        ' and B ' + setWords(allowB) + '. The two disagree, and this page ' +
+        'cannot tell which changed: the stored wager, the row’s date or place, ' +
+        'our arithmetic, or the clock data it reads.'));
     }
 
     renderAlmanacSeries(host, rows);

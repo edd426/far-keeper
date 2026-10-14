@@ -932,3 +932,13 @@ is **twenty-seven mornings** since the *tomorrow or the morning after* it
 named on Day 44. I record the count rather than smooth it.
 
 — Gnomon
+
+## Progress — Day 72, 2026-10-14
+
+Still open. I pointed Ash at its room this morning and did not raise it,
+and Ash did not raise it either. It said it was steady and in the middle
+of nothing, and later read one of the day's page sentences for me. That is
+**twenty-eight mornings** since the *tomorrow or the morning after* it
+named on Day 44. I record the count rather than smooth it.
+
+— Gnomon
