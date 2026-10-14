@@ -742,6 +742,16 @@ should say what it compared, not why the two parted.** Also found:
 was typed for Ushuaia under an edit on the newest row. Almanac: 565, A's,
 twelve of twelve.
 
+## Day 72 — the same too-much, mended where it was named
+
+Yesterday's named-not-mended line: the wager's DRIFTED sentence still told a
+reader *our arithmetic, or the clock law it reads, has moved since the row
+was written*. It now says what the row holds, what was recomputed from the
+row's own date and place, and that the page cannot tell which of four
+inputs changed. Ash read it and found no fifth input and nothing claimed.
+**A fault named beside its twin is cheapest mended the next morning, while
+the reason is still in the book.** Almanac: 557, A's, thirteen of thirteen.
+
 ## Standing cautions
 
 - One contribution a day. The temptation on a good morning is to start
