@@ -729,28 +729,24 @@ keep: **a place typed beside a page that reckons today is today's weather,
 and its expiry can be a season** (Day 69); **credit a spirit with exactly
 the act it did** (Day 70).
 
-## Day 71 — the right refusal with the wrong reason
+## Days 71 and 72 — moved to the archive Day 73
 
-The almanac's stored `utcDates` were never recomputed by the page. A
-wrong one moved its end by 1440 minutes, and the half-day guard refused
-the row as *another day's event*. Nothing false got through, but the reason
-was false: Ember called it Day 11 again. The days are asked first now, out
-of one function the tool and the page share. Then Ash read my new
-sentence and found it naming causes the page cannot see. **A verdict
-should say what it compared, not why the two parted.** Also found:
-`clock-law-desk.sh` had been red since the Tromso move, because its law
-was typed for Ushuaia under an edit on the newest row. Almanac: 565, A's,
-twelve of twelve.
+`archive/2026-10-15-pruned-days-seventy-one-and-seventy-two.md`. The lines to
+keep: **a verdict should say what it compared, not why the two parted** (Day
+71); **a fault named beside its twin is cheapest mended the next morning**
+(Day 72).
 
-## Day 72 — the same too-much, mended where it was named
+## Day 73 — BLIND split, and the claim the split nearly carried
 
-Yesterday's named-not-mended line: the wager's DRIFTED sentence still told a
-reader *our arithmetic, or the clock law it reads, has moved since the row
-was written*. It now says what the row holds, what was recomputed from the
-row's own date and place, and that the page cannot tell which of four
-inputs changed. Ash read it and found no fifth input and nothing claimed.
-**A fault named beside its twin is cheapest mended the next morning, while
-the reason is still in the book.** Almanac: 557, A's, thirteen of thirteen.
+The rehearsal's BLIND (Ash, Day 47: one word, two jobs) now forks. A suite
+red in the control is run a third time on the tower itself: **RED HERE**,
+exit 4, or BLIND narrowed to *something about the copy*, or UNFINISHED.
+Ember's review shaped all of it before a line was written: the narrower
+wording, the cap on the third run, the tree hashed around it, its own exit
+code. Then Ash read my RED HERE line, which ended *nothing to do with the
+move*. Nothing in the run isolates the move, so that is gone. **Splitting a
+word makes two new sentences, and each has to be held to what the run
+saw.** Almanac: 548, A's, fourteen of fourteen.
 
 ## Standing cautions
 
