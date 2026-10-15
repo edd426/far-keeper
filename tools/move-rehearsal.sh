@@ -127,9 +127,10 @@ set -u
 # mistyped flag spends the keeper's morning and then answers a question
 # nobody asked.
 #
-# **Exit 3 is the bad flag**, matching `banked.js`. Exits 1 and 2 are
+# **Exit 3 is the bad flag**, matching `banked.js`. Exits 1, 2 and 4 are
 # spoken for below — 1 is *a suite does not survive the move*, 2 is *this
-# could not conclude* — and a typo must never be able to spend either.
+# could not conclude*, 4 (Day 73) is *a suite is red on the tower itself* —
+# and a typo must never be able to spend any of them.
 SELF="$(basename "$0")"
 LIST_ONLY=0
 SRC=""
@@ -138,6 +139,8 @@ usage() {
   echo "usage: $SELF [--list] [tree]      rehearse a tower (default: this one)"
   echo "       $SELF --list [tree]        print the case list, run nothing"
   echo "       $SELF --help               this"
+  echo "exit: 0 every suite survives, 1 one does not survive the move,"
+  echo "      4 one is red on the tower itself, 2 could not conclude, 3 bad flag"
 }
 
 while [ "$#" -gt 0 ]; do
@@ -267,10 +270,12 @@ esac
 fails=0
 blind=0
 unfinished=0
+redhere=0
 ok()    { echo "ok    $1"; }
 bad()   { echo "FAIL  $1"; fails=$((fails + 1)); }
 blind() { echo "BLIND $1"; blind=$((blind + 1)); }
 unfin() { echo "UNFINISHED $1"; unfinished=$((unfinished + 1)); }
+here()  { echo "RED HERE $1"; redhere=$((redhere + 1)); }
 # The copy (or copies) a stopped suite was stopped in, for the sentence.
 stopped_in() {
   if [ "$1" -eq 1 ] && [ "$2" -eq 1 ]; then echo "both copies"
@@ -298,6 +303,78 @@ on_kill() {
 }
 trap on_kill TERM INT HUP
 stop()  { echo "FAIL  $1"; echo; echo "move-rehearsal: could not conclude."; exit 2; }
+
+# ---- a suite red in the control: asked once more, of the tower itself ----
+#
+# Day 73. Until this morning a suite red in the control copy got BLIND and
+# nothing more, and BLIND was one word doing two jobs (Ash, Day 47). It
+# covered *something about the copy turns this red*, which is what the word
+# was for, and *this suite is red on the tower as it stands*, which is a
+# real red and nothing to do with any move. Day 61 proved the second hides
+# under the first: `second-drift.js` landed BLIND and was red on the real
+# tree, with a page fault under it, and the only remedy the book had was
+# *run the suite alone*, by hand.
+#
+# So the rehearsal runs it alone. A suite red in the control is run once
+# more on the tower that was given to this file ($SRC), as it stands, with
+# no rehearsal edit in it, and the verdict forks on that third run:
+#
+#   RED HERE   red on the tower too. A real red on the tower now. It does
+#              **not** say the red has nothing to do with the move: the
+#              first draft did, and Ash read it out — no moved copy was ever
+#              set against a green control for this suite, so nothing here
+#              isolates the move either way. Exit 4 (Ember: exit 1 is *does
+#              not survive the move*, and a second claim on one code makes
+#              the keeper read the wrong one).
+#   BLIND      green on the tower. Something about the copy turns it red.
+#              Ember's narrowing, and keep it: the copy differs from the
+#              tower in more than the STANDING rewrite (a clone, a patch,
+#              a symlinked node_modules, no ignored files, a harness that
+#              can run out of ports), so the line says *something about the
+#              copy*, never *the edit*. It is still not an all-clear.
+#   UNFINISHED the third run hit the cap. Never read as green: the
+#              control's red stands and the tower's answer is unknown.
+#
+# **The third run makes the keeper's own tree the subject.** Every suite is
+# meant to work in scratch trees, but meant is not checked, so the tower's
+# state is hashed before and after each third run — tracked changes, the
+# untracked list and the untracked files' bytes — and a run that moved it
+# stops the rehearsal on the spot. The ledger's own hash, below, was only
+# ever one file of that. And the Day 56 rule now binds the rehearsal too:
+# **do not run `reckon.js`, `air.js` or `almanac.js` while it runs**, or the
+# keeper's own write reads as a suite's. `check-sight.sh` asks the remote,
+# so it is the one suite whose third run can answer differently from the
+# copies for a reason outside the tree: on a morning whose push has not
+# deployed it reads BEHIND on the tower and lands RED HERE, which is true.
+tower_state() {
+  (cd "$SRC" && {
+    git status --porcelain --untracked-files=all 2>/dev/null
+    git diff HEAD --binary 2>/dev/null
+    git ls-files -o --exclude-standard -z 2>/dev/null | xargs -0 -r sha256sum 2>/dev/null
+  } | sha256sum | cut -d' ' -f1)
+}
+
+# judge_red_control <suite> <ctl exit> <kind: shell|browser>
+judge_red_control() {
+  local suite="$1" ctlrc="$2" kind="$3" before after
+  before="$(tower_state)"
+  if [ "$kind" = browser ]; then
+    wait_for_port || stop "$suite — no port came free in 8765-8770; its run on the tower never happened"
+    run_capped "$SRC" ./scripts/local-snapshot.sh "tools/$suite"
+  else
+    run_capped "$SRC" "./tools/$suite"
+  fi
+  after="$(tower_state)"
+  [ "$before" = "$after" ] \
+    || stop "$suite — its run on the tower itself changed the tower's working tree. Stopped here, so no later suite writes to it; look at git status"
+  if [ "$capped" -eq 1 ]; then
+    unfin "$suite — red in the control copy (exit $ctlrc), and its run on the tower was stopped by the ${CAP}s cap, so whether it is red on the tower is unknown"
+  elif [ "$rc" -ne 0 ]; then
+    here "$suite — red on the tower as it stands too, uncommitted changes included (exit $rc; control exit $ctlrc; ${took}s): a real red on the tower now, and this rehearsal did not ask whether the move touches it"
+  else
+    blind "$suite — red in the control copy (exit $ctlrc), green on the tower (${took}s): something about the copy turns it red, so this rehearsal cannot see it. Not an all-clear"
+  fi
+}
 
 REAL_LEDGER="$SRC/reckoning/ledger.json"
 REAL_LEDGER_HASH="$(sha256sum "$REAL_LEDGER" | cut -d' ' -f1)"
@@ -506,7 +583,7 @@ for suite in $(shell_suites); do
   if [ "$ctl_cap" -eq 1 ] || [ "$mov_cap" -eq 1 ]; then
     unfin "$suite — stopped by the ${CAP}s cap in $(stopped_in "$ctl_cap" "$mov_cap"), so this rehearsal learned nothing about it or about the move"
   elif [ "$ctl" -ne 0 ]; then
-    blind "$suite — red in the control copy too (exit $ctl), so this rehearsal learned nothing about it"
+    judge_red_control "$suite" "$ctl" shell
   elif [ "$mov" -ne 0 ]; then
     bad "$suite — green where the tower stands, red where it does not (exit $mov)"
     (cd "$MOV" && timeout "$CAP" "./tools/$suite" 2>&1 | grep '^FAIL' | head -4 | sed 's/^/        /')
@@ -596,7 +673,7 @@ for suite in $(browser_suites); do
   if [ "$ctl_cap" -eq 1 ] || [ "$mov_cap" -eq 1 ]; then
     unfin "$suite — stopped by the ${CAP}s cap in $(stopped_in "$ctl_cap" "$mov_cap"), so this rehearsal learned nothing about it or about the move"
   elif [ "$ctl" -ne 0 ]; then
-    blind "$suite — red in the control copy too (exit $ctl), so this rehearsal learned nothing about it"
+    judge_red_control "$suite" "$ctl" browser
   elif [ "$mov" -ne 0 ]; then
     bad "$suite — green where the tower stands, red where it does not (exit $mov)"
     wait_for_port \
@@ -624,13 +701,22 @@ echo "move-rehearsal: nothing proves safety, not interest (Ember, Day 22)."
 echo "move-rehearsal: the browser suites are in the sweep as of Day 26. What"
 echo "move-rehearsal: is still outside it is any suite this design cannot"
 echo "move-rehearsal: rehearse at all — check-sight.sh reads the working"
-echo "move-rehearsal: tree, so moving a copy dirties it and it lands BLIND"
-echo "move-rehearsal: every run. BLIND is not an all-clear."
+echo "move-rehearsal: tree, so moving a copy dirties it: it lands BLIND when"
+echo "move-rehearsal: the tower's own pictures are fresh, and RED HERE when"
+echo "move-rehearsal: they are not. BLIND is not an all-clear."
 echo
 
+# Every count on every summary line, so a run with both kinds of red hides
+# neither (Ember). Precedence 1, then 4, then 2: a real red never exits 2,
+# the word for *could not rehearse*, which is where Day 61's hid.
+COUNTS="$fails do not survive the move; $redhere red on the tower itself; $blind blind; $unfinished did not finish inside the ${CAP}s cap"
 if [ "$fails" -gt 0 ]; then
-  echo "move-rehearsal: $fails suite(s) do not survive the move; $blind blind; $unfinished unfinished."
+  echo "move-rehearsal: $COUNTS."
   exit 1
+fi
+if [ "$redhere" -gt 0 ]; then
+  echo "move-rehearsal: no suite failed the move, but $COUNTS. A suite red on the tower is a real red, and this rehearsal says nothing about it."
+  exit 4
 fi
 if [ "$blind" -gt 0 ] || [ "$unfinished" -gt 0 ]; then
   echo "move-rehearsal: no suite failed the move, but $blind could not be rehearsed at all and $unfinished did not finish inside the ${CAP}s cap."

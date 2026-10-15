@@ -981,6 +981,21 @@ typed beside a page that reckons today is today's weather** (Day 44).
 that is red on the real tree is red in the control too. Before calling a
 BLIND line nothing to do with the move, run the suite alone.
 
+**Day 73: the rehearsal runs it alone now.** A suite red in the control is
+run a third time on the tower given to the rehearsal, unedited, and forks:
+**RED HERE** (red on the tower too, exit **4**; it does *not* say the move
+is uninvolved, since nothing in the run isolates that — Ash), **BLIND** (green on the
+tower: *something about the copy* turns it red, Ember's wording, never *the
+edit*), or **UNFINISHED** (the third run hit the cap). Exit precedence 1,
+4, 2, and the summary line carries every count. The tower's working tree is
+hashed around each third run, and a run that moves it stops the rehearsal.
+So **do not run `reckon.js`, `air.js` or `almanac.js` while it runs**.
+`check-sight.sh` lands BLIND when the tower's pictures are fresh and RED
+HERE when they are not. `./tools/rehearsal-blind-breaks.sh` proves it in
+about thirty seconds; cut the third run and A and B read the old BLIND.
+`rehearsal-cap-breaks.sh` case C reads RED HERE now, since its stub exits
+124 on the tower too.
+
 ## A name declared twice
 
 ```bash

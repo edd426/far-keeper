@@ -69,7 +69,7 @@ fi
 
 # rehearse <script> <cap> -> sets OUT and CODE
 rehearse() { OUT="$(MOVE_REHEARSAL_CAP="$2" "$1" "$T" 2>&1)"; CODE=$?; }
-line() { printf '%s\n' "$OUT" | grep -E "^[A-Za-z]+ +$1" | head -1; }
+line() { printf '%s\n' "$OUT" | grep -E "^[A-Za-z][A-Za-z ]* +$1" | head -1; }
 
 # ---- the sabotage first: the fork cut out ----
 SAB="$SCRATCH/move-rehearsal.sh"
@@ -82,8 +82,12 @@ else
   ok "the sabotage landed: both forks cut"
   rehearse "$SAB" "$CAP"
   case "$(line sleeps-both.sh)" in
-    BLIND*124*) ok "sabotaged: a stub stopped in both copies reads BLIND, exit 124 — the old word" ;;
-    *) bad "sabotaged: wanted BLIND for sleeps-both.sh, got: $(line sleeps-both.sh)" ;;
+    # Until Day 73 this read BLIND, exit 124. Since the third run on the tower
+    # (rehearsal-blind-breaks.sh), a red control is asked of the tower too, and
+    # the tower's run is what meets the cap — so the cut fork reads as *red in
+    # the control*, which is still not case A's sentence.
+    "UNFINISHED sleeps-both.sh — red in the control copy (exit 124)"*) ok "sabotaged: a stub stopped in both copies reads as a red control (exit 124), not as stopped in both copies" ;;
+    *) bad "sabotaged: wanted the red-control reading for sleeps-both.sh, got: $(line sleeps-both.sh)" ;;
   esac
   case "$(line sleeps-moved.sh)" in
     FAIL*124*) ok "sabotaged: a stub stopped in the moved copy alone reads FAIL — the clock accusing the move" ;;
@@ -102,15 +106,18 @@ case "$(line sleeps-moved.sh)" in
   *) bad "B  sleeps-moved.sh: $(line sleeps-moved.sh)" ;;
 esac
 case "$(line own-124.sh)" in
-  BLIND*own-124.sh*"exit 124"*) ok "C  a suite exiting 124 on its own is not called stopped: BLIND, exit 124" ;;
+  # Day 73: it exits 124 on the tower too, so it is a red on the tower.
+  "RED HERE own-124.sh"*"exit 124"*) ok "C  a suite exiting 124 on its own is not called stopped: RED HERE, exit 124" ;;
   *) bad "C  own-124.sh: $(line own-124.sh)" ;;
 esac
 case "$(line parses.sh)" in
   "ok    parses.sh  ("*"s, "*"s of ${CAP}s)") ok "D  a suite that fits is ok and its line carries its seconds" ;;
   *) bad "D  parses.sh: $(line parses.sh)" ;;
 esac
-if [ "$CODE" -eq 2 ] && ! printf '%s\n' "$OUT" | grep -q '^FAIL'; then
-  ok "the run abstains, exit 2, and no line says FAIL"
+# Exit 4, not 2, since Day 73: own-124.sh is red on the tower itself, and a
+# real red outranks an abstention.
+if [ "$CODE" -eq 4 ] && ! printf '%s\n' "$OUT" | grep -q '^FAIL'; then
+  ok "the run exits 4 (own-124.sh is red on the tower), and no line says FAIL"
 else
   bad "the run exited $CODE, or printed a FAIL"; printf '%s\n' "$OUT" | grep -E '^(FAIL|UNFINISHED|BLIND)' | sed 's/^/        /'
 fi
