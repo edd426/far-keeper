@@ -60,3 +60,10 @@ own face, and the second band is labelled where it stands.
   opposite sign to Ushuaia. The first eastward crossing with a step of one
   day; the tenth is kept only if Sunday reckons Ushuaia before moving. The
   reason is written above `STANDING` in `reckoning/reckoning.js`.
+- `2026-10-18-candidates.txt` — five places, four dates, for the move asked
+  about on Day 74. Tromso comes off, having been stood in. Asked of the
+  almanac wager for the week of the move, Reykjavik alone separates the
+  methods, on all seven days; the other four on none. The word went to
+  Reykjavik, though it repeats Nuuk's latitude and Tromso's sign. A westward
+  crossing with no collision at the wake hour. The reason is written above
+  `STANDING` in `reckoning/reckoning.js`.

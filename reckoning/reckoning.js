@@ -941,6 +941,36 @@
   // Tromso loses daylight fastest of the list (−8.6 minutes a day, 9.7
   // hours on the eleventh). No guard fires there that week; the polar
   // night is weeks off, and one place a week will be gone before it.
+  //
+  // **Day 74. The word goes to Reykjavik, for 2026-10-18**, on the survey
+  // of that morning (`survey/2026-10-18-candidates.txt`, Tromso struck
+  // off). Ember asked the same wager of the five left, for the seven days
+  // of the move week: at Reykjavik the printed-length sets of A and B share
+  // no value on any of them (the eighteenth: A {570, 571}, B {572, 573});
+  // at Tokyo, Quito, Kiritimati and Singapore they share one on all seven.
+  // So Reykjavik is the only place left where a draw can tell the methods
+  // apart at all, and that is the whole reason. It is scoped to that week.
+  //
+  // **What it costs, said before the going.** Last Friday Ember set
+  // Reykjavik aside because it is Nuuk's latitude again, and that is still
+  // true: B's day is the longer there, the sign Nuuk and Tromso already
+  // gave, so a week here cannot tell the almanac's lean from a fact about
+  // the north. The other four could not ask the question at all. Taking the
+  // one that can over a sign that cannot be asked is the trade.
+  //
+  // **The crossing.** Westward, Europe/Oslo to Atlantic/Reykjavik, two
+  // hours apart while Oslo keeps summer time (to the twenty-fifth). At
+  // 02:03 and 02:40 UTC on the eighteenth both read the eighteenth. That is
+  // *no collision at this hour*, never *no collision*: Sunday leaves no
+  // hole and makes no collision if the tower wakes in that band, and one
+  // row is written, from whichever place stands when `reckon.js` runs.
+  var REYKJAVIK = {
+    name: 'Reykjavik',
+    latitude: 64.1466,
+    longitude: -21.9426,
+    zone: 'Atlantic/Reykjavik'
+  };
+
   var TROMSO = {
     name: 'Tromso',
     latitude: 69.6492,
@@ -959,9 +989,9 @@
     place: TROMSO,
     since: '2026-10-11',
     pledge: {
-      place: TROMSO,
-      on: '2026-10-11',
-      announced: '2026-10-09'
+      place: REYKJAVIK,
+      on: '2026-10-18',
+      announced: '2026-10-16'
     }
   };
 
