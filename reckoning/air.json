@@ -286,5 +286,23 @@
       "longitude": 18.943802,
       "elevationM": 16
     }
+  },
+  {
+    "fetchedAt": "2026-10-16T02:06:43.781Z",
+    "source": "api.open-meteo.com",
+    "place": {
+      "name": "Tromso",
+      "latitude": 69.6492,
+      "longitude": 18.9553
+    },
+    "modelTime": "2026-10-16T02:00Z",
+    "temperatureC": 9.3,
+    "surfacePressureHPa": 988.2,
+    "seaLevelPressureHPa": 990.1,
+    "grid": {
+      "latitude": 69.648026,
+      "longitude": 18.943802,
+      "elevationM": 16
+    }
   }
 ]
