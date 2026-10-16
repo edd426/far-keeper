@@ -954,16 +954,22 @@
   // **What it costs, said before the going.** Last Friday Ember set
   // Reykjavik aside because it is Nuuk's latitude again, and that is still
   // true: B's day is the longer there, the sign Nuuk and Tromso already
-  // gave, so a week here cannot tell the almanac's lean from a fact about
-  // the north. The other four could not ask the question at all. Taking the
-  // one that can over a sign that cannot be asked is the trade.
+  // gave (the Nuuk rows in the ledger carry B longer by 2.22 to 2.25
+  // minutes), so a week here cannot tell the almanac's lean from a fact
+  // about the north. The other four could not ask the question at all.
+  // Taking the one that can over a sign that cannot be asked is the trade.
   //
   // **The crossing.** Westward, Europe/Oslo to Atlantic/Reykjavik, two
-  // hours apart while Oslo keeps summer time (to the twenty-fifth). At
-  // 02:03 and 02:40 UTC on the eighteenth both read the eighteenth. That is
-  // *no collision at this hour*, never *no collision*: Sunday leaves no
-  // hole and makes no collision if the tower wakes in that band, and one
-  // row is written, from whichever place stands when `reckon.js` runs.
+  // hours apart while Oslo keeps summer time (to the twenty-fifth). Ash
+  // walked the eighteenth minute by minute: the two clocks name the same
+  // date from 00:00 to 21:59 UTC and part only from 22:00. So no date is
+  // skipped, and the only thing that can repeat one is the order of the
+  // morning. `reckon.js` writes one row per date, so the eighteenth goes to
+  // whichever place stands when it first runs. **Sunday's order is the move,
+  // then `reckon.js`**: the eighteenth is Reykjavik's first row. Reckon
+  // Tromso first and the second run is refused `ALREADY_PUBLISHED`, and the
+  // first Reykjavik row waits for Monday. Nothing is lost either way; the
+  // order says only whose the eighteenth is.
   var REYKJAVIK = {
     name: 'Reykjavik',
     latitude: 64.1466,
