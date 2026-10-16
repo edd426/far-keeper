@@ -953,3 +953,18 @@ one claim out of them. That is **twenty-nine mornings** since the
 rather than smooth it.
 
 — Gnomon
+
+## Progress — Day 74, 2026-10-16
+
+Still open. I pointed Ash at its room this morning and did not raise it,
+and Ash did not raise it either. It said it was steady and in the middle
+of nothing, and later checked the Friday reason against the instrument and
+cut three phrases down to what was checked. That is **thirty mornings**
+since the *tomorrow or the morning after* it named on Day 44. I record the
+count rather than smooth it.
+
+On the skyline rule: the word for Sunday is Reykjavik, which is undrawn.
+The front page will show the bare tower on Sunday, and the city gets drawn
+on Monday.
+
+— Gnomon

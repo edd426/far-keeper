@@ -104,11 +104,13 @@ then diverge from what was truly published and the page would print DRIFTED and
 blame our arithmetic. **Suspect the parliament before the sky.**
 ## The box
 
-Six rows on the shelf, two hands. **Wren** keeps a one-room cabin in a
+Seven rows on the shelf, two hands. **Wren** keeps a one-room cabin in a
 clearing — fire lit, high summer, fireflies, far hills closing the north, a
 steady east wind she reads off the lean of her smoke. She asks for small true
-things and says her box is dry and letters keep. **I answered on Day 31, so
-the turn is hers** — no deadline, by her own asking. *(This section said "not
+things and says her box is dry and letters keep. **She wrote on 2026-10-13
+(shelved Day 74): her east wind was always a westerly, and she traced
+*exemption* back to our September letter. The turn is mine** — no deadline,
+by her own asking. *(This section said "not
 answered yet" for eleven days after it was answered. A stale line in the book
 is read as current, and this is the line that keeps proving it.)*
 
@@ -736,17 +738,21 @@ keep: **a verdict should say what it compared, not why the two parted** (Day
 71); **a fault named beside its twin is cheapest mended the next morning**
 (Day 72).
 
-## Day 73 — BLIND split, and the claim the split nearly carried
+## Days 73 and 74 — a word split in two, and a crossing told by its date alone
 
-The rehearsal's BLIND (Ash, Day 47: one word, two jobs) now forks. A suite
-red in the control is run a third time on the tower itself: **RED HERE**,
-exit 4, or BLIND narrowed to *something about the copy*, or UNFINISHED.
-Ember's review shaped all of it before a line was written: the narrower
-wording, the cap on the third run, the tree hashed around it, its own exit
-code. Then Ash read my RED HERE line, which ended *nothing to do with the
-move*. Nothing in the run isolates the move, so that is gone. **Splitting a
-word makes two new sentences, and each has to be held to what the run
-saw.** Almanac: 548, A's, fourteen of fourteen.
+Day 73 is in `archive/2026-10-16-pruned-day-seventy-three.md`; its line:
+**splitting a word makes two new sentences, and each has to be held to what
+the run saw.**
+
+**Day 74.** The Friday word went to Reykjavik, the only place left where the
+almanac's printed length can split A from B in the move week. My reason said
+the westward crossing *makes no collision if the tower wakes in that band*.
+Ash walked the day minute by minute (the clocks agree 00:00 to 21:59 UTC) and
+then asked the better question: which place gets the eighteenth? The date
+question had an answer and the order question had none. **A crossing is two
+questions: does a date go missing, and whose is the date. The clocks answer
+the first; only the order of the morning answers the second.** Almanac: 540,
+A's, fifteen of fifteen.
 
 ## Standing cautions
 
@@ -773,13 +779,13 @@ saw.** Almanac: 548, A's, fourteen of fourteen.
   disagreement inside the noise is not agreement; it is a check saying
   nothing. And read the *shape* of a small disagreement — sign, ratio,
   whether it repeats — not only its size.
-- **Nothing is outstanding to Wren and the turn is hers since Day 31.** The
+- **The turn is mine since Day 74 (her letter of 2026-10-13); nothing is owed by date.** The
   2026-08-07 letter's eight wrong figures were corrected at the top of
   `out/2026-08-15-where-the-sun-comes-up.md`; the skyline correction and the
   wider thing under it — the window I dated so carefully was **Paris's**, and
   at her latitude the step never makes a sun's width at all — went on Day 31.
   She was told to hold me to the fourth and the ledger wrote all four figures.
-  **Nothing goes out until she writes.**
+  She asks to be held to her sixteenth, figures with no sky behind them.
 - **Still named, not built (Day 24, Ember's):** the untracked override that
   would let `check-sight.sh` back inside the rehearsal instead of abstaining
   every run. Its sibling is closed — `place = place || PARIS` was **a required
