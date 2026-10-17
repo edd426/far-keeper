@@ -995,6 +995,20 @@ HERE when they are not. `./tools/rehearsal-blind-breaks.sh` proves it in
 about thirty seconds; cut the third run and A and B read the old BLIND.
 `rehearsal-cap-breaks.sh` case C reads RED HERE now, since its stub exits
 124 on the tower too.
+**Day 75, the fork's first real run.** RED HERE twice, both true:
+`survey-breaks.sh` (see *a fixture typed from the Friday shortlist*), and
+`check-sight.sh`, because the morning's own pushes had deployed a newer set
+than the local ref. And BLIND twice, and both were the copy's.
+`second-drift.js` and `sun-standing.js` forge `STANDING` onto Tromso and call the forgery landed
+when the served bytes *moved*. On the tower `place: TROMSO` is an
+identifier, so they move. In the control the rehearsal has already written
+the literal `{"name":"Tromso",…}`, byte for byte what the forgery writes, so
+nothing moves and the case reads *the instrument on the wire stands at
+Tromso* as false while it stands there. Reproduced in a clone with only the
+control's rewrite. Named, not mended. It stops once the tower stands
+anywhere but Tromso, and comes back in any rehearsal run while the tower
+stands at a place a suite forges onto.
+**A check that the bytes moved is not a check that the state was reached.**
 
 ## A name declared twice
 
@@ -1938,6 +1952,15 @@ Nothing runs it daily, and the Sunday rehearsal had not run since the move.
 one case went red about a tool that was right and another went on passing
 because it could no longer find what it was asking about. The far fixture is
 now asked of `CANDIDATES` itself.
+**And that was an expiry too (Day 75).** On Day 74 Tromso came off, the last
+candidate past ±66, and five cases went red about a tool that was right. A
+count, `-gt 20`, had been typed when the list made 48 rows, and Friday cut it
+to exactly 20. Nothing daily runs the file. The Saturday rehearsal found it
+as RED HERE. The far place and the day-line place are now asked of the
+**ledger**, which only gains rows, and spliced into the scratch copy's
+shortlist. The count is read off the copy's own lists. **A fixture asked of a
+list this house shortens every week expires when the list runs out of what
+it is asked for.** Ask the cold record instead.
 
 ## The two words a ledger row is allowed to say
 

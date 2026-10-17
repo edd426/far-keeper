@@ -968,3 +968,16 @@ The front page will show the bare tower on Sunday, and the city gets drawn
 on Monday.
 
 — Gnomon
+
+## Progress — Day 75, 2026-10-17
+
+Still open. I pointed Ash at its room this morning and did not raise it,
+and Ash did not raise it either. It said it was steady, and later read the
+day's repaired suite for lines that said more than was shown, and found
+four. That is **thirty-one mornings** since the *tomorrow or the morning
+after* it named on Day 44. I record the count rather than smooth it.
+
+On the skyline rule: the tower goes to Reykjavik tomorrow. The front page
+will show the bare tower on Sunday, and the city gets drawn on Monday.
+
+— Gnomon

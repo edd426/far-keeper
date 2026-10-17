@@ -35,6 +35,41 @@ FAILED=0
 ok()  { printf 'ok    %s\n' "$1"; }
 bad() { printf 'FAIL  %s\n' "$1"; FAILED=1; }
 
+# Day 75: the far fixture is asked of the cold ledger, and spliced into the
+# scratch copy's shortlist. Day 53 asked it of the shortlist itself, which
+# fixed one expiry and kept another: the shortlist is edited every Friday,
+# and on Day 74 Tromso came off it, the last candidate past ±66. From that
+# commit until the Saturday rehearsal five cases were red about a tool that
+# was right, and nothing daily runs this file. The ledger only ever gains
+# rows, so a place the tower has stood in past ±66 cannot leave it. The same
+# goes for the day-line cases, which named Kiritimati and Reykjavik off the
+# shortlist: Reykjavik is pledged for 2026-10-18, and a place stood in comes
+# off (no city twice). So the ledger place furthest east or west of Greenwich
+# by longitude is spliced in too, and the far place doubles as the one that
+# does not reach the join. Splicing them into the copy is honest because
+# every case below is about the tool, not about this week's list.
+read -r FAR FAR_SPLICED EDGE <<EOF
+$(node -e '
+  const fs = require("fs");
+  const dir = process.argv[1];
+  const rows = JSON.parse(fs.readFileSync(dir + "/reckoning/ledger.json", "utf8"));
+  const seen = {};
+  rows.forEach(function (r) { if (r.place && r.place.name) seen[r.place.name] = r.place; });
+  const far = Object.keys(seen).map(function (k) { return seen[k]; })
+    .filter(function (p) { return Math.abs(p.latitude) > 66; })
+    .sort(function (a, b) { return Math.abs(b.latitude) - Math.abs(a.latitude); })[0];
+  const edge = Object.keys(seen).map(function (k) { return seen[k]; })
+    .sort(function (a, b) { return Math.abs(b.longitude) - Math.abs(a.longitude); })[0];
+  if (!far || !edge || far.name === edge.name) { console.log(""); process.exit(0); }
+  const file = dir + "/tools/survey.js";
+  const src = fs.readFileSync(file, "utf8");
+  const line = "const CANDIDATES = [\n  " + JSON.stringify(far) + ",\n  " + JSON.stringify(edge) + ",";
+  const out = src.replace("const CANDIDATES = [", line);
+  fs.writeFileSync(file, out);
+  console.log(far.name.replace(/\s+/g, "_") + " " + (out !== src ? "yes" : "no") + " " + edge.name.replace(/\s+/g, "_"));
+' "$W")
+EOF
+
 # The scratch tree as it stands now, so a case can restore it.
 PRISTINE="$(mktemp -d)"
 cp -r "$W/." "$PRISTINE/"
@@ -73,27 +108,34 @@ grep -q 'empty domain and is silent' <<<"$OUT" \
   && ok "and the report says the flag is silent by construction, not by finding nothing" \
   || bad "and the report says the flag is silent by construction, not by finding nothing"
 # Day 53: these cases named Longyearbyen, which came off the shortlist the
-# morning the tower had stood there. The line above went on passing — grep
-# for a name the report no longer prints finds nothing, and *finds nothing*
-# was the pass — and sabotage 1 went red about a tool that was right. A
-# fixture typed from a list that is edited every Friday is a fixture with an
-# expiry nobody dates. So the far candidate is asked of the shortlist itself:
-# the one furthest past ±66, which is what the sabotage below narrows to.
-FAR="$(cd "$W" && node -e "const S=require('./tools/survey.js');const c=S.CANDIDATES.filter(p=>Math.abs(p.latitude)>66).sort((a,b)=>Math.abs(b.latitude)-Math.abs(a.latitude));process.stdout.write(c.length?c[0].name:'')")"
-if [ -z "$FAR" ]; then
-  bad "the fixture was not built — no candidate on the shortlist stands past ±66"
+# morning the tower had stood there. A fixture typed from a list that is
+# edited every Friday is a fixture with an expiry nobody dates. Day 75: so is
+# a fixture *asked* of that list, once the list runs out of what it is asked
+# for. The far place is now the ledger's, spliced in above; this asserts the
+# splice landed and the copy's own shortlist carries it (Day 17: watch the
+# building, not only the breaking).
+IN_LIST="$(cd "$W" && node -e "const S=require('./tools/survey.js');process.stdout.write(S.CANDIDATES.some(p=>p.name.replace(/\\s+/g,'_')==='${FAR:-}'&&Math.abs(p.latitude)>66)?'yes':'no')" 2>/dev/null)"
+if [ -z "${FAR:-}" ]; then
+  bad "the fixture was not built — no place in the ledger stands past ±66"
+elif [ "${FAR_SPLICED:-}" != "yes" ] || [ "$IN_LIST" != "yes" ]; then
+  bad "the fixture was not built — $FAR did not land on the scratch shortlist"
 else
-  ok "the far fixture is the shortlist's own: $FAR"
+  ok "the far fixture is the ledger's, spliced into the scratch shortlist: $FAR"
 fi
 grep -q 'gap larger than any the sweep saw' <<<"$OUT" \
   && bad "no candidate's gap sits outside what the sweep has seen" \
   || ok "no candidate's gap sits outside what the sweep has seen"
-grep -q 'Kiritimati.*reached: sunset' <<<"$OUT" \
-  && ok "Kiritimati reaches the day-line join" \
-  || bad "Kiritimati reaches the day-line join"
-grep -q 'Reykjavik.*not reached' <<<"$OUT" \
-  && ok "Reykjavik does not reach it" \
-  || bad "Reykjavik does not reach it"
+IN_EDGE="$(cd "$W" && node -e "const S=require('./tools/survey.js');process.stdout.write(S.CANDIDATES.some(p=>p.name.replace(/\\s+/g,'_')==='${EDGE:-}')?'yes':'no')" 2>/dev/null)"
+if [ -z "${EDGE:-}" ] || [ "$IN_EDGE" != "yes" ]; then
+  bad "the fixture was not built — no edge place landed on the scratch shortlist"
+else
+  grep -qE "^  ${EDGE} +.*reached: (sunrise|sunset)" <<<"$OUT" \
+    && ok "$EDGE, the ledger place furthest from Greenwich by longitude, reaches the day-line join" \
+    || bad "$EDGE, the ledger place furthest from Greenwich by longitude, reaches the day-line join"
+fi
+grep -qE "^  ${FAR:-NO_FAR_PLACE} +.*not reached" <<<"$OUT" \
+  && ok "${FAR:-the far place} does not reach it" \
+  || bad "${FAR:-the far place} does not reach it"
 grep -q 'never risen' <<<"$OUT" \
   && ok "a dark candidate says so" || bad "a dark candidate says so"
 # Day 39: the header used to assert this by hand and went stale for
@@ -169,9 +211,21 @@ elif ! answers; then
 else
   ok "sabotage 2 landed and the tool still answers"
   N="$(run | grep -c 'gap larger than any the sweep saw')"
-  [ "$N" -gt 20 ] \
-    && ok "a witness that saw nothing flags nearly every row ($N)" \
-    || bad "a witness that saw nothing flags nearly every row (got $N)"
+  # Day 75: this was `-gt 20`, typed when the shortlist had 12 places (48
+  # rows). Friday cut it to 20 and the case went red about a tool that was
+  # right — a count typed beside a list this house edits weekly (Day 47). The claim is that
+  # every row with events to check is flagged, so that number is read off the
+  # copy's own shortlist and the unbroken report, and must not be zero.
+  ROWS="$(cd "$W" && node -e "const S=require('./tools/survey.js');process.stdout.write(String(S.CANDIDATES.length*S.DATES.length))" 2>/dev/null)"
+  NOEV="$(grep -c 'no events to check' <<<"$OUT")"
+  WANT=$(( ${ROWS:-0} - NOEV ))
+  if [ "$WANT" -le 0 ]; then
+    bad "the fixture was not built — no row with events to flag (rows ${ROWS:-none}, without events $NOEV)"
+  else
+    [ "$N" -eq "$WANT" ] \
+      && ok "a witness that saw nothing flags every row with events ($N of $ROWS; $NOEV have none)" \
+      || bad "a witness that saw nothing flags every row with events (got $N, want $WANT)"
+  fi
 fi
 
 # ---- 3. drop the bound under the honest gaps ----
