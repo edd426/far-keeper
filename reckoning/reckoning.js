@@ -992,8 +992,8 @@
   };
 
   var STANDING = {
-    place: TROMSO,
-    since: '2026-10-11',
+    place: REYKJAVIK,
+    since: '2026-10-18',
     pledge: {
       place: REYKJAVIK,
       on: '2026-10-18',

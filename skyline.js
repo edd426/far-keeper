@@ -192,8 +192,8 @@
       '             ╲                │▒│',
       '              ╲               │ │'
     ],
-    // Tromso, where the tower stood from 2026-10-11. Drawn on 2026-10-12,
-    // the morning after the move, by Evan's rule. Two things a visitor
+    // Tromso, where the tower stood from 2026-10-11 to 2026-10-17. Drawn
+    // on 2026-10-12, the morning after the move, by Evan's rule. Two things a visitor
     // usually names; nobody here has been. On the right, the Arctic
     // Cathedral as I recall it: a white church, a gable inside a gable,
     // a glass wall across its front. On the left, the bridge over the
