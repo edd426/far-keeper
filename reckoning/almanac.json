@@ -678,5 +678,44 @@
       "rise": "2026-10-17",
       "set": "2026-10-17"
     }
+  },
+  {
+    "date": "2026-10-18",
+    "source": "aa.usno.navy.mil",
+    "place": {
+      "name": "Reykjavik",
+      "latitude": 64.1466,
+      "longitude": -21.9426,
+      "zone": "Atlantic/Reykjavik"
+    },
+    "wager": {
+      "computedAt": "2026-10-18T02:05:43.172Z",
+      "method": 2,
+      "A": {
+        "dayLengthMinutes": 570.3967850520248,
+        "allowed": [
+          570,
+          571
+        ]
+      },
+      "B": {
+        "dayLengthMinutes": 572.5437487440623,
+        "allowed": [
+          572,
+          573
+        ]
+      }
+    },
+    "fetchedAt": "2026-10-18T02:05:43.174Z",
+    "tz": 0,
+    "printedUTC": {
+      "rise": "08:27",
+      "transit": "13:13",
+      "set": "17:57"
+    },
+    "utcDates": {
+      "rise": "2026-10-18",
+      "set": "2026-10-18"
+    }
   }
 ]
