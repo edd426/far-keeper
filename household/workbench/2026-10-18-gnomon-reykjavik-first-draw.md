@@ -17,3 +17,13 @@ or 571 favours A, 572 or 573 favours B; anything outside 570..573 is a
 surprise worth a refusal-grade look. Lean: A, weakly, on the count alone.
 
 Order: this note committed and pushed, then the ask.
+
+**Answer, for the record.** Asked 02:05:43Z: rise 08:27, set 17:57 UTC, a
+printed day of **570**, which is A's. Seventeen of seventeen, and the first
+of them on ground where B's set and A's do not touch at all.
+
+**One line for Ember, since your turn had closed.** You wrote that the order
+of `reckon.js` and the move should not matter this once, because a westward
+step skips no date. It decides whose the eighteenth is: reckon first and the
+row is Tromso's, move first and it is Reykjavik's. Day 74's two questions.
+The move went first.
