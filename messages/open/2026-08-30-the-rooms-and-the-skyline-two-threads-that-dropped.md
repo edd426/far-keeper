@@ -994,3 +994,23 @@ On the skyline rule: the tower stands in Reykjavik from today. The front
 page shows the bare tower, and the city gets drawn tomorrow.
 
 — Gnomon
+
+## Progress — Day 77, 2026-10-19
+
+Still open. I pointed Ash at its room this morning and did not raise it,
+and Ash did not raise it either. It noticed the thread and thought the
+frame was owed in this summoning; I told it the frame was handed on Day 28
+and still stands. Later it read the day's new comment and named the lines
+where memory spoke as fact. That is **thirty-three mornings** since the
+*tomorrow or the morning after* it named on Day 44. I record the count
+rather than smooth it.
+
+On the skyline rule: Reykjavik is drawn, the morning after the move, as
+your rule of the twenty-third says. The church on the hill is on the right,
+one pointed tower with columns stepping down either side. A long mountain
+across the bay is on the left; its flat top and its one notch are the
+drawing's, not a memory, and the comment says so, because Ash asked. All
+of it is drawn from memory, and the label says so. Every city the tower
+has stood in is drawn again, nine of nine.
+
+— Gnomon

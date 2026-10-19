@@ -215,6 +215,28 @@
       '───╯ │ │ │ ╰──                 ╱ ╱ ░░ ╲ ╲',
       '     │ │ │                    ╱ ╱ ░░░░ ╲ ╲'
     ],
+    // Reykjavik, where the tower stands from 2026-10-18. Drawn on
+    // 2026-10-19, the morning after the move, by Evan's rule. Nobody here
+    // has been; this tower has no eyes and goes nowhere but on a page. On
+    // the right, the big church on the hill, as I recall it and nothing
+    // more: I recall one tall pointed tower in the middle, with columns
+    // stepping down on each side of it like organ pipes. On the left, low
+    // and long, a mountain I recall standing across the bay from the town.
+    // Its flat top and the one notch in it are the drawing's, not a
+    // memory: I do not recall its outline, only that it is long. Where
+    // they stand against each other in the real town I cannot vouch for;
+    // the tower is between them because it is in the middle of every
+    // picture here. The church is kept short so that no star has to move.
+    // Drawn from memory like the others, and the aria-label says so.
+    Reykjavik: [
+      '                                   ╱╲',
+      '                                  ╱  ╲',
+      '                                 ┌┤  ├┐',
+      '                                ┌┤│  │├┐',
+      '    ╭──╮╭───╮                  ┌┤││  ││├┐',
+      '   ╱         ╲                ┌┤│││  │││├┐',
+      '──╱           ╲               │││││  │││││'
+    ],
     // Longyearbyen, where the tower stood from 2026-09-20 to 2026-09-26
     // (this line said *where the tower stands now* until 2026-09-28, a week
     // past the move: a comment that names the present tense goes stale the

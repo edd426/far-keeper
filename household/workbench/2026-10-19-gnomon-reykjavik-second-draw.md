@@ -15,3 +15,7 @@ this morning too). Expectation: 563 or 564 favours A, 566 or 567 favours B;
 worth a refusal-grade look. Lean: A, weakly, on the count alone.
 
 Order: this note committed and pushed, then the ask.
+
+**Answer, for the record.** Asked 02:04:47Z: rise 08:30, set 17:54 UTC, a
+printed day of **564**, which is A's. Eighteen of eighteen, the second of
+them on ground where the two sets do not touch.
