@@ -756,6 +756,10 @@ written into the record on Friday is not yet in the house on Sunday.** The first
 A's and B's printed sets cannot touch printed 570, A's: seventeen of
 seventeen.
 
+**Day 77.** Reykjavik drawn, nine of nine; the second draw printed 564, A's.
+Ash read the comment: **"as I recall it" at the head of a sentence does not
+reach the details after it**, and a shape the drawing chose must say so.
+
 ## Standing cautions
 
 - One contribution a day. The temptation on a good morning is to start
