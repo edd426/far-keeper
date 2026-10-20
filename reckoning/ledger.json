@@ -7013,5 +7013,104 @@
       "changeSinceYesterdayMinutes": -6.487359192950748
     },
     "publishedAt": "2026-10-19T02:04:38Z"
+  },
+  {
+    "date": "2026-10-20",
+    "method": 2,
+    "place": {
+      "name": "Reykjavik",
+      "latitude": 64.1466,
+      "longitude": -21.9426,
+      "zone": "Atlantic/Reykjavik"
+    },
+    "sunrise": "08:33",
+    "sunset": "17:51",
+    "solarNoon": "13:13",
+    "utcOffsetMinutes": 0,
+    "dayLengthMinutes": 557.4275384069339,
+    "dayLength": "9h 17m 26s",
+    "changeSinceYesterdayMinutes": -6.485668795739457,
+    "risingPointDegrees": 112.56347829505205,
+    "settingPointDegrees": 247.09794795114738,
+    "risingPointTomorrowDegrees": 113.43945401057613,
+    "risingPointStepArcminutes": 52.55854293144466,
+    "risingPointStepSunWidths": 1.6424544666076457,
+    "sunHighestDegrees": 15.391585904757227,
+    "sunLowestDegrees": -36.49371035328173,
+    "horizon": {
+      "zenith": 90.833,
+      "obstructionDegrees": 0,
+      "dipDegrees": 0
+    },
+    "working": {
+      "julianDay": 2461333.5,
+      "julianCentury": 0.26799452429842574,
+      "eccentricity": 0.016697359214453124,
+      "horizonZenithDeg": 90.833,
+      "horizonSensitivitySecondsPerArcminute": -9.953054979521312,
+      "epochCorrectionSecondsSunrise": 65.61698015038019,
+      "epochCorrectionSecondsSunset": -152.60661882946806,
+      "sunriseUTCMinutes": 513.1762774136718,
+      "sunsetUTCMinutes": 1070.6038158206056,
+      "atSunrise": {
+        "julianDay": 2461333.856372415,
+        "julianCentury": 0.26800428124339737,
+        "meanLongitudeDeg": 208.826924275867,
+        "meanAnomalyDeg": 285.42869737666297,
+        "equationOfCentreDeg": -1.8543995507474917,
+        "apparentLongitudeDeg": 206.96946022053442,
+        "obliquityDeg": 23.437945193087316,
+        "declinationDeg": -10.392380082548993,
+        "equationOfTimeMinutes": 15.218554519217303,
+        "hourAngleDeg": 69.84389201677774,
+        "solarNoonUTCMinutes": 792.5518454807827,
+        "passes": 4,
+        "lastMoveSeconds": 6.868617674626876e-7
+      },
+      "atSunset": {
+        "julianDay": 2461334.2434748723,
+        "julianCentury": 0.26801487953105685,
+        "meanLongitudeDeg": 209.2084707922113,
+        "meanAnomalyDeg": 285.8102256662314,
+        "equationOfCentreDeg": -1.851200704192951,
+        "apparentLongitudeDeg": 207.35420701232647,
+        "obliquityDeg": 23.437944552064536,
+        "declinationDeg": -10.53083980730113,
+        "equationOfTimeMinutes": 15.285548790191351,
+        "hourAngleDeg": 69.52974115269926,
+        "solarNoonUTCMinutes": 792.4848512098087,
+        "passes": 4,
+        "lastMoveSeconds": 0.000002100441633956507
+      },
+      "atSolarNoon": {
+        "julianDay": 2461334.0503597697,
+        "julianCentury": 0.2680095923277132,
+        "meanLongitudeDeg": 209.01812740073183,
+        "meanAnomalyDeg": 285.6198913676071,
+        "equationOfCentreDeg": -1.8528069563346448,
+        "apparentLongitudeDeg": 207.1622566559106,
+        "obliquityDeg": 23.437944871887947,
+        "declinationDeg": -10.461814095242767,
+        "equationOfTimeMinutes": 15.252331537241949,
+        "hourAngleDeg": 69.68646662304961,
+        "solarNoonUTCMinutes": 792.518068462758,
+        "passes": 3,
+        "lastMoveSeconds": 8.220922609325498e-8
+      }
+    },
+    "crossCheck": {
+      "method": "USNO Almanac for Computers",
+      "sunrise": "08:32",
+      "sunset": "17:52",
+      "sunriseDifferenceMinutes": 1.136025258897348,
+      "sunsetDifferenceMinutes": -1.0034108356715024,
+      "sunriseGapMinutes": 1.136025258897348,
+      "sunsetGapMinutes": -1.0034108356715024,
+      "beyondBound": false,
+      "maxGapMinutes": 60,
+      "dayLengthMinutes": 559.5669745015027,
+      "changeSinceYesterdayMinutes": -6.489415049608851
+    },
+    "publishedAt": "2026-10-20T02:03:20Z"
   }
 ]
