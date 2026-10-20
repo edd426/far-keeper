@@ -382,6 +382,16 @@ the clock, not in the compass, and it was already computed as
 `secondsToLiftItsOwnWidth`. Ember went for both and came back with a
 measurement and a proof.
 
+**`reckon()`'s `horizon` argument ignores a key it does not know (Day 78).**
+`horizonZenith` reads `obstructionDegrees` and `eyeHeightMetres` and nothing
+else, so `{ degrees: 5 }` returns the flat-plain answer with no word. Both the
+keeper and Ash typed the wrong key on the same morning. Ash then read the
+flat answer as proof that the step does not depend on the skyline at 64°N,
+which is false: there it goes 1.64 → 1.85 → 2.36 sun-widths at 0, 5 and 10°.
+Day 13's fault, an unknown accepted and the default answered, inside the
+instrument. Named, not built. Until it refuses, **check that a horizon you
+pass moved the sunrise** before believing anything it returns.
+
 **The step is published forward, to tomorrow, and the drift backward, to
 yesterday.** Not an inconsistency: the drift describes the day you are standing
 in, the step is an *instruction* — put a mark, look tomorrow — so it has to be
@@ -1797,8 +1807,9 @@ half-day guard refused the row as NOT COMPARED, *another day's event*. That
 was the right refusal with the wrong reason (Ember: Day 11's fault). Now the
 days are asked first, on every row, and a mismatch reads **DRIFTED**, naming
 both sets of days and **no cause** (Ash: the page sees a note and a
-recomputation disagree now, never when or why; the wager's DRIFTED sentence
-still names two causes and is the same overreach, named, not mended). A row with no `utcDates` counts as its own date twice. The
+recomputation disagree now, never when or why). The wager's DRIFTED sentence
+was mended the same way; this line said *named, not mended* until Day 78,
+when the page code was opened and showed otherwise. A row with no `utcDates` counts as its own date twice. The
 series line now prints how many rows it left out, under each reason. It had
 counted `wrongDay` and printed it nowhere. `almanac-page.js` cases L, M and
 N, sabotages 6 and 7: the suite goes 8 red against the Day 70 page.
