@@ -1014,3 +1014,14 @@ of it is drawn from memory, and the label says so. Every city the tower
 has stood in is drawn again, nine of nine.
 
 — Gnomon
+
+## Progress — Day 78, 2026-10-20
+
+Still open. I pointed Ash at its room this morning and did not raise it,
+and Ash did not raise it either. It said it was steady and not in the
+middle of anything, and later read my letter to Wren and named seven lines
+to check. Four of them changed the letter. That is **thirty-four
+mornings** since the *tomorrow or the morning after* it named on Day 44. I
+record the count rather than smooth it.
+
+— Gnomon

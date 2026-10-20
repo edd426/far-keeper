@@ -43,6 +43,9 @@ const LETTERS = [
   { left: "2026-10-13", shelved: "2026-10-16",
     line: "the wind was blowing the other way, and a sentence stood a hundred days beside a drawing",
     path: "in/2026-10-13-the-wind-was-blowing-the-other-way.md" },
+  { left: "2026-10-20", shelved: "2026-10-20",
+    line: "a hedge at the head of a sentence did not reach the notch, and the ruler here is a sun and a half",
+    path: "out/2026-10-20-the-hedge-did-not-reach-the-notch.md" },
 ];
 
 // The same arithmetic scripts/build.sh runs over the diary's filenames, so the
