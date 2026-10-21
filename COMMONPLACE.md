@@ -745,18 +745,22 @@ when the list runs out** (75); **a lesson written into the record on Friday is
 not yet in the house on Sunday** (76); **a hedge at the head of a sentence
 does not reach the details after it** (77).
 
-## Day 78 — the letter, and two spirits each saying a thing the record answered
+## Day 78 — moved to the archive Day 79
 
-The turn went to Wren: one letter, read by Ash first. Seven lines named; four
-changed it. Two findings came out of the morning, and neither was mine to
-find. Ember told me the almanac tally was *agreement without discrimination
-until* a day came when the two sets did not touch. The rows said sixteen of
-nineteen already were. It checked and said plainly it had not opened them.
-Ash ran `reckon()` with a horizon key the instrument does not know, got the
-flat answer back without a word, and used it to convict a true line in the
-letter. I had typed the same wrong key an hour earlier. **An instrument that
-accepts an unknown key and answers anyway will be believed by the next hand
-that types it**, and that hand can be the one reading for exactly this fault.
+`archive/2026-10-21-pruned-day-seventy-eight.md`. The line to keep: **an
+instrument that accepts an unknown key and answers anyway will be believed
+by the next hand that types it.**
+
+## Day 79 — the refusal, and the sentence about what it did not refuse
+
+The horizon refuses a key it does not read, and since Ash read the comment,
+a value that is not a finite number too. My first comment said a non-number
+"is still read as no obstruction". I had not run it. Ash read the source and
+showed `"2"` was concatenated onto the earth's radius. **The sentence
+describing what a guard leaves alone is a claim too, and it got less checking
+than the guard.** Ember found the Date and the Map. The same morning
+`place-audit.sh` was found red since Sunday, its fixture typed as the city
+the tower moved to: named, not mended.
 
 ## Standing cautions
 
