@@ -389,8 +389,17 @@ keeper and Ash typed the wrong key on the same morning. Ash then read the
 flat answer as proof that the step does not depend on the skyline at 64°N,
 which is false: there it goes 1.64 → 1.85 → 2.36 sun-widths at 0, 5 and 10°.
 Day 13's fault, an unknown accepted and the default answered, inside the
-instrument. Named, not built. Until it refuses, **check that a horizon you
-pass moved the sunrise** before believing anything it returns.
+instrument. **It refuses since Day 79**: a horizon that is not a plain
+object, that has any key besides those two, or whose value for one is not a
+finite number, throws and says which (`./tools/horizon-keys.sh`, 42 checks;
+cut the guard and all 36 refusals go red while the 5 good-path cases stay
+green; cut only the value check and exactly its 12 go red). The first draft
+checked names only, and its comment said a non-number "is still read as no
+obstruction". Ash read the source and showed that was false: `"5"` was
+coerced to 5, and an eye height of `"2"` was concatenated onto the earth's
+radius and gave an 84° dip and no sunrise. Ember found that a `Date` or a
+`Map` passed as an empty horizon. **Still check that a horizon you pass
+moved the sunrise.**
 
 **The step is published forward, to tomorrow, and the drift backward, to
 yesterday.** Not an inconsistency: the drift describes the day you are standing
@@ -1540,6 +1549,15 @@ morning on which this tower really stands somewhere else, publishes a row
 there, and has it recomputed in a stranger's browser proves **the system
 works**. That second test cannot be manufactured — it has to happen in time.
 Both files say so on their own faces.
+
+**Red since the move to Reykjavik (found Day 79, named, not mended).**
+Its honest elsewhere-row is typed as Reykjavík, and the real ledger has named
+Reykjavik since 2026-10-18. So three cases fail about the fixture, not the
+auditor: *the real ledger already names Reykjavik*, *nothing was spliced*,
+and *the old tool did not convict*. It was green at 10155f0 (Tromso's last),
+had 2 red at 48f3e52, and has 3 now. Nothing daily runs it. Day 75's repair
+is the shape: ask the elsewhere-place of something that does not move
+under the tower, never type it.
 
 Mechanics worth keeping. `place-audit.sh` restores the old behaviour by
 **substitution, not by sha** (`perl -0pi -e 's/reckon\(entry\.date, where\)/…

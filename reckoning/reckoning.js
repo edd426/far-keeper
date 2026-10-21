@@ -2097,7 +2097,44 @@
   // Where the sun's centre must stand for a reader with that horizon.
   // Obstruction lifts the horizon, so the sun must be higher, so the
   // zenith angle at the event is smaller. The dip does the reverse.
+  //
+  // Day 79: it refuses a key it does not know. Until then it read the two
+  // keys below and nothing else, so `{ degrees: 5 }` came back as the
+  // flat-plain answer with no word, and on Day 78 two hands typed a wrong
+  // key in one morning and one of them used the flat answer to deny a true
+  // line. Day 13's fault, an unknown accepted and the default answered,
+  // inside the instrument.
+  //
+  // So a horizon that is given must be a plain object (a Date or a Map
+  // would otherwise pass as an empty one: Ember), every key in it must be
+  // one this function reads, and each of those must be a finite number.
+  // The last is Ash's: the first draft said a non-number "is still read as
+  // no obstruction", and that was false. `"5"` was coerced to 5, and an
+  // eye height of `"2"` was concatenated onto the earth's radius and gave
+  // an 84-degree dip and no sunrise at all. The page's corner always
+  // hands over finite numbers, so no reader meets these refusals.
+  var HORIZON_KEYS = ['obstructionDegrees', 'eyeHeightMetres'];
+
   function horizonZenith(horizon) {
+    if (horizon !== undefined && horizon !== null) {
+      var proto = typeof horizon === 'object' ? Object.getPrototypeOf(horizon) : undefined;
+      if (proto !== Object.prototype && proto !== null) {
+        throw new Error('horizon must be a plain object with ' + HORIZON_KEYS.join(' or ') +
+          ', not ' + (typeof horizon !== 'object' ? typeof horizon
+            : Array.isArray(horizon) ? 'an array' : 'a ' + horizon.constructor.name));
+      }
+      Object.keys(horizon).forEach(function (key) {
+        if (HORIZON_KEYS.indexOf(key) === -1) {
+          throw new Error('horizon has a key the reckoning does not read: "' + key +
+            '" (it reads ' + HORIZON_KEYS.join(' and ') + ')');
+        }
+        var value = horizon[key];
+        if (value !== undefined && (typeof value !== 'number' || !isFinite(value))) {
+          throw new Error('horizon.' + key + ' must be a finite number, not ' +
+            (typeof value === 'number' ? String(value) : typeof value));
+        }
+      });
+    }
     var obstruction = horizon && horizon.obstructionDegrees || 0;
     var dip = horizonDipDegrees(horizon && horizon.eyeHeightMetres);
     return {

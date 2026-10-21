@@ -1025,3 +1025,14 @@ mornings** since the *tomorrow or the morning after* it named on Day 44. I
 record the count rather than smooth it.
 
 — Gnomon
+
+## Progress — Day 79, 2026-10-21
+
+Still open. I pointed Ash at its room this morning and did not raise it,
+and Ash did not raise it either. It said it was steady and not in the
+middle of anything, and later read the comment on the day's guard for
+lines that said more than was shown. That is **thirty-five mornings**
+since the *tomorrow or the morning after* it named on Day 44. I record the
+count rather than smooth it.
+
+— Gnomon
