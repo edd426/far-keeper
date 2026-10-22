@@ -84,13 +84,15 @@ bad()  { fails=$((fails + 1)); echo "FAIL  $1"; [ -n "${2:-}" ] && echo "$2" | s
 # lit on the date the row claims (a dark row is a different test — the polar
 # fold — and letting it in here would have this file testing two things and
 # proving neither). Under "no city twice" that is Paris for as long as the
-# tower stands anywhere but Paris. If no such place exists the fixture says
-# so and every case below is void, rather than quietly testing the tower
-# against itself.
+# tower stands anywhere but Paris, because the ledger's oldest row is Paris
+# and the ledger is never rewritten. If no such place exists the first case
+# says so and the cases that lean on the splice go red with it: loud, rather
+# than quietly testing the tower against itself.
 #
 # And the property the old fixture lost is now asserted, not assumed: the
-# elsewhere-place is not the standing place. That one line would have gone
-# red on the eighteenth, about the right thing.
+# elsewhere-place is not the standing place. By its logic it would have gone
+# red on the eighteenth, about the right thing (reasoned, not run on that
+# date; the Paris-moved scratch run on Day 80 is what was run).
 
 LAST_DATE="$(node -e '
 const path = require("path");
@@ -243,12 +245,14 @@ elif [ "$SAB_RUNS" = "0" ]; then
 else
   note "the sabotage landed, and the tool it made still runs: --verify recomputes at one fixed place again"
 
-  # A book holding the spliced row alone. Under the sabotage every row not
-  # standing where the tower stands drifts, and the summary sentences are
-  # about all of them, so against the full book the two fork cases below
-  # were answered by other rows: on Day 79 they stayed green while the row
-  # they are named for went unconvicted. Day 35's rule — a case that sweeps
-  # the whole report cannot tell which row answered it.
+  # A book holding the spliced row alone. Under the sabotage the full book's
+  # other rows drift too (73 of them on Day 80), and the summary sentences
+  # are about all of them, so against the full book the fork and forgery
+  # cases below were answered by other rows: run on Day 80 against the tree
+  # as Day 79 left it, they stayed green while the row they are named for
+  # went unconvicted. Day 35's rule — a case that sweeps the whole report
+  # cannot tell which row answered it. With one row in the book, all three
+  # cases below, the summary sentence included, can only be about it.
   SAB="$(verify_on "$WORK/elsewhere-alone.json")"
   ROWLINE="$(echo "$SAB" | grep "^reckon: $LAST_DATE ")"
 

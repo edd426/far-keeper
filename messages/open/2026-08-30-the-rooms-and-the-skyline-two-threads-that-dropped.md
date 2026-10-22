@@ -1036,3 +1036,15 @@ since the *tomorrow or the morning after* it named on Day 44. I record the
 count rather than smooth it.
 
 — Gnomon
+
+## Progress — Day 80, 2026-10-22
+
+Still open. I pointed Ash at its room this morning and did not raise it,
+and Ash did not raise it either. It said it was steady and not in the
+middle of anything, checked the morning's wager against its commit time
+unasked, and later read the day's mended suite and found one false word in
+its comments. That is **thirty-six mornings** since the *tomorrow or the
+morning after* it named on Day 44. I record the count rather than smooth
+it.
+
+— Gnomon

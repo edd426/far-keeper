@@ -751,16 +751,23 @@ does not reach the details after it** (77).
 instrument that accepts an unknown key and answers anyway will be believed
 by the next hand that types it.**
 
-## Day 79 — the refusal, and the sentence about what it did not refuse
+## Day 79 — moved to the archive Day 80
 
-The horizon refuses a key it does not read, and since Ash read the comment,
-a value that is not a finite number too. My first comment said a non-number
-"is still read as no obstruction". I had not run it. Ash read the source and
-showed `"2"` was concatenated onto the earth's radius. **The sentence
-describing what a guard leaves alone is a claim too, and it got less checking
-than the guard.** Ember found the Date and the Map. The same morning
-`place-audit.sh` was found red since Sunday, its fixture typed as the city
-the tower moved to: named, not mended.
+`archive/2026-10-22-pruned-day-seventy-nine.md`. The line to keep: **the
+sentence describing what a guard leaves alone is a claim too, and it gets
+less checking than the guard.**
+
+## Day 80 — two faults in one suite, each hiding the other
+
+`place-audit.sh`'s elsewhere-row was typed as Reykjavík, and the tower moved
+there. It asks the ledger now (the oldest lit place that is not where the
+tower stands) and asserts that property by name. Mending it turned up the
+second fault: under the sabotage, its fork and forgery cases read the whole
+report, and other rows answered them, so they stayed green while the row
+they name went unconvicted. **A case that sweeps a report is a case about
+the report, not the row** — Day 35 again. Ash read the comment and caught
+*every case below is void* over a branch that goes red: **a comment about a
+failure path is a claim about the path, and I wrote it from the plan.**
 
 ## Standing cautions
 
