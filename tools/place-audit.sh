@@ -33,7 +33,7 @@
 #
 # The sabotage is a one-line substitution putting the old hardcoded PARIS
 # back, and it is asserted to have landed (Day 5) before its failure is
-# believed. Under it the honest Reykjavík row must be convicted, and — being
+# believed. Under it the honest elsewhere-row must be convicted, and — being
 # on the method running now — convicted through the *sameMethod* fork, the
 # Day 11 forgery sentence, which tells a reader a published number was
 # edited. Assert that exact fork rather than "some DRIFTED line appeared":
@@ -69,37 +69,29 @@ bad()  { fails=$((fails + 1)); echo "FAIL  $1"; [ -n "${2:-}" ] && echo "$2" | s
 
 # ---- the fixture ----------------------------------------------------------
 #
-# Reykjavík: far enough north and west of Paris that no figure on the row
-# could agree by rounding. Not far enough north to reach the polar fold —
-# that is a real piece of work and it is not today's, and letting it in here
-# would have this file testing two things and proving neither.
+# The elsewhere-place is ASKED, never typed (Day 80). Until this morning it
+# was Reykjavík, typed here on Day 18 as a place "far enough north and west
+# of Paris that no figure on the row could agree by rounding". On 2026-10-18
+# the tower moved to Reykjavik. From that morning the fixture was a row at
+# the place the tower stands, so the sabotage — recompute every row where the
+# tower stands — recomputed it at its own place and could not convict it, and
+# the real ledger began to name the fixture's city. Three cases went red
+# about the fixture, not the auditor, and nothing daily runs this file. A
+# place typed beside a tower that moves every Sunday is next week's weather.
+#
+# So the place is read off the cold record, which only gains rows: the oldest
+# place the ledger names that is not where the tower stands now, and that is
+# lit on the date the row claims (a dark row is a different test — the polar
+# fold — and letting it in here would have this file testing two things and
+# proving neither). Under "no city twice" that is Paris for as long as the
+# tower stands anywhere but Paris. If no such place exists the fixture says
+# so and every case below is void, rather than quietly testing the tower
+# against itself.
+#
+# And the property the old fixture lost is now asserted, not assumed: the
+# elsewhere-place is not the standing place. That one line would have gone
+# red on the eighteenth, about the right thing.
 
-ELSEWHERE_NAME="Reykjavik"
-# The date the manufactured row claims, and it is the tower's own today
-# rather than the newest date in the book. Day 37, and the change was forced
-# by a failure this file reported honestly.
-#
-# It used to take the ledger's last date. That is the newest row the tower
-# has *published*, which is always the morning before the one being written —
-# so on any morning a claim is born, `reckon()` emits a field whose birthday
-# is today and the fixture stamps it with yesterday. The symmetric half of
-# the birthday rule then fires exactly as designed: *this entry carries it,
-# but 2026-09-07 predates 2026-09-08*. Two cases went red about a fixture,
-# not about the auditor they were pointed at.
-#
-# That is not a one-morning collision. It is a standing hazard for **any**
-# fixture in this house that rebuilds a ledger row with today's instrument
-# and dates it from the record: the record's newest date can never be a date
-# whose claims are all born yet. An honest row written now is dated now, so
-# the fixture is dated now, and the next claim this tower introduces cannot
-# reopen this.
-#
-# The two dates below were one variable until this morning, and the second
-# failure this change produced was that conflation coming apart: the
-# UNPLACED cases do not manufacture anything, they take the *real* newest row
-# and break its place, so they must grep for the date that row actually
-# carries. One name over two questions is this house's oldest fault in its
-# smallest clothes.
 LAST_DATE="$(node -e '
 const path = require("path");
 const R = require(path.join(process.argv[1], "reckoning/reckoning.js"));
@@ -110,41 +102,71 @@ const led = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8"));
 process.stdout.write(led[led.length - 1].date);
 ' "$PRISTINE")"
 
-node -e '
+ELSEWHERE_NAME="$(node -e '
 const fs = require("fs"), path = require("path");
 const [work, pristine, date] = process.argv.slice(1);
-const { reckon } = require(path.join(work, "reckoning/reckoning.js"));
-const ELSEWHERE = {
-  name: "Reykjavik", latitude: 64.1466, longitude: -21.9426, zone: "Atlantic/Reykjavik"
-};
+const R = require(path.join(work, "reckoning/reckoning.js"));
 const led = JSON.parse(fs.readFileSync(pristine, "utf8"));
-const was = led[led.length - 1];
-const row = reckon(date, ELSEWHERE);
-row.publishedAt = was.publishedAt;
-led[led.length - 1] = row;
-fs.writeFileSync(path.join(work, "elsewhere.json"), JSON.stringify(led, null, 2) + "\n");
-' "$WORK" "$PRISTINE" "$LAST_DATE"
+for (const row of led) {
+  const p = row.place;
+  if (!p || R.samePlace(p, R.STANDING.place)) continue;
+  let lit = false;
+  try { lit = typeof R.reckon(date, p).sunrise === "string"; } catch (e) { lit = false; }
+  if (!lit) continue;
+  const was = led[led.length - 1];
+  const fresh = R.reckon(date, p);
+  fresh.publishedAt = was.publishedAt;
+  led[led.length - 1] = fresh;
+  fs.writeFileSync(path.join(work, "elsewhere.json"), JSON.stringify(led, null, 2) + "\n");
+  // The sabotage run reads a book holding this one row and nothing else, so
+  // the summary under it can only be about this row (see below).
+  fs.writeFileSync(path.join(work, "elsewhere-alone.json"), JSON.stringify([fresh], null, 2) + "\n");
+  process.stdout.write(p.name);
+  process.exit(0);
+}
+' "$WORK" "$PRISTINE" "$LAST_DATE")"
+
+STANDING_NAME="$(node -e '
+const R = require(require("path").join(process.argv[1], "reckoning/reckoning.js"));
+process.stdout.write(R.STANDING.place.name);
+' "$WORK")"
 
 # Assert the fixture got BUILT — not merely that a file exists, and not on
 # the strength of a row that was already there. Day 17: the section of
 # claim-birthdays.sh that printed `ok` for two days had a fixture identical
 # to the pristine ledger and never noticed.
-if [ ! -s "$WORK/elsewhere.json" ]; then
+if [ -z "$ELSEWHERE_NAME" ]; then
+  bad "the ledger names no lit place but where the tower stands — there is nothing to splice, and every case below is void"
+elif [ ! -s "$WORK/elsewhere.json" ]; then
   bad "the fixture was not written at all"
 elif cmp -s "$PRISTINE" "$WORK/elsewhere.json"; then
   bad "the fixture is byte-identical to the pristine ledger — nothing was spliced"
-elif ! grep -q "$ELSEWHERE_NAME" "$WORK/elsewhere.json"; then
-  bad "the fixture does not name $ELSEWHERE_NAME"
 else
-  note "the fixture was built by reckon() and names $ELSEWHERE_NAME on $LAST_DATE"
+  note "the fixture was built by reckon() at $ELSEWHERE_NAME, asked of the ledger, on $LAST_DATE"
 fi
 
-# And assert the pristine ledger does NOT — so the unbroken case would fail
-# this file's own pass rule if the splice ever silently stopped happening.
-if grep -q "$ELSEWHERE_NAME" "$PRISTINE"; then
-  bad "the real ledger already names $ELSEWHERE_NAME — this fixture proves nothing"
+# The property the typed fixture lost on 2026-10-18. If the row under test
+# stands where the tower stands, recomputing it "at one fixed place" is
+# recomputing it at its own place, and the sabotage below cannot bite.
+if [ -n "$ELSEWHERE_NAME" ] && [ "$ELSEWHERE_NAME" != "$STANDING_NAME" ]; then
+  note "$ELSEWHERE_NAME is not where the tower stands ($STANDING_NAME), so a sabotage pinned there has something to convict"
 else
-  note "the real ledger names no $ELSEWHERE_NAME, so the row under test is the spliced one"
+  bad "the elsewhere-place is the standing place ($STANDING_NAME) — this fixture proves nothing"
+fi
+
+# And the slot the row is spliced into did not already stand there, so the
+# unbroken case would fail this file's own pass rule if the splice ever
+# silently stopped happening. (Until Day 80 this asked that the whole real
+# ledger never name the fixture's city, which a ledger at nine cities and
+# counting cannot promise; the slot is what the cases below actually read.)
+PRISTINE_LAST_PLACE="$(node -e '
+const led = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8"));
+process.stdout.write(led[led.length - 1].place.name);
+' "$PRISTINE")"
+if [ "$PRISTINE_LAST_PLACE" != "$ELSEWHERE_NAME" ]; then
+  note "the real newest row stands at $PRISTINE_LAST_PLACE, so the row under test is the spliced one"
+else
+  bad "the real newest row already stands at $ELSEWHERE_NAME — the splice cannot be told from the record"
 fi
 
 verify_on() { # verify_on <ledger-file> -> prints the tool's whole say
@@ -221,31 +243,29 @@ elif [ "$SAB_RUNS" = "0" ]; then
 else
   note "the sabotage landed, and the tool it made still runs: --verify recomputes at one fixed place again"
 
-  SAB="$(verify_on "$WORK/elsewhere.json")"
+  # A book holding the spliced row alone. Under the sabotage every row not
+  # standing where the tower stands drifts, and the summary sentences are
+  # about all of them, so against the full book the two fork cases below
+  # were answered by other rows: on Day 79 they stayed green while the row
+  # they are named for went unconvicted. Day 35's rule — a case that sweeps
+  # the whole report cannot tell which row answered it.
+  SAB="$(verify_on "$WORK/elsewhere-alone.json")"
+  ROWLINE="$(echo "$SAB" | grep "^reckon: $LAST_DATE ")"
 
-  if echo "$SAB" | grep -q "^reckon: $LAST_DATE HAS DRIFTED"; then
+  if echo "$ROWLINE" | grep -q "^reckon: $LAST_DATE HAS DRIFTED"; then
     note "the old tool convicts the honest $ELSEWHERE_NAME row"
   else
-    bad "the old tool did not convict the $ELSEWHERE_NAME row — the fixture is not biting"
+    bad "the old tool did not convict the $ELSEWHERE_NAME row — the fixture is not biting" "$ROWLINE"
   fi
 
   # The fork matters as much as the verdict. The row is on the method
   # running now, so it lands in the sameMethod branch and is told a hand
   # moved a number. That sentence is the cost of the fault, and it is what
-  # a stranger would have read.
-  # `was` was in this pattern until Day 24, and it is a row *count* wearing
-  # a grammar. `reckon.js` writes "it was computed under method 2" for one
-  # convicted row and "18 of them were computed under method 2" for many, so
-  # the singular matched only while every row in the ledger stood where the
-  # tower stands. Rehearsed: in a tower moved to Ushuaia the pinned auditor
-  # convicts all 18 method-2 rows, the sentence pluralises, and this case
-  # convicts a suite that is right. Day 16's caution, which I wrote: count
-  # what the case is actually about, never the container it sits in.
-  if echo "$SAB" | grep -qE "computed under method .*, which is the method running now"; then
-    note "and hands it the forgery fork — 'there is no method change to blame'"
+  # a stranger would have read. It is read off the row's own line.
+  if echo "$ROWLINE" | grep -qE "under method [0-9]+, which is the method running now"; then
+    note "and hands it the forgery fork — 'which is the method running now'"
   else
-    bad "the old tool convicted it through the wrong fork" \
-        "$(echo "$SAB" | tail -6)"
+    bad "the old tool convicted it through the wrong fork" "$ROWLINE"
   fi
 
   if echo "$SAB" | grep -q 'number was edited after the day'; then

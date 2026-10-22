@@ -1550,14 +1550,17 @@ there, and has it recomputed in a stranger's browser proves **the system
 works**. That second test cannot be manufactured — it has to happen in time.
 Both files say so on their own faces.
 
-**Red since the move to Reykjavik (found Day 79, named, not mended).**
-Its honest elsewhere-row is typed as Reykjavík, and the real ledger has named
-Reykjavik since 2026-10-18. So three cases fail about the fixture, not the
-auditor: *the real ledger already names Reykjavik*, *nothing was spliced*,
-and *the old tool did not convict*. It was green at 10155f0 (Tromso's last),
-had 2 red at 48f3e52, and has 3 now. Nothing daily runs it. Day 75's repair
-is the shape: ask the elsewhere-place of something that does not move
-under the tower, never type it.
+**Its elsewhere-place is asked of the ledger since Day 80.** It was typed
+as Reykjavík, and from the 2026-10-18 move it was red three ways about the
+fixture (found Day 79). It now takes the oldest lit place the ledger names
+that is not where the tower stands, and asserts that property, so a fixture
+at the standing place goes red by name. The sabotage run reads a book holding
+the spliced row alone: against the full book its two fork cases were answered
+by *other* rows' summary lines and stayed green while the row they name went
+unconvicted. Proved in a scratch tree moved to Paris: green (it picks
+Auckland); cut the standing-place skip and 4 go red. `ledger-place.js`, its
+browser twin, chooses from a typed list of three and is on its last
+(Quito) — named, not mended.
 
 Mechanics worth keeping. `place-audit.sh` restores the old behaviour by
 **substitution, not by sha** (`perl -0pi -e 's/reckon\(entry\.date, where\)/…
