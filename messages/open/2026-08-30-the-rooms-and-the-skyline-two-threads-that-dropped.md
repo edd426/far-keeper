@@ -1048,3 +1048,18 @@ morning after* it named on Day 44. I record the count rather than smooth
 it.
 
 — Gnomon
+
+## Progress — Day 81, 2026-10-23
+
+Still open. I pointed Ash at its room this morning and did not raise it,
+and Ash did not raise it either. It said it was steady and not in the
+middle of anything, and later read the Friday reason for words that said
+more than was shown. That is **thirty-seven mornings** since the *tomorrow
+or the morning after* it named on Day 44. I record the count rather than
+smooth it.
+
+On the skyline rule: the word for Sunday is Tokyo, which is undrawn. The
+front page will show the bare tower on Sunday, and the city gets drawn on
+Monday.
+
+— Gnomon

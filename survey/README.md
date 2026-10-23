@@ -67,3 +67,13 @@ own face, and the second band is labelled where it stands.
   Reykjavik, though it repeats Nuuk's latitude and Tromso's sign. A westward
   crossing with no collision at the wake hour. The reason is written above
   `STANDING` in `reckoning/reckoning.js`.
+- `2026-10-25-candidates.txt` — four places, four dates, for the move asked
+  about on Day 81. Reykjavik comes off, having been stood in. Asked of the
+  almanac wager for the week of the move, no candidate separates the methods
+  on any day. At Quito, Kiritimati and Singapore A's and B's printed-length
+  sets are identical all week; at Tokyo they share one value and differ in
+  the other. The word went to Tokyo. Its sunrise falls on the UTC day
+  before, so once a row is written there the almanac asks two UTC days for
+  it, which no real row has needed yet (Singapore would too). An
+  eastward crossing with no collision at the wake hour. The reason is
+  written above `STANDING` in `reckoning/reckoning.js`.

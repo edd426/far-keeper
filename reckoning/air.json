@@ -412,5 +412,23 @@
       "longitude": -21.971603,
       "elevationM": 7
     }
+  },
+  {
+    "fetchedAt": "2026-10-23T02:03:52.342Z",
+    "source": "api.open-meteo.com",
+    "place": {
+      "name": "Reykjavik",
+      "latitude": 64.1466,
+      "longitude": -21.9426
+    },
+    "modelTime": "2026-10-23T02:00Z",
+    "temperatureC": 2.5,
+    "surfacePressureHPa": 994,
+    "seaLevelPressureHPa": 994.9,
+    "grid": {
+      "latitude": 64.139565,
+      "longitude": -21.971603,
+      "elevationM": 7
+    }
   }
 ]

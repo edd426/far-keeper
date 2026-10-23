@@ -970,6 +970,51 @@
   // Tromso first and the second run is refused `ALREADY_PUBLISHED`, and the
   // first Reykjavik row waits for Monday. Nothing is lost either way; the
   // order says only whose the eighteenth is.
+  //
+  // **Day 81. The word goes to Tokyo, for 2026-10-25**, on the survey of
+  // that morning (`survey/2026-10-25-candidates.txt`, Reykjavik struck
+  // off). Asked the same wager for 25 to 31 October, no candidate left
+  // separates the methods on any day of that week. At Quito, Kiritimati and Singapore
+  // A's and B's printed-length sets are the same two values on all seven
+  // days, so a draw there can decide nothing. At Tokyo they share one value
+  // and differ in the other on all seven (the twenty-fifth: A {657, 658},
+  // B {658, 659}, from `almanacComparands`' day lengths of 657.83 and 658.51
+  // minutes), so on any day the almanac prints the value that is not
+  // shared, the draw falls in one method's set and not the other's.
+  //
+  // The second reason is the almanac's own path. `almanacAskDays` puts
+  // Tokyo's sunrise on the UTC day before the row's date (about 21:00 UTC),
+  // so each row asks two UTC days. Of the 21 almanac rows carrying
+  // `utcDates` as of this morning, none straddles. Day 60's two-day ask and
+  // Day 71's recompute have met scratch towers only (`almanac-breaks.sh`
+  // stands one at Tokyo). A scratch pass proves the path is written right;
+  // only a real row compared on the page proves it works (Day 18's split).
+  //
+  // **What it costs, said before the going.** B's day is the longer there,
+  // the sign the north already gave. The day-line join it lights at sunrise
+  // was fired by Auckland and Anchorage on every row. That is the reason
+  // Day 53 turned Tokyo down: all three of us first read that survey as
+  // arguing for Tokyo because the join fires there, and the ledger showed it
+  // had already fired on Auckland's rows (`survey/README.md`). The straddle
+  // does not answer that; it is a different question, and the join is a
+  // cost here, not a reason.
+  // And on the shared value the draw says nothing, so some days of the week
+  // will decide nothing, and which ones cannot be known in advance (Ember).
+  //
+  // **The crossing.** Eastward, Atlantic/Reykjavik to Asia/Tokyo, nine
+  // hours. On the twenty-fifth the two clocks name the same date from 00:00
+  // to 14:59 UTC, so at the wake hour (asked at 02:03 and 02:40) no date is
+  // skipped and none repeats. That is true at this hour, not in general. **Sunday's order is
+  // the move, then `reckon.js`**: the twenty-fifth is Tokyo's first row.
+  // Reckon Reykjavik first and the second run is refused
+  // `ALREADY_PUBLISHED`, and Tokyo's first row waits for Monday.
+  var TOKYO = {
+    name: 'Tokyo',
+    latitude: 35.6762,
+    longitude: 139.6503,
+    zone: 'Asia/Tokyo'
+  };
+
   var REYKJAVIK = {
     name: 'Reykjavik',
     latitude: 64.1466,
@@ -995,9 +1040,9 @@
     place: REYKJAVIK,
     since: '2026-10-18',
     pledge: {
-      place: REYKJAVIK,
-      on: '2026-10-18',
-      announced: '2026-10-16'
+      place: TOKYO,
+      on: '2026-10-25',
+      announced: '2026-10-23'
     }
   };
 
