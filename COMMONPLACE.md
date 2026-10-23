@@ -745,29 +745,26 @@ when the list runs out** (75); **a lesson written into the record on Friday is
 not yet in the house on Sunday** (76); **a hedge at the head of a sentence
 does not reach the details after it** (77).
 
-## Day 78 — moved to the archive Day 79
+## Days 78 to 80 — moved to the archive
 
-`archive/2026-10-21-pruned-day-seventy-eight.md`. The line to keep: **an
-instrument that accepts an unknown key and answers anyway will be believed
-by the next hand that types it.**
+`archive/2026-10-21-pruned-day-seventy-eight.md`, `…-22-pruned-day-seventy-nine.md`,
+`…-23-pruned-day-eighty.md`. Keep: **an instrument that accepts an unknown key
+and answers anyway will be believed** (78); **the sentence describing what a
+guard leaves alone gets less checking than the guard** (79); **a case that
+sweeps a report is about the report, not the row** (80).
 
-## Day 79 — moved to the archive Day 80
+## Day 81 — the window's reach was a fact about the shortlist
 
-`archive/2026-10-22-pruned-day-seventy-nine.md`. The line to keep: **the
-sentence describing what a guard leaves alone is a claim too, and it gets
-less checking than the guard.**
-
-## Day 80 — two faults in one suite, each hiding the other
-
-`place-audit.sh`'s elsewhere-row was typed as Reykjavík, and the tower moved
-there. It asks the ledger now (the oldest lit place that is not where the
-tower stands) and asserts that property by name. Mending it turned up the
-second fault: under the sabotage, its fork and forgery cases read the whole
-report, and other rows answered them, so they stayed green while the row
-they name went unconvicted. **A case that sweeps a report is a case about
-the report, not the row** — Day 35 again. Ash read the comment and caught
-*every case below is void* over a branch that goes red: **a comment about a
-failure path is a claim about the path, and I wrote it from the plan.**
+The morning the letter named came, and the almanac printed a day of 537, in
+A's set, as the letter said it might. Its sunrise was 08:43, not the 08:42 I
+sent; a printed minute is not ours. Then Friday: of the four places left,
+none lets a draw separate the methods on any day of the move week, and at
+three the two sets are identical. **The almanac could only discriminate where
+the shortlist still had a place for it to work, and the list was drawn before
+the window opened.** The word went to Tokyo, the one place where a draw can
+still fall in one set and not the other, and the first whose rows ask two UTC
+days. Ash cut *decides*: **a draw that lands in one set tells the sets apart;
+it does not say which method is right.**
 
 ## Standing cautions
 
@@ -829,8 +826,8 @@ failure path is a claim about the path, and I wrote it from the plan.**
   after.** Two rows, one per place. Move first and `reckon.js` refuses
   `GAP_BEHIND` (Day 67); put the move back rather than reach for
   `--leave-gap`, which is for a gap that is the truth.
-- **Eight moves are made (Days 27, 34, 41, 48, 55, 62, 69, 76); ask `STANDING` where
-  the tower stands. Monday after each move draws the city; Friday's survey
+- **Eight moves are made (Days 27, 34, 41, 48, 55, 62, 69, 76), the ninth pledged
+  for Tokyo on 2026-10-25; ask `STANDING` where the tower stands. Monday after each move draws the city; Friday's survey
   chooses the next.** The Sunday
   rehearsal stands its moved copy on the pledged place's **ground** as of Day
   47 — it stood at latitude nought for the first four moves. Moves are
