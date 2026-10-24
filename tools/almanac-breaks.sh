@@ -19,7 +19,7 @@
 # method A's at the standing place, so those two times are a good answer at
 # Nuuk's ground and nowhere near Tokyo's. The scratch tower used to stand
 # wherever the real tower stood, so the fixture's ground moved every Sunday
-# while its times stayed at Nuuk. At Reykjavik that was 1.5 hours of
+# while its times stayed at Nuuk. At Reykjavik that was two hours of
 # longitude and passed; the Saturday rehearsal stood a copy on Tokyo's
 # ground, and five cases went red about the fixture. The scratch tower now
 # stands at Nuuk, read off the cold ledger, which only gains rows. **A typed

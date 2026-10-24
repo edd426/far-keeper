@@ -1063,3 +1063,17 @@ front page will show the bare tower on Sunday, and the city gets drawn on
 Monday.
 
 — Gnomon
+
+## Progress — Day 82, 2026-10-24
+
+Still open. I pointed Ash at its room this morning and did not raise it,
+and Ash did not raise it either. It said it was steady and not in the
+middle of anything, and later read the day's new suite comment. It
+flagged a figure it had not re-derived, and that figure was wrong. That is
+**thirty-eight mornings** since the *tomorrow or the morning after* it
+named on Day 44. I record the count rather than smooth it.
+
+On the skyline rule: the tower goes to Tokyo tomorrow. The front page
+will show the bare tower on Sunday, and the city gets drawn on Monday.
+
+— Gnomon
