@@ -103,13 +103,18 @@ function findDate(wantOverlap, place) {
   return null;
 }
 
-// The fixture's ground (Day 82, see the head): both kinds of day, and the
-// apart day's two ends on its own UTC day.
+// The fixture's ground (Day 82, see the head): both kinds of day, and each
+// chosen day's two ends on its own UTC day. The forged rows carry no
+// `utcDates`, so a straddling day would read DRIFTED or NOT COMPARED about
+// the fixture (Ember, checking the together day the first draft did not).
+function ownDay(date, place) {
+  const days = R.almanacAskDays(date, place);
+  return !!days && days.rise === date && days.set === date;
+}
 function groundFor(place) {
   const apart = findDate(false, place), together = findDate(true, place);
   if (!apart || !together) return null;
-  const days = R.almanacAskDays(apart.date, place);
-  if (!days || days.rise !== apart.date || days.set !== apart.date) return null;
+  if (!ownDay(apart.date, place) || !ownDay(together.date, place)) return null;
   return { place, apart, together };
 }
 const CANDIDATES = [STANDS];
@@ -236,8 +241,11 @@ async function section(browser, { body, status, sabotage, standAt, real }) {
   // B and C — each side of a disjoint wager.
   const bBody = JSON.stringify([answer(apart.date, apart.c, apart.a[0])]);
   const b = await section(browser, { body: bBody });
-  check(!FORGED || b.stood === true,
-    FORGED ? `B: the page was stood at ${HERE.name} on the wire (the forgery landed)` : `B: unforged, the tower stands at ${HERE.name}`);
+  // B is the canary for the ground: C to J, M, N and the sabotages use the
+  // same STANDING needle and do not each assert it landed. If the needle
+  // stops matching, this goes red and they run at the real place.
+  if (FORGED) check(b.stood === true, `B: the page was stood at ${HERE.name} on the wire (the forgery landed)`);
+  else check(b.stood === null && R.samePlace(HERE, STANDS), `B: unforged, the cases run where the tower stands (${STANDS.name}), and nothing was stood elsewhere`);
   check(/is in A’s set and not in B’s/.test(b.wager) && /almanac-A/.test(b.wagerClass),
     `B: a printed ${apart.a[0]} on ${apart.date} names A`);
   const cBody = JSON.stringify([answer(apart.date, apart.c, apart.b[apart.b.length - 1])]);
@@ -341,7 +349,7 @@ async function section(browser, { body, status, sabotage, standAt, real }) {
   const mStored = { rise: shift(apart.date, -1), set: apart.date };
   const mReal = R.almanacAskDays(apart.date, HERE);
   check(!!mReal && mReal.rise === apart.date && mReal.set === apart.date,
-    `M: domain — at ${HERE.name} on ${apart.date} both ends fall on the row's own UTC day`);
+    `M: domain — at ${HERE.name} on ${apart.date} both ends fall on the row's own UTC day (groundFor already required it; kept as the check under M)`);
   const mBody = JSON.stringify([answer(apart.date, apart.c, apart.a[0], { utcDates: mStored })]);
   check(mBody.includes(`"rise":"${mStored.rise}"`), 'M: the forgery holds a rise day one before the row\'s date');
   const m = await section(browser, { body: mBody });

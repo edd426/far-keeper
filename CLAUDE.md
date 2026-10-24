@@ -1845,7 +1845,24 @@ Sunday. The scratch tower now takes Nuuk's place off the ledger, and a guard
 asserts it landed. Cut the rewrite in a tree forged onto Tokyo and 6 go
 red. The day-line cases have always stood their own scratch tower at Tokyo,
 and they were green throughout.
-The browser twin's expiry is still open. `ledger-place.js` picks the
+**And `almanac-page.js` chooses its ground (Day 82).** It searched 400
+days at the standing place for a date whose two sets do not touch. At Tokyo
+there is none (B − A runs −0.22 to +0.68 min), and none at Paris or
+Auckland either. Day 81 found the same at the rest of the shortlist. The
+forged cases now stand, on the wire, at the standing place if it has both
+kinds of day on non-straddling days, else at the oldest ledger place that
+does (Longyearbyen, from Tokyo). B is the canary that the forgery landed.
+Cut the fallback in a tree at Tokyo and the domain goes red. The ground
+comes from a window that starts today, so it can differ from one run to the
+next, and the suite prints which place it chose.
+**Handing the rehearsal a clone** (`./tools/move-rehearsal.sh <clone>`) keeps
+a spirit's journal write from tripping its tree hash. But `check-sight.sh`
+then reads RED HERE: the clone's origin is this desk, which has no
+`previews` branch. That red is about the clone and says nothing about
+the tower.
+
+`ledger-place.js`, the browser twin of `place-audit.sh`, still has an
+open expiry. `ledger-place.js` picks the
 place it moves a row to from a typed list (Reykjavik, Quito, Nairobi) of
 names the ledger does not carry, and only Quito is left. A patch that asks
 the ledger instead was drafted on Day 82 and not shipped (one thing a day).
