@@ -1835,6 +1835,25 @@ series line now prints how many rows it left out, under each reason. It had
 counted `wrongDay` and printed it nowhere. `almanac-page.js` cases L, M and
 N, sabotages 6 and 7: the suite goes 8 red against the Day 70 page.
 
+**`almanac-breaks.sh`'s plain cases stand at Nuuk (Day 82).** The stub's
+good answer, rise 09:36 and set 20:56 UTC, is typed. It is the almanac's
+Nuuk answer for 2026-10-01. The scratch tower used to stand wherever the
+real one does, so that answer was a good one only near Nuuk's longitude.
+The Saturday rehearsal stood a copy on Tokyo's ground and five cases went
+red about the fixture, which would have been the real tree's state from
+Sunday. The scratch tower now takes Nuuk's place off the ledger, and a guard
+asserts it landed. Cut the rewrite in a tree forged onto Tokyo and 6 go
+red. The day-line cases have always stood their own scratch tower at Tokyo,
+and they were green throughout.
+The browser twin's expiry is still open. `ledger-place.js` picks the
+place it moves a row to from a typed list (Reykjavik, Quito, Nairobi) of
+names the ledger does not carry, and only Quito is left. A patch that asks
+the ledger instead was drafted on Day 82 and not shipped (one thing a day).
+Its shape: the oldest ledger place that is not the target row's own and is
+lit on its date. Its proof is the target row's own verdict before and after
+the move, not a sweep of every row. Mend it before any Friday that
+chooses Quito.
+
 **Write the expectation from `--wager`, not from a date a hand picked (Day
 65).** Ember's note that morning asked `almanacComparands` for UTC's today,
 the seventh, while Ushuaia was still on the sixth; the note wagered a shared

@@ -8,9 +8,22 @@
 #
 # The tool is copied into a mktemp -d beside a copy of reckoning.js, so no
 # case can write to the real reckoning/almanac.json (Day 10), and the real
-# file's bytes are checked at the end regardless. The stub's answer is built
-# from the coordinates and date the tool actually sent, so a good answer is
-# the answer to the question asked; each bad one breaks exactly one thing.
+# file's bytes are checked at the end regardless. The stub's answer echoes
+# the coordinates and date the tool actually sent; each bad one breaks
+# exactly one thing.
+#
+# **Its times are not built from the question, and this sentence said they
+# were until Day 82.** Rise 09:36 and Set 20:56 are typed: they are what the
+# almanac printed for Nuuk on 2026-10-01, the morning this suite was
+# written. Since Day 60 the tool refuses an end more than half a day from
+# method A's at the standing place, so those two times are a good answer at
+# Nuuk's ground and nowhere near Tokyo's. The scratch tower used to stand
+# wherever the real tower stood, so the fixture's ground moved every Sunday
+# while its times stayed at Nuuk. At Reykjavik that was 1.5 hours of
+# longitude and passed; the Saturday rehearsal stood a copy on Tokyo's
+# ground, and five cases went red about the fixture. The scratch tower now
+# stands at Nuuk, read off the cold ledger, which only gains rows. **A typed
+# answer is a claim about one ground; stand the fixture on that ground.**
 set -u
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 REAL="$ROOT/reckoning/almanac.json"
@@ -25,6 +38,24 @@ DATE=2026-10-01
 fails=0
 ok()  { echo "ok    $1"; }
 bad() { echo "FAIL  $1"; fails=$((fails + 1)); }
+
+# Stand the scratch tower where the stub's typed times belong (see above).
+NUUK="$(node -e "
+const L=require('$ROOT/reckoning/ledger.json');const r=L.find(e=>e.place&&e.place.name==='Nuuk');
+if(r)process.stdout.write(JSON.stringify(r.place));")"
+if [ -z "$NUUK" ]; then
+  bad "the ledger names no Nuuk row — the stub's typed times have no ground to stand on, and the plain cases below are void"
+else
+  node -e "
+const fs=require('fs'),f='$T/reckoning/reckoning.js',s=fs.readFileSync(f,'utf8');
+fs.writeFileSync(f,s.replace(/var STANDING = \{\s*place:[\s\S]*?since:/,'var STANDING = { place: $NUUK, since:'));"
+fi
+STOOD="$(node -e "process.stdout.write(require('$T/reckoning/reckoning.js').STANDING.place.name)" 2>&1)"
+if [ "$STOOD" = Nuuk ]; then
+  ok "the plain cases' scratch tower stands at Nuuk, the ground the stub's 09:36 and 20:56 were printed for"
+else
+  bad "the plain cases' scratch tower stands at '$STOOD', not Nuuk — the rewrite did not land"
+fi
 
 cat > "$T/stub.py" <<'PY'
 import http.server, json, sys, time, urllib.parse
