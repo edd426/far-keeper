@@ -34,8 +34,24 @@
 //
 // Ember's caution, kept as a check: D needs a date whose two sets really
 // overlap and B/C a date whose sets do not. Both are searched for over the
-// coming year at the standing place, and the suite asserts it found each
-// (an empty domain always says yes). Then three sabotages on the wire,
+// coming year, and the suite asserts it found each (an empty domain always
+// says yes).
+//
+// **Searched for at the standing place until Day 82, and the standing
+// place stopped having both.** The Saturday rehearsal stood a copy on
+// Tokyo's ground and the search came back empty: there, B's day runs
+// between 0.2 minutes short of A's and 0.7 long across the next 400 days,
+// so the two printed sets always share a value and no date can separate
+// them. Day 81 found the same at the other three places left on the
+// shortlist. The guard refused loudly, which is right, but it would have
+// refused every morning the tower stood there. M also needs a day whose
+// two ends fall on the row's own UTC day, which Tokyo never gives. So the
+// fixture's ground is now chosen: the standing place if it has both kinds
+// of day and a day that does not straddle, else the oldest place the
+// ledger names that has them, with STANDING forged there on the wire for
+// every forged case. A still reads the real file at the real standing
+// place. **A place where the page's fork has only one branch is a place
+// that cannot test the other branch; stand the test where both exist.** Then three sabotages on the wire,
 // written before the needles: the section never started, the wager's fork
 // collapsed to always-A, and the sets typed instead of computed. Each asserts
 // it landed and that the page still ran.
@@ -48,8 +64,9 @@ const URL = process.env.FAR_KEEPER_URL;
 const EXECUTABLE = process.env.FAR_KEEPER_CHROMIUM_PATH || undefined;
 const ROOT = path.join(__dirname, '..');
 const R = require(path.join(ROOT, 'reckoning', 'reckoning.js'));
-const HERE = R.STANDING.place;
+const STANDS = R.STANDING.place;
 const REAL = JSON.parse(fs.readFileSync(path.join(ROOT, 'reckoning', 'almanac.json'), 'utf8'));
+const LEDGER = JSON.parse(fs.readFileSync(path.join(ROOT, 'reckoning', 'ledger.json'), 'utf8'));
 // The institution's own name carries *Observatory*, and naming the source is
 // owed (Article IV). What is forbidden is the claim, so the needle is the
 // verb and its noun, not the root.
@@ -73,11 +90,11 @@ function shift(iso, days) {
 }
 
 // A date at the standing place whose two sets do / do not share a value.
-function findDate(wantOverlap) {
-  const start = R.todayAt(HERE.zone);
+function findDate(wantOverlap, place) {
+  const start = R.todayAt(place.zone);
   for (let i = 0; i < 400; i++) {
     const date = shift(start, i);
-    const c = R.almanacComparands(date, HERE);
+    const c = R.almanacComparands(date, place);
     if (!c) continue;
     const a = R.printedLengthsFor(c.A.dayLengthMinutes), b = R.printedLengthsFor(c.B.dayLengthMinutes);
     const overlap = a.some((k) => b.includes(k));
@@ -85,6 +102,24 @@ function findDate(wantOverlap) {
   }
   return null;
 }
+
+// The fixture's ground (Day 82, see the head): both kinds of day, and the
+// apart day's two ends on its own UTC day.
+function groundFor(place) {
+  const apart = findDate(false, place), together = findDate(true, place);
+  if (!apart || !together) return null;
+  const days = R.almanacAskDays(apart.date, place);
+  if (!days || days.rise !== apart.date || days.set !== apart.date) return null;
+  return { place, apart, together };
+}
+const CANDIDATES = [STANDS];
+for (const e of LEDGER) {
+  if (e.place && !CANDIDATES.some((p) => R.samePlace(p, e.place))) CANDIDATES.push(e.place);
+}
+let GROUND = null;
+for (const p of CANDIDATES) { GROUND = groundFor(p); if (GROUND) break; }
+const HERE = GROUND ? GROUND.place : STANDS;
+const FORGED = !R.samePlace(HERE, STANDS);
 
 // An answer whose printed length is `length`, rise at A's rounded minute.
 function answer(date, c, length, over) {
@@ -102,7 +137,8 @@ function answer(date, c, length, over) {
   }, over);
 }
 
-async function section(browser, { body, status, sabotage, standAt }) {
+async function section(browser, { body, status, sabotage, standAt, real }) {
+  if (standAt === undefined && FORGED && !real) standAt = HERE;
   const page = await browser.newPage({ viewport: { width: 390, height: 900 } });
   const errors = [];
   page.on('pageerror', (e) => errors.push(String(e)));
@@ -159,8 +195,12 @@ async function section(browser, { body, status, sabotage, standAt }) {
 (async () => {
   const browser = await chromium.launch({ executablePath: EXECUTABLE });
 
-  const apart = findDate(false);
-  const together = findDate(true);
+  const apart = GROUND && GROUND.apart;
+  const together = GROUND && GROUND.together;
+  if (FORGED) {
+    console.log(`      ${STANDS.name} has no date in 400 whose sets do not overlap, or none whose ends sit on its own UTC day,`);
+    console.log(`      so the forged cases stand at ${HERE.name}, the oldest such place on the ledger, on the wire`);
+  }
   check(!!apart, `domain: a date at ${HERE.name} whose two sets do not overlap (${apart && apart.date})`);
   check(!!together, `domain: a date at ${HERE.name} whose two sets overlap (${together && together.date})`);
   if (!apart || !together) {
@@ -170,11 +210,11 @@ async function section(browser, { body, status, sabotage, standAt }) {
   }
 
   // A — the real file.
-  const mine = REAL.filter((r) => r.place && r.place.name === HERE.name &&
-    r.place.latitude === HERE.latitude && r.place.longitude === HERE.longitude);
-  console.log(`      the real almanac.json holds ${mine.length} row(s) for ${HERE.name}`);
+  const mine = REAL.filter((r) => r.place && r.place.name === STANDS.name &&
+    r.place.latitude === STANDS.latitude && r.place.longitude === STANDS.longitude);
+  console.log(`      the real almanac.json holds ${mine.length} row(s) for ${STANDS.name}`);
   const newest = mine[mine.length - 1];
-  const a = await section(browser, {});
+  const a = await section(browser, { real: true });
   check(a.errors.length === 0, `A: no page errors (${a.errors.join('; ') || 'none'})`);
   if (newest && !newest.failed && newest.printedUTC) {
     check(a.ends.includes(newest.printedUTC.rise + ' UTC') && a.ends.includes(newest.printedUTC.set + ' UTC'),
@@ -187,7 +227,7 @@ async function section(browser, { body, status, sabotage, standAt }) {
   } else if (newest) {
     check(/NOT READ/.test(a.report), 'A: the real newest row is a failure and the page says NOT READ');
   } else {
-    check(new RegExp(`not yet\\s+been asked about ${HERE.name}`).test(a.report), 'A: not asked here yet, and the page says so');
+    check(new RegExp(`not yet\\s+been asked about ${STANDS.name}`).test(a.report), 'A: not asked here yet, and the page says so');
   }
   check(!FORBIDDEN.test(a.text), 'A: the section never says agree or observed');
   check(!/NaN|undefined/.test(a.text), 'A: no NaN or undefined in the section');
@@ -196,6 +236,8 @@ async function section(browser, { body, status, sabotage, standAt }) {
   // B and C — each side of a disjoint wager.
   const bBody = JSON.stringify([answer(apart.date, apart.c, apart.a[0])]);
   const b = await section(browser, { body: bBody });
+  check(!FORGED || b.stood === true,
+    FORGED ? `B: the page was stood at ${HERE.name} on the wire (the forgery landed)` : `B: unforged, the tower stands at ${HERE.name}`);
   check(/is in A’s set and not in B’s/.test(b.wager) && /almanac-A/.test(b.wagerClass),
     `B: a printed ${apart.a[0]} on ${apart.date} names A`);
   const cBody = JSON.stringify([answer(apart.date, apart.c, apart.b[apart.b.length - 1])]);
