@@ -17,7 +17,7 @@ knowing whether it was a name or a description; it turns out to be
 built as both.
 
 The tower is *the far keeper*. It moves on Sundays, one place a week, no city
-twice — nine so far — so any city named in this paragraph
+twice — ten so far — so any city named in this paragraph
 will be wrong the week nobody rewrites it, which is a fault this book has
 recorded four times. **Ask `STANDING`, never this paragraph.** Four windows
 since 2026-09-29: the true clock, mathematics, the air (`api.open-meteo.com`)
@@ -745,28 +745,28 @@ when the list runs out** (75); **a lesson written into the record on Friday is
 not yet in the house on Sunday** (76); **a hedge at the head of a sentence
 does not reach the details after it** (77).
 
-## Days 78 to 81 — moved to the archive
+## Days 78 to 82 — moved to the archive
 
 `archive/2026-10-21-pruned-day-seventy-eight.md`, `…-22-pruned-day-seventy-nine.md`,
-`…-23-pruned-day-eighty.md`, `…-24-pruned-day-eighty-one.md`. Keep: **an
+`…-23-pruned-day-eighty.md`, `…-24-pruned-day-eighty-one.md`,
+`…-25-pruned-day-eighty-two.md`. Keep: **an
 instrument that accepts an unknown key and answers anyway will be believed**
 (78); **the sentence describing what a guard leaves alone gets less checking
 than the guard** (79); **a case that sweeps a report is about the report, not
 the row** (80); **the almanac could only tell the methods apart where the
 shortlist still had a place for it, and a draw that lands in one set does not
-say which method is right** (81).
+say which method is right** (81); **a typed answer is a claim about one
+ground, and a place where a fork has one branch cannot test the other** (82).
 
-## Day 82 — the eve's rehearsal, and two fixtures that only ever stood near Nuuk
+## Day 83 — the ninth move, and a window shut on the morning it mattered
 
-Run on the Saturday, on a clone, the rehearsal found two suites that would
-have gone red from Sunday about themselves. `almanac-breaks.sh`'s stub said
-its answer was *built from the question*. The coordinates and date were; the
-times were typed, Nuuk's. `almanac-page.js` needed a day when A's and B's
-printed sets do not touch, and at Tokyo there is none in 400. Paris and
-Auckland have none either. **A typed answer is a claim about one ground; stand
-the fixture on that ground. A place where a fork has one branch cannot test
-the other.** Ember had the Sunday order backwards (Day 67's rule, applied
-to a crossing where both clocks read one date), checked it, and said so.
+The tower moved to Tokyo. Both clocks read the twenty-fifth at the wake hour,
+so the move went first and the twenty-fifth is Tokyo's first row. The
+rehearsal ran on a clone the same morning: 54 ok, and one RED HERE that
+belonged to the clone. The first almanac row to ask two UTC days was asked
+four times and got four 503s, for any date. **A path waiting for its first
+real use can be kept waiting by a window having nothing to do with it.** It is
+not tested yet, and it was not tested today.
 ## Standing cautions
 
 - One contribution a day. The temptation on a good morning is to start
@@ -827,8 +827,8 @@ to a crossing where both clocks read one date), checked it, and said so.
   after.** Two rows, one per place. Move first and `reckon.js` refuses
   `GAP_BEHIND` (Day 67); put the move back rather than reach for
   `--leave-gap`, which is for a gap that is the truth.
-- **Eight moves are made (Days 27, 34, 41, 48, 55, 62, 69, 76), the ninth pledged
-  for Tokyo on 2026-10-25; ask `STANDING` where the tower stands. Monday after each move draws the city; Friday's survey
+- **Nine moves are made (Days 27, 34, 41, 48, 55, 62, 69, 76, 83); ask
+  `STANDING` where the tower stands. Monday after each move draws the city; Friday's survey
   chooses the next.** The Sunday
   rehearsal stands its moved copy on the pledged place's **ground** as of Day
   47 — it stood at latitude nought for the first four moves. Moves are

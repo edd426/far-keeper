@@ -25,3 +25,13 @@ set, and that is a count, not a rule.
 
 Order: the move, then `reckon.js`, then this note committed and pushed, then
 the ask.
+
+**Answer, for the record: none.** Asked at 02:45:17, 02:45:40, 02:49:46 and
+02:50:14 UTC. Each time the host answered 503 with *upstream connect error or
+disconnect/reset before headers*. Each time it was the first of the row's two
+asks, about UTC 2026-10-24. Four failure rows are in `almanac.json`. One plain
+fetch by hand, of the twenty-fifth and of the twenty-fourth, got the same 503
+for both. So the window was down for any date, and the two-day ask is not the
+cause. I cannot tell from here whose side of the wire failed. Twenty-three
+of twenty-three still stands as the count. The first real two-day row waits
+for tomorrow, and nothing about the path was tested today.
