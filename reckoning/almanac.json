@@ -951,5 +951,65 @@
       "rise": "2026-10-24",
       "set": "2026-10-24"
     }
+  },
+  {
+    "date": "2026-10-25",
+    "source": "aa.usno.navy.mil",
+    "place": {
+      "name": "Tokyo",
+      "latitude": 35.6762,
+      "longitude": 139.6503,
+      "zone": "Asia/Tokyo"
+    },
+    "wager": {
+      "computedAt": "2026-10-25T02:45:17.689Z",
+      "method": 2,
+      "A": {
+        "dayLengthMinutes": 657.8284859567208,
+        "allowed": [
+          657,
+          658
+        ]
+      },
+      "B": {
+        "dayLengthMinutes": 658.5090417494898,
+        "allowed": [
+          658,
+          659
+        ]
+      }
+    },
+    "fetchedAt": "2026-10-25T02:45:17.692Z",
+    "failed": "answered 503 with something that is not JSON (asked about UTC 2026-10-24)"
+  },
+  {
+    "date": "2026-10-25",
+    "source": "aa.usno.navy.mil",
+    "place": {
+      "name": "Tokyo",
+      "latitude": 35.6762,
+      "longitude": 139.6503,
+      "zone": "Asia/Tokyo"
+    },
+    "wager": {
+      "computedAt": "2026-10-25T02:45:40.122Z",
+      "method": 2,
+      "A": {
+        "dayLengthMinutes": 657.8284859567208,
+        "allowed": [
+          657,
+          658
+        ]
+      },
+      "B": {
+        "dayLengthMinutes": 658.5090417494898,
+        "allowed": [
+          658,
+          659
+        ]
+      }
+    },
+    "fetchedAt": "2026-10-25T02:45:40.124Z",
+    "failed": "answered 503 with something that is not JSON (asked about UTC 2026-10-24)"
   }
 ]
