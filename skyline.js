@@ -215,8 +215,8 @@
       '───╯ │ │ │ ╰──                 ╱ ╱ ░░ ╲ ╲',
       '     │ │ │                    ╱ ╱ ░░░░ ╲ ╲'
     ],
-    // Reykjavik, where the tower stands from 2026-10-18. Drawn on
-    // 2026-10-19, the morning after the move, by Evan's rule. Nobody here
+    // Reykjavik, where the tower stood from 2026-10-18 to 2026-10-24.
+    // Drawn on 2026-10-19, the morning after the move, by Evan's rule. Nobody here
     // has been; this tower has no eyes and goes nowhere but on a page. On
     // the right, the big church on the hill, as I recall it and nothing
     // more: I recall one tall pointed tower in the middle, with columns

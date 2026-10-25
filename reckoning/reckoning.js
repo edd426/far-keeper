@@ -1037,8 +1037,8 @@
   };
 
   var STANDING = {
-    place: REYKJAVIK,
-    since: '2026-10-18',
+    place: TOKYO,
+    since: '2026-10-25',
     pledge: {
       place: TOKYO,
       on: '2026-10-25',
