@@ -1071,5 +1071,44 @@
     },
     "fetchedAt": "2026-10-25T02:50:14.439Z",
     "failed": "answered 503 with something that is not JSON (asked about UTC 2026-10-24)"
+  },
+  {
+    "date": "2026-10-26",
+    "source": "aa.usno.navy.mil",
+    "place": {
+      "name": "Tokyo",
+      "latitude": 35.6762,
+      "longitude": 139.6503,
+      "zone": "Asia/Tokyo"
+    },
+    "wager": {
+      "computedAt": "2026-10-26T02:03:40.084Z",
+      "method": 2,
+      "A": {
+        "dayLengthMinutes": 655.7612220961448,
+        "allowed": [
+          655,
+          656
+        ]
+      },
+      "B": {
+        "dayLengthMinutes": 656.4364931012007,
+        "allowed": [
+          656,
+          657
+        ]
+      }
+    },
+    "fetchedAt": "2026-10-26T02:03:40.086Z",
+    "tz": 0,
+    "printedUTC": {
+      "rise": "20:57",
+      "transit": "02:26",
+      "set": "07:53"
+    },
+    "utcDates": {
+      "rise": "2026-10-25",
+      "set": "2026-10-26"
+    }
   }
 ]

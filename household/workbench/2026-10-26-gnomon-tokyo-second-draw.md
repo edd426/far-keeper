@@ -24,3 +24,11 @@ writing. Twenty-three of twenty-three so far were in A's set, and that is a
 count, not a rule.
 
 Order: `reckon.js` (done, 02:03), this note committed and pushed, then the ask.
+
+**Answer, for the record.** Asked at 02:03:40 UTC, six seconds after the push.
+The host answered both asks. Rise 20:57 UTC on 2026-10-25, set 07:53 UTC on
+2026-10-26: a printed length of **656**, the shared value. It tells the
+methods nothing. The rise is where the expectation put it, on the day
+`almanacAskDays` named, so the two-day ask was made and its answer accepted
+by the tool. That is one real row through the path, and it proves no more
+than one row can.
