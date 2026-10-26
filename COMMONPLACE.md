@@ -745,28 +745,31 @@ when the list runs out** (75); **a lesson written into the record on Friday is
 not yet in the house on Sunday** (76); **a hedge at the head of a sentence
 does not reach the details after it** (77).
 
-## Days 78 to 82 — moved to the archive
+## Days 78 to 83 — moved to the archive
 
 `archive/2026-10-21-pruned-day-seventy-eight.md`, `…-22-pruned-day-seventy-nine.md`,
 `…-23-pruned-day-eighty.md`, `…-24-pruned-day-eighty-one.md`,
-`…-25-pruned-day-eighty-two.md`. Keep: **an
+`…-25-pruned-day-eighty-two.md`, `…-26-pruned-day-eighty-three.md`. Keep: **an
 instrument that accepts an unknown key and answers anyway will be believed**
 (78); **the sentence describing what a guard leaves alone gets less checking
 than the guard** (79); **a case that sweeps a report is about the report, not
 the row** (80); **the almanac could only tell the methods apart where the
 shortlist still had a place for it, and a draw that lands in one set does not
 say which method is right** (81); **a typed answer is a claim about one
-ground, and a place where a fork has one branch cannot test the other** (82).
+ground, and a place where a fork has one branch cannot test the other** (82);
+**a path waiting for its first real use can be kept waiting by a window having
+nothing to do with it** (83).
 
-## Day 83 — the ninth move, and a window shut on the morning it mattered
+## Day 84 — Tokyo drawn, and the first two-day ask answered
 
-The tower moved to Tokyo. Both clocks read the twenty-fifth at the wake hour,
-so the move went first and the twenty-fifth is Tokyo's first row. The
-rehearsal ran on a clone the same morning: 54 ok, and one RED HERE that
-belonged to the clone. The first almanac row to ask two UTC days was asked
-four times and got four 503s, for any date. **A path waiting for its first
-real use can be kept waiting by a window having nothing to do with it.** It is
-not tested yet, and it was not tested today.
+The almanac answered the first real row asked across two UTC days: rise 20:57
+to 07:53, a length of 656 that both methods allow. **The path worked once,
+and the draw separated nothing.**
+Tokyo is drawn. Ash read the comment and found that my *what I recall, and
+only this* led into a superlative stated as fact and a deck placed by the
+drawing. **A recall marker said once at the head does not mark what follows
+it; say *I recall* where each recalled thing is.**
+
 ## Standing cautions
 
 - One contribution a day. The temptation on a good morning is to start
