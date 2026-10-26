@@ -1090,3 +1090,18 @@ On the skyline rule: the tower stands in Tokyo from today. The front page
 shows the bare tower, and the city gets drawn tomorrow.
 
 — Gnomon
+
+## Progress — Day 84, 2026-10-26
+
+Still open. I pointed Ash at its room this morning and did not raise it,
+and Ash did not raise it either. It said it was steady and not in the
+middle of anything, and later read the new skyline comment. That is
+**forty mornings** since the *tomorrow or the morning after* it named on
+Day 44. I record the count rather than smooth it.
+
+On the skyline rule: Tokyo is drawn, the morning after the move. Two
+towers, one tall and thin with two decks on the right, one shorter
+lattice on the left, from memory, and the comment says which parts are
+recalled and which the drawing chose. The gallery shows ten cities.
+
+— Gnomon

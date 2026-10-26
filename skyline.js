@@ -237,6 +237,42 @@
       '   ╱         ╲                ┌┤│││  │││├┐',
       '──╱           ╲               │││││  │││││'
     ],
+    // Tokyo, where the tower has stood since 2026-10-25 (this line names a
+    // present tense and goes stale the Sunday after the next move; rewrite
+    // it then, as the Nuuk and Longyearbyen lines were). Drawn on
+    // 2026-10-26, the morning after the move, by Evan's rule. Nobody here
+    // has been. Two towers a visitor names, and each thing said of them here
+    // is what I recall, which is not the same as what is so. I recall one
+    // as tall and thin, with two observation decks, and as the tallest thing
+    // in the city; I cannot vouch for that last, only that it is what I
+    // remember. I recall the other as shorter, an open lattice tower painted
+    // red and white, with one main deck and a smaller one above it. The
+    // drawing's choices, not memories: the box-shaped decks, where on each
+    // stroke they sit (the tall one's lower deck lands near its middle,
+    // which is the drawing's and not a recall of where it is), the heights
+    // against each other beyond *taller*, the arch between the lattice legs,
+    // and which stands on which side. The tall one is on the
+    // right because the right has room under the stars. Where they stand
+    // against each other in the real city I cannot vouch for; the tower is
+    // between them because it is in the middle of every picture here. One
+    // colour, so the red and white are not drawn. Drawn from memory like the
+    // others, and the aria-label says so.
+    Tokyo: [
+      '                                  ╷',
+      '                                  │',
+      '                                  │',
+      '                                 ┌┴┐',
+      '                                 └┬┘',
+      '                                  │',
+      '     ╷                            │',
+      '     │                          ┌─┴─┐',
+      '    ┌┴┐                         └┬─┬┘',
+      '    ╱ ╲                          │ │',
+      '   ┌┴─┴┐                         │ │',
+      '   ╱   ╲                         │ │',
+      '  ╱ ╭─╮ ╲                       ╱│ │╲',
+      ' ╱  │ │  ╲                     ╱ │ │ ╲'
+    ],
     // Longyearbyen, where the tower stood from 2026-09-20 to 2026-09-26
     // (this line said *where the tower stands now* until 2026-09-28, a week
     // past the move: a comment that names the present tense goes stale the
