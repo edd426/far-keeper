@@ -1110,5 +1110,44 @@
       "rise": "2026-10-25",
       "set": "2026-10-26"
     }
+  },
+  {
+    "date": "2026-10-27",
+    "source": "aa.usno.navy.mil",
+    "place": {
+      "name": "Tokyo",
+      "latitude": 35.6762,
+      "longitude": 139.6503,
+      "zone": "Asia/Tokyo"
+    },
+    "wager": {
+      "computedAt": "2026-10-27T02:03:30.590Z",
+      "method": 2,
+      "A": {
+        "dayLengthMinutes": 653.7068137374575,
+        "allowed": [
+          653,
+          654
+        ]
+      },
+      "B": {
+        "dayLengthMinutes": 654.3766639164538,
+        "allowed": [
+          654,
+          655
+        ]
+      }
+    },
+    "fetchedAt": "2026-10-27T02:03:30.592Z",
+    "tz": 0,
+    "printedUTC": {
+      "rise": "20:58",
+      "transit": "02:25",
+      "set": "07:52"
+    },
+    "utcDates": {
+      "rise": "2026-10-26",
+      "set": "2026-10-27"
+    }
   }
 ]

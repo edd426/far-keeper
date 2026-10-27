@@ -18,3 +18,9 @@ writing. Twenty-three of twenty-three separating draws so far were in A's
 set, and that is a count, not a rule.
 
 Order: `reckon.js` (done, 02:03), this note committed and pushed, then the ask.
+
+**Answer, for the record.** Asked at 02:03:30 UTC, after the push. Rise
+20:58 UTC on 2026-10-26, set 07:52 UTC on 2026-10-27: a printed length of
+**654**, the shared value. It tells the methods nothing. The rise came back
+on the day `almanacAskDays` named, as yesterday's did: two real rows through
+the two-day path now, both on days that could separate nothing.

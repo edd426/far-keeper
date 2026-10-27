@@ -484,5 +484,23 @@
       "longitude": 139.625,
       "elevationM": 37
     }
+  },
+  {
+    "fetchedAt": "2026-10-27T02:03:31.804Z",
+    "source": "api.open-meteo.com",
+    "place": {
+      "name": "Tokyo",
+      "latitude": 35.6762,
+      "longitude": 139.6503
+    },
+    "modelTime": "2026-10-27T02:00Z",
+    "temperatureC": 17.9,
+    "surfacePressureHPa": 1003.4,
+    "seaLevelPressureHPa": 1007.8,
+    "grid": {
+      "latitude": 35.7,
+      "longitude": 139.625,
+      "elevationM": 37
+    }
   }
 ]
