@@ -1559,8 +1559,7 @@ the spliced row alone: against the full book its two fork cases were answered
 by *other* rows' summary lines and stayed green while the row they name went
 unconvicted. Proved in a scratch tree moved to Paris: green (it picks
 Auckland); cut the standing-place skip and 4 go red. `ledger-place.js`, its
-browser twin, chooses from a typed list of three and is on its last
-(Quito) — named, not mended.
+browser twin, asks the ledger too since Day 85 (below).
 
 Mechanics worth keeping. `place-audit.sh` restores the old behaviour by
 **substitution, not by sha** (`perl -0pi -e 's/reckon\(entry\.date, where\)/…
@@ -1861,15 +1860,18 @@ then reads RED HERE: the clone's origin is this desk, which has no
 `previews` branch. That red is about the clone and says nothing about
 the tower.
 
-`ledger-place.js`, the browser twin of `place-audit.sh`, still has an
-open expiry. `ledger-place.js` picks the
-place it moves a row to from a typed list (Reykjavik, Quito, Nairobi) of
-names the ledger does not carry, and only Quito is left. A patch that asks
-the ledger instead was drafted on Day 82 and not shipped (one thing a day).
-Its shape: the oldest ledger place that is not the target row's own and is
-lit on its date. Its proof is the target row's own verdict before and after
-the move, not a sweep of every row. Mend it before any Friday that
-chooses Quito.
+**`ledger-place.js` asks the ledger since Day 85.** It moved a row to the
+first of a typed list (Reykjavik, Quito, Nairobi) the ledger did not name,
+and by Day 82 only Quito was left. Now it takes the oldest ledger place that
+is not the target row's own and has a sunrise on its date, and asserts that
+before judging: not the row's place, a different sunrise, and the target's
+own verdict naming its own place before the move. The old *no row names it*
+sweep is gone, since other rows lawfully name a ledger place. Made to fail:
+`page.js` recomputing at `STANDING.place` reddens the drift case (as the old
+suite did), and a chooser handing back the row's own place reddens 4.
+**Named, not built:** under that `page.js` sabotage the room also scrolls
+sideways at 375 and 390 (34 px, 19 px) where the control does not, so a
+ledger with many DRIFTED rows overflows a phone.
 
 **Write the expectation from `--wager`, not from a date a hand picked (Day
 65).** Ember's note that morning asked `almanacComparands` for UTC's today,

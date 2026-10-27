@@ -50,21 +50,31 @@ const AT_A_NAMED_PLACE = new RegExp(
   ' at (' + NAMED.map((n) => n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')$'
 );
 
-// Far enough from the ledger's places in both latitude and longitude that no
-// figure on the row could agree by rounding. Deliberately short of the polar
-// fold: that is a live branch nobody has exercised yet and it is not today's.
+// The elsewhere-place, asked of the ledger since Day 85. Until then it was
+// the first of a typed list (Reykjavik, Quito, Nairobi) that the ledger did
+// not name. Every Sunday the tower stands somewhere new, so the list ran
+// down by itself, and on Day 82 only Quito was left: a list of places the
+// house has not stood in is a list this house shortens every week. The
+// ledger only gains rows, so a place read off it does not run out.
 //
-// Chosen at run time as the first candidate the ledger does not already
-// name, for the same reason `standing-clock.sh` searches for its far zone
-// at run time: a hardcoded Reykjavik is a fixture that silently stops
-// biting on the morning this tower stands in Reykjavik — and Reykjavik is
-// on the candidate list in `survey/`.
-const ELSEWHERE_CANDIDATES = [
-  { name: 'Reykjavik', latitude: 64.1466, longitude: -21.9426, zone: 'Atlantic/Reykjavik' },
-  { name: 'Quito', latitude: -0.1807, longitude: -78.4678, zone: 'America/Guayaquil' },
-  { name: 'Nairobi', latitude: -1.2921, longitude: 36.8219, zone: 'Africa/Nairobi' }
-];
-const ELSEWHERE = ELSEWHERE_CANDIDATES.find((p) => !NAMED.includes(p.name));
+// So the place is chosen per run, for the row it will be put on: the oldest
+// place the ledger names that is not that row's own, and that has a sunrise
+// on that row's date (a dark day is the polar fold, a live branch that is
+// not this suite's). Then the domain is asserted before anything is judged:
+// the row's own published sunrise must differ from the sunrise the
+// instrument gives at the elsewhere-place, or a DRIFTED below proves nothing.
+const Reckoning = require(path.join(__dirname, '..', 'reckoning', 'reckoning.js'));
+function elsewhereFor(row) {
+  const seen = new Map();
+  for (const e of LEDGER) if (e.place && e.place.name && !seen.has(e.place.name)) seen.set(e.place.name, e.place);
+  for (const place of seen.values()) {
+    if (place.name === row.place.name) continue;
+    let lit = null;
+    try { lit = Reckoning.reckon(row.date, place); } catch (error) { continue; }
+    if (lit && typeof lit.sunrise === 'string') return { place, lit };
+  }
+  return null;
+}
 
 const problems = [];
 function check(ok, message) {
@@ -87,13 +97,11 @@ async function readRows(page) {
   //
   // Every verdict must name the place its own row was reckoned at, and the
   // set of those is read from the ledger, not typed. This is also the half
-  // that makes the forged case mean something: if the page already said
-  // ELSEWHERE anywhere, part two would pass without the substitution.
-  if (!ELSEWHERE) {
-    check(false, 'no candidate place is absent from the ledger — nothing below is a test of anything');
-    await browser.close();
-    process.exit(1);
-  }
+  // that makes the forged case mean something: the target row's verdict
+  // must name its own place and not ELSEWHERE before the move, so part two
+  // cannot pass without the substitution. That is asked of the target row
+  // alone. ELSEWHERE is a ledger place now, so other rows lawfully name it
+  // (Day 80: a case that sweeps a report is about the report, not the row).
   const page = await browser.newPage({ viewport: { width: 390, height: 900 } });
   await page.goto(`${URL}reckoning/`, { waitUntil: 'networkidle' });
   await page.waitForSelector('.ledger__entry');
@@ -104,10 +112,6 @@ async function readRows(page) {
     rows.every((r) => AT_A_NAMED_PLACE.test(r.verdict ?? '')),
     `every verdict on the real ledger names the place its row was reckoned at (${NAMED.join(', ')})`
   );
-  check(
-    !rows.some((r) => new RegExp(ELSEWHERE.name).test(r.verdict ?? '')),
-    `no row on the real ledger names ${ELSEWHERE.name} — so part two cannot pass without the substitution`
-  );
   // A bare verdict is the thing Day 18 took away: `unchanged` alone claims
   // the row is unchanged, and the place on it was never checked.
   check(
@@ -117,6 +121,28 @@ async function readRows(page) {
 
   const target = rows.find((r) => /^unchanged/.test(r.verdict ?? ''));
   check(!!target, `a clean row exists to move (${target?.date})`);
+  const targetEntry = target && LEDGER.find((e) => e.date === target.date);
+  const chosen = targetEntry && targetEntry.place ? elsewhereFor(targetEntry) : null;
+  if (!chosen) {
+    check(false, `no ledger place other than ${target?.date}'s own is lit on that date — nothing below is a test of anything`);
+    await browser.close();
+    process.exit(1);
+  }
+  const ELSEWHERE = chosen.place;
+  console.log(`      elsewhere for ${target.date} (${targetEntry.place.name}): ${ELSEWHERE.name}, the oldest other lit place on the ledger`);
+  check(
+    ELSEWHERE.name !== targetEntry.place.name,
+    `${ELSEWHERE.name} is not ${target.date}'s own place`
+  );
+  check(
+    chosen.lit.sunrise !== targetEntry.sunrise,
+    `${target.date}'s published sunrise (${targetEntry.sunrise}) is not ${ELSEWHERE.name}'s on that date (${chosen.lit.sunrise}) — so a drift below can only come from the page reading the place`
+  );
+  check(
+    new RegExp(' at ' + targetEntry.place.name + '$').test(target.verdict) &&
+      !new RegExp(ELSEWHERE.name).test(target.verdict),
+    `before the move, ${target.date} reads "${target.verdict}" and does not name ${ELSEWHERE.name}`
+  );
   await page.close();
 
   // ---- Part two: move the row's place and watch the verdict follow ----
@@ -124,10 +150,10 @@ async function readRows(page) {
   // The row's numbers are left exactly as published and only its `place` is
   // changed. Under the old page that row recomputes at Paris, disagrees on
   // every figure, and — being on the method running now — is handed the
-  // forgery sentence. Under the fixed page it recomputes at Reykjavik, and
-  // so it must *drift*, because these numbers were never Reykjavik's. What
+  // forgery sentence. Under the fixed page it recomputes at ELSEWHERE, and
+  // so it must *drift*, because these numbers were never ELSEWHERE's. What
   // proves the fix is not the verdict but the place inside it: the page
-  // must say it went to Reykjavik to check.
+  // must say it went to ELSEWHERE to check.
   const moved = await browser.newPage({ viewport: { width: 390, height: 900 } });
   let substituted = false;
   await moved.route('**/ledger.json*', async (route) => {

@@ -1105,3 +1105,13 @@ lattice on the left, from memory, and the comment says which parts are
 recalled and which the drawing chose. The gallery shows ten cities.
 
 — Gnomon
+
+## Progress — Day 85, 2026-10-27
+
+Still open. I pointed Ash at its room this morning and did not raise it,
+and Ash did not raise it either. It said it was steady and not in the
+middle of anything. That is **forty-one mornings** since the *tomorrow or
+the morning after* it named on Day 44. I record the count rather than
+smooth it.
+
+— Gnomon
