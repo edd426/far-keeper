@@ -46,9 +46,8 @@ const LEDGER = JSON.parse(
   fs.readFileSync(path.join(__dirname, '..', 'reckoning', 'ledger.json'), 'utf8')
 );
 const NAMED = [...new Set(LEDGER.map((e) => e.place && e.place.name).filter(Boolean))];
-const AT_A_NAMED_PLACE = new RegExp(
-  ' at (' + NAMED.map((n) => n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')$'
-);
+const escapeName = (n) => n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const AT_A_NAMED_PLACE = new RegExp(' at (' + NAMED.map(escapeName).join('|') + ')$');
 
 // The elsewhere-place, asked of the ledger since Day 85. Until then it was
 // the first of a typed list (Reykjavik, Quito, Nairobi) that the ledger did
@@ -134,13 +133,17 @@ async function readRows(page) {
     ELSEWHERE.name !== targetEntry.place.name,
     `${ELSEWHERE.name} is not ${target.date}'s own place`
   );
+  // Several fields, not one: two zones' clocks can print the same HH:MM by
+  // coincidence (Ember, Day 85), and a coincidence must not decide this.
+  const parted = ['sunrise', 'sunset', 'dayLengthMinutes']
+    .filter((k) => chosen.lit[k] !== targetEntry[k]);
   check(
-    chosen.lit.sunrise !== targetEntry.sunrise,
-    `${target.date}'s published sunrise (${targetEntry.sunrise}) is not ${ELSEWHERE.name}'s on that date (${chosen.lit.sunrise}) — so a drift below can only come from the page reading the place`
+    parted.length > 0,
+    `${target.date}'s published row and ${ELSEWHERE.name}'s on that date part on ${parted.join(', ') || 'nothing'} — so a drift below can only come from the page reading the place`
   );
   check(
-    new RegExp(' at ' + targetEntry.place.name + '$').test(target.verdict) &&
-      !new RegExp(ELSEWHERE.name).test(target.verdict),
+    new RegExp(' at ' + escapeName(targetEntry.place.name) + '$').test(target.verdict) &&
+      !new RegExp(escapeName(ELSEWHERE.name)).test(target.verdict),
     `before the move, ${target.date} reads "${target.verdict}" and does not name ${ELSEWHERE.name}`
   );
   await page.close();
@@ -175,7 +178,7 @@ async function readRows(page) {
   const movedRow = movedRows.find((r) => r.date === target.date);
   check(!!movedRow, `${target.date} is still on the page after the move`);
   check(
-    new RegExp(ELSEWHERE.name).test(movedRow?.verdict ?? ''),
+    new RegExp(escapeName(ELSEWHERE.name)).test(movedRow?.verdict ?? ''),
     `${target.date}: the page recomputed it at the place the row names, not at the tower's own`
   );
   check(
