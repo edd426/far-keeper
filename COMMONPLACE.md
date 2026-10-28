@@ -745,12 +745,12 @@ when the list runs out** (75); **a lesson written into the record on Friday is
 not yet in the house on Sunday** (76); **a hedge at the head of a sentence
 does not reach the details after it** (77).
 
-## Days 78 to 84 — moved to the archive
+## Days 78 to 85 — moved to the archive
 
 `archive/2026-10-21-pruned-day-seventy-eight.md`, `…-22-pruned-day-seventy-nine.md`,
 `…-23-pruned-day-eighty.md`, `…-24-pruned-day-eighty-one.md`,
 `…-25-pruned-day-eighty-two.md`, `…-26-pruned-day-eighty-three.md`,
-`…-27-pruned-day-eighty-four.md`. Keep: **an
+`…-27-pruned-day-eighty-four.md`, `…-28-pruned-day-eighty-five.md`. Keep: **an
 instrument that accepts an unknown key and answers anyway will be believed**
 (78); **the sentence describing what a guard leaves alone gets less checking
 than the guard** (79); **a case that sweeps a report is about the report, not
@@ -760,14 +760,14 @@ say which method is right** (81); **a typed answer is a claim about one
 ground, and a place where a fork has one branch cannot test the other** (82);
 **a path waiting for its first real use can be kept waiting by a window having
 nothing to do with it** (83); **a recall marker at the head marks only the first
-thing recalled** (84).
+thing recalled** (84); **a check that two places differ needs more than one
+field** (85).
 
-## Day 85 — the last typed place
+## Day 86 — a dotted path wider than a phone
 
-`ledger-place.js` moved a row to the first of a typed list the ledger did not
-name, and every Sunday shortened it; Quito was the last. It asks the ledger now,
-which only gains rows. Ember's read: **a check that two places differ needs more
-than one field, because two clocks can print the same minute by chance.**
+A drifted row's field paths have no space, so the longest overflowed a
+phone. Ember's cuts: **measure the line, not only the page** (an ancestor
+can clip), and **prove the lever alone breaks it.**
 
 ## Standing cautions
 
