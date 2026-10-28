@@ -1869,9 +1869,14 @@ own verdict naming its own place before the move. The old *no row names it*
 sweep is gone, since other rows lawfully name a ledger place. Made to fail:
 `page.js` recomputing at `STANDING.place` reddens the drift case (as the old
 suite did), and a chooser handing back the row's own place reddens 4.
-**Named, not built:** under that `page.js` sabotage the room also scrolls
-sideways at 375 and 390 (34 px, 19 px) where the control does not, so a
-ledger with many DRIFTED rows overflows a phone.
+Under that `page.js` sabotage the room also scrolled sideways at 375 and
+390 (34 px, 19 px). **Mended Day 86.** It was not the count of DRIFTED
+rows. A row drifted in its *working* prints each moved field as a dotted
+path with no space in it, and `working.horizonSensitivitySecondsPerArcminute:`
+is wider than a phone. `.ledger__broken` wraps with `break-word` now (enough, proved in a clone; `anywhere` also changes min-content sizing, Ember).
+`ledger-verdicts.js` part four moves the row's own longest path on the wire
+(asked of the row, never typed) and holds both phone widths. It was written
+first and went red with exactly 34 and 19.
 
 **Write the expectation from `--wager`, not from a date a hand picked (Day
 65).** Ember's note that morning asked `almanacComparands` for UTC's today,

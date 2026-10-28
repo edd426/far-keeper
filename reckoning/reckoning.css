@@ -166,6 +166,9 @@ h3.working-epoch {
 .ledger__broken {
   margin: 0.5rem 0 0;
   padding-left: 1.1rem;
+  /* a moved field prints as a dotted path with no space in it, and the
+     longest is wider than a phone (Day 86; tools/ledger-verdicts.js) */
+  overflow-wrap: break-word;
 }
 
 .ledger__note {

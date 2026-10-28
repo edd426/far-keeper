@@ -170,6 +170,76 @@ async function readRows(page) {
     await wide.close();
   }
 
+  // ---- Part four: a drifted row must not push a phone sideways --------
+  // Day 86. Part three only ever loads the tower as it stands, where the
+  // DRIFTED rows are the three August scars and their broken lines are the
+  // short claim names. A row that drifts in its working prints each moved
+  // field as a dotted path with no space in it, and the longest of those is
+  // wider than a phone. Found on Day 85 under a sabotage of page.js: 34 px
+  // at 375. So this part moves the deepest-named number on the target row
+  // and asks again. The path is the row's own longest, never a typed name,
+  // so a field added later is the one tested if it is longer.
+  const leaves = [];
+  (function walk(node, path) {
+    for (const key of Object.keys(node)) {
+      const value = node[key];
+      const here = path ? `${path}.${key}` : key;
+      // The place is not a claim the recompute checks (Day 18): moving it
+      // moves where the row is recomputed, not a printed broken line.
+      if (key === 'place') continue;
+      if (typeof value === 'number') leaves.push(here);
+      else if (value && typeof value === 'object') walk(value, here);
+    }
+  })(await (await fetch(`${URL}reckoning/ledger.json`)).json().then((book) =>
+    book.find((e) => e.date === target.date)), '');
+  const longest = leaves.sort((a, b) => b.length - a.length)[0];
+  check(!!longest && longest.includes('.'),
+    `${target.date}: the row carries a dotted path to move (${longest})`);
+
+  for (const width of [375, 390]) {
+    const narrow = await browser.newPage({ viewport: { width, height: 900 } });
+    let moved = false;
+    await narrow.route('**/ledger.json*', async (route) => {
+      const response = await route.fetch();
+      const before = await response.text();
+      const entries = JSON.parse(before);
+      const entry = entries.find((e) => e.date === target.date);
+      const keys = longest.split('.');
+      const last = keys.pop();
+      const holder = keys.reduce((o, k) => o[k], entry);
+      holder[last] = holder[last] * 2 + 1.2345678901234567;
+      const body = JSON.stringify(entries, null, 2);
+      moved = body !== before;
+      await route.fulfill({ response, body });
+    });
+    await narrow.goto(`${URL}reckoning/`, { waitUntil: 'networkidle' });
+    await narrow.waitForSelector('.ledger__entry');
+    check(moved, `${width}px: the moved number reached the page`);
+    // The domain before the branch: the row must be DRIFTED and must print
+    // the path, or a green width below is about a row that said nothing.
+    const printed = await narrow.$$eval('.ledger__entry', (rows, args) => {
+      const row = rows.find((r) => r.querySelector('.ledger__date')?.textContent?.trim() === args.date);
+      return row ? Array.from(row.querySelectorAll('.ledger__broken li')).map((li) => li.textContent) : [];
+    }, { date: target.date });
+    check(printed.some((line) => line.startsWith(longest)),
+      `${width}px: the drifted row prints the moved path among ${printed.length} broken lines`);
+    const overflow = await narrow.evaluate(() =>
+      document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    check(overflow <= 0, `${width}px: a row drifted in its working does not scroll the page sideways (${overflow})`);
+    // Ember's two cuts: the page's width is green if an ancestor clips, so
+    // ask the row's own list and every line in it; and the longest path by
+    // characters need not be the widest line, so measure all of them.
+    const spill = await narrow.$$eval('.ledger__entry', (rows, args) => {
+      const row = rows.find((r) => r.querySelector('.ledger__date')?.textContent?.trim() === args.date);
+      const list = row?.querySelector('.ledger__broken');
+      if (!list) return null;
+      return Math.max(list.scrollWidth - list.clientWidth,
+        ...Array.from(list.querySelectorAll('li')).map((li) => li.scrollWidth - li.clientWidth));
+    }, { date: target.date });
+    check(spill !== null && spill <= 0, `${width}px: and no line of that row spills out of its own box (${spill})`);
+    await narrow.close();
+  }
+
   await browser.close();
 
   if (problems.length) {
