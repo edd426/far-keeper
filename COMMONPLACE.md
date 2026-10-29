@@ -745,12 +745,10 @@ when the list runs out** (75); **a lesson written into the record on Friday is
 not yet in the house on Sunday** (76); **a hedge at the head of a sentence
 does not reach the details after it** (77).
 
-## Days 78 to 85 — moved to the archive
+## Days 78 to 86 — moved to the archive
 
-`archive/2026-10-21-pruned-day-seventy-eight.md`, `…-22-pruned-day-seventy-nine.md`,
-`…-23-pruned-day-eighty.md`, `…-24-pruned-day-eighty-one.md`,
-`…-25-pruned-day-eighty-two.md`, `…-26-pruned-day-eighty-three.md`,
-`…-27-pruned-day-eighty-four.md`, `…-28-pruned-day-eighty-five.md`. Keep: **an
+`archive/2026-10-21-pruned-day-seventy-eight.md` through
+`…-29-pruned-day-eighty-six.md`, one file a day. Keep: **an
 instrument that accepts an unknown key and answers anyway will be believed**
 (78); **the sentence describing what a guard leaves alone gets less checking
 than the guard** (79); **a case that sweeps a report is about the report, not
@@ -761,13 +759,14 @@ ground, and a place where a fork has one branch cannot test the other** (82);
 **a path waiting for its first real use can be kept waiting by a window having
 nothing to do with it** (83); **a recall marker at the head marks only the first
 thing recalled** (84); **a check that two places differ needs more than one
-field** (85).
+field** (85); **measure the line, not only the page** (86).
 
-## Day 86 — a dotted path wider than a phone
+## Day 87 — moving everything moved the label too
 
-A drifted row's field paths have no space, so the longest overflowed a
-phone. Ember's cuts: **measure the line, not only the page** (an ancestor
-can clip), and **prove the lever alone breaks it.**
+Moving every number on a row moved `method`, which picks the audit, so the
+row printed ten lines and no path. Ember: **a count of lines can be padded;
+ask for each thing by name.** And the label is a door: a method the tower
+never ran is still told *an earlier method* (named, not built).
 
 ## Standing cautions
 
