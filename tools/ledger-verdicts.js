@@ -187,6 +187,10 @@ async function readRows(page) {
       // The place is not a claim the recompute checks (Day 18): moving it
       // moves where the row is recomputed, not a printed broken line.
       if (key === 'place') continue;
+      // Nor is the method: it is the label that picks which audit the row
+      // gets, and moving it sends the row down the earlier-method branch,
+      // where the working is not checked and no path is printed (Day 87).
+      if (key === 'method' && !path) continue;
       if (typeof value === 'number') leaves.push(here);
       else if (value && typeof value === 'object') walk(value, here);
     }
@@ -196,7 +200,16 @@ async function readRows(page) {
   check(!!longest && longest.includes('.'),
     `${target.date}: the row carries a dotted path to move (${longest})`);
 
-  for (const width of [375, 390]) {
+  // Day 87, the two cuts Day 86 named and did not build: a 320-pixel phone,
+  // the narrowest still sold, and every number on the row moved at once, so
+  // the list is many dotted lines long rather than one. The widths and the
+  // two loads are both asked; neither stands in for the other.
+  const loads = [
+    { name: 'the longest path', paths: [longest] },
+    { name: `all ${leaves.length} numbers`, paths: leaves.slice() },
+  ];
+  for (const load of loads) for (const width of [320, 375, 390]) {
+    const tag = `${width}px, ${load.name}`;
     const narrow = await browser.newPage({ viewport: { width, height: 900 } });
     let moved = false;
     await narrow.route('**/ledger.json*', async (route) => {
@@ -204,17 +217,19 @@ async function readRows(page) {
       const before = await response.text();
       const entries = JSON.parse(before);
       const entry = entries.find((e) => e.date === target.date);
-      const keys = longest.split('.');
-      const last = keys.pop();
-      const holder = keys.reduce((o, k) => o[k], entry);
-      holder[last] = holder[last] * 2 + 1.2345678901234567;
+      for (const path of load.paths) {
+        const keys = path.split('.');
+        const last = keys.pop();
+        const holder = keys.reduce((o, k) => o[k], entry);
+        holder[last] = holder[last] * 2 + 1.2345678901234567;
+      }
       const body = JSON.stringify(entries, null, 2);
       moved = body !== before;
       await route.fulfill({ response, body });
     });
     await narrow.goto(`${URL}reckoning/`, { waitUntil: 'networkidle' });
     await narrow.waitForSelector('.ledger__entry');
-    check(moved, `${width}px: the moved number reached the page`);
+    check(moved, `${tag}: the moved numbers reached the page`);
     // The domain before the branch: the row must be DRIFTED and must print
     // the path, or a green width below is about a row that said nothing.
     const printed = await narrow.$$eval('.ledger__entry', (rows, args) => {
@@ -222,10 +237,23 @@ async function readRows(page) {
       return row ? Array.from(row.querySelectorAll('.ledger__broken li')).map((li) => li.textContent) : [];
     }, { date: target.date });
     check(printed.some((line) => line.startsWith(longest)),
-      `${width}px: the drifted row prints the moved path among ${printed.length} broken lines`);
+      `${tag}: the drifted row prints the longest path among ${printed.length} broken lines`);
+    // Every moved number must print its own line, or the second load is
+    // the first load again under a bigger name. The first try moved the
+    // method too and printed ten lines of sixty-nine, none of them a path.
+    check(printed.length >= load.paths.length,
+      `${tag}: the row prints a broken line for each of the ${load.paths.length} moved numbers (${printed.length})`);
+    // Ember's cut: a count can be filled by other lines while a moved path
+    // prints nothing. A dotted path prints under its own name, so ask for
+    // each by name. (A top-level claim prints under a reader's word, such
+    // as `day length`, so only the count above can speak for those.)
+    const unnamed = load.paths.filter((path) => path.includes('.') &&
+      !printed.some((line) => line.startsWith(`${path}:`)));
+    check(unnamed.length === 0,
+      `${tag}: every moved dotted path is printed by name (${unnamed.length} missing${unnamed.length ? ': ' + unnamed.slice(0, 3).join(', ') : ''})`);
     const overflow = await narrow.evaluate(() =>
       document.documentElement.scrollWidth - document.documentElement.clientWidth);
-    check(overflow <= 0, `${width}px: a row drifted in its working does not scroll the page sideways (${overflow})`);
+    check(overflow <= 0, `${tag}: a row drifted in its working does not scroll the page sideways (${overflow})`);
     // Ember's two cuts: the page's width is green if an ancestor clips, so
     // ask the row's own list and every line in it; and the longest path by
     // characters need not be the widest line, so measure all of them.
@@ -236,7 +264,7 @@ async function readRows(page) {
       return Math.max(list.scrollWidth - list.clientWidth,
         ...Array.from(list.querySelectorAll('li')).map((li) => li.scrollWidth - li.clientWidth));
     }, { date: target.date });
-    check(spill !== null && spill <= 0, `${width}px: and no line of that row spills out of its own box (${spill})`);
+    check(spill !== null && spill <= 0, `${tag}: and no line of that row spills out of its own box (${spill})`);
     await narrow.close();
   }
 

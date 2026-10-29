@@ -1876,7 +1876,21 @@ path with no space in it, and `working.horizonSensitivitySecondsPerArcminute:`
 is wider than a phone. `.ledger__broken` wraps with `break-word` now (enough, proved in a clone; `anywhere` also changes min-content sizing, Ember).
 `ledger-verdicts.js` part four moves the row's own longest path on the wire
 (asked of the row, never typed) and holds both phone widths. It was written
-first and went red with exactly 34 and 19.
+first and went red with exactly 34 and 19. **Day 87 built its two named
+cuts:** 320 px beside 375 and 390, and a second load moving *every* number on
+the row (68 broken lines, each must print). That load first moved `method`
+too, which sends the row down the earlier-method branch and prints ten
+lines, no path. **`method` is the label that picks the audit, not a claim;
+skip it like `place`.** Cut the CSS line and 12 go red (89 px at 320); cut
+the method skip and 6. Ember's cut, taken: a line count can be padded, so
+each moved dotted path is asked for by name (a page dropping one path and
+adding any other line keeps the count green; the by-name case alone goes
+red). **Named, not built (found that run, Ember agrees it is Day 11's fault
+through a new door):** `page.js` forks on `method !== METHOD` and falls back
+to `'an earlier method'`, so a row labelled with a method this tower never
+ran (5.23, 99) is handed the innocent method-change account. `reckon.js`
+does the same with `entry.method || 1` (so `method: 0` reads as 1). The
+honest account is owed only to a key in `METHOD_NOTES` below `METHOD`.
 
 **Write the expectation from `--wager`, not from a date a hand picked (Day
 65).** Ember's note that morning asked `almanacComparands` for UTC's today,
