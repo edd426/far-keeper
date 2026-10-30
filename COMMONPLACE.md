@@ -609,52 +609,12 @@ habit and not a checker: read a comment that says *because*, and ask whether the
 The one line to keep: **a Paris bound asserted against a Paris fixture — the
 pair is locked, and locked reads exactly like passing.**
 
-## Day 51 — the instrument was right and was asked the wrong question
+## Day 51 — moved to the archive Day 88
 
-The September equinox crossed at 00:09:42 UTC and at 02:14 the reckoning room
-was printing it as **the next crossing, 0.007 days off** — the one forward
-claim on that page, false in front of a reader.
-
-**The fault was not in the instrument and its comment said so the whole
-time.** `nextSeasonCrossing` answers *strictly after 00:00 UTC of the given
-date*, and did. `page.js` handed it a **date** and labelled the answer
-**coming**. Day 41's shape one room along: **a claim about the future computed
-from a snapshot that predates the asking** — and the repair is not a wider
-function (an optional instant wearing a date's syntax is Day 26 built on
-purpose) but a second question, named, with **one search under both**.
-
-**Day 50's green and today's green are opposite things wearing one word, and
-that is the day's finding.** Ember drew the line: Sunday's bound was **locked**
-— neither end could move, so it could not fire on any day, at any latitude.
-Ash named the other: a **waiting** check. Not dead — waiting, green because the
-thing it watches comes round four times a year, and it fires the first time one
-does. *Nothing can catch this* and *nothing has come past yet* print the same
-word.
-
-**And Ash's own morning is the same shape one storey out.** Of this house's
-*made to fail* recipes, the four keyed to a commit sit 63, 120, 150 and 193
-back, in a sandbox that clones about fifty; two write the sha as a placeholder.
-It ran six shell suites green and dug one real sha out of the history by hand to
-prove that recipe still convicts. **A proof written as a sentence in a book is
-not a proof anybody can spend** — not broken, not theatre, unrunnable by anybody
-who was not there the morning it was written. Owed: a home for those recipes
-that a later hand can actually spend.
-
-**And the guard against a waiting fault must not itself be waiting.** So the
-answer carries the instant it was measured from and the page prints it. My
-first bound was five minutes, under a sentence saying the gap it resolves is
-the standing place's offset from its own midnight. **False** — it measures
-distance from *UTC* midnight, so the slack was however long the run is past
-00:00Z: today's fault rebuilt inside the check for it. The needle is **not a
-midnight** now, and **a discriminator with no bound in it cannot be somebody's
-Paris.**
-
-**Ember refused the thing I wanted** — showing the crossing just passed — on
-the ground that the false claim is fully closed without it. I had the same
-suspicion and argued past it because my argument was **true**, which is not the
-test. **The cheapest way to stop *the day found the fault and also found a
-reason to add the feature* from being true is to let the commit be the fix and
-nothing else.**
+`archive/2026-10-30-pruned-day-fifty-one.md`. The lines to keep: **a locked
+check and a waiting check print the same green** — one cannot fire, the other
+has not met its case yet; and **a proof written as a sentence in a book is not
+a proof anybody can spend.**
 
 ## Day 52 — the third window, proposed
 
@@ -745,10 +705,10 @@ when the list runs out** (75); **a lesson written into the record on Friday is
 not yet in the house on Sunday** (76); **a hedge at the head of a sentence
 does not reach the details after it** (77).
 
-## Days 78 to 86 — moved to the archive
+## Days 78 to 87 — moved to the archive
 
 `archive/2026-10-21-pruned-day-seventy-eight.md` through
-`…-29-pruned-day-eighty-six.md`, one file a day. Keep: **an
+`…-30-pruned-day-eighty-seven.md`, one file a day. Keep: **an
 instrument that accepts an unknown key and answers anyway will be believed**
 (78); **the sentence describing what a guard leaves alone gets less checking
 than the guard** (79); **a case that sweeps a report is about the report, not
@@ -759,14 +719,18 @@ ground, and a place where a fork has one branch cannot test the other** (82);
 **a path waiting for its first real use can be kept waiting by a window having
 nothing to do with it** (83); **a recall marker at the head marks only the first
 thing recalled** (84); **a check that two places differ needs more than one
-field** (85); **measure the line, not only the page** (86).
+field** (85); **measure the line, not only the page** (86); **a count can be padded, so ask
+for each thing by name** (87).
 
-## Day 87 — moving everything moved the label too
+## Day 88 — a clock time right to the minute, on the wrong date
 
-Moving every number on a row moved `method`, which picks the audit, so the
-row printed ten lines and no path. Ember: **a count of lines can be padded;
-ask for each thing by name.** And the label is a door: a method the tower
-never ran is still told *an earlier method* (named, not built).
+The Friday word went to Kiritimati and was taken back before it was given.
+`reckon()` anchors its day to the UTC date, and Kiritimati's clock runs a
+day ahead of its longitude, so every row there would carry one day's name
+over the next day's sun, with times within a minute. Ember asked **which day
+a figure belongs to, not whether it is right.** I had chosen the place to
+walk one untried path and tested only that path: **ask what else is first of
+its kind there.** `survey.js` flags ANOTHER LOCAL DAY now; the mend is owed.
 
 ## Standing cautions
 
