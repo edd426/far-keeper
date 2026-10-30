@@ -1,0 +1,105 @@
+survey — the tower's own method at each place it might stand
+
+move: 2026-11-01   candidates: 3   dates: 4
+bound: 60 min   witness: 62978 events, latitudes -90…90, largest honest gap 25.628 min, swept 2026-09-03
+The witness now spans the whole sphere, so no row below can be flagged
+`unwitnessed latitude` — that flag has an empty domain and is silent by
+construction, not by finding nothing. The gap ceiling still bites.
+
+No date below is read from the clock. Every one is a constant in this file,
+so this page reproduces from any clone — the tz database aside, which is the
+one input asked of the world and the tower's known seam.
+
+A column dated past today describes that place's geometry. It is not a claim
+that this tower will be reckoning there on that date; under one place a week
+it will not be.
+
+HISTORICAL — has the ledger itself ever fired the day-line join, the acos
+fold, or the rising-point arc, read off reckoning/ledger.json rather than
+asserted in prose (Day 39, extended to the third guard Day 46).
+  86 published rows
+  Paris        24 rows  rising-point arc never fired (12 rows carry it)
+  Auckland     7 rows   day-line join fired on 7 of 7; rising-point arc never fired (7 rows carry it)
+  Anchorage    7 rows   day-line join fired on 7 of 7; rising-point arc never fired (7 rows carry it)
+  Nairobi      7 rows   rising-point arc never fired (7 rows carry it)
+  Longyearbyen 7 rows   rising-point arc never fired (7 rows carry it)
+  Nuuk         7 rows   rising-point arc never fired (7 rows carry it)
+  Ushuaia      7 rows   rising-point arc never fired (7 rows carry it)
+  Tromso       7 rows   rising-point arc never fired (7 rows carry it)
+  Reykjavik    7 rows   rising-point arc never fired (7 rows carry it)
+  Tokyo        6 rows   day-line join fired on 6 of 6; rising-point arc never fired (6 rows carry it)
+
+=== 2026-11-01 — the move ===
+
+CROSS-CHECKED — two methods that share no code, so the gap can convict.
+
+  place          rise    set  gap rise  gap set  standing
+  Quito         05:54  18:01     -0.11    -0.10  inside the witness
+  Kiritimati    06:12  18:15     -0.10    -0.12  inside the witness
+  Singapore     06:46  18:50     -0.10    -0.12  inside the witness
+
+SINGLE-METHOD — method A alone. Checkable against itself, not against the world.
+
+  place             day    drift  rising pt     step  the day-line join
+  Quito          12.12h    +0.03     104.5°   0.59sw  not reached
+  Kiritimati     12.05h    -0.07     104.6°   0.59sw  reached: sunset 1695; ANOTHER LOCAL DAY: rise 2026-11-02, set 2026-11-02
+  Singapore      12.07h    -0.05     104.3°   0.60sw  reached: sunrise -74
+
+=== 2026-09-23 — the equinox ===
+
+CROSS-CHECKED — two methods that share no code, so the gap can convict.
+
+  place          rise    set  gap rise  gap set  standing
+  Quito         06:03  18:09     -0.07    -0.07  inside the witness
+  Kiritimati    06:19  18:25     -0.05    -0.09  inside the witness
+  Singapore     06:54  19:00     -0.06    -0.08  inside the witness
+
+SINGLE-METHOD — method A alone. Checkable against itself, not against the world.
+
+  place             day    drift  rising pt     step  the day-line join
+  Quito          12.11h    +0.01      90.2°   0.73sw  not reached
+  Kiritimati     12.11h    -0.10      90.2°   0.73sw  reached: sunset 1705; ANOTHER LOCAL DAY: rise 2026-09-24, set 2026-09-24
+  Singapore      12.11h    -0.07      90.0°   0.73sw  reached: sunrise -66
+
+=== 2026-12-21 — December solstice ===
+
+CROSS-CHECKED — two methods that share no code, so the gap can convict.
+
+  place          rise    set  gap rise  gap set  standing
+  Quito         06:08  18:16     +0.09    +0.09  inside the witness
+  Kiritimati    06:27  18:29     +0.09    +0.09  inside the witness
+  Singapore     07:01  19:04     +0.09    +0.09  inside the witness
+
+SINGLE-METHOD — method A alone. Checkable against itself, not against the world.
+
+  place             day    drift  rising pt     step  the day-line join
+  Quito          12.14h    +0.00     113.4°  -0.00sw  not reached
+  Kiritimati     12.02h    -0.00     113.4°  -0.00sw  reached: sunset 1709; ANOTHER LOCAL DAY: rise 2026-12-22, set 2026-12-22
+  Singapore      12.05h    -0.00     113.4°   0.01sw  reached: sunrise -59
+
+=== 2026-06-21 — June solstice ===
+
+CROSS-CHECKED — two methods that share no code, so the gap can convict.
+
+  place          rise    set  gap rise  gap set  standing
+  Quito         06:12  18:19     +0.15    +0.15  inside the witness
+  Kiritimati    06:25  18:39     +0.15    +0.15  inside the witness
+  Singapore     07:00  19:13     +0.15    +0.15  inside the witness
+
+SINGLE-METHOD — method A alone. Checkable against itself, not against the world.
+
+  place             day    drift  rising pt     step  the day-line join
+  Quito          12.11h    -0.00      66.6°   0.01sw  not reached
+  Kiritimati     12.23h    -0.00      66.5°   0.01sw  reached: sunset 1719; ANOTHER LOCAL DAY: rise 2026-06-22, set 2026-06-22
+  Singapore      12.20h    +0.00      66.5°   0.00sw  reached: sunrise -60
+
+The day-line column says whether method A's own answer falls outside the UTC
+day of the row's date — the join the two methods went twenty-one days without.
+Paris never reaches it. A place that does is a place where yesterday's repair
+is load-bearing rather than exercised.
+
+ANOTHER LOCAL DAY means the sunrise or sunset the instrument returns for the
+date falls on a different date by the place's own clock: a row written there
+would carry one day's label over another day's sun. The tower should not stand
+at such a place until reckon() is mended (Day 88). It is printed, not refused:
+exit 1 belongs to the bound.

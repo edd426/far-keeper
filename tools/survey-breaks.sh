@@ -354,6 +354,37 @@ else
     || bad "and still exits 0 or 1, never a crash code (got $CODE6)"
 fi
 
+# ---- 8. another local day (Day 88, Ember's find) ----
+# Kiritimati is typed here, and on purpose: what makes it the fixture is its
+# longitude against its clock (−157 against +14), a fact about the place and
+# not about this week's list or this week's sky. No ledger place has the
+# property (Day 88 checked all 86 rows), so it cannot be asked of the ledger.
+
+restore
+KIRI='{"name":"Kiritimati","latitude":1.8721,"longitude":-157.4278,"zone":"Pacific/Kiritimati"}'
+node -e 'const fs=require("fs"),f=process.argv[1];fs.writeFileSync(f,fs.readFileSync(f,"utf8").replace("const CANDIDATES = [","const CANDIDATES = [\n  "+process.argv[2]+","))' "$W/tools/survey.js" "$KIRI"
+if ! grep -qF "$KIRI" "$W/tools/survey.js"; then
+  bad "the fixture was not built — Kiritimati did not land on the scratch shortlist"
+else
+  OUT8="$(run)"
+  grep -qE '^  Kiritimati .*ANOTHER LOCAL DAY: rise 2026-' <<<"$OUT8" \
+    && ok "Kiritimati, whose clock runs a day ahead of its longitude, is flagged ANOTHER LOCAL DAY" \
+    || bad "Kiritimati, whose clock runs a day ahead of its longitude, is flagged ANOTHER LOCAL DAY"
+  grep -qE "^  ${EDGE:-NOEDGE}( |_).*ANOTHER LOCAL DAY" <<<"$OUT8" \
+    && bad "${EDGE:-the edge place}, a ledger place whose rows were all their own day, is not flagged" \
+    || ok "${EDGE:-the edge place}, a ledger place whose rows were all their own day, is not flagged"
+  perl -0pi -e 's/const wrongDay = local\.rise !== date\.iso \|\| local\.set !== date\.iso;/const wrongDay = false;/' "$W/tools/survey.js"
+  if ! grep -q 'const wrongDay = false;' "$W/tools/survey.js"; then
+    bad "sabotage 8 did NOT land — the local-day question is still asked"
+  elif ! answers; then
+    bad "sabotage 8 landed but the tool no longer runs"
+  else
+    run | grep -q 'ANOTHER LOCAL DAY: rise' \
+      && bad "with the question cut, Kiritimati's flag goes (so the case was measuring it)" \
+      || ok "with the question cut, Kiritimati's flag goes (so the case was measuring it)"
+  fi
+fi
+
 # ---- 7. a read tool that writes is a different tool (Day 10) ----
 
 restore

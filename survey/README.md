@@ -77,3 +77,16 @@ own face, and the second band is labelled where it stands.
   it, which no real row has needed yet (Singapore would too). An
   eastward crossing with no collision at the wake hour. The reason is
   written above `STANDING` in `reckoning/reckoning.js`.
+- `2026-11-01-candidates.txt` — three places, four dates, for the move asked
+  about on Day 88. Tokyo comes off, having been stood in. All three left
+  are within two degrees of the equator, where A's and B's printed-length
+  sets coincide on all but one to three days a year (Ember's sweep, Ash's
+  re-run), so nearly every draw there is a null. The word went first to
+  Kiritimati and was taken back before it was given. Ember asked what local
+  date the instrument's sun belongs to there, and it is the next day's on
+  every day of the year: `reckon()` anchors the solar day to the UTC date,
+  and Kiritimati's clock runs a day ahead of its longitude. No ledger row
+  and no other candidate has the fault. This run is the tool once it asks:
+  it prints ANOTHER LOCAL DAY on every Kiritimati row. The word went
+  to Singapore. The reason is written above `STANDING` in
+  `reckoning/reckoning.js`.

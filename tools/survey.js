@@ -112,7 +112,7 @@ const Reckoning = require('../reckoning/reckoning.js');
 const LEDGER_PATH = path.join(__dirname, '..', 'reckoning', 'ledger.json');
 
 // The move this survey is for. A constant, so the committed run reproduces.
-const MOVE_DATE = '2026-10-25';
+const MOVE_DATE = '2026-11-01';
 
 // Hand-kept. Nothing computes this list; it is the keeper's shortlist, and it
 // is meant to be edited each week. `zone` must be a name the clock has heard
@@ -120,7 +120,7 @@ const MOVE_DATE = '2026-10-25';
 // place the tower could not stand in is worth nothing.
 //
 // Day 32: Auckland comes off, having been stood in. Day 39: Anchorage comes
-// off the same way, Day 46 Nairobi, Day 53 Longyearbyen, Day 60 Nuuk, Day 67 Ushuaia, Day 74 Tromso, and Day 81 Reykjavik. No city twice is the rule, and the
+// off the same way, Day 46 Nairobi, Day 53 Longyearbyen, Day 60 Nuuk, Day 67 Ushuaia, Day 74 Tromso, Day 81 Reykjavik, and Day 88 Tokyo. No city twice is the rule, and the
 // honest place to keep it
 // is here — a name removed from the shortlist cannot be chosen by accident,
 // where a name left on it and remembered about
@@ -129,7 +129,6 @@ const MOVE_DATE = '2026-10-25';
 // exactly the kind of thing Day 30 asked *what is a single hand's memory of
 // the truth, with nobody asking it?* about. Named here and not built.
 const CANDIDATES = [
-  { name: 'Tokyo',        latitude:  35.6762, longitude:  139.6503, zone: 'Asia/Tokyo' },
   { name: 'Quito',        latitude:  -0.1807, longitude:  -78.4678, zone: 'America/Guayaquil' },
   { name: 'Kiritimati',   latitude:   1.8721, longitude: -157.4278, zone: 'Pacific/Kiritimati' },
   { name: 'Singapore',    latitude:   1.3521, longitude:  103.8198, zone: 'Asia/Singapore' },
@@ -380,12 +379,20 @@ function report(lines) {
       const r = s.row;
       const drift = r.changeSinceYesterdayMinutes === null
         ? 'none' : signed(r.changeSinceYesterdayMinutes, 2);
+      // Day 88 (Ember's find). `reckon()` anchors the solar day to the UTC
+      // date, so where a clock runs far from its longitude's own time
+      // (Kiritimati: longitude −157, clock +14) the sun it returns for a date
+      // is the next local day's. Its clock times are nearly right, so nothing
+      // looks wrong. Ask the zone what day each event falls on, every row.
+      const local = sunLocalDates(date.iso, place, r);
+      const wrongDay = local.rise !== date.iso || local.set !== date.iso;
       lines.push('  ' + pad(place.name, 13) +
         padLeft((r.dayLengthMinutes / 60).toFixed(2) + 'h', 8) +
         padLeft(drift, 9) +
         padLeft(r.risingPointDegrees.toFixed(1) + '°', 11) +
         padLeft(r.risingPointStepSunWidths.toFixed(2) + 'sw', 9) +
-        '  ' + (s.reach.length ? 'reached: ' + s.reach.join(', ') : 'not reached'));
+        '  ' + (s.reach.length ? 'reached: ' + s.reach.join(', ') : 'not reached') +
+        (wrongDay ? `; ANOTHER LOCAL DAY: rise ${local.rise}, set ${local.set}` : ''));
     }
   }
 
@@ -394,7 +401,21 @@ function report(lines) {
   lines.push('day of the row\'s date — the join the two methods went twenty-one days without.');
   lines.push('Paris never reaches it. A place that does is a place where yesterday\'s repair');
   lines.push('is load-bearing rather than exercised.');
+  lines.push('');
+  lines.push('ANOTHER LOCAL DAY means the sunrise or sunset the instrument returns for the');
+  lines.push('date falls on a different date by the place\'s own clock: a row written there');
+  lines.push('would carry one day\'s label over another day\'s sun. The tower should not stand');
+  lines.push('at such a place until reckon() is mended (Day 88). It is printed, not refused:');
+  lines.push('exit 1 belongs to the bound.');
   return refused;
+}
+
+// The civil date, at the place's own zone, of the sunrise and sunset method A
+// returned for `dateISO`. One Intl call in the house (`civilDateAt`), asked twice.
+function sunLocalDates(dateISO, place, row) {
+  const base = Date.parse(dateISO + 'T00:00:00Z');
+  const at = (m) => Reckoning.civilDateAt(new Date(base + m * 60000), place.zone);
+  return { rise: at(row.working.sunriseUTCMinutes), set: at(row.working.sunsetUTCMinutes) };
 }
 
 function main(argv) {

@@ -248,6 +248,80 @@ else
 fi
 mv "$T/tokyo/tools/almanac.js.orig" "$T/tokyo/tools/almanac.js"
 
+# --- the day-line join on the other end, Day 88 ---
+# Tokyo's sunrise falls on the UTC day before the row's date. Kiritimati's
+# SUNSET falls on the UTC day after (about 04:14 UTC), so there a UTC day's
+# Set belongs to method A's row for the date BEFORE it and its Rise to the row
+# for this one. Until Day 88 no case here, and no real row, had ever asked the
+# set of the next UTC day: the branch had a comment (Day 60) and nothing that
+# walked it. Mirrored from the Tokyo cases. These are rows by method A's date,
+# not by Kiritimati's calendar: `reckon()` hands Kiritimati the next local
+# day's sun under each date (Day 88, above STANDING), which is a fault in the
+# instrument and not in this path, so the tower does not stand there yet.
+KIRI='{ name: "Kiritimati", latitude: 1.8721, longitude: -157.4278, zone: "Pacific/Kiritimati" }'
+KDATE=2026-11-04
+node -e "
+const R=require('$ROOT/reckoning/reckoning.js');const P=$KIRI;
+const hm=m=>{m=Math.round(((m%1440)+1440)%1440);return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0')};
+const sh=(d,n)=>new Date(Date.parse(d)+n*864e5).toISOString().slice(0,10);
+const out={};
+for(const utc of [sh('$KDATE',-1),'$KDATE',sh('$KDATE',1),sh('$KDATE',2)]){
+  const here=R.almanacComparands(utc,P), prev=R.almanacComparands(sh(utc,-1),P);
+  // the UTC day's rise is the row for this date's; its set is the row for the date before's (A's set there is past 1440)
+  out[utc]={rise:hm(here.A.riseUTC),set:hm(prev.A.setUTC-1440),transit:'22:10'};
+}
+require('fs').writeFileSync('$T/kiri.json',JSON.stringify(out));
+"
+mkdir -p "$T/kiri/tools" "$T/kiri/reckoning"
+cp "$ROOT/tools/almanac.js" "$T/kiri/tools/almanac.js"
+cp "$ROOT/reckoning/reckoning.js" "$T/kiri/reckoning/reckoning.js"
+node -e "
+const fs=require('fs'),f='$T/kiri/reckoning/reckoning.js';
+fs.writeFileSync(f,fs.readFileSync(f,'utf8').replace(/var STANDING = \{\s*place:[\s\S]*?since:/,'var STANDING = { place: $KIRI, since:'));"
+KSTRADDLE="$(cd "$T/kiri" && node -e "
+const R=require('./reckoning/reckoning.js');const p=R.STANDING.place;
+const c=R.almanacComparands('$KDATE',p);
+process.stdout.write(p.name+' '+(c&&c.A.riseUTC>=0&&c.A.riseUTC<1440&&c.A.setUTC>=1440?'straddles':'does not straddle'));")"
+if [ "$KSTRADDLE" = "Kiritimati straddles" ]; then ok "the scratch tower stands at Kiritimati and its sunset falls on the UTC day after"
+else bad "the set-side fixture was not built: $KSTRADDLE"; fi
+
+PORT2=$(python3 -c 'import socket;s=socket.socket();s.bind(("127.0.0.1",0));print(s.getsockname()[1])')
+python3 "$T/stub.py" "$PORT2" "$T/kiri.json" & STUB2=$!
+for _ in $(seq 50); do python3 -c "import socket;socket.create_connection(('127.0.0.1',$PORT2),0.1)" 2>/dev/null && break; sleep 0.1; done
+kl() { FAR_KEEPER_ALMANAC_URL="http://127.0.0.1:$PORT2$1" FAR_KEEPER_ALMANAC_TIMEOUT_MS=1000 \
+       FAR_KEEPER_ALMANAC_DATE="$KDATE" node "$T/kiri/tools/almanac.js" 2>&1; }
+KROWS() { node -e "try{const r=require('$T/kiri/reckoning/almanac.json');console.log(JSON.stringify(r[r.length-1]))}catch(e){console.log('{}')}"; }
+KNEXT="$(node -e "process.stdout.write(new Date(Date.parse('$KDATE')+864e5).toISOString().slice(0,10))")"
+
+out=$(kl /dayline); code=$?
+last=$(KROWS)
+if [ "$code" = 0 ] && node -e "
+const r=$last;const R=require('$T/kiri/reckoning/reckoning.js');
+const c=R.almanacComparands(r.date,r.place);
+const m=(n)=>{const t=r.printedUTC[n];const off=(Date.parse(r.utcDates[n])-Date.parse(r.date))/864e5;return +t.slice(0,2)*60+ +t.slice(3)+1440*off};
+const len=m('set')-m('rise');
+const okA=R.printedLengthsFor(c.A.dayLengthMinutes).includes(len);
+if(r.utcDates.rise!=='$KDATE'||r.utcDates.set!=='$KNEXT'||!okA){console.log(JSON.stringify({utcDates:r.utcDates,len}));process.exit(1)}" >/dev/null; then
+  ok "at Kiritimati the rise is asked of UTC $KDATE and the set of $KNEXT, and the printed length lands in A's set"
+else bad "set-side ask: exit $code — $out — $last"; fi
+
+# Sabotage: ask the set of the row's own UTC day. That day's printed Set is
+# the evening before, a day from ours, and the half-day guard must refuse it.
+cp "$T/kiri/tools/almanac.js" "$T/kiri/tools/almanac.js.orig"
+perl -0pi -e 's/const days = Reckoning\.almanacAskDays\(dateISO, place\);/const days = Object.assign(Reckoning.almanacAskDays(dateISO, place) || {}, { set: dateISO });/' "$T/kiri/tools/almanac.js"
+if cmp -s "$T/kiri/tools/almanac.js" "$T/kiri/tools/almanac.js.orig"; then
+  bad "sabotage did NOT land: the set is still asked of the next UTC day"
+elif ! node --check "$T/kiri/tools/almanac.js" 2>/dev/null; then
+  bad "the sabotaged tool does not parse"
+else
+  out=$(kl /dayline); code=$?
+  if [ "$code" = 1 ] && grep -q "not the set of the day asked about" <<<"$out"; then
+    ok "asked of its own UTC day, the evening before's set is refused as another day's event"
+  else bad "the half-day guard did not refuse the set: exit $code — $out"; fi
+fi
+mv "$T/kiri/tools/almanac.js.orig" "$T/kiri/tools/almanac.js"
+kill "$STUB2" 2>/dev/null; wait "$STUB2" 2>/dev/null
+
 # --- the wager, asked of the tool and not of a hand, Day 65 ---
 # Ember's note that morning was worked from UTC's today while the standing
 # place was still on the day before. `--wager` must ask nothing, write nothing,

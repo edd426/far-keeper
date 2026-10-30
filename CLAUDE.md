@@ -615,6 +615,19 @@ the whole report for `NaN`. That the offset is a real, computable fact
 about a dark day, discarded at the same line that discards solar noon, is
 **named and not built** — it belongs beside Ember's altitude.
 
+**Day 88: ANOTHER LOCAL DAY.** `reckon()` anchors the solar day to the UTC
+date. Where a clock runs a day off its longitude's own time (Kiritimati:
+longitude −157, clock +14) the sun it returns under a date is the *next*
+local day's, every day of the year, with clock times within a minute of the
+right day's, so nothing looks wrong. Ember found it reading the Friday diff,
+after the word had nearly gone there. The survey now asks each row the civil
+date of its own rise and set at its own zone and prints the flag; it never
+spends exit 1, which is the bound's. All 86 ledger rows were checked that
+morning and are clean. **Do not stand the tower anywhere the flag fires until
+`reckon()` is mended** (named, not built). `survey-breaks.sh` section 8 types
+Kiritimati on purpose: the property is longitude against clock, not this
+week's list, and no ledger place has it.
+
 **Day 40: the header's founding claim was a told book, and it is a computed
 section now instead of a repaired sentence.** Since Day 22 this file's own
 opening comment said three guards — the acos fold, the day-line join, the

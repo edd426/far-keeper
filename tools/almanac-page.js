@@ -373,6 +373,39 @@ async function section(browser, { body, status, sabotage, standAt, real }) {
     'N: right days and a sunrise thirteen hours out is NOT COMPARED, and not DRIFTED');
   check(/Left out: 1 holding another day/.test(n.series), 'N: the series counts it under its own reason');
 
+  // O — the other end of the day line (Day 88). K walks a sunrise on the UTC
+  // day before; at Kiritimati the SUNSET falls on the UTC day after, a branch
+  // no case and no real row had walked. (The row's sun is the next local
+  // day's there, an instrument fault named above STANDING on Day 88; this
+  // case is about the almanac's join, which follows method A's date either
+  // way.) The sets share nearly every day there,
+  // so the case asks only that the length is joined across the two days, the
+  // set is labelled with the day it was printed for, and the row is compared.
+  const KIRI = { name: 'Kiritimati', latitude: 1.8721, longitude: -157.4278, zone: 'Pacific/Kiritimati' };
+  const oDate = '2026-11-04';
+  const oc = R.almanacComparands(oDate, KIRI);
+  check(!!oc && oc.A.riseUTC >= 0 && oc.A.riseUTC < 1440 && oc.A.setUTC >= 1440,
+    `O: domain — at Kiritimati on ${oDate} the sunset falls on the UTC day after (${oc && oc.A.setUTC.toFixed(1)} min)`);
+  const oAllowA = R.printedLengthsFor(oc.A.dayLengthMinutes), oAllowB = R.printedLengthsFor(oc.B.dayLengthMinutes);
+  const oLen = oAllowA[0];
+  const oRise = Math.round(oc.A.riseUTC);
+  const oBody = JSON.stringify([{
+    date: oDate, source: 'aa.usno.navy.mil', place: KIRI,
+    wager: { computedAt: new Date(Date.now() - 3600000).toISOString(), method: R.METHOD,
+      A: { dayLengthMinutes: oc.A.dayLengthMinutes, allowed: oAllowA },
+      B: { dayLengthMinutes: oc.B.dayLengthMinutes, allowed: oAllowB } },
+    fetchedAt: new Date(Date.now() - 3600000).toISOString(), tz: 0,
+    printedUTC: { rise: hhmm(oRise), transit: null, set: hhmm(oRise + oLen) },
+    utcDates: { rise: oDate, set: shift(oDate, 1) },
+  }]);
+  const o = await section(browser, { body: oBody, standAt: KIRI });
+  check(o.stood === true, 'O: the tower was stood at Kiritimati on the wire');
+  check(o.errors.length === 0, `O: no page errors (${o.errors.join('; ') || 'none'})`);
+  check(new RegExp(`almanac’s day is ${oLen} minutes`).test(o.wager),
+    `O: rise to set across two UTC days is ${oLen}, not ${oLen - 1440}`);
+  check(o.ends.includes(`UTC on ${shift(oDate, 1)}`), 'O: the sunset is labelled with the UTC day it was printed for');
+  check(!/NOT COMPARED/.test(o.report) && !/DRIFTED/.test(o.report), 'O: and is compared, not refused or drifted');
+
   // Sabotage 1 — the section is never started.
   const s1 = await section(browser, { body: bBody, sabotage: (t) => t.replace('    startAlmanac();\n', '\n') });
   check(s1.landed === true, 'sabotage 1: the startAlmanac() call was removed on the wire');
@@ -400,6 +433,13 @@ async function section(browser, { body, status, sabotage, standAt, real }) {
   check(s4.landed === true && s4.stood === true, 'sabotage 4: utcDates ignored, and the tower at Tokyo, both on the wire');
   check(s4.ran, 'sabotage 4: the rest of the page still ran');
   check(!/almanac-A/.test(s4.wagerClass), 'sabotage 4: case K no longer lands in A, so case K was measuring the day offset');
+
+  // Sabotage 4b — the same, at the set end (Day 88).
+  const s4b = await section(browser, { body: oBody, standAt: KIRI,
+    sabotage: (t) => t.replace('var day = row.utcDates && row.utcDates[name];', 'var day = null;') });
+  check(s4b.landed === true && s4b.stood === true, 'sabotage 4b: utcDates ignored, and the tower at Kiritimati, both on the wire');
+  check(!new RegExp(`almanac’s day is ${oLen} minutes`).test(s4b.wager),
+    'sabotage 4b: case O no longer joins the length, so case O was measuring the set end\'s day offset');
 
   // Sabotage 5 — the wrong-day guard removed. Since Day 71 case L is caught
   // by the days check first, so the guard's own case is N.

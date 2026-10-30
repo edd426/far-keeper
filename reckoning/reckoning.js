@@ -1008,6 +1008,59 @@
   // the move, then `reckon.js`**: the twenty-fifth is Tokyo's first row.
   // Reckon Reykjavik first and the second run is refused
   // `ALREADY_PUBLISHED`, and Tokyo's first row waits for Monday.
+  //
+  // **Day 88. The word goes to Singapore, for 2026-11-01**, on the survey of
+  // that morning (`survey/2026-11-01-candidates.txt`, Tokyo struck off). It
+  // was going to be Kiritimati, and the reason it is not is the day's finding.
+  //
+  // The three left are all within two degrees of the equator, and there the
+  // almanac's length almost never tells the methods apart: B − A in day
+  // length is at most 0.010 (Quito), 0.017 (Singapore) and 0.024 minutes
+  // (Kiritimati) over the year from 2026-11-01, so A's and B's printed-length
+  // sets coincide on all but 2, 3 and 1 days of it (Ember's sweep, Ash's
+  // re-run). A draw on a coinciding day is a null, and is not added to the
+  // count of draws that could separate. Singapore's three are 3 November and
+  // two later; even then only the tails separate (A {723, 724}, B {724, 725}).
+  //
+  // Kiritimati was chosen first, for the almanac's set end of the day-line
+  // join (its sunset falls on the UTC day after), which no real row and no
+  // scratch case had walked. Ember, reading the diff, asked what local date
+  // the row's sun belongs to. `reckon()` anchors the solar day to the UTC
+  // date, and Kiritimati's clock (+14) runs a day ahead of its longitude
+  // (−157), so `reckon('2026-11-01', Kiritimati)` returns the sun of 2
+  // November there: on all 365 days from 2026-11-01, and with clock times
+  // within a minute of the right day's, so nothing looks wrong. Of the 86
+  // rows in the ledger, none has this fault, and neither has Quito or
+  // Singapore on any day. Standing at Kiritimati now would publish a row a
+  // week under one day's name and another day's sun. So the tower does not go
+  // there until `reckon()` is mended, and `survey.js` asks the question of
+  // every row now (ANOTHER LOCAL DAY). Named, not built: the mend.
+  //
+  // So Singapore. Its sunrise falls on the UTC day before, the end Tokyo has
+  // walked on five real rows, so the almanac path is not new. What is new is
+  // small: one day in the move week, the third, on which a printed 723 or
+  // 725 would fall in one method's set and not the other's. Quito is the
+  // other choice, and its crossing is westward from Tokyo by fourteen hours:
+  // at the wake hour Quito is still on 31 October, a morning lost to
+  // `ALREADY_PUBLISHED`.
+  //
+  // **The crossing.** Westward, Asia/Tokyo to Asia/Singapore, one hour. The
+  // two clocks name different dates only from 15:00 to 15:59 UTC, so at the
+  // wake hour (02:03, 02:40) no date is skipped and none repeats. That is true
+  // at this hour, not in general. **Sunday's order is the move, then
+  // `reckon.js`**: the first is Singapore's first row. Reckon Tokyo first and
+  // it takes the first, and Singapore's first row waits for Monday.
+  //
+  // After Sunday the shortlist holds Quito and Kiritimati, and Kiritimati
+  // cannot be stood in until the mend. Under one place a week the list runs
+  // out within a fortnight unless a hand adds to it.
+  var SINGAPORE = {
+    name: 'Singapore',
+    latitude: 1.3521,
+    longitude: 103.8198,
+    zone: 'Asia/Singapore'
+  };
+
   var TOKYO = {
     name: 'Tokyo',
     latitude: 35.6762,
@@ -1040,9 +1093,9 @@
     place: TOKYO,
     since: '2026-10-25',
     pledge: {
-      place: TOKYO,
-      on: '2026-10-25',
-      announced: '2026-10-23'
+      place: SINGAPORE,
+      on: '2026-11-01',
+      announced: '2026-10-30'
     }
   };
 
