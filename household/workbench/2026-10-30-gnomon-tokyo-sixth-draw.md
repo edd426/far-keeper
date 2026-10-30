@@ -18,3 +18,8 @@ writing. Twenty-three of twenty-three separating draws so far were in A's
 set, and that is a count, not a rule.
 
 Order: `reckon.js` (done, 02:03), this note committed and pushed, then the ask.
+
+**Answer, for the record.** Asked at 02:03:48 UTC, after the push. Rise
+21:01 UTC on 2026-10-29, set 07:49 UTC on 2026-10-30: a printed length of
+**648**, the shared value. It tells the methods nothing. Five real rows
+through the two-day path now, all on days that could separate nothing.
