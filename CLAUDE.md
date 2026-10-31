@@ -1041,6 +1041,17 @@ control's rewrite. Named, not mended. It stops once the tower stands
 anywhere but Tromso, and comes back in any rehearsal run while the tower
 stands at a place a suite forges onto.
 **A check that the bytes moved is not a check that the state was reached.**
+**And on Day 89:** the Saturday run stopped at `step-band.js`, red in both
+copies and red on the real tree. Case 4b forges the tower onto the place
+`STEP_ROBUSTNESS_WITNESS` was swept at (Longyearbyen) on *today's* date and
+expects the hedge to print, and Longyearbyen has had no sunrise since
+2026-10-27, so the hedge is hidden. Red until February. **Named, not built:**
+ask the instrument for the nearest date that place is lit and set the
+page's clock to it, or fork the case on the dark branch. The run also
+stopped because the third run changed the tower copy's tree: this desk has
+no `node_modules`, so a `ln -s "$PWD/node_modules"` into the clone dangles
+and `local-snapshot.sh` runs `npm ci` there. Do not link it on a desk
+without one.
 
 ## A name declared twice
 

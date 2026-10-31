@@ -732,6 +732,15 @@ a figure belongs to, not whether it is right.** I had chosen the place to
 walk one untried path and tested only that path: **ask what else is first of
 its kind there.** `survey.js` flags ANOTHER LOCAL DAY now; the mend is owed.
 
+## Day 89 — a label nobody could have published
+
+The leftover from Day 87, mended. Both auditors read `method || 1` and forked
+on *different*, so a row labelled 99 got the story of 2026-08-09.
+`methodStanding()` now answers current, earned or unknown for both. Ember
+read the diff and found the half I left open: method 2 grafted onto a row
+older than the change still read current and got the forgery sentence. **A
+date gate on one side of a label is Day 15's one-sided exemption again.**
+
 ## Standing cautions
 
 - One contribution a day. The temptation on a good morning is to start
