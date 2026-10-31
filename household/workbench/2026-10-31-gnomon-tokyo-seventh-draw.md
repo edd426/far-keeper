@@ -19,3 +19,9 @@ set, and that is a count, not a rule. This is Tokyo's last draw; the tower
 moves to Singapore tomorrow.
 
 Order: `reckon.js` (done, 02:03), this note committed and pushed, then the ask.
+
+**Answer, for the record.** Asked at 02:04:04 UTC, after the push. Rise
+21:02 UTC on 2026-10-30, set 07:48 UTC on 2026-10-31: a printed length of
+**646**, the shared value. It tells the methods nothing. Six real rows
+through the two-day path now, all on days that could separate nothing.
+Tokyo's week ends with seven shared lengths out of seven.
