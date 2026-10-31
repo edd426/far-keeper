@@ -968,7 +968,7 @@
         'method’s own answer — were held the same way, one path at a time.';
     } else if (paths) {
       line += ' The ' + paths + ' numbers of its working are not among them: this ' +
-        'row was computed under method ' + (published.method || 1) + ', whose ' +
+        'row was computed under method ' + window.Reckoning.methodStanding(published).label + ', whose ' +
         'arithmetic is no longer in this file, so nothing here or anywhere can ' +
         'recompute what it showed. That is not a claim it drifted. It is this ' +
         'page saying its working can never be checked by anyone.';
@@ -1058,6 +1058,12 @@
         'not a claim that it drifted and not a claim that it stands — it is this ' +
         'page saying it could not check.';
       var fresh, broken = [], deepChecked = false;
+      // Day 89. Asked before the recompute, of the one rule both auditors
+      // share. A label this tower never ran (or had stopped running by the
+      // row's date) is a line that matches nothing it could have published,
+      // so it is listed and the row cannot read unchanged.
+      var standing = window.Reckoning.methodStanding(published);
+      if (!unplaced && standing.kind === 'unknown') broken.push('method: ' + standing.why);
       try {
         if (unplaced) throw new Error(unplaced);
         fresh = window.Reckoning.reckon(published.date, where);
@@ -1104,7 +1110,7 @@
         broken.push('could not recompute this entry: ' + error.message);
       }
 
-      var method = published.method || 1;
+      var method = standing.label;
       head.appendChild(el('span', 'ledger__method', 'method ' + method));
 
       // The green word was `holds` until Day 11, and `holds` was taking
@@ -1154,10 +1160,27 @@
         // and nothing about which side to believe. If the method it was
         // computed under is not the one running now, say so, and say what
         // changed — the verdict is the alarm, this is the account.
-        if (method !== window.Reckoning.METHOD) {
+        if (standing.kind === 'unknown') {
+          // Day 89. Until today this row fell into the branch below and was
+          // told the story of 2026-08-09, with *an earlier method* filling
+          // the gap where its label had no note. Neither that account nor the
+          // forgery sentence is earned: the page can see the label and its
+          // recomputation disagree, and nothing about when or why. So it
+          // says what it compared and stops (Day 71's rule for a verdict).
+          row.appendChild(el('p', 'ledger__note',
+            'This entry ' + standing.why + '. So the page has no account of ' +
+            'it to give: the change of method on ' +
+            window.Reckoning.METHOD_CHANGED_ON + ' does not explain a label like ' +
+            'this one, and a wrong label alone does not show which of the numbers, ' +
+            'if any, were edited. The figures above were recomputed under method ' +
+            window.Reckoning.METHOD + ', the method running in your browser now. ' +
+            'What this page can see is that the label and the recomputation ' +
+            'disagree, not when or why. The commits that touched ' +
+            'reckoning/ledger.json are where to look.'));
+        } else if (standing.kind === 'earned') {
           row.appendChild(el('p', 'ledger__note',
             'This entry was computed under method ' + method + ': ' +
-            (window.Reckoning.METHOD_NOTES[method] || 'an earlier method') + '. ' +
+            standing.note + '. ' +
             'The tower now runs method ' + window.Reckoning.METHOD + ': ' +
             window.Reckoning.METHOD_NOTES[window.Reckoning.METHOD] + '. ' +
             'The method changed on ' + window.Reckoning.METHOD_CHANGED_ON + ', after an ' +

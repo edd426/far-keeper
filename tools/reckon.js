@@ -50,7 +50,7 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 const LEDGER = path.join(ROOT, 'reckoning', 'ledger.json');
 const { reckon, STANDING, todayAt, samePlace, METHOD, CLAIM_INTRODUCED, claimApplies,
-        deepDifferences, deepPathCount } =
+        deepDifferences, deepPathCount, methodStanding } =
   require(path.join(ROOT, 'reckoning', 'reckoning.js'));
 
 function readLedger() {
@@ -360,6 +360,7 @@ function verify(entries) {
   let unplaced = 0;
   let dark = 0;
   let deepUncheckable = 0;
+  let unknownMethod = 0;
   for (const entry of entries) {
     // The row is recomputed at the place the row names, never at PARIS.
     // See the long note above `placeProblem` — until Day 18 this line read
@@ -385,8 +386,14 @@ function verify(entries) {
     // witness (Day 31's own words, and Day 2's rule about a tool that cannot
     // see).
     const deep = deepDifferences(entry, fresh);
-    if (deep === null) deepUncheckable += 1;
-    const diffs = differences(entry, fresh).concat(deep || []);
+    // Day 89. A label naming a method this tower never ran (or had stopped
+    // running by the row's date) is itself a line that no longer matches
+    // anything the tower could have published, so it goes in the list and
+    // the row cannot read unchanged. See `methodStanding` in reckoning.js.
+    const standing = methodStanding(entry);
+    if (deep === null && standing.kind === 'earned') deepUncheckable += 1;
+    const diffs = (standing.kind === 'unknown' ? [`method: ${standing.why}`] : [])
+      .concat(differences(entry, fresh), deep || []);
     if (diffs.length === 0) {
       // The place is inside the verdict rather than printed beside it,
       // because what was established is *unchanged given this place* and
@@ -429,17 +436,22 @@ function verify(entries) {
         console.log(`reckon: ${entry.date} unchanged at ${where.name} since it was published` +
           (deep === null
             ? ` — but not its working: ${held} paths of it were published under method ` +
-              `${entry.method || 1}, and this file cannot recompute them.`
+              `${standing.label}, and this file cannot recompute them.`
             : `, working and all — ${held} paths of it held besides the claims.`));
       }
     } else {
-      const entryMethod = entry.method || 1;
-      const current = entryMethod === METHOD;
+      const entryMethod = standing.label;
+      const current = standing.kind === 'current';
       console.log(`reckon: ${entry.date} HAS DRIFTED, recomputed at ${where.name}` +
         (current
           ? ` — under method ${entryMethod}, which is the method running now`
-          : ` — published under method ${entryMethod}; the tower now runs method ${METHOD}`));
-      if (current && clockOffsetMoved(entry, fresh)) {
+          : standing.kind === 'unknown'
+            ? ` — ${standing.why}`
+            : ` — published under method ${entryMethod}; the tower now runs method ${METHOD}`));
+      if (standing.kind === 'unknown') {
+        unknownMethod += 1;
+        for (const line of diffs) console.log(`reckon:   ${line}`);
+      } else if (current && clockOffsetMoved(entry, fresh)) {
         // Day 66. It does not clear the row: an edit can sit on top of a
         // changed clock, so the fields the gap does not account for are
         // printed apart and keep the older sentence.
@@ -467,7 +479,7 @@ function verify(entries) {
       }
     }
   }
-  const drifted = sameMethod + methodMoved + clockLawOnly;
+  const drifted = sameMethod + methodMoved + clockLawOnly + unknownMethod;
   if (deepUncheckable > 0) {
     console.log('');
     console.log(`reckon: ${deepUncheckable} entr${deepUncheckable === 1 ? 'y shows' : 'ies show'} a working this file can never check.`);
@@ -502,6 +514,16 @@ function verify(entries) {
         console.log(`reckon: ${clockLaw - clockLawOnly} of those also moved in a field the gap does not account for,`);
         console.log('reckon: and that part is counted with the rows below.');
       }
+    }
+    if (unknownMethod > 0) {
+      // Day 89. Neither the method-change account nor the forgery sentence:
+      // the label is wrong, and that is all this desk can see. It says what
+      // it compared and no cause (Day 71's rule for a verdict).
+      console.log(`reckon: ${unknownMethod} of them ${unknownMethod === 1 ? 'carries' : 'carry'} a method label this tower never ran on that date.`);
+      console.log('reckon: there is no method change to account for that, and no way to say');
+      console.log('reckon: from here when or why the label moved. The figures were recomputed under');
+      console.log(`reckon: method ${METHOD} and are listed with the label. Read the commits that touched`);
+      console.log('reckon: reckoning/ledger.json.');
     }
     if (sameMethod > 0) {
       console.log(`reckon: ${sameMethod} of them ${sameMethod === 1 ? 'was' : 'were'} computed under method ${METHOD}, which is the method running now.`);

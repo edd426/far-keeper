@@ -67,6 +67,80 @@
   };
   var METHOD_CHANGED_ON = '2026-08-09';
 
+  // What a row's `method` label can honestly be said to mean. Day 89, the
+  // leftover named on Day 87 and agreed by Ember. Until then both auditors
+  // read `row.method || 1` and forked on *different from METHOD*, and the
+  // page's fallback words supplied the rest: a row labelled 5.23 or 99 was
+  // handed the innocent account of the 2026-08-09 method change, and a row
+  // labelled 0 was read as method 1. Day 11's fault through a new door — a
+  // check that has only ever met one cause explains the next as that one.
+  //
+  // So the label is asked one question, here, and both auditors call this
+  // (the `CLAIM_INTRODUCED` argument: one date the tower wrote about itself
+  // has one true answer, and two copies of the rule are two chances to
+  // disagree in the copy we cannot reach).
+  //
+  //   current — the label is METHOD.
+  //   earned  — a method this tower ran, and ran on the row's date. Absence
+  //             is method 1 by definition, so the field missing counts, but
+  //             only on a row dated before METHOD_CHANGED_ON: method 1 had
+  //             stopped by then, and a later row without the field is a row
+  //             someone took the field off.
+  //   unknown — anything else: 0, null, a string, a fraction, a number this
+  //             tower never ran, or one it had stopped running by that date.
+  //             The page and the desk can see the label and the arithmetic
+  //             disagree, and nothing about when or why, so `why` names only
+  //             what was compared.
+  //
+  // With two methods, `METHOD_CHANGED_ON` is the only boundary there is. A
+  // third method needs a date for each change, and this function is where
+  // it goes. The boundary is read against the row's `date`, a standing-place
+  // day, while the change was an instant; every row so far was written near
+  // 02:00 UTC, so the two never part, but a row written far west of UTC on
+  // the change's own day could fall on the wrong side (Ember). A row with no
+  // string date is never earned, and its `why` says "date of undefined".
+  //
+  // An unknown label is listed among a row's broken lines, so the row reads
+  // DRIFTED. Ember argued for a word of its own, since DRIFTED is heard as
+  // *the figures disagree*. Kept, for now, on this ground: the label is part
+  // of the row as published, and every row this tower has published carried
+  // a label it ran on that date, so a label that names nothing is a field
+  // that has moved. The list under the word says which field. A fourth word
+  // is named, not built.
+  function methodStanding(row) {
+    var absent = !row || row.method === undefined;
+    var m = absent ? 1 : row.method;
+    var dated = row && typeof row.date === 'string';
+    if (m === METHOD) {
+      // Ember's catch, the same morning: the graft half (Day 15). A label of
+      // METHOD on a row dated before the change claims a method that had not
+      // begun, and read as current it was handed the forgery sentence.
+      if (dated && row.date < METHOD_CHANGED_ON) {
+        return { kind: 'unknown', method: m, label: String(m),
+          why: 'labelled method ' + m + ', and this tower had not begun running ' +
+            'method ' + m + ' until ' + METHOD_CHANGED_ON + ', after this row\u2019s ' +
+            'date of ' + row.date };
+      }
+      return { kind: 'current', method: m, label: String(m) };
+    }
+    var ran = typeof m === 'number' && Number.isInteger(m) && m >= 1 && m < METHOD &&
+      Object.prototype.hasOwnProperty.call(METHOD_NOTES, m);
+    var label = absent ? '1' : JSON.stringify(m);
+    if (!ran) {
+      return { kind: 'unknown', method: m, label: label,
+        why: 'labelled method ' + label + ', which this tower never ran; it has ' +
+          'run methods ' + Object.keys(METHOD_NOTES).join(' and ') + ' and no other' };
+    }
+    if (!(dated && row.date < METHOD_CHANGED_ON)) {
+      return { kind: 'unknown', method: m, label: label,
+        why: (absent ? 'carries no method field, which means method 1'
+                     : 'labelled method ' + label) +
+          ', and this tower had stopped running method ' + m + ' on ' +
+          METHOD_CHANGED_ON + ', before this row\u2019s date of ' + (row && row.date) };
+    }
+    return { kind: 'earned', method: m, label: String(m), note: METHOD_NOTES[m] };
+  }
+
   // ---- When each claim was born ----
   //
   // Day 15. The ledger is cold, so an entry written before the tower
@@ -492,8 +566,7 @@
   //
   // Returns null when the row cannot be asked at all, with the reason.
   function deepDifferences(published, recomputed) {
-    var method = published.method || 1;
-    if (method !== METHOD) {
+    if (methodStanding(published).kind !== 'current') {
       // Not a clean row and not a drifted one. The arithmetic that wrote
       // this working is gone from this file, so there is nothing here that
       // could recompute it, and counting it among the quiet rows would be
@@ -3155,6 +3228,7 @@
     METHOD: METHOD,
     METHOD_NOTES: METHOD_NOTES,
     METHOD_CHANGED_ON: METHOD_CHANGED_ON,
+    methodStanding: methodStanding,
     CROSS_CHECK_MAX_GAP_MINUTES: CROSS_CHECK_MAX_GAP_MINUTES,
     CROSS_CHECK_WITNESS: CROSS_CHECK_WITNESS,
     STEP_ROBUSTNESS_WITNESS: STEP_ROBUSTNESS_WITNESS,

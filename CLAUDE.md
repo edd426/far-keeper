@@ -1898,12 +1898,24 @@ skip it like `place`.** Cut the CSS line and 12 go red (89 px at 320); cut
 the method skip and 6. Ember's cut, taken: a line count can be padded, so
 each moved dotted path is asked for by name (a page dropping one path and
 adding any other line keeps the count green; the by-name case alone goes
-red). **Named, not built (found that run, Ember agrees it is Day 11's fault
-through a new door):** `page.js` forks on `method !== METHOD` and falls back
-to `'an earlier method'`, so a row labelled with a method this tower never
-ran (5.23, 99) is handed the innocent method-change account. `reckon.js`
-does the same with `entry.method || 1` (so `method: 0` reads as 1). The
-honest account is owed only to a key in `METHOD_NOTES` below `METHOD`.
+red). **A method label this tower never ran (found Day 87, mended Day 89).**
+`page.js` forked on `method !== METHOD` and fell back to `'an earlier
+method'`, so a row labelled 5.23 or 99 was handed the method-change story,
+and `reckon.js` read `method: 0` as 1. Both now ask
+`Reckoning.methodStanding(row)`: **current** (METHOD, on a row dated on or
+after `METHOD_CHANGED_ON`), **earned** (a `METHOD_NOTES` key below METHOD on
+a row dated before it; a missing field is method 1), or **unknown**, with a
+`why` naming only what was compared. An unknown label is listed as a broken
+line, so the row reads DRIFTED and `--verify` exits 1. The date gates are
+Ember's symmetric half: method 2 grafted onto 2026-08-06 was being handed
+the forgery sentence. `./tools/method-label.sh` (19 checks, four sabotages)
+and `./scripts/local-snapshot.sh tools/method-label.js` (forged on the wire,
+page sabotaged on the wire). **Named, not built:** a fourth verdict word for
+a row whose only fault is its label (Ember: DRIFTED is heard as *the figures
+disagree*); and five fixture pickers that still read `r.method || 1`
+(`clock-law-desk.sh`, `clock-law.js`, `ledger-verdicts.js`,
+`ledger-working.js` ×3), harmless on the real ledger and a second copy of
+the rule all the same.
 
 **Write the expectation from `--wager`, not from a date a hand picked (Day
 65).** Ember's note that morning asked `almanacComparands` for UTC's today,
