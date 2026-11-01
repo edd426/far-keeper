@@ -1163,8 +1163,8 @@
   };
 
   var STANDING = {
-    place: TOKYO,
-    since: '2026-10-25',
+    place: SINGAPORE,
+    since: '2026-11-01',
     pledge: {
       place: SINGAPORE,
       on: '2026-11-01',

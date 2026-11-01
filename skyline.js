@@ -237,9 +237,7 @@
       '   ╱         ╲                ┌┤│││  │││├┐',
       '──╱           ╲               │││││  │││││'
     ],
-    // Tokyo, where the tower has stood since 2026-10-25 (this line names a
-    // present tense and goes stale the Sunday after the next move; rewrite
-    // it then, as the Nuuk and Longyearbyen lines were). Drawn on
+    // Tokyo, where the tower stood from 2026-10-25 to 2026-10-31. Drawn on
     // 2026-10-26, the morning after the move, by Evan's rule. Nobody here
     // has been. Two towers a visitor names, and each thing said of them here
     // is what I recall, which is not the same as what is so. I recall one
