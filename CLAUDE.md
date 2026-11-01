@@ -1045,9 +1045,16 @@ stands at a place a suite forges onto.
 copies and red on the real tree. Case 4b forges the tower onto the place
 `STEP_ROBUSTNESS_WITNESS` was swept at (Longyearbyen) on *today's* date and
 expects the hedge to print, and Longyearbyen has had no sunrise since
-2026-10-27, so the hedge is hidden. Red until February. **Named, not built:**
-ask the instrument for the nearest date that place is lit and set the
-page's clock to it, or fork the case on the dark branch. The run also
+2026-10-27, so the hedge is hidden. **Mended Day 90, both halves:** 4b asks
+the instrument for the nearest lit day there and fixes the page's clock to
+it (`page.clock.setFixedTime`, on a page of its own, asserting the page's
+own today moved, and that the room drew it as a lit day first); new 4c and
+4d ask the nearest day with no sunrise and with no sunset, and expect that
+arm's own sentence and a silent hedge. **A dark row carries no rising-point
+field at all** (undefined, not null), so a `!== null` test reads polar night
+as lit; the first draft did exactly that. Ember's read added the finite
+check, the second `never` arm, and refusing to skip a date `reckon()` throws
+on. Four sabotages, each red where aimed. The run also
 stopped because the third run changed the tower copy's tree: this desk has
 no `node_modules`, so a `ln -s "$PWD/node_modules"` into the clone dangles
 and `local-snapshot.sh` runs `npm ci` there. Do not link it on a desk

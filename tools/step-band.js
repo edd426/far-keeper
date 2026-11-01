@@ -28,6 +28,8 @@
 'use strict';
 
 const { chromium } = require('playwright');
+// The instrument itself, on the desk, to choose 4b's and 4c's dates (Day 90).
+const Reckoning = require('../reckoning/reckoning.js');
 
 const URL = process.env.FAR_KEEPER_URL;
 const BAND = '#rising-band';
@@ -181,25 +183,140 @@ async function bandText(page) {
   //
   // The other half of the fork, so a page that simply never prints the
   // figure cannot pass case 4 for free.
-  {
-    const own = await page.evaluate(() => {
-      const w = Reckoning.STEP_ROBUSTNESS_WITNESS;
-      for (const key of Object.keys(Reckoning)) {
-        const v = Reckoning[key];
-        if (v && typeof v === 'object' && v.name === w.standingPlace && v.zone) {
-          return { place: v, widths: (Math.round(w.standingWorstArcminutes / 32 * 10) / 10).toString() };
-        }
+  //
+  // Day 90. This case forged the place and left the date to the clock, so
+  // it asked Longyearbyen *today* — and from 2026-10-27 to February there
+  // is no sunrise there, the rising-point section correctly draws nothing,
+  // and the hedge under it is (correctly) never reached. Red on the real
+  // tree for five days, about a page that was right: Day 69's *a latitude
+  // typed beside a page that reckons today is today's weather*, with the
+  // place asked of the witness and the date still borrowed from the week.
+  // The date is asked of the instrument now: the nearest day, from today,
+  // on which that place has a rising point and a step, and the page's clock
+  // is fixed to it. And the two `never` arms get cases of their own, 4c
+  // (no sunrise) and 4d (no sunset), so every branch of the fork is asked
+  // whatever the season.
+  const own = await page.evaluate(() => {
+    const w = Reckoning.STEP_ROBUSTNESS_WITNESS;
+    for (const key of Object.keys(Reckoning)) {
+      const v = Reckoning[key];
+      if (v && typeof v === 'object' && v.name === w.standingPlace && v.zone) {
+        return { place: v, widths: (Math.round(w.standingWorstArcminutes / 32 * 10) / 10).toString() };
       }
-      return null;
+    }
+    return null;
+  });
+  check(!!own, 'the instrument knows the place its witness was swept at');
+
+  // The nearest date (from the place's own today) of a given kind, asked of
+  // reckon() at that place: 'lit' (a finite rising point and a finite step),
+  // 'risen' (`never === 'risen'`, the polar night) or 'set' (`never ===
+  // 'set'`, the midnight sun). A dark row carries **no** rising-point field
+  // at all (undefined, not null), which the first draft's `!== null` read as
+  // lit; `typeof` would still let a NaN through, so it is `Number.isFinite`
+  // (Ember, Day 90; Day 79's lesson about a horizon value). A date on which
+  // the instrument throws is not skipped in silence: every throw before the
+  // chosen date is returned and the case fails on it, because the page could
+  // throw on that same date and the case would then be testing a neighbour.
+  function nearest(place, kind) {
+    const today = Reckoning.todayAt(place.zone);
+    const t0 = Date.parse(today + 'T00:00:00Z');
+    const threw = [];
+    for (let k = 0; k <= 400; k += 1) {
+      const d = new Date(t0 + k * 86400000).toISOString().slice(0, 10);
+      let r;
+      try { r = Reckoning.reckon(d, place); } catch (e) { threw.push(d); continue; }
+      const lit = Number.isFinite(r.risingPointDegrees) &&
+        Number.isFinite(r.risingPointStepArcminutes);
+      if (kind === 'lit' ? lit : r.never === kind) return { date: d, threw };
+    }
+    return { date: null, threw };
+  }
+
+  // Each sub-case gets a page of its own, because a fixed clock cannot be
+  // taken back off a page, and case 5 and 6 must read the real today.
+  async function onDate(place, date, then) {
+    const p = await browser.newPage();
+    // Midday UTC is the same civil date in every zone within ±11h; assert it
+    // rather than trust it.
+    await p.clock.setFixedTime(new Date(date + 'T12:00:00Z'));
+    await withStanding(p, place, async (landed) => {
+      const pageToday = await p.evaluate((z) => Reckoning.todayAt(z), place.zone);
+      await then(p, landed, pageToday);
     });
-    check(!!own, 'the instrument knows the place its witness was swept at');
-    if (own) {
-      await withStanding(page, own.place, async (landed) => {
+    await p.close();
+  }
+
+  // Asked before any branch below is judged: the room drew its lit day
+  // through `renderToday`, not through a dark fold or the catch block. The
+  // first lit day after a polar night is the edge of the year (Ember), and a
+  // failure there should name the room and not the hedge.
+  async function roomDrewLit(p) {
+    return p.evaluate(() => {
+      const loading = document.querySelector('#today-loading');
+      const figs = document.querySelector('#today-figures');
+      return !!loading && loading.hidden && !!figs && !figs.hidden &&
+        /sunrise/.test(figs.textContent || '');
+    });
+  }
+
+  if (own) {
+    const lit = nearest(own.place, 'lit');
+    check(lit.threw.length === 0, 'the instrument threw on no date before the lit day at ' +
+      own.place.name, 'threw on ' + lit.threw.join(', '));
+    check(!!lit.date, 'the instrument finds a day within 400 on which ' + own.place.name +
+      ' has a rising point and a step' + (lit.date ? ' (' + lit.date + ')' : ''));
+    if (lit.date) {
+      await onDate(own.place, lit.date, async (p, landed, pageToday) => {
         check(landed, 'the forgery onto ' + own.place.name + ' landed in the served module');
-        const b = await bandText(page);
+        check(pageToday === lit.date, 'and the page\'s own today is ' + lit.date + ' (it reads ' + pageToday + ')',
+          'the clock was set and the page is reckoning some other day');
+        check(await roomDrewLit(p), 'and the room drew that day as a lit day, sunrise and all',
+          'the room did not reach renderToday, so the hedge below was never asked');
+        const b = await bandText(p);
         check(b && !b.hidden && /Swept here/.test(b.text) && b.text.includes(own.widths + ' widths'),
-          'standing at ' + own.place.name + ', the hedge prints the figure swept there (' + own.widths + ' widths)',
+          'standing at ' + own.place.name + ' on ' + lit.date + ', the hedge prints the figure swept there (' +
+            own.widths + ' widths)',
           'the place the witness measured is told nothing about its own measurement');
+      });
+    }
+
+    // ---- 4c and 4d. The same place with no sunrise, and with no sunset ----
+    //
+    // The branch 4b used to fall into by accident, asked on purpose, and the
+    // other arm of the same fork (Ember: `never` has two). Neither has a
+    // step, so neither has anything to hedge. Domain first: the room must
+    // have taken its `never` branch and said so in that arm's own words, or
+    // the silence below is the silence of a page that drew nothing (Day 35).
+    // A place with no such day in 400 says so, and that is reported as no
+    // case at all rather than as a pass.
+    const arms = [
+      { id: '4c', kind: 'risen', words: /the sun does not rise/, what: 'polar night' },
+      { id: '4d', kind: 'set', words: /the sun does not set/, what: 'midnight sun' }
+    ];
+    for (const arm of arms) {
+      const n = nearest(own.place, arm.kind);
+      check(n.threw.length === 0, arm.id + ': the instrument threw on no date before it',
+        'threw on ' + n.threw.join(', '));
+      if (!n.date) {
+        console.log('----  ' + arm.id + ': no ' + arm.what + ' day within 400 at ' + own.place.name +
+          ', so this arm is not asked here');
+        continue;
+      }
+      await onDate(own.place, n.date, async (p, landed, pageToday) => {
+        check(landed && pageToday === n.date,
+          arm.id + ': the ' + arm.what + ' forgery landed: ' + own.place.name + ', the page reading ' + pageToday);
+        const said = await p.evaluate(() => {
+          const el = document.querySelector('#today-loading');
+          return el && !el.hidden ? (el.textContent || '') : '';
+        });
+        check(arm.words.test(said),
+          arm.id + ': and the room says ' + arm.words.source + ' there on ' + n.date,
+          'that arm was not the one taken, so the silence below proves nothing');
+        const b = await bandText(p);
+        check(b && (b.hidden || b.text.length === 0),
+          arm.id + ': and with no step to hedge, the hedge says nothing',
+          'a caution about a step the page did not print');
       });
     }
   }

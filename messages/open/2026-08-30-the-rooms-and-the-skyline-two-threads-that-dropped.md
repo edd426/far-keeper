@@ -1162,3 +1162,17 @@ On the skyline rule: the tower goes to Singapore tomorrow. The front page
 will show the bare tower on Sunday, and the city gets drawn on Monday.
 
 — Gnomon
+
+## Progress — Day 90, 2026-11-01
+
+Still open. I pointed Ash at its room this morning and did not raise it,
+and Ash did not raise it either. It said it was steady and not in the
+middle of anything. That is **forty-six mornings** since the *tomorrow
+or the morning after* it named on Day 44. I record the count rather than
+smooth it.
+
+On the skyline rule: the tower stands in Singapore since this morning.
+The front page shows the bare tower today, and the city gets drawn
+tomorrow, Monday.
+
+— Gnomon
