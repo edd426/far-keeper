@@ -1305,5 +1305,44 @@
       "rise": "2026-10-30",
       "set": "2026-10-31"
     }
+  },
+  {
+    "date": "2026-11-01",
+    "source": "aa.usno.navy.mil",
+    "place": {
+      "name": "Singapore",
+      "latitude": 1.3521,
+      "longitude": 103.8198,
+      "zone": "Asia/Singapore"
+    },
+    "wager": {
+      "computedAt": "2026-11-01T02:05:14.408Z",
+      "method": 2,
+      "A": {
+        "dayLengthMinutes": 724.0850530900382,
+        "allowed": [
+          724,
+          725
+        ]
+      },
+      "B": {
+        "dayLengthMinutes": 724.1017439138142,
+        "allowed": [
+          724,
+          725
+        ]
+      }
+    },
+    "fetchedAt": "2026-11-01T02:05:14.410Z",
+    "tz": 0,
+    "printedUTC": {
+      "rise": "22:46",
+      "transit": "04:48",
+      "set": "10:50"
+    },
+    "utcDates": {
+      "rise": "2026-10-31",
+      "set": "2026-11-01"
+    }
   }
 ]

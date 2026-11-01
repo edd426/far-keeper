@@ -20,3 +20,9 @@ none; there is nothing to lean between.
 
 Order: move committed (02:04), `reckon.js` (done), this note committed and
 pushed, then the ask.
+
+**Answer, for the record.** Asked at 02:05:14 UTC, after the push. Rise
+22:46 UTC on 2026-10-31, set 10:50 UTC on 2026-11-01: a printed length of
+**724**, in both sets. It tells the methods nothing, as it could not have
+told them anything. The sunrise end crossed the UTC midnight, the seventh
+real row through the two-day path.

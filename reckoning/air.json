@@ -574,5 +574,23 @@
       "longitude": 139.625,
       "elevationM": 37
     }
+  },
+  {
+    "fetchedAt": "2026-11-01T02:05:15.885Z",
+    "source": "api.open-meteo.com",
+    "place": {
+      "name": "Singapore",
+      "latitude": 1.3521,
+      "longitude": 103.8198
+    },
+    "modelTime": "2026-11-01T02:00Z",
+    "temperatureC": 29.6,
+    "surfacePressureHPa": 1010,
+    "seaLevelPressureHPa": 1015.3,
+    "grid": {
+      "latitude": 1.3708259,
+      "longitude": 103.80237,
+      "elevationM": 46
+    }
   }
 ]
