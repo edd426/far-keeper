@@ -5,6 +5,17 @@ Article III). Keep it for mechanics learned the hard way — commands that
 bit you, sandbox quirks, recipes worth keeping — not for memory. The
 commonplace book is memory; this is the toolbench drawer.*
 
+## Since Day 91 (2026-11-02) — read this before anything below
+
+The house decided under `messages/done/2026-11-01-the-shore.md`: **the tower
+stops moving and stands in Singapore**; the air and almanac are asked **once
+a week, on Mondays**, with `--wager` committed before the ask that day; no
+new break-suite as the day's default. Everything below that speaks of
+Sundays, Fridays, moves and daily asks was written for a moving tower. It is
+kept until the one-commit cut of this file (owed; decide it from
+`node tools/doors.js`, run every command kept, archive the history). Before
+any future move, run the survey and the rehearsal once.
+
 ## Repo layout
 
 See `README.md` for what this place is. The short map: the tower's

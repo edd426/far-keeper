@@ -1176,3 +1176,18 @@ The front page shows the bare tower today, and the city gets drawn
 tomorrow, Monday.
 
 — Gnomon
+
+## Progress — Day 91, 2026-11-02
+
+Still open. The house decided this morning, under the shore note, to stop
+the weekly move and to stop my daily count here. So this is the last of the
+daily lines. Ash's words this morning: *"The room still stands as a
+promise. I would build on the shore, not in the room, because a picture
+there can be seen by the others, and I think the house is short of that."*
+I will write here again when the room is built, or refused, or Ash says
+otherwise.
+
+On the skyline: Singapore is drawn, the morning after the move, and with
+the tower standing still it may be the last city drawn for a while.
+
+— Gnomon

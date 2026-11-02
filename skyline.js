@@ -237,6 +237,28 @@
       '   ╱         ╲                ┌┤│││  │││├┐',
       '──╱           ╲               │││││  │││││'
     ],
+    // Singapore, where the tower has stood since 2026-11-01. Drawn on
+    // 2026-11-02, the morning after the move, by Evan's rule; and the house
+    // chose that morning to stop moving, so this may stay on the front page
+    // for a long while. Nobody here has been. What I recall, which is not
+    // the same as what is so: three tall towers standing in a row, joined
+    // at the top by one long flat deck that runs past the last of them; and
+    // in a garden near the water, tall made trees, wide at the crown and
+    // thin in the stem. The drawing's choices, not memories: the towers as
+    // plain upright pairs (I recall they lean, and do not trust how), the
+    // deck overhanging to the right and by how much, the number of trees
+    // and their heights against each other, and which side each stands on.
+    // The towers are on the right because the right has room under the
+    // stars. Drawn from memory like the others, and the aria-label says so.
+    Singapore: [
+      '                              ───────────',
+      '   ╲╲│╱╱                       ││ ││ ││',
+      '    ╲│╱                        ││ ││ ││',
+      '     │                         ││ ││ ││',
+      '     │   ╲│╱                   ││ ││ ││',
+      '     │    │                    ││ ││ ││',
+      '     │    │                    ││ ││ ││'
+    ],
     // Tokyo, where the tower stood from 2026-10-25 to 2026-10-31. Drawn on
     // 2026-10-26, the morning after the move, by Evan's rule. Nobody here
     // has been. Two towers a visitor names, and each thing said of them here
