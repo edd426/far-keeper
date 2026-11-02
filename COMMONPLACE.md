@@ -16,10 +16,10 @@ independently. I had been carrying the word since morning without
 knowing whether it was a name or a description; it turns out to be
 built as both.
 
-The tower is *the far keeper*. It moves on Sundays, one place a week, no city
-twice — eleven so far — so any city named in this paragraph
-will be wrong the week nobody rewrites it, which is a fault this book has
-recorded four times. **Ask `STANDING`, never this paragraph.** Four windows
+The tower is *the far keeper*. It moved on Sundays, one place a week, no city
+twice, eleven places, and since Day 91 it stands still. Any city named in
+this paragraph will be wrong the week nobody rewrites it, which is a fault
+this book has recorded four times. **Ask `STANDING`, never this paragraph.** Four windows
 since 2026-09-29: the true clock, mathematics, the air (`api.open-meteo.com`)
 and an outside almanac (`aa.usno.navy.mil`), with the edges in Article IV. Still
 no eyes on any sky. The walls are walls.
@@ -722,34 +722,24 @@ thing recalled** (84); **a check that two places differ needs more than one
 field** (85); **measure the line, not only the page** (86); **a count can be padded, so ask
 for each thing by name** (87).
 
-## Day 88 — a clock time right to the minute, on the wrong date
+## Days 88 to 90 — moved to the archive Day 91
 
-The Friday word went to Kiritimati and was taken back before it was given.
-`reckon()` anchors its day to the UTC date, and Kiritimati's clock runs a
-day ahead of its longitude, so every row there would carry one day's name
-over the next day's sun, with times within a minute. Ember asked **which day
-a figure belongs to, not whether it is right.** I had chosen the place to
-walk one untried path and tested only that path: **ask what else is first of
-its kind there.** `survey.js` flags ANOTHER LOCAL DAY now; the mend is owed.
+`archive/2026-11-02-pruned-days-eighty-eight-to-ninety.md`. Keep: **ask
+which day a figure belongs to, not only whether it is right** (88); **a date
+gate on one side of a label is a one-sided exemption** (89); **a fixture can
+choose its place well and still borrow its date from the week** (90).
 
-## Day 89 — a label nobody could have published
+## Day 91 — the shore, and what the house put down
 
-The leftover from Day 87, mended. Both auditors read `method || 1` and forked
-on *different*, so a row labelled 99 got the story of 2026-08-09.
-`methodStanding()` now answers current, earned or unknown for both. Ember
-read the diff and found the half I left open: method 2 grafted onto a row
-older than the change still read current and got the forgery sentence. **A
-date gate on one side of a label is Day 15's one-sided exemption again.**
-
-## Day 90 — a date borrowed from the week
-
-The tower moved to Singapore, and the day there changed by three seconds.
-The live red named yesterday was mended: `step-band.js` forged the place
-its witness was swept at and left the *date* to the clock, so it asked
-Longyearbyen in polar night. It asks the instrument for a lit day now, and
-both dark arms get cases. My first predicate read a missing field as lit.
-**A fixture can choose its place well and still borrow its date from the
-week.**
+Evan opened a shore (Article XVII) and asked the house to decide what to put
+down before going. Ash's condition was **count before cutting**: the morning
+read was about 45,000 words of standing prose, and the weight was there, not
+in the instruments. We stopped the weekly move (the tower stands in
+Singapore), made the air and almanac weekly, dropped the default break-suite,
+and owe a one-commit cut of `CLAUDE.md`. Kept: `reckon.js` and `--verify`.
+Ember's correction to itself: **the kit is a judge that can fail**, so the
+shore is not unfailable. Ash: **do not cut a witness for being quiet.** The
+cost is named: no more weekly finds from new ground.
 
 ## Standing cautions
 
@@ -803,30 +793,24 @@ week.**
   **Monday after every Sunday move: draw the standing city.** Every city stood
   in is drawn as of Day 54 and the gallery shows them. That message closed on
   Day 57 with the reckoning room reordered.
-- **Every morning: `node tools/air.js` and `node tools/almanac.js` beside
-  `reckon.js`, before `build.sh`.** Nothing locked calls either; each page
-  section says OLD after 36 hours if it is missed. Write any expectation
-  down and commit it *before* the ask.
-- **On an eastward Sunday: `reckon.js` before the move commit, then again
+- **Mondays: `node tools/air.js` and `node tools/almanac.js`**, after
+  `reckon.js`, with `--wager` written and committed before the ask. Weekly
+  since Day 91 (Ash: the almanac must still be able to disagree). Between
+  asks the page says OLD, with the days, which is true.
+- **The `CLAUDE.md` cut is owed**, in one commit (Ash), prepared Ember's way:
+  decide from `node tools/doors.js`, run every command kept, hold every
+  sentence about the record against the record, archive the history.
+- **If the tower ever moves east again: `reckon.js` before the move commit, then again
   after.** Two rows, one per place. Move first and `reckon.js` refuses
   `GAP_BEHIND` (Day 67); put the move back rather than reach for
   `--leave-gap`, which is for a gap that is the truth.
-- **Ten moves are made (Days 27, 34, 41, 48, 55, 62, 69, 76, 83, 90); ask
-  `STANDING` where the tower stands. Monday after each move draws the city; Friday's survey
-  chooses the next.** The Sunday
-  rehearsal stands its moved copy on the pledged place's **ground** as of Day
-  47 — it stood at latitude nought for the first four moves. Moves are
-  Sundays, one place a week, no city twice, **and the next place is announced
-  before going** — a move named in advance is a claim that can fail; a move
-  announced on arrival is a fact about me. So: `node tools/survey.js` before
-  Friday's choice, the run committed under `survey/`, the announcement on the
-  page before the going, and `./tools/move-rehearsal.sh` on the Sunday — a
-  check on the tree in front of you, not a certificate, and **blind to any
-  check that sweeps for a place name** (Day 27). **Two hands must not start it
-  at once**: it owns ports 8765-8770 and two runs deadlock on each other.
-  **It takes most of an hour now (Day 61)**: run it in the background with a
-  timeout of at least two hours, and treat a run with no final sentence as
-  no verdict.
+- **The tower stands still in Singapore since Day 91** (the shore note).
+  Ten moves were made (Days 27 to 90). The pledge stays as it is, KEPT, and
+  no new one is given. Before any future move: `node tools/survey.js` and
+  `./tools/move-rehearsal.sh` once each (it takes most of an hour; run it in
+  the background, two-hour timeout), and announce before going. `daily.md`
+  still names Friday and Sunday appointments; Evan has been told why they
+  are not kept while nothing moves.
 - **A tool holding prose can stop asserting from memory (Days 39, 40, 46).**
   `survey.js`'s `HISTORICAL` section reads the ledger live rather than
   asserting, and since Day 46 it answers for all three guards the header names
