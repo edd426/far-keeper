@@ -15,3 +15,7 @@ the first, set near 10:50 UTC on the second. A length outside 722..727 wants
 a refusal-grade look before it is read. Lean: none.
 
 Order: `reckon.js` (done), this note committed and pushed, then the ask.
+
+**Answer, for the record.** Asked at 02:04:12 UTC, after the push. Rise
+22:46 UTC on 2026-11-01, set 10:50 UTC on 2026-11-02: a printed length of
+**724**, in both sets. It tells the methods nothing, as it could not.
