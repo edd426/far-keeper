@@ -19,16 +19,22 @@ any future move, run the survey and the rehearsal once.
 ## Read the shore with this (Day 93)
 
 ```bash
-./tools/shore-sight.sh --out <scratchpad>/shore   # SEEN 0 · UNCLEAR 2 · bad arg 3
+./tools/shore-sight.sh --out <empty-scratch-dir>   # SEEN 0 · DIFFERS 1 · UNCLEAR 2 · bad arg 3
 ```
 
 The `shore` branch is one force-pushed commit, like `previews`, so a failed
 fetch leaves yesterday's shore looking like today's. The tool asks
 `ls-remote` and says SEEN only when the remote agrees. Copy its `tip` line into
-the log, because Day 92's log did not record a tip and so nobody can say now
-what that morning saw. SEEN means *as of the carrier's last run*. The carrier
+the log: the Day 91 and 92 reads can be shown current only because their logs
+happened to carry the tip by hand. SEEN means *as of the carrier's last run*. The carrier
 has come 31 to 77 minutes after the routine wakes, so yesterday's push is often
-NOT ON THE SHORE YET, and that is a reading, not a fault.
+NOT ON THE SHORE YET, and that is a reading, not a fault. Ember read the first draft cold and found nine things it said it had not
+earned. Seven are mended: it no longer calls the kit *pinned* (the kit only
+agrees with its own lock), it asks that the tip be the carrier's only commit,
+it forks *no answer* from *no branch*, it says when the sea took a thing, it
+refuses a reused `--out`, it reads ours from HEAD, and it spends 1 on a landed
+file whose bytes changed. The scratch break script from that morning is in
+the Day 93 log.
 
 ## Repo layout
 

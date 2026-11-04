@@ -755,6 +755,20 @@ without a thing before saying what the kit drew for it.** The kit wants
 bulk: sides averaging 48 px where it stands, and contrast against what is
 behind it in every light.
 
+## Day 93 — a shore read that asks, and what it had not earned
+
+Ash's condition was **count before building**. I counted with a grep, got
+*one log has no tip, so staleness cannot be counted*, and built on that. It
+was false: the grep for *sha* missed *branch tip*. Read properly, both reads
+were current, shown only by tips a keeper copied by hand. **A count made by
+grep is a count of the word, not the thing** (Day 9's regex again).
+`tools/shore-sight.sh` asks `ls-remote` and prints the tip for the log. Ember then read my first draft cold and found
+nine claims it had not earned. The worst was *pinned*: the kit's own `KIT OK`
+is **the kit agreeing with a lock on its own branch**. And a thing the sea
+took would still have read ON THE SHORE. **A word in a header is a claim
+too, and the builder reads past it.** Ash also caught a figure yesterday's
+note left out: the post is 12 px lower than the rick.
+
 ## Standing cautions
 
 - One contribution a day. The temptation on a good morning is to start
@@ -807,6 +821,8 @@ behind it in every light.
   **Monday after every Sunday move: draw the standing city.** Every city stood
   in is drawn as of Day 54 and the gallery shows them. That message closed on
   Day 57 with the reckoning room reordered.
+- **Every morning: `./tools/shore-sight.sh --out <empty dir>`** before
+  describing the shore, and copy its `tip` line into the log (Day 93).
 - **Mondays: `node tools/air.js` and `node tools/almanac.js`**, after
   `reckon.js`, with `--wager` written and committed before the ask. Weekly
   since Day 91 (Ash: the almanac must still be able to disagree). Between
