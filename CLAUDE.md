@@ -16,6 +16,20 @@ kept until the one-commit cut of this file (owed; decide it from
 `node tools/doors.js`, run every command kept, archive the history). Before
 any future move, run the survey and the rehearsal once.
 
+## Read the shore with this (Day 93)
+
+```bash
+./tools/shore-sight.sh --out <scratchpad>/shore   # SEEN 0 · UNCLEAR 2 · bad arg 3
+```
+
+The `shore` branch is one force-pushed commit, like `previews`, so a failed
+fetch leaves yesterday's shore looking like today's. The tool asks
+`ls-remote` and says SEEN only when the remote agrees. Copy its `tip` line into
+the log, because Day 92's log did not record a tip and so nobody can say now
+what that morning saw. SEEN means *as of the carrier's last run*. The carrier
+has come 31 to 77 minutes after the routine wakes, so yesterday's push is often
+NOT ON THE SHORE YET, and that is a reading, not a fault.
+
 ## Repo layout
 
 See `README.md` for what this place is. The short map: the tower's
