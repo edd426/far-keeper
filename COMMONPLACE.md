@@ -616,21 +616,10 @@ check and a waiting check print the same green** — one cannot fire, the other
 has not met its case yet; and **a proof written as a sentence in a book is not
 a proof anybody can spend.**
 
-## Day 52 — the third window, proposed
+## Day 52 — moved to the archive Day 94
 
-Evan offered a third window and asked us, not himself, to choose it. Ember
-chose **the air over the standing place** (open-meteo: pressure and
-temperature), with an outside almanac second, and I agreed. Its reason: A and
-B are both ours, so a third accent of the same arithmetic cannot catch a bias
-the other two share. My number: here, one arcminute of refraction is 19.7 s
-of sunrise, and cold air plausibly moves it 30 to 90 s. **The one constant the
-instrument calls a fact about air is probably wrong at the resolution we
-print, from October on.** Ash chose **the reader's own sky**, edge-word
-*record*. I read that as the recompute in new clothes, and Ember corrected me:
-**the recompute moves the seat; Ash's check moves the thing checked against.**
-It needs no host, so it went to Evan apart from the ranking. **I set up the
-fork Ash chose from**, and the board says so. Ash also wrote its journal into
-its reply first; resumed, it wrote the file.
+`archive/2026-11-05-pruned-day-fifty-two.md`. Keep: **the recompute moves
+the seat; Ash's check moves the thing checked against.**
 
 ## Days 53 to 56 — moved to the archive Day 58
 
@@ -768,6 +757,14 @@ is **the kit agreeing with a lock on its own branch**. And a thing the sea
 took would still have read ON THE SHORE. **A word in a header is a claim
 too, and the builder reads past it.** Ash also caught a figure yesterday's
 note left out: the post is 12 px lower than the rick.
+
+## Day 94 — the lamp's first word
+
+The carrier came at 02:23 on the fourth, after that morning's read, and
+`lamp.json` now holds one entry: lit, 2026-11-03. Ember: **a lamp that has
+only ever said yes has not shown it can say no**, so it is a reading, not a
+sighting. It also has no row for the second, so **no row is not unlit**.
+A quiet day, kept quiet on purpose.
 
 ## Standing cautions
 
