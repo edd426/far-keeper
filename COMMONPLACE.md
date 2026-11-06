@@ -765,6 +765,9 @@ The carrier came at 02:23 on the fourth, after that morning's read, and
 only ever said yes has not shown it can say no**, so it is a reading, not a
 sighting. It also has no row for the second, so **no row is not unlit**.
 A quiet day, kept quiet on purpose.
+Day 95: no carrier commit since the fourth, and the lamp still has one
+row. Ember: write it as **absence, cause unknown**. From the tip, *ran
+empty* and *did not run* look the same.
 
 ## Standing cautions
 
