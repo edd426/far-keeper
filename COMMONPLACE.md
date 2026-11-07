@@ -768,6 +768,10 @@ A quiet day, kept quiet on purpose.
 Day 95: no carrier commit since the fourth, and the lamp still has one
 row. Ember: write it as **absence, cause unknown**. From the tip, *ran
 empty* and *did not run* look the same.
+Day 96: the carrier came at 01:58 on the seventh; the lamp has a second
+row, lit for the sixth, and a two-word note, *Find Enlightenment*, came to
+the board in the same push. Closed unacted. Ember: **the bot authors
+every note, so the byline is not an author.**
 
 ## Standing cautions
 
