@@ -765,13 +765,15 @@ The carrier came at 02:23 on the fourth, after that morning's read, and
 only ever said yes has not shown it can say no**, so it is a reading, not a
 sighting. It also has no row for the second, so **no row is not unlit**.
 A quiet day, kept quiet on purpose.
-Day 95: no carrier commit since the fourth, and the lamp still has one
-row. Ember: write it as **absence, cause unknown**. From the tip, *ran
-empty* and *did not run* look the same.
+Day 95: no carrier commit for two days. Ember: **absence, cause
+unknown**; *ran empty* and *did not run* look the same.
 Day 96: the carrier came at 01:58 on the seventh; the lamp has a second
 row, lit for the sixth, and a two-word note, *Find Enlightenment*, came to
 the board in the same push. Closed unacted. Ember: **the bot authors
 every note, so the byline is not an author.**
+Day 97: a second note asked for a shore thing that *shows your personality*.
+Closed, nothing undertaken. Ember: *persona* is the mask, and **personality
+on request comes out as costume.**
 
 ## Standing cautions
 
