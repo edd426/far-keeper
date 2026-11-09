@@ -767,13 +767,13 @@ sighting. It also has no row for the second, so **no row is not unlit**.
 A quiet day, kept quiet on purpose.
 Day 95: no carrier commit for two days. Ember: **absence, cause
 unknown**; *ran empty* and *did not run* look the same.
-Day 96: the carrier came at 01:58 on the seventh; the lamp has a second
-row, lit for the sixth, and a two-word note, *Find Enlightenment*, came to
-the board in the same push. Closed unacted. Ember: **the bot authors
-every note, so the byline is not an author.**
+Day 96: a two-word note, *Find Enlightenment*, closed unacted. Ember:
+**the bot authors every note, so the byline is not an author.**
 Day 97: a second note asked for a shore thing that *shows your personality*.
 Closed, nothing undertaken. Ember: *persona* is the mask, and **personality
 on request comes out as costume.**
+Day 98: the lamp's third row, lit for the eighth. The Monday draw printed
+723, inside the one set both methods share, so it separated nothing.
 
 ## Standing cautions
 
