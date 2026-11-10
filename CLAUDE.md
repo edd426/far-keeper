@@ -9,8 +9,12 @@ keeping. The commonplace book is memory; this is the toolbench drawer.*
 24,288 words of it, is in `archive/2026-11-10-claude-md-before-the-cut.md`,
 headings intact. Go there with a named question: a tool's history, why a
 guard has the shape it has, a sabotage recipe. Every command below was run
-on the morning of the cut, and the result is in that day's log. A command
-added later has not been through that, so say so beside it. A comment in
+on the morning of the cut and its result is in `logs/2026-11-10.md`, with
+these exceptions: the full rehearsal (only `--list` ran); the Monday asks
+(they ran on Day 98; `--wager` ran on the cut); and `pledge-page.js` and the
+`civilDateAt` check, since nothing moved. A command added later has
+not been through that, so say so beside it. Ash and Ember read the draft
+cold that morning and the pledge rules below are theirs to have caught. A comment in
 `tools/` or `reckoning/` that cites `CLAUDE.md` means the file before the
 cut: read it in the archive copy.
 
@@ -33,7 +37,7 @@ founder's board. `letters/README.md` holds the letter protocol.
 ./tools/check-sight.sh                       # TRUE 0 · BEHIND/STALE 1 · UNCLEAR 2 · ROGUE 3
 ./tools/shore-sight.sh --out <empty-dir>     # SEEN 0 · DIFFERS 1 · UNCLEAR 2 · bad arg 3
 node tools/post-status.js --self gnomon      # turn status and sealed post
-node tools/shelf-when.js                     # each shelved row against its letter and the charter
+node tools/shelf-when.js                     # THE LETTER: a row misquotes its letter · THE CROSSING: a row claims a delivery Article X forbids
 node tools/reckon.js                         # the day's row, before build.sh
 node tools/reckon.js --verify                # exit 1, and that is expected (below)
 ```
@@ -105,6 +109,13 @@ Hashes quoted anywhere before then are old: `archive/2026-10-03-commit-map.txt`.
   `unchanged`, because a place is an input and no recompute can check an
   input. Suites match the verdict's first token.
 - `reckon()` and `todayAt()` can throw. Every call site must expect it.
+  `reckon()`'s place is required: never give it a default, least of all
+  `STANDING.place`, which would follow the tower through every move and
+  every rehearsal, so the fault would pass by construction.
+- **A changed clock law is not an edit.** When IANA changes a zone, both
+  auditors fork on the row's own `utcOffsetMinutes` against the one just
+  computed, and say what the gap accounts for. `./tools/clock-law-desk.sh`
+  proves the desk half.
 - **`reckon()`'s `horizon` refuses any key but `obstructionDegrees` and
   `eyeHeightMetres`**, and any value that is not a finite number. Still
   check that a horizon you pass moved the sunrise.
@@ -127,27 +138,30 @@ node tools/almanac.js           # ask aa.usno.navy.mil, append to reckoning/alma
 ```
 
 After `reckon.js`, before `build.sh`. Exit 0 an answer, 1 a failure row
-written (a failure is a row, never a silent retry), 2 a bad flag. **Write
-the expectation from `--wager` and commit it before the ask**; only a commit
-dates it to anyone else. On the page a reading more than 36 hours old reads
-OLD, which is true six days a week now.
+written (a failure is a row, never a silent retry), 2 a bad flag. `--print`
+on either asks and writes nothing. **Write the expectation from `--wager`
+and commit it before the ask, and do not look first**; `--wager` reads the
+date off the same line the ask does, so it cannot wager on the wrong day.
+Only a commit dates an expectation to anyone else. The page marks a reading
+more than 36 hours old OLD.
 
 - The almanac prints whole minutes, so it cannot separate methods a minute
   apart; the printed **length** can, because a rounding rule shared by both
   ends cancels. When both methods' sets share a value, the draw cannot
-  separate them. At Singapore in November they share 723 and 724.
+  separate them. Ask `--wager` which values they share; do not type them.
 - **Never print *agree*, never *observed*.** Name the source and the hour.
 - The almanac is asked in UTC (`tz=0`) about the UTC day each end falls on;
   `utcDates` records which, and `Reckoning.almanacAskDays` is the one
-  function the tool and the page use.
+  function the tool and the page use. A printed end more than half a day
+  from ours is refused by the tool and NOT COMPARED on the page.
 - Ask with `STANDING`'s own coordinates, never hand-rounded ones: the air's
   surface figures follow a model height picked for the exact point asked.
 
 ## Before any push that touches a page script
 
 ```bash
-./tools/parses.sh                              # PARSES 0 · BROKEN 1 · UNCLEAR 2; UNBUILT is a gap, not a pass
-node tools/twice-declared.js                   # a name declared twice in one scope, or across one page's scripts
+./tools/parses.sh                              # PARSES 0 · BROKEN 1 · UNCLEAR 2; UNBUILT keeps exit 0 and is a gap in the run
+node tools/twice-declared.js                   # needs a global TypeScript; with none it is UNCLEAR, exit 2
 ./scripts/local-snapshot.sh tools/<suite>.js   # a browser suite against the working tree
 ```
 
@@ -197,7 +211,7 @@ paragraph.
 ## Before a move
 
 ```bash
-node tools/survey.js > survey/<move>-candidates.txt   # commit it beside the choice
+node tools/survey.js > survey/<move>-candidates.txt   # commit it beside the choice; do not widen a witness while a shortlist is live
 ./tools/move-rehearsal.sh --list                      # the suites it would walk, running none
 ./tools/move-rehearsal.sh                             # every suite, in a moved copy and a control
 ```
@@ -207,17 +221,38 @@ timeout of at least 7200000 ms, and do not run `reckon.js`, `air.js` or
 `almanac.js` while it runs (it hashes the tower's tree). Its verdicts: ok,
 **FAIL** (red only where the tower moved, exit 1), **RED HERE** (red on the
 tower too, exit 4; that does not say the move is uninvolved), **BLIND**
-(red in the control, green on the tower: something about the copy), and
+(red in the control, green on the tower: something about the copy; not an
+all-clear, and `check-sight.sh` lands there every run because moving a copy
+dirties its tree), and
 **UNFINISHED** (the cap, `MOVE_REHEARSAL_CAP`, default 1500 s; exit 2). It
 is blind to any check that sweeps for the old place's name: the moved
 copy is named `Rehearsal`, a word this house never says, so that sweep has
 nothing to find. Do not symlink `node_modules` into a clone on a desk
 that has none.
 
-Then: announce before going (the pledge); on an eastward move, `reckon.js`
-before the move commit and again after it, two rows, one per place; and
-draw the new city's skyline the morning after arriving (Evan's rule of
-2026-09-23). The house put the move down on Day 91; taking it up again
+**The pledge.** Announce before going by setting `STANDING.pledge` to
+`{ place, on, announced }`. **The move commit sets `place` and `since` and
+touches nothing else.** The pledge stands through the move and is replaced
+only by the next announcement: clear it on arrival and `pledgeStanding`
+answers NONE before it can reach KEPT, so the page could accuse and never
+vouch. KEPT's gate is `since >= announced`, not `since >= on`. The pledged
+place is a lawful second name on the page, so ask the instrument for it,
+never `home.name`.
+
+**The crossing.** Eastward: `reckon.js` before the move commit and again
+after it, two rows, one per place. Westward, the new place's today may be a
+date already published: `ALREADY_PUBLISHED`, nothing written, and the lost
+morning shows in `publishedAt`, never in the dates. Check before announcing
+with `R.civilDateAt(<instant>, <zone>)` at both ends of the wake band; the
+same date at both is *no collision at this hour*, never *no collision*.
+
+**After.** The prose in `reckoning/index.html` that names a city in a
+hand's voice is the move's work; `standing-page.js` sweeps what `page.js`
+writes and says it does not cover the static HTML. A banked figure that
+names a place (`STEP_ROBUSTNESS_WITNESS`) is true there and nowhere else.
+Draw the new city's skyline the morning after arriving (Evan's rule of
+2026-09-23); `gallery/` picks it up from `skyline.js` with no edit, and
+`tools/gallery-room.js` checks it. The house put the move down on Day 91; taking it up again
 is a house decision, made in the open.
 
 **Fixtures expire.** The whole Days 24–90 history of this house's suites
@@ -272,8 +307,9 @@ line or ask a parser: a comment quoting an old line counts otherwise.
   recipient's next tool round, so a spirit whose turn has closed never
   receives. The workbench (`household/workbench/`) is a file, and files
   wait.
-- **Never read `household/*/journal/**`.** Any `grep -r` across the repo
-  takes `--exclude-dir=journal` (`-g '!journal'` for `rg`).
+- **The keeper never reads a spirit's journal** (a spirit reads its own).
+  Any keeper's `grep -r` across the repo takes `--exclude-dir=journal`
+  (`-g '!journal'` for `rg`).
 
 ## Deploys
 

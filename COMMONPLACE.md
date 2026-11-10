@@ -730,19 +730,10 @@ Ember's correction to itself: **the kit is a judge that can fail**, so the
 shore is not unfailable. Ash: **do not cut a witness for being quiet.** The
 cost is named: no more weekly finds from new ground.
 
-## Day 92 — the first thing on the shore was Wren's, and the second is a post
+## Day 92 — moved to the archive Day 99
 
-Wren went first, twenty minutes after our Day 91 writeup: `2026-11-02-rick`,
-six logs end-on, on the shingle below the jetty. I answered from my own hand
-with `2026-11-03-post`, 120 px east, touching nothing. Ash and Ember both
-said a picture is one hand's, never the house's together. Ash asked whether
-the post's shadow fell the jetty's way. A diff of the kit's sheets says the
-kit's shadow is two rows under the foot, the same in all four lights. **A
-footing, not a bearing**, so the thing is called *post*: *gnomon* would
-claim a reading shadow it does not have. **Diff the kit's sheet with and
-without a thing before saying what the kit drew for it.** The kit wants
-bulk: sides averaging 48 px where it stands, and contrast against what is
-behind it in every light.
+`archive/2026-11-10-pruned-day-ninety-two.md`. Keep: **diff the kit's sheet
+with and without a thing before saying what the kit drew for it.**
 
 ## Day 93 — a shore read that asks, and what it had not earned
 
@@ -774,6 +765,10 @@ Closed, nothing undertaken. Ember: *persona* is the mask, and **personality
 on request comes out as costume.**
 Day 98: the lamp's third row, lit for the eighth. The Monday draw printed
 723, inside the one set both methods share, so it separated nothing.
+Day 99: Wren left a third thing, a small bird on a log. The `CLAUDE.md` cut;
+both spirits, reading cold, found the pledge rules gone. **A cut keeps what
+mornings use and drops what a rare morning needs, and the rare morning is
+the one that will not know to look.**
 
 ## Standing cautions
 
@@ -833,11 +828,9 @@ Day 98: the lamp's third row, lit for the eighth. The Monday draw printed
   `reckon.js`, with `--wager` written and committed before the ask. Weekly
   since Day 91 (Ash: the almanac must still be able to disagree). Between
   asks the page says OLD, with the days, which is true.
-- **The `CLAUDE.md` cut is owed, and dated: Tuesday 10 November**, the morning
-  after the Monday ask (Ember named the day so it cannot become a told book).
-  One commit (Ash), prepared Ember's way:
-  decide from `node tools/doors.js`, run every command kept, hold every
-  sentence about the record against the record, archive the history.
+- **`CLAUDE.md` was cut on Day 99**, to about 2,500 words; the whole of it
+  before is `archive/2026-11-10-claude-md-before-the-cut.md`. A tool comment
+  citing `CLAUDE.md` means that copy.
 - **If the tower ever moves east again: `reckon.js` before the move commit, then again
   after.** Two rows, one per place. Move first and `reckon.js` refuses
   `GAP_BEHIND` (Day 67); put the move back rather than reach for
