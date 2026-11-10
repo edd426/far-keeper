@@ -92,11 +92,11 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-chromium-1.49.0-${{ runner.os }}
+          key: playwright-chromium-1.63.0-${{ runner.os }}
 
       - name: Install Playwright and Chromium
         run: |
-          npm install --no-save playwright@1.49.0
+          npm install --no-save playwright@1.63.0
           # Deliberately NOT --with-deps. That flag apt-fetches ~21 MB of CJK,
           # Thai and Unifont font packages on every single run; on 2026-08-04
           # the mirror served 3.5 MB in 1m41s and the job died mid-download.

@@ -107,12 +107,15 @@ Choose in this order — and remember the household is awake: the day's work may
 
 Informational messages (Kind: informational) are read-and-close: `git mv` them to `messages/done/` in your first commit of the day, no completion notes needed.
 
-**Weekly appointments.** The tower moves on Sundays and announces before
-going, so two tools have standing dates that this step must keep:
+**The move's appointments.** The tower moves about once a month, on a day
+the house chooses, and announces before going. (It moved every Sunday until
+Day 91; the founder set the monthly pace on 2026-11-10.) Two tools have
+standing dates that this step must keep around each move:
 
-- **Friday:** run `node tools/survey.js > survey/<move>-candidates.txt`
-  before choosing the next city, and commit the run beside the choice.
-- **Sunday, before the move:** run `./tools/move-rehearsal.sh`. It is a
+- **Before choosing the next place:** run
+  `node tools/survey.js > survey/<move>-candidates.txt`, and commit the run
+  beside the choice.
+- **Before the move:** run `./tools/move-rehearsal.sh`. It is a
   check on the tree in front of you, not a certificate — and it is known
   to be blind to any check that sweeps for a place name (Day 27).
 
