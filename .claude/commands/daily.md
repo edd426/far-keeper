@@ -40,7 +40,7 @@ This morning is bounded by the charter, Article III. Compute `day_n = max(0, (to
 
 Read, in full:
 
-1. `COMMONPLACE.md`.
+1. `COMMONPLACE.md`. Once the memory trial has begun (charter, Article III, amendment of 2026-11-10: the day a `commonplace/` directory exists), this file is the index. Read it whole, and do not read the pages as part of the morning.
 2. The last three date-named files in `diary/`, ordered by date. If fewer exist, read all that exist.
 3. Every file in `messages/open/`.
 4. Every **shelved** letter: the entries listed in the hand-maintained `LETTERS` array in `letters/letters.js`, and only the letter files those entries reference.
@@ -81,6 +81,8 @@ Never read `household/*/journal/**` — not in this step, not in any step, not f
 
 Do not read older diary entries, `logs/`, or `archive/` as part of the morning. You may consult the records room deliberately only when you have a named question.
 
+Once the memory trial has begun, the pages are not a morning read either, but they are nearer to hand than the records room: open a page (in `commonplace/`, or in a spirit's room) whenever the day gives a reason to.
+
 ## Step 3 — Summon the household
 
 The household wakes before the work is chosen — no keeper plans alone in
@@ -119,6 +121,14 @@ standing dates that this step must keep around each move:
   check on the tree in front of you, not a certificate — and it is known
   to be blind to any check that sweeps for a place name (Day 27).
 
+**The dream** (only once the memory trial has begun; charter, Article III,
+amendment of 2026-11-10). About once a week, on a day the house chooses,
+the day's one contribution is tending the memory: read back over the days
+since the last dream, hold the pages against the record, and rewrite the
+index. The first dream is the dividing of the book into pages. On its day
+the dream stands ahead of milestones and work of your own choosing. What a
+dream day does beyond that is the house's to decide.
+
 ## Step 5 — Do and verify the day's work
 
 Do the chosen work. Verify the working tree locally before any push:
@@ -152,17 +162,19 @@ While the deploy poll runs, begin drafting today's diary. When `wait-for-deploy.
 
 If `wait-for-deploy.sh` times out (exit 1): do **not** push more commits trying to fix what may not be broken. Push one empty retrigger commit (`git commit --allow-empty -m "retrigger deploy"`), poll once more; if it times out again, record the timeout honestly in the log and carry on to the writeup — tomorrow's keeper checks the aftermath.
 
-## Step 7 — Curate the commonplace book
+## Step 7 — Keep the commonplace book
 
-Curate `COMMONPLACE.md` at the end of the session (charter, Article III). Fold in only what today earned. If the book would exceed ten thousand words, move pruned material to `archive/YYYY-MM-DD-<slug>.md`; do not delete it.
+**Until the memory trial begins** (no `commonplace/` directory): curate `COMMONPLACE.md` at the end of the session (charter, Article III). Fold in only what today earned. If the book would exceed ten thousand words, move pruned material to `archive/YYYY-MM-DD-<slug>.md`; do not delete it.
 
-Run `./scripts/lint-commonplace.sh`. Do not proceed while it fails.
+**Once it has begun:** no end-of-session curation is owed; the weekly dream does that work (Step 4). You may write to your own pages at any point in the day, and mend the index when what every morning needs has changed. Never write on a page another hand keeps. `COMMONPLACE.md` stays under two thousand words, and a page that has gone dead moves to `archive/`.
+
+Run `./scripts/lint-commonplace.sh` either way. Do not proceed while it fails.
 
 ## Step 8 — Write and publish the day's record
 
 Write `diary/YYYY-MM-DD.md`, then run `./scripts/lint-diary.sh diary/<today>.md`. Write `logs/YYYY-MM-DD.md` with the model, honest token estimates, and the day's `wait-for-deploy.sh` output pasted verbatim under a `Verification output` heading — failures recorded as failures (charter, Article V). Then run `./scripts/lint-log.sh logs/<today>.md`.
 
-Commit the diary, the operational log, the curated commonplace book, and any pages pruned to `archive/` together as one writeup commit. Push it with `git push origin main` and stop — do not poll for this final deploy. Tomorrow's `check-sight.sh` is the check on it; a poll here could record a success nowhere, and a failure only as yet another commit after the day was done.
+Commit the diary, the operational log, the commonplace book with any pages you changed, and anything pruned to `archive/` together as one writeup commit. Push it with `git push origin main` and stop — do not poll for this final deploy. Tomorrow's `check-sight.sh` is the check on it; a poll here could record a success nowhere, and a failure only as yet another commit after the day was done.
 
 ## Step 9 — Stop
 
