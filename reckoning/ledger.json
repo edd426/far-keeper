@@ -9092,5 +9092,104 @@
       "changeSinceYesterdayMinutes": -0.042077131407381785
     },
     "publishedAt": "2026-11-09T02:03:09Z"
+  },
+  {
+    "date": "2026-11-10",
+    "method": 2,
+    "place": {
+      "name": "Singapore",
+      "latitude": 1.3521,
+      "longitude": 103.8198,
+      "zone": "Asia/Singapore"
+    },
+    "sunrise": "06:47",
+    "sunset": "18:50",
+    "solarNoon": "12:49",
+    "utcOffsetMinutes": 480,
+    "dayLengthMinutes": 723.6881059656628,
+    "dayLength": "12h 03m 41s",
+    "changeSinceYesterdayMinutes": -0.04077090090652291,
+    "risingPointDegrees": 107.05288116304449,
+    "settingPointDegrees": 252.80589821247395,
+    "risingPointTomorrowDegrees": 107.33268736039112,
+    "risingPointStepArcminutes": 16.788371840797822,
+    "risingPointStepSunWidths": 0.5246366200249319,
+    "sunHighestDegrees": 71.51046625927454,
+    "sunLowestDegrees": -74.07481014289726,
+    "horizon": {
+      "zenith": 90.833,
+      "obstructionDegrees": 0,
+      "dipDegrees": 0
+    },
+    "working": {
+      "julianDay": 2461354.5,
+      "julianCentury": 0.26856947296372347,
+      "eccentricity": 0.016697335006249543,
+      "horizonZenithDeg": 90.833,
+      "horizonSensitivitySecondsPerArcminute": -4.185451543215777,
+      "epochCorrectionSecondsSunrise": -0.35928067398003805,
+      "epochCorrectionSecondsSunset": 1.9952434363176508,
+      "sunriseUTCMinutes": -73.29044361808684,
+      "sunsetUTCMinutes": 650.3976623475759,
+      "atSunrise": {
+        "julianDay": 2461354.449103859,
+        "julianCentury": 0.2685680795033207,
+        "meanLongitudeDeg": 229.1240957536429,
+        "meanAnomalyDeg": 305.72489924255933,
+        "equationOfCentreDeg": -1.5722938836303453,
+        "apparentLongitudeDeg": 227.54881290727235,
+        "obliquityDeg": 23.437910713994807,
+        "declinationDeg": -17.06669035912673,
+        "equationOfTimeMinutes": 16.18559692060922,
+        "hourAngleDeg": 90.4564116743694,
+        "solarNoonUTCMinutes": 288.5352030793908,
+        "passes": 3,
+        "lastMoveSeconds": 0
+      },
+      "atSunset": {
+        "julianDay": 2461354.9516650434,
+        "julianCentury": 0.26858183887866843,
+        "meanLongitudeDeg": 229.61944386078358,
+        "meanAnomalyDeg": 306.2202236865269,
+        "equationOfCentreDeg": -1.5626920552599353,
+        "apparentLongitudeDeg": 228.05376467424696,
+        "obliquityDeg": 23.437909862936383,
+        "declinationDeg": -17.20786721290827,
+        "equationOfTimeMinutes": 16.13683772894076,
+        "hourAngleDeg": 90.45342501912916,
+        "solarNoonUTCMinutes": 288.58396227105925,
+        "passes": 3,
+        "lastMoveSeconds": 6.459686119342223e-9
+      },
+      "atSolarNoon": {
+        "julianDay": 2461354.700388285,
+        "julianCentury": 0.268574959295958,
+        "meanLongitudeDeg": 229.37177358597728,
+        "meanAnomalyDeg": 305.972565243128,
+        "equationOfCentreDeg": -1.5675080785586597,
+        "apparentLongitudeDeg": 227.80127746049698,
+        "obliquityDeg": 23.437910288516047,
+        "declinationDeg": -17.137433740725452,
+        "equationOfTimeMinutes": 16.161669521669964,
+        "hourAngleDeg": 90.45491497403847,
+        "solarNoonUTCMinutes": 288.55913047833,
+        "passes": 3,
+        "lastMoveSeconds": 5.422862159321085e-9
+      }
+    },
+    "crossCheck": {
+      "method": "USNO Almanac for Computers",
+      "sunrise": "06:47",
+      "sunset": "18:50",
+      "sunriseDifferenceMinutes": -0.07035848778033937,
+      "sunsetDifferenceMinutes": -0.08291104719148734,
+      "sunriseGapMinutes": -0.07035848778033937,
+      "sunsetGapMinutes": -0.08291104719148734,
+      "beyondBound": false,
+      "maxGapMinutes": 60,
+      "dayLengthMinutes": 723.7006585250739,
+      "changeSinceYesterdayMinutes": -0.04122405098803483
+    },
+    "publishedAt": "2026-11-10T03:03:12Z"
   }
 ]

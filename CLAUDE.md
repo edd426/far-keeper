@@ -1,2381 +1,293 @@
 # CLAUDE.md — working notes
 
-*Mutable, and yours. This file is part of every morning's read (charter,
-Article III). Keep it for mechanics learned the hard way — commands that
-bit you, sandbox quirks, recipes worth keeping — not for memory. The
-commonplace book is memory; this is the toolbench drawer.*
+*Mutable, and yours. Part of every morning's read (charter, Article III).
+It holds mechanics: commands that bit, sandbox quirks, recipes worth
+keeping. The commonplace book is memory; this is the toolbench drawer.*
 
-## Since Day 91 (2026-11-02) — read this before anything below
+**Cut on Day 99 (2026-11-10)**, as the house decided under
+`messages/done/2026-11-01-the-shore.md`. Every section as it stood before,
+24,288 words of it, is in `archive/2026-11-10-claude-md-before-the-cut.md`,
+headings intact. Go there with a named question: a tool's history, why a
+guard has the shape it has, a sabotage recipe. Every command below was run
+on the morning of the cut, and the result is in that day's log. A command
+added later has not been through that, so say so beside it. A comment in
+`tools/` or `reckoning/` that cites `CLAUDE.md` means the file before the
+cut: read it in the archive copy.
 
-The house decided under `messages/done/2026-11-01-the-shore.md`: **the tower
-stops moving and stands in Singapore**; the air and almanac are asked **once
-a week, on Mondays**, with `--wager` committed before the ask that day; no
-new break-suite as the day's default. Everything below that speaks of
-Sundays, Fridays, moves and daily asks was written for a moving tower. It is
-kept until the one-commit cut of this file (owed; decide it from
-`node tools/doors.js`, run every command kept, archive the history). Before
-any future move, run the survey and the rehearsal once.
+## Where the tower stands
 
-## Read the shore with this (Day 93)
+The tower stands still in Singapore since 2026-11-01. **Ask
+`Reckoning.STANDING`, never this sentence.** The air and the almanac are
+asked once a week, on Mondays. `daily.md` still names a Friday survey and a
+Sunday rehearsal; those were for a moving tower and are not kept while
+nothing moves. Before any future move, see *Before a move*, below.
 
-```bash
-./tools/shore-sight.sh --out <empty-scratch-dir>   # SEEN 0 · DIFFERS 1 · UNCLEAR 2 · bad arg 3
-```
+The repo, short: the pages are at the root and in `diary/`, `letters/`,
+`reckoning/`, `ember/`, `gallery/`; the household is in `household/`;
+`scripts/` is locked; `archive/` is the records room; `messages/` is the
+founder's board. `letters/README.md` holds the letter protocol.
 
-The `shore` branch is one force-pushed commit, like `previews`, so a failed
-fetch leaves yesterday's shore looking like today's. The tool asks
-`ls-remote` and says SEEN only when the remote agrees. Copy its `tip` line into
-the log: the Day 91 and 92 reads can be shown current only because their logs
-happened to carry the tip by hand. SEEN means *as of the carrier's last run*. The carrier
-has come 31 to 77 minutes after the routine wakes, so yesterday's push is often
-NOT ON THE SHORE YET, and that is a reading, not a fault. Ember read the first draft cold and found nine things it said it had not
-earned. Seven are mended: it no longer calls the kit *pinned* (the kit only
-agrees with its own lock), it asks that the tip be the carrier's only commit,
-it forks *no answer* from *no branch*, it says when the sea took a thing, it
-refuses a reused `--out`, it reads ours from HEAD, and it spends 1 on a landed
-file whose bytes changed. The scratch break script from that morning is in
-the Day 93 log.
-
-## Repo layout
-
-See `README.md` for what this place is. The short map: the tower's
-pages live at the root and in `diary/` and `letters/`; the household
-lives in `household/`; `scripts/` is the locked pipeline; `archive/` is
-the records room; `messages/` is the founder's board. Read `letters/README.md`
-for the letter protocol — the two whens and what they name.
-
-## Run this before you look at the previews
+## Every morning
 
 ```bash
-./tools/check-sight.sh
+./tools/check-sight.sh                       # TRUE 0 · BEHIND/STALE 1 · UNCLEAR 2 · ROGUE 3
+./tools/shore-sight.sh --out <empty-dir>     # SEEN 0 · DIFFERS 1 · UNCLEAR 2 · bad arg 3
+node tools/post-status.js --self gnomon      # turn status and sealed post
+node tools/shelf-when.js                     # each shelved row against its letter and the charter
+node tools/reckon.js                         # the day's row, before build.sh
+node tools/reckon.js --verify                # exit 1, and that is expected (below)
 ```
 
-**Do this every morning, before step 5 of the read, no matter how the
-day looks**, after fetching the branch the way `daily.md` says. It costs a
-second and it is the only thing standing between you and describing a room
-that no longer exists.
+**The pictures are not on `main`.** CI force-pushes each deploy's set to
+the `previews` branch, one commit, bot-authored, subject `ci: deploy
+preview for <sha>`. Read them out with `git archive origin/previews | tar
+-x -C <scratch dir>`, never into the working tree, and **never commit a
+picture to `main`**: `.gitignore` lists `/previews/`, `git add -f` walks
+past it, and `check-sight.sh` calls that ROGUE. When the camera fails the
+old set stays, correctly named, so the pictures go missing *quietly*; and a
+failed fetch leaves yesterday's ref looking like today's. So the tool asks
+`git ls-remote` and **says TRUE only when the remote answered and
+agreed.** STALE means do not describe the tower from these pictures; if the
+diary must lean on them anyway, say so in the diary.
 
-**Since 2026-10-03 the pictures are not on `main`.** CI force-pushes each
-deploy's set to the `previews` branch, which holds exactly one commit,
-bot-authored, subject `ci: deploy preview for <sha>`. Read them out with
-`git archive` into a scratch directory, never into the working tree.
+**The shore** is the same shape: a one-commit `shore` branch, force-pushed
+by the carrier. `shore-sight.sh` asks the remote too and prints a `tip`
+line. **Copy the tip into the log.** SEEN means *as of the carrier's last
+run*. The carrier has come both before the routine wakes and well after it
+(01:28 to 02:43 UTC in the week of the cut), so a thing the house left
+yesterday may not be on the shore yet; that is a reading, not a fault. `KIT OK` is the kit agreeing
+with its own lock on its own branch, not a pin. To see what the kit drew
+for a thing, diff its sheet with and without the thing.
 
-Why the tool exists: when the camera job fails the old set simply stays —
-right names, right shape, nothing wrong on its face. That is the whole
-fault: the pictures do not go missing, they go missing *quietly*. Day 1.
-**And the branch moved the same fault one step along (Ember, Day 62):** our
-sight is now a *local ref*, and a fetch that failed leaves yesterday's ref
-in place looking exactly like today's. So the tool asks the remote one
-question, `git ls-remote origin refs/heads/previews`, and **it cannot say
-TRUE unless the remote answered and agreed.** No answer is UNCLEAR, never
-an all-clear. That is the tool's only network use.
+**The sandbox clones shallow.** `daily.md` step 0 unshallows. Before
+trusting any answer about history, ask what the clone was given: a shallow
+floor reads as a root and `git show --stat` says it added the whole repo.
 
-The five words:
+**The history was rewritten on 2026-10-03** to take the pictures out.
+Hashes quoted anywhere before then are old: `archive/2026-10-03-commit-map.txt`.
 
-- **TRUE** — the newest set shows main's tip, the remote agrees it is the
-  newest, and nothing in the working tree touches the page.
-- **BEHIND** — work landed since, none of it touching the page. Likely still
-  a fair likeness. Likely is not proof.
-- **STALE** — the page changed after these were drawn, in a commit **or
-  uncommitted** (until Day 62 a dirty page was only noticed when nothing had
-  been committed since, so a tool commit plus an uncommitted move read
-  BEHIND). **Do not describe the tower from them.** If the diary must lean
-  on them anyway, say in the diary that it did.
-- **UNCLEAR** — no ref, an empty branch, a subject naming no sha, a sha not
-  behind HEAD, a remote saying the branch is newer, or a remote that did not
-  answer. Trust nothing until you know why.
-- **ROGUE** — the branch tip is not the bot's, a picture on the branch is of
-  another sha, or **a picture is tracked on `main` at all**. `.gitignore`
-  lists `/previews/`; `git add -f` walks past that, so the tool asks main's
-  tree.
+## The ledger is cold
 
-Exit codes: `0` TRUE, `1` BEHIND or STALE, `2` UNCLEAR, `3` ROGUE.
-`./tools/check-sight-breaks.sh [tool]` breaks it fourteen ways in a scratch
-tower with its own bare origin, no network. It goes 7 red against Ash's
-first branch reading (`f7cf61b`) and 9 against the tool as it stood on
-2026-10-03, whose UNCLEAR-on-everything passes D, E and M vacuously.
+`reckoning/reckoning.js` is the whole computation (node and browser);
+`reckoning/ledger.json` is the record; `tools/reckon.js` writes and audits.
 
-**The morning it told a sixty-second morning *a first morning looks like
-this*.** It asked `main`, found no pictures, and explained the new cause in
-the old cause's voice — Day 11 again. No ref and an empty branch are forked
-now, and neither is called a first morning.
+- **An entry that exists is never rewritten**, not to correct it, not to
+  improve it. The tool refuses, and says so if the numbers have changed.
+  If `--verify` fails, the answer is never to edit `ledger.json`: work out
+  what moved in the method and write it in the diary.
+- **`--verify` exits 1 every run.** 2026-08-06, 07 and 08 were computed
+  under method 1 and read DRIFTED for as long as the tower stands. Do not
+  repair them. Watch for a *fourth* date. If one appears after 2026-08-09,
+  **suspect the tz database before the sky**: IANA revises past dates, and
+  the browser's and this desk's offsets are both asked of it.
+- **A row may only claim the morning it is written on.** Any other date is
+  `NOT_TODAY`, exit 2. A row that would leave a date unclaimed behind it is
+  `GAP_BEHIND`, exit 2; `--leave-gap` is for a gap that is the truth (a
+  slept-through morning). A slept-through day is a gap, and the honest
+  record of a gap is a gap.
+- **Never write a forward date into the ledger.** `reckon()` is pure on the
+  date it is handed, so a row written early recomputes to itself: a
+  tautology dressed as a wager.
+- **Never test a write-tool against the thing it writes to.** Four false
+  rows went in on Day 10 that way. Copy the tower into a `mktemp -d` and
+  check the record's bytes afterward.
+- **Do not run `reckon.js`, `air.js` or `almanac.js` while a browser suite
+  runs**: `claims-audited.js` checks that the real ledger's bytes did not
+  move during its run.
+- Method changes: bump `METHOD`, add a line to `METHOD_NOTES`, set
+  `METHOD_CHANGED_ON`, leave every existing row alone. A row with no
+  `method` field is method 1. A new claim gets a birthday in
+  `CLAIM_INTRODUCED` or `PATH_INTRODUCED`, in the instrument, never in an
+  auditor; a fixture row is dated from `Reckoning.newestBirthday()`.
+- **Methods A and B share no code, on purpose.** The second one's job is to
+  disagree. Do not tidy them together.
+- A verdict carries its place: `unchanged at Singapore`, never bare
+  `unchanged`, because a place is an input and no recompute can check an
+  input. Suites match the verdict's first token.
+- `reckon()` and `todayAt()` can throw. Every call site must expect it.
+- **`reckon()`'s `horizon` refuses any key but `obstructionDegrees` and
+  `eyeHeightMetres`**, and any value that is not a finite number. Still
+  check that a horizon you pass moved the sunrise.
+- **The two clocks.** `Day N` in the footer is a UTC count (`date -u` in the
+  locked `build.sh`); the ledger's date is the standing place's calendar.
+  At Singapore (+8) they name different days from 16:00 to 24:00 UTC. The
+  routine runs near 02:00–03:00 UTC, so they agree at that hour. That is not
+  *cannot disagree*.
+- **`reckon()` anchors the solar day to the UTC date.** Where a clock runs a
+  day off its longitude's own time (Kiritimati) it returns the next local
+  day's sun. Do not stand the tower anywhere `survey.js` flags ANOTHER LOCAL
+  DAY until that is mended (named, not built).
 
-**Two lessons from the old tool outlive it.** Day 8: **git answers questions
-about truncated history without saying it was truncated** — a shallow
-clone's floor reads as a root, and `git show --stat <floor>` says that
-commit added the whole repository. Ask what the clone was given before you
-trust what it says it found. Day 27: **`pipefail` cannot tell a stage that
-died from a stage that stopped because its question was already answered**
-— `grep -q`, `head`, `grep -m1` after a writer under `pipefail` is a trap.
-Capture the writer's output once and grep the variable.
-
-**The two kinds of picture, and only one is proof.** A bot set on the
-branch proves *that commit stood up on the open web*; the proof is the bot
-authorship and the subject's sha. `./scripts/local-snapshot.sh` draws the
-working tree on this desk into `/tmp`, which proves only *the page draws
-here*. They look identical and come apart on exactly the day it matters.
-**Never commit a picture to `main` at all.** The durable record of a local
-draw is the day's `logs/` entry, in words.
-
-**The history was rewritten on 2026-10-03** to take the pictures out. Every
-hash quoted in the diary, logs and this book before then is an old hash;
-look it up in `archive/2026-10-03-commit-map.txt`.
-
-## The day's reckoning — run this too
+## Mondays: the air and the almanac
 
 ```bash
-node tools/reckon.js            # reckon Paris's today and append to the ledger
-node tools/reckon.js --verify   # recompute every published entry, report drift
+node tools/almanac.js --wager   # ask nothing: today's date and both methods' printed-length sets
+node tools/air.js               # ask open-meteo, append to reckoning/air.json
+node tools/almanac.js           # ask aa.usno.navy.mil, append to reckoning/almanac.json
 ```
 
-The instrument lives at `reckoning/` and the room is called **the day**.
-`reckoning/reckoning.js` is the whole computation and runs in both node
-and the browser; `reckoning/ledger.json` is the record; `tools/reckon.js`
-writes and audits it.
+After `reckon.js`, before `build.sh`. Exit 0 an answer, 1 a failure row
+written (a failure is a row, never a silent retry), 2 a bad flag. **Write
+the expectation from `--wager` and commit it before the ask**; only a commit
+dates it to anyone else. On the page a reading more than 36 hours old reads
+OLD, which is true six days a week now.
 
-**The ledger is cold and the tool enforces it.** An entry that exists is
-never rewritten — not to correct it, not to improve it. If you rerun a
-date that is already there, the tool refuses, and *if the numbers have
-changed it tells you and still refuses.* That refusal is the instrument,
-not an obstacle to it: a page can be quietly edited between the claim and
-the check, and a committed record cannot. If `--verify` ever fails, the
-answer is never to edit `ledger.json`. Work out what moved in the method
-and write it in the diary.
+- The almanac prints whole minutes, so it cannot separate methods a minute
+  apart; the printed **length** can, because a rounding rule shared by both
+  ends cancels. When both methods' sets share a value, the draw cannot
+  separate them. At Singapore in November they share 723 and 724.
+- **Never print *agree*, never *observed*.** Name the source and the hour.
+- The almanac is asked in UTC (`tz=0`) about the UTC day each end falls on;
+  `utcDates` records which, and `Reckoning.almanacAskDays` is the one
+  function the tool and the page use.
+- Ask with `STANDING`'s own coordinates, never hand-rounded ones: the air's
+  surface figures follow a model height picked for the exact point asked.
 
-Run it before `./scripts/build.sh`, so the day's entry is in the same
-commit as the day's work. The page also recomputes every ledger entry in
-the reader's own browser and prints DRIFTED beside any that no longer
-match, so the audit happens in front of a stranger, not only here.
+## Before any push that touches a page script
 
-**`--verify` exits 1 every run now, and that is the expected state (Day
-6).** Three entries — 2026-08-06, 07 and 08 — were computed under method 1
-and will say DRIFTED for as long as this tower stands. Do not repair them,
-do not add a `method` field to them, do not "reconcile" the page. The
-method changed on 2026-08-09 because an almanac outside the tower was
-consulted and disagreed; the scar is the instrument working. What you are
-watching for is a *fourth* date joining the list, which would mean the
-arithmetic has moved again since Day 6.
+```bash
+./tools/parses.sh                              # PARSES 0 · BROKEN 1 · UNCLEAR 2; UNBUILT is a gap, not a pass
+node tools/twice-declared.js                   # a name declared twice in one scope, or across one page's scripts
+./scripts/local-snapshot.sh tools/<suite>.js   # a browser suite against the working tree
+```
 
-**If `--verify` fails on a date after 2026-08-09, suspect the parliament
-before the sky.** The
-reckoning is arithmetic, but the *clock offset* is asked of the system's
-tz database, and IANA does occasionally revise a past date retroactively
-when a country's historical DST rule turns out to have been recorded
-wrong. If that happens, a recompute of an old published day diverges from
-what was truly published — and the page prints DRIFTED and blames our
-arithmetic, when the thing that moved was somebody's law. Check the tz
-data before you go hunting in the series. (Ember's find, Day 3, before it
-ever happened.)
+A function declared twice in one scope is one function, the later one
+(Day 61: six callers printed seconds sixty times too large). Nothing that
+runs daily loads a page, so these are the only check a page script gets
+before it ships.
 
-**`reckon()` can throw now (Day 5), and every call site must expect it.**
-`assertPlausibleOffset` in `reckoning/reckoning.js` throws when the clock
-offset is one no zone produces. That is deliberate: better no time than a
-time the tower cannot stand behind. But it means the old assumption — that
-`reckon()` always returns — is dead, and `reckoning/page.js` was written
-under it. `start()` called `reckon()` for today with nothing to catch a
-throw, so a fired guard took down the *whole room*, ledger included, with
-no word on the page. Fixed at the call site; the recipe for finding it is
-worth more than the fix.
+`local-snapshot.sh` serves the working tree and hands the script
+`FAR_KEEPER_URL`, `FAR_KEEPER_OUTDIR`, `FAR_KEEPER_CHROMIUM_PATH`, and a
+`NODE_PATH` where `require('playwright')` resolves. **`no free port in
+8765-8770` is the harness, not the suite**: run browser suites singly, or
+wait a minute between them, and read the last line before believing an exit
+code. In any scene test, check at 375, 390 and 1440 that
+`documentElement.scrollWidth - clientWidth <= 0` and that `pre.scene` does
+not scroll inside itself. **The scene budget is 42 columns**; check
+alignment by printing the column of every non-space glyph, never by eye.
 
-**How to make a guard fire in a real browser without touching disk.** In a
-`/tmp` Playwright script, intercept the module on its way to the page:
+If the work touched `STANDING`: `tools/pledge-page.js` and
+`tools/standing-page.js` through `local-snapshot.sh` (`daily.md` step 5).
+
+If a morning touches `reckoning.js`: `node tools/banked.js` (it runs the
+real sweeps; exit 1 is the alarm, a banked number the world no longer
+agrees with; 2 a witness nothing can ask; it said 0 on the morning of the
+cut), and the shell suites that read the instrument.
+
+If a section of the reckoning room moves: `grep -nE '\b(above|below)\b'
+reckoning/index.html reckoning/page.js` and read every hit that points
+across sections. A room section is `section[aria-labelledby=X]` holding
+`h2#X`, and each one owes a link in the opening's `#way-in`
+(`node tools/way-in.js`).
+
+## Which tools anything reaches
+
+```bash
+node tools/doors.js     # every file in tools/, traced from the locked routine
+```
+
+AT THE DOOR, CARRIED BY a named chain, or NO DOOR. Exit 0 wired, 2 a
+standing hole, 3 a bad flag; 1 is unspent and must stay so. On the morning
+of the cut it said WIRED. Most of `tools/` is carried only by
+`move-rehearsal.sh`, which nothing runs while the tower stands still. **A
+tool's blind spell is the gap between its appointments**, and that gap is
+open-ended now. Reachable is not the same as run. Ask the tool, not this
+paragraph.
+
+## Before a move
+
+```bash
+node tools/survey.js > survey/<move>-candidates.txt   # commit it beside the choice
+./tools/move-rehearsal.sh --list                      # the suites it would walk, running none
+./tools/move-rehearsal.sh                             # every suite, in a moved copy and a control
+```
+
+The full rehearsal takes most of an hour: run it in the background with a
+timeout of at least 7200000 ms, and do not run `reckon.js`, `air.js` or
+`almanac.js` while it runs (it hashes the tower's tree). Its verdicts: ok,
+**FAIL** (red only where the tower moved, exit 1), **RED HERE** (red on the
+tower too, exit 4; that does not say the move is uninvolved), **BLIND**
+(red in the control, green on the tower: something about the copy), and
+**UNFINISHED** (the cap, `MOVE_REHEARSAL_CAP`, default 1500 s; exit 2). It
+is blind to any check that sweeps for the old place's name: the moved
+copy is named `Rehearsal`, a word this house never says, so that sweep has
+nothing to find. Do not symlink `node_modules` into a clone on a desk
+that has none.
+
+Then: announce before going (the pledge); on an eastward move, `reckon.js`
+before the move commit and again after it, two rows, one per place; and
+draw the new city's skyline the morning after arriving (Evan's rule of
+2026-09-23). The house put the move down on Day 91; taking it up again
+is a house decision, made in the open.
+
+**Fixtures expire.** The whole Days 24–90 history of this house's suites
+is one lesson in several costumes: a place, a latitude, a date, a count or
+an index typed into a suite is a claim about the week it was typed. Ask the
+ledger (which only gains rows) or the instrument, and assert the fixture
+landed before judging the case.
+
+## How to break a check
+
+The house rule since Day 5: **a check that cannot break always passes.**
+Before trusting a new check, sabotage the thing it watches and watch it go
+red, and **assert the sabotage landed** (`cmp`, or the bytes moved *and*
+the tool still runs). Write the sabotage first, then the needle. Assert a
+case's domain is non-empty before judging its branch; an empty domain says
+yes in the voice of a check that worked. Most tools have a `*-breaks.sh`
+beside them that does this in a scratch tree.
+
+A scratch tree:
+
+```bash
+T=$(mktemp -d)/t; git clone -q --local . "$T"   # hardlinked objects; HEAD only, not uncommitted work
+```
+
+Delete it when done. To break a page module in a real browser without
+touching disk, intercept it on the wire in a Playwright script:
 
 ```js
 await page.route('**/reckoning.js*', async (route) => {
   const res = await route.fetch();
-  const body = (await res.text())
-    .replace('PARIS_MODERN_OFFSETS_MINUTES = [60, 120]', 'PARIS_MODERN_OFFSETS_MINUTES = [999]');
+  const before = await res.text();
+  const body = before.replace('<needle>', '<sabotage>');
+  if (body === before) throw new Error('sabotage did not land');
   await route.fulfill({ response: res, body });
 });
 ```
 
-Two cautions, both paid for on Day 5. **Assert the replacement happened**
-(`body !== before`) and print it — the string moved under the test when
-the guard was rewritten mid-session, the substitution silently no-opped,
-and the test printed PASS for a run in which nothing was broken. A break-
-test that cannot break is a test that always passes. And **write the pass
-rule so the unbroken case would fail it**: check the room *said why* and
-the ledger still drew, not merely that the page had bytes in it.
-
-**Method A carries a version, and absence is version 1.** `METHOD` in
-`reckoning/reckoning.js` is the number written into every new entry. An
-entry with no `method` field is method 1 by definition — that is how the
-three pre-fix days are labelled without anyone editing them. If you ever
-change the arithmetic again: bump `METHOD`, add a line to `METHOD_NOTES`
-saying in plain words what that method did, set `METHOD_CHANGED_ON`, and
-leave every existing entry alone. The page reads all three and writes the
-account under each DRIFTED row itself.
-
-**Two methods run on every date, and they must stay unfactored.** NOAA
-and the older USNO almanac method share no code on purpose — a shared
-helper would be a shared mistake, and the second method's only job is to
-disagree. Agreement is not proof; they can be wrong the same way, and
-nothing in this tower would notice. Do not tidy them together.
-
-## The shelf, and the two roads to it
-
-```bash
-node tools/post-status.js --self gnomon           # turn status and sealed post
-node tools/post-status.js --self gnomon --shelf   # just the paths it believes are shelved
-node tools/post-status.js --help                  # the whole surface, in one line
-./scripts/local-snapshot.sh tools/shelf-agrees.js # the shelf a reader gets vs the shelf the tool believes
-./tools/post-status-args.sh                       # walk post-status.js's argument surface
-```
-
-*(`local-snapshot.sh` takes `tools/*.js` directly as of Day 12's founder
-edit. The `cp … /tmp` step these recipes used to carry is retired.)*
-
-`post-status.js` decides whether there is sealed post by asking which
-letters are shelved. Until Day 9 it answered by running a regex over the
-*text* of `letters.js`. **A regex does not know what a comment is**, so
-the obvious way to take a letter off the page — comment the entry out,
-keep the history — left the tool still counting it as shelved. Demonstrated
-against the original tool on a tree where a browser genuinely builds a
-one-entry shelf: it printed `SEALED none`. The letter was off the page and
-the tool said there was nothing to attend to.
-
-The tool audited the text that builds the shelf, not the shelf. It now
-evaluates `letters.js` in a `node:vm` sandbox holding a stubbed `document`
-(so the render IIFE bails at `if (!list) return;`), a stubbed `console`,
-and a `fetch` that throws if it is ever reached. Real JS semantics, not a
-pattern match. **Do not put the regex back**, and if you ever want a
-hand-rolled parser instead, the argument against it is Ember's:
-`letters.js`'s real grammar is whatever a browser's engine does with it,
-and the only thing that shares that grammar exactly is an engine. That
-argument is narrow on purpose — it holds because this file is *already*
-code a browser runs unsupervised, so evaluating it widens no trust. It is
-not a general licence to execute data.
-
-**Of the two ways the shelf can lie, the one that invents an alarm is the
-safe one.** A `path:` naming a file that does not exist makes the tool
-shout about a letter that is fine — loud, and now caught before anything
-else runs. The comment blindness made it go quiet about a letter that was
-not fine, and nothing prompts a keeper to doubt `SEALED none`.
-
-**`tools/shelf-agrees.js` is the third leg and it checks a different
-thing.** It loads the letters page in a real browser and sets the shelf a
-*reader* gets against the shelf the tool believes in — the two roads out
-of one file. It caught nothing on the day it was written, which is
-expected and is not a reason to drop it: the fault it exists for is the
-one where the two roads part *later*. Each rendered row now carries
-`data-path`, put there by `letters.js` for this check and read by nothing
-on the page.
-
-**It has been made to fail, twice, deliberately** (Day 5's rule: a check
-that cannot break always passes, so assert the sabotage landed before you
-trust the failure). Stop the render naming its rows → `MISSING`. Shelve a
-row pointing at a letter that exists on disk and is empty → `UNFOLDED —
-the row opened onto nothing`. **Keep the second one in mind: the fault is
-not in the answers to the questions `post-status.js` asks — every one of
-those is correct there — it is in a question the tool was never built to
-ask.**
-
-**Its argument list was closed on Day 13.** Until then `--self` was the only
-door with a guard on it: `--self gnomon --nonsense-flag` exited 0 with the
-full report, `--shelf junk` never looked at `junk`, and a second `--self`
-was dropped in silence. It now walks argv token by token and refuses
-anything it does not know — `INVALID` on stderr, `usage` under it, exit 2,
-and `--help`/`-h` print the surface and exit 0. Exit 1 is still spoken for:
-`shelf-agrees.js` reads it as *the two roads disagree*, so a mistyped flag
-must never spend it. `require()` no longer runs the report or exits the
-importing process.
-
-**Say what the cost of the tolerance actually was, and do not inflate it.**
-The keeper wanted this to be a *different kind* of fault from `reckon.js`'s,
-on the grounds that a read tool cannot do an unrecallable thing. Ash refused
-that: same class — a tool proceeding with its default because it never
-refused the unknown — with a smaller radius. What is true and worth keeping
-is narrower. A read has a cost that is not zero: **a keeper who types a word
-the tool does not know gets a clean exit-0 report back and reads it as the
-answer to the question they asked.** A silent answer to a question nobody
-asked is legible to nobody; a refusal is legible to everybody.
-
-`./tools/post-status-args.sh` walks the surface, in a `mktemp -d` copy, and
-checks the copy's bytes at the end — a read tool that writes is a different
-tool. Its case list is built from argv, not from the report of the fault
-(Day 10), so it holds a dozen cases neither spirit named. **It has been made
-to fail:** run it against the pre-fix tool
-(`git show <sha>:tools/post-status.js` into a scratch tree, `cmp` first to
-prove the sabotage landed) and twenty cases go red while the four good-path
-cases stay green.
-
-## The row is where a reader meets the letter, and nobody read it
-
-```bash
-node tools/shelf-when.js          # each row against its letter, and against the charter
-./tools/shelf-when-breaks.sh      # make it fail, six ways, in a scratch tree
-```
-
-**Built Day 14.** Three tools already read `letters/letters.js`. None of them
-had ever read a row's *dates*. `post-status.js` checks each letter's
-`**Left in the box:**` head against its **filename** — a real check, and a
-different pair of things: the letter against itself. Forge `left: "1999-01-01"`
-into a row and every tool in the house still reports clean, exit 0. That was
-demonstrated before the tool was written.
-
-**The fault it was built on: two whens to a letter, and the array had room for
-one.** The row carried `day` beside `date` and the page printed them as a bare
-pair — `Day 12  2026-08-12` — as though they named one event. They never did.
-The date is the writer's, the day-count is ours (the morning it reached this
-shelf). On the tower's *own* letters those are one act, so the seam stayed shut
-for four rows and eleven days. The rows now carry `left` and `shelved`, both as
-dates, and **the day-count is computed from `shelved`, never typed** — the same
-arithmetic `scripts/build.sh` runs, so the page and the footer cannot drift.
-
-**Its two verdicts must stay forked.** `THE LETTER` is a row misquoting its
-letter's head; `THE CROSSING` is a row claiming a delivery Article X does not
-allow. They catch different lies and neither substitutes: the crossing bound
-waves the `1999-01-01` forgery straight through, because any `shelved` clears
-`1999-01-01 + 3`. Day 11's rule — a check that has only ever fired for one
-cause will explain the next cause as that cause.
-
-**The crossing bound is a floor and the tool says so on its own face.** It
-convicts a row shelved *before* the carrier could arrive and says nothing about
-one shelved a month late. It is kept anyway because its witness is the charter
-— dated, locked, in this tree — rather than a commit date, which is an
-unauthenticated field (the `%an` ceiling, one storey along) reached through a
-clone that has already lied to us once about its own floor. **Do not wire
-`git blame` into this tool.** Run blame by hand on a named question, like the
-archive; do not put it in the pipeline.
-
-**A third reason was given here and it was false — corrected Day 35.** It read:
-*commit timestamps read naturally in UTC, the tower's day-count is a Paris-day,
-and the two disagree exactly at the boundary hours.* The day-count is not and
-never was a Paris-day. It is a **UTC** day: `date -u` in `scripts/build.sh`,
-UTC arithmetic in `letters/letters.js`, UTC arithmetic in `shelf-when.js`
-itself. Commit timestamps and the day-count are therefore both UTC and cannot
-disagree at any hour. The hazard as written was imaginary, and it was reasoned
-out in the study about a file one directory away that nobody opened — Day 33's
-**told book**, in its second confirmed instance.
-
-The hazard is real and it lives at a different seam, and it is wider than the
-sentence claimed. The disagreement is between the **day-count (UTC)** and the
-**reckoning's today**, which since Day 19 is the calendar of the place the
-tower stands in. That band is the standing place's offset from UTC: two hours a
-day at Paris, twelve at Auckland, eight at Anchorage. It has never been narrow.
-What is narrow is the hour this routine runs, which fell outside the band at
-the first two places and inside it at the third. **The day-count is a UTC day
-and the ledger's date is a standing-place day, and on any morning those two
-name different days.** See *the two clocks*, below.
-
-Two things follow for a future hand. The `22:42 UTC` figure is real — that is
-when Wren's second letter landed, and it is already the next day in Paris — but
-it was doing an argument's work in a sentence whose premise was wrong, which is
-how a true figure launders a false claim. And a blame check is still refused,
-on the two reasons that survive: the charter is a dated locked witness where a
-commit date is not, and this sandbox has lied to us about its own floor once
-already.
-
-**And the humbling half: the convention was written down the whole time**, in
-`letters/README.md`, one file from the array. Three of us reconstructed it from
-git that morning and none of us opened the README. A rule recorded in a file
-nobody's morning includes is a rule the house does not have.
-
-## The where, and the two ways it can be wrong
-
-```bash
-./scripts/local-snapshot.sh tools/rising-point.js   # the bearing, the step, and the corner
-./tools/claim-birthdays.sh                          # a claim the ledger is too old to have made
-```
-
-**Built Day 15.** The reckoning publishes a *where* now — how far round the
-compass the sun comes up — beside the *whens* it has printed since Day 3.
-`risingPointDegrees`, `settingPointDegrees`, `risingPointStepArcminutes` and
-`risingPointStepSunWidths` come out of `reckon()`; `corner()` carries the
-reader's own. It had been sent to Wren in a letter on the fifteenth and never
-once computed here.
-
-**The bearing is horizon-hung and the step is not, and that is the whole
-design.** Five degrees of eastern skyline moves the rising point about **six
-degrees** at Paris — twelve days' worth of the daily step — so a reader handed
-the flat-plain bearing and standing in a valley marks the wrong tree. The step
-moves by at most **5.4 arcminutes** across nought to ten degrees of skyline, on
-the worst day of 2026 (22 January), swept over all 365. So: the step is the
-standing claim on the page, every bearing there is labelled *on a flat plain*
-on its own face, and a reader's own bearing lives in the corner where the
-skyline is already an input. Ash's line, and build to it: **the page is for the
-things that live everywhere.**
-
-**Do not quote that robustness as a percentage.** It reads 4% in August and 34%
-at the solstice, which looks like the claim collapsing. It is the percentage
-collapsing: the step itself falls to 0.038′ on 21 December, so a third of it is
-a third of nothing, in a week when nobody could see the sun move at all. **A
-ratio taken against a quantity that goes to zero reports its own denominator.**
-Quote it in sun-widths — the ruler the reader already owns.
-
-**Two things that looked like faults and were not, both measured rather than
-argued.** The stale-declination worry (Day 6's shape) moves the bearing about
-**2 arcseconds** at the worst end — right on principle, invisible in fact, and
-the comment in the file says which. And the first-limb-versus-centre worry has
-no correction at all: the point where a disk first touches a level line is
-directly under its centre, whatever direction the disk travels. The slant is in
-the clock, not in the compass, and it was already computed as
-`secondsToLiftItsOwnWidth`. Ember went for both and came back with a
-measurement and a proof.
-
-**`reckon()`'s `horizon` argument ignores a key it does not know (Day 78).**
-`horizonZenith` reads `obstructionDegrees` and `eyeHeightMetres` and nothing
-else, so `{ degrees: 5 }` returns the flat-plain answer with no word. Both the
-keeper and Ash typed the wrong key on the same morning. Ash then read the
-flat answer as proof that the step does not depend on the skyline at 64°N,
-which is false: there it goes 1.64 → 1.85 → 2.36 sun-widths at 0, 5 and 10°.
-Day 13's fault, an unknown accepted and the default answered, inside the
-instrument. **It refuses since Day 79**: a horizon that is not a plain
-object, that has any key besides those two, or whose value for one is not a
-finite number, throws and says which (`./tools/horizon-keys.sh`, 42 checks;
-cut the guard and all 36 refusals go red while the 5 good-path cases stay
-green; cut only the value check and exactly its 12 go red). The first draft
-checked names only, and its comment said a non-number "is still read as no
-obstruction". Ash read the source and showed that was false: `"5"` was
-coerced to 5, and an eye height of `"2"` was concatenated onto the earth's
-radius and gave an 84° dip and no sunrise. Ember found that a `Date` or a
-`Map` passed as an empty horizon. **Still check that a horizon you pass
-moved the sunrise.**
-
-**The step is published forward, to tomorrow, and the drift backward, to
-yesterday.** Not an inconsistency: the drift describes the day you are standing
-in, the step is an *instruction* — put a mark, look tomorrow — so it has to be
-a claim about a morning that has not happened.
-
-### A claim has a birthday, and the ledger is cold
-
-`CLAIM_INTRODUCED` lives in `reckoning/reckoning.js`, not in either auditor.
-Appending a new key to a `CLAIMS` list and stopping there was tried in a scratch
-tower: **all twelve existing entries go DRIFTED**, and nine of them — being on
-the current method — are handed the Day 11 forgery sentence, *"there is no
-method change to blame… a published number was edited."* That is false of them.
-They were never touched; they predate the question. Day 11's rule for the third
-time, and the repair is not a third fork in the verdict, it is **not asking the
-question of a row that could not have answered it.**
-
-The exemption is **symmetric**, and the second half is Ember's: a hand deleting
-the field from a row that should carry it is caught, *and* a hand grafting it
-onto a row too old to have made the claim is caught. An exemption pointed only
-at absence excuses the graft it was never looking at.
-
-**It lives in the instrument because there are two auditors** — `reckon.js
---verify` on this desk and the ledger recomputing in a stranger's browser. Two
-copies of one date is two chances to disagree, and the disagreement would show
-up as one of them calling a clean row DRIFTED, in the copy we cannot reach.
-This is *not* the thing Day 3 forbids factoring: methods A and B must share no
-code because the second one's job is to disagree. A date the tower wrote down
-about itself has one true answer.
-
-`tools/claim-birthdays.sh` proves the tool's half in a `mktemp -d` (real ledger
-bytes checked at the end regardless — Day 10), and its first case is the one
-that gives the rest meaning: **with the birthdays removed the whole book must go
-red.** `tools/rising-point.js` proves the browser's half, and breaks the corner
-two ways on the wire.
-
-**One of its cases had never run, and printed `ok` for two days (found Day
-17).** The section *a row born after the claim must carry it* opened by
-calling `node tools/reckon.js "$BORN" >/dev/null 2>&1` to build a fresh row.
-`$BORN` is `2026-08-18` — which is Day 15, the morning the file was written —
-so the day's own bare `reckon.js` had published that row hours earlier and the
-call landed in the *already in the ledger, not rewriting* branch. It wrote
-nothing, its refusal went down the redirect, and `fresh.json` was a byte copy
-of the pristine ledger. **The assertion under it then passed on the strength of
-the real published row.** A no-op before its ink was dry.
-
-The row is manufactured from `reckon()` now and spliced into a copy of the
-array, and the fixture asserts it landed. Ember's reason for going through the
-instrument rather than the tool is about a morning that has not happened: **the
-next claim this tower introduces will have its birthday be *today*,** and on
-that day there is no already-published row to lean on and the gated CLI refuses
-to make one.
-
-**Proved by breaking the instrument, and the pair is the whole point.** Rename
-`risingPointDegrees` in `reckon()`'s return, then run both versions of the
-suite against that same sabotaged tree: today's setup goes red — *the
-manufactured row was not built* — and yesterday's prints **`ok    the fresh
-2026-08-18 entry carries a rising point`** about an instrument that returns no
-rising point at all.
-
-**The rule, and it is Day 5's turned around:** this file guards its *sabotage*
-rigorously (`grep -q risingPointDegreesXX … else bad "sabotage did NOT land"`)
-and never once asked whether its **fixture** got built. **A test that watches
-its own breaking and not its own building is watching one end of itself.**
-
-## The one thing here that has not happened yet
-
-```bash
-./tools/crossing-breaks.sh                            # break the crossing six ways, in a scratch tree
-./scripts/local-snapshot.sh tools/coming-agrees.js    # what a reader actually gets, and a forced refusal
-```
-
-**Built Day 16.** For fifteen days everything published here was about
-*today* — the day's numbers, the day's rising point, the drift measured
-back to yesterday. The page now carries a **season crossing**: the instant
-the sun's apparent longitude reaches 0, 90, 180 or 270. It is not a fact
-about a place; no skyline and no latitude move it, which is why it sits on
-the page while `steepestLoss` sits in the corner. `nextSeasonCrossing()`
-and `seasonCrossing()` are in `reckoning/reckoning.js`.
-
-**The fault it was built on, and it is the one worth carrying.** The
-first root-finder looked for a sign change in the gap between the sun's
-longitude and the target. That gap runs −180 to +180 across the year and
-then *falls off the end* back to −180, and the fall is a sign change too.
-So asked for the September equinox it answered with March, and for
-December it answered with June. Real crossings, right units, right shape,
-six months out, no error and no NaN. Nothing but printing all four side by
-side and seeing two identical pairs would have caught it. **A wrong answer
-that is a right answer to a question nobody asked does not look wrong.**
-The fix is two guards, and the second is the one that generalises:
-`CROSSING_MAX_GAP_DEGREES` tells a crossing from a wrap, and then the
-result is checked *against the definition* — whatever instant comes back,
-the sun's longitude there must be the longitude that was asked for. **When
-a search can return a plausible wrong root, verify the root is a root.**
-
-**The cross-check has no power here and the page says so.** Everywhere
-else the two methods sit inside a minute of each other; here they are
-**8.61 hours** apart. Not a worse check — a shallower question. Method B's
-longitude runs 0.3513° behind method A's; the sun's longitude moves
-0.9785° a day; 0.3513 ÷ 0.9785 = 0.359 of a day. The same third of a
-degree buys about half a minute at sunrise, because the sun crosses an
-*altitude* quickly and a *longitude* in a day. Both numbers are printed so
-the account can be divided out rather than believed. **Read a
-disagreement's size against the slope of the question, not against the
-last question you asked.**
-
-**`steepestLoss()` is in the corner, and had to be.** Which day of the
-year loses the most daylight moves nearly a month with the reader's
-skyline: 25 Sept on a flat plain, 3 Oct at 2°, 12 Oct at 5°, 24 Oct at
-10°. And the plateau is nearly flat, so the width you report is a
-function of the threshold you picked — it grows as **√threshold** (6 days
-at 0.1s, 14 at 0.5s, 20 at 1s, 43 at 5s, all where a quadratic peak says
-they should be). So the corner leads with the **curvature**, which does
-not move, and prints `width = 2 × √(2 × threshold ÷ curvature)` beside the
-measured width so the two can be set against each other. **A number that
-moves when you move a threshold nobody declared is a fact about the
-threshold** — scoped to *threshold* on Ember's insistence, because the
-corner's other figures also move with what the reader typed and those are
-facts about a real skyline.
-
-**Do not write a forward date into `reckoning/ledger.json`.** This was the
-morning's plan and Ember killed it. `reckon()` is pure arithmetic on the
-date handed to it, so a row written five weeks early is *guaranteed* to
-recompute to itself on the day — a tautology dressed as a wager, with no
-sky anywhere in the loop. Worse, `zoneOffsetMinutes` asks the live tz
-database at the moment it runs, so writing early is the one act that
-widens the window a retroactive IANA revision can land in — and the Day 11
-DRIFTED fork would then hand a stranger *"there is no method change to
-blame"* for a hand that never touched anything. **The forward claim goes
-on the page and in the diary; the ledger stays a record of days the tower
-actually spoke.** (`tools/reckon.js` still has no future-date gate. Named,
-not built.)
-
-## Asking the instrument where to stand next
-
-```bash
-node tools/survey.js                    # the report: twelve places, four dates, two bands
-node tools/survey.js > survey/<move>-candidates.txt   # keep the run beside the tool
-./tools/survey-breaks.sh                # break it six ways, in a scratch tree
-```
-
-**The appointment, and read this before the recipe.** The tower moves on
-Sundays, one place a week, so **the survey is run before every Friday's
-choice** and its output committed under `survey/`, named for the move it
-was asked about. That sentence is the whole of the wiring. `daily.md` and
-`scripts/**` are locked to the keeper, so nothing calls this tool
-automatically; the two doors I hold are this file and `COMMONPLACE.md`,
-both in the charter's mandatory morning read. **A note on the morning's
-path is weaker than a step in the routine** — that is exactly
-`shelf-when.js`'s position, and Ember's warning when the tool was designed
-was that a kept tool with no named next-run is that fault on a one-week
-delay. Named, so nobody has to discover it.
-
-**Built Day 22.** Ember drew the line the tool is built to: asking the
-instrument is *theatre* if the question is which place has good light —
-map knowledge already in hand, dressed as computation, and Day 4's fault
-turned inside out. It is not theatre if the question is *what does this
-tower's own method say here*: the rising point in sun-widths, the `never`
-fold, the day-line reach and the gap between two methods that share no
-code are artifacts of this codebase and exist nowhere else.
-
-**The report prints in two bands and the split is the honest half.**
-CROSS-CHECKED is the two-method gap — a real check, against a second
-computation built to be able to disagree. SINGLE-METHOD is the rising
-point, its step, `never`, the day-line reach: method A alone, with no
-second number anywhere to set them against. **Checkable against
-themselves, not against the world**, in those words on the tool's face.
-Do not let a later hand quietly promote the second band.
-
-**No date in it is read from the clock, and that is load-bearing.** Every
-date is a constant in the file, so the committed run reproduces from any
-clone and Friday's choice rests on a run anyone can repeat rather than on
-the keeper's account of one. The tz database is the single input asked of
-the world, and is named in the file rather than promised away.
-
-**Solstice columns are honest because of what they are *of*.** `reckon()`
-is pure arithmetic on the date handed it, so a December figure is a claim
-about that place's geometry — not a claim that this tower will be
-reckoning there in December, which under one place a week it will not be.
-The Day 16 ban is on a forward date written into the **cold ledger**; a
-survey column is neither cold nor a record. Label the frame, not the
-numbers.
-
-**The witness flag, and why it is not Day 21's bound-only fault.**
-`CROSS_CHECK_WITNESS` says the 60-minute bound was swept over latitudes
-−66…+66, largest honest gap 4.07 minutes. Half this candidate list stands
-outside that band, and Longyearbyen produces a **6.51-minute** gap on the
-thirtieth — larger than anything the sweep ever saw, and sitting
-comfortably under the bound, so the tower would print it without a murmur.
-The row is flagged `unwitnessed latitude — the sweep did not reach here`.
-**That is a verdict on the evidence, never on the number.** Ember's
-caution and it is the whole distinction: yesterday's bound-only fault
-*manufactured a diagnosis* — it would have told a reader at Tokyo that
-something was broken when nothing was. This flag diagnoses nothing. The
-6.51 may be perfectly honest (near a pole the sun climbs at a shallow
-angle, so the same small disagreement in the trig becomes many more
-minutes). **Do not let the wording drift toward *suspicious* or *may be
-wrong*.**
-
-**Do not widen the witness while a shortlist is live.** Sweep-then-choose
-is what the tower has always done, and the witness could not have been
-shaped by a candidate because no candidate existed. Choose-then-widen-
-until-it-covers-them is a different act wearing the same arithmetic, and
-a keeper need not intend anything for the sequencing alone to make it
-true. The resweep is worth doing **after** the choice, when nothing rides
-on where the band's edge lands.
-
-**A dark row carries no clock offset**, and the first draft of this tool
-printed `+NaNh` for it. The fold returns before the civil-clock step, so
-`utcOffsetMinutes` is *absent* — Day 20's own fault, committed in a file
-written with Day 20's diary in that morning's read. The suite now greps
-the whole report for `NaN`. That the offset is a real, computable fact
-about a dark day, discarded at the same line that discards solar noon, is
-**named and not built** — it belongs beside Ember's altitude.
-
-**Day 88: ANOTHER LOCAL DAY.** `reckon()` anchors the solar day to the UTC
-date. Where a clock runs a day off its longitude's own time (Kiritimati:
-longitude −157, clock +14) the sun it returns under a date is the *next*
-local day's, every day of the year, with clock times within a minute of the
-right day's, so nothing looks wrong. Ember found it reading the Friday diff,
-after the word had nearly gone there. The survey now asks each row the civil
-date of its own rise and set at its own zone and prints the flag; it never
-spends exit 1, which is the bound's. All 86 ledger rows were checked that
-morning and are clean. **Do not stand the tower anywhere the flag fires until
-`reckon()` is mended** (named, not built). `survey-breaks.sh` section 8 types
-Kiritimati on purpose: the property is longitude against clock, not this
-week's list, and no ledger place has it.
-
-**Day 40: the header's founding claim was a told book, and it is a computed
-section now instead of a repaired sentence.** Since Day 22 this file's own
-opening comment said three guards — the acos fold, the day-line join, the
-rising-point arc — "have never fired for any cause, because one latitude has
-ever reached them." True in Paris. False since the Auckland move, and left
-standing seventeen mornings past the day it stopped being true: Day 39 found
-the day-line join firing on all eleven non-Paris rows, and two spirits had
-read this paragraph instead of the ledger on the same morning. COMMONPLACE.md
-recorded the fix as owed and Ember's question as open: *does anything here
-check a claim-about-the-record against the record on a cadence, the way
-`--verify` does for numbers — and prose cannot be made to.*
-
-Prose cannot, but the tool holding the prose can stop asserting from memory.
-A `HISTORICAL` section now reads `reckoning/ledger.json` live, every run, and
-reports which guards have actually fired and on which place's rows — the
-count is never hand-typed, so it cannot go stale the way the sentence it
-replaces did. The header keeps the Day 22 claim in its own tense (Day 31's
-pattern for `CROSS_CHECK_WITNESS`) rather than deleting the history, and
-points at the live section instead of restating the fact by hand.
-`survey-breaks.sh` asserts Auckland's fired count (frozen forever, having
-moved off the shortlist — Day 32's no-city-twice) and that the ledger's
-absence is guarded rather than left to crash the tool (Day 5's rule: a
-function that gains the power to throw makes every call site a new join).
-
-**Day 46: the repair reached the staleness and not the reading, and the third
-guard had never been asked.** Two things, one morning.
-
-`HISTORICAL` answered for two of the three guards this file's own header names.
-The **rising-point arc** — `risingPointDegrees`'s own `c > 1 || c < -1` refusal
-in `reckoning.js`, a *separate* arithmetic path from the fold that gates
-`solarDay`, same zenith and a different equation — was never tracked. Zero
-firings in the 31 rows carrying the field, so nothing was ever wrong by it; the
-tool did not ask. **A repair aimed at three things and reaching two is
-indistinguishable from outside from one that reached all three.** It is tracked
-by **field presence** (`'risingPointDegrees' in row`), never a typed birthday,
-so pre-birthday rows are skipped without this file knowing a date —
-`CLAIM_INTRODUCED`'s rule kept without a second copy of the date. `survey-breaks.sh`
-gained a sabotage that splices a row with a **null** rising point, because a
-branch that has only ever been silent has not earned belief that it can speak
-(Day 9).
-
-And **the header is inverted, not reworded.** Ash reported that the file still
-reasons from the Day 22 *never fired* premise. It does not — the Day 39
-correction is directly underneath — and Ash had stopped inside the first
-paragraph **having read the hedge that says the claim was kept past its truth.**
-That is three readers on two mornings. **A reader summarising a file reports its
-first assertion, and no amount of correcting underneath moves that.** Day 40
-fixed the staleness (a count read live cannot go stale) and never touched the
-reading. So the refusal — *read HISTORICAL, nothing in this comment answers
-that* — stands first, and the history stands under it. **If you keep a
-superseded claim for its history, it does not go first.**
-
-**And the habit the day cost me: *at this hour* is not *cannot*.** The
-announcement comment first said the Nairobi→Longyearbyen crossing cannot
-collide. It can — Longyearbyen's civil day opens an hour after Nairobi's, so
-there is a one-hour disagreement window; the tower wakes three hours outside it.
-Day 31's manufactured all-clear, written by the hand that had spent the morning
-on two other versions of the same disease. The check is cheap and is the one to
-run before writing any such sentence:
-
-```bash
-node -e "const R=require('./reckoning/reckoning.js');
-for(const t of ['02:03','02:40']){const m=new Date('<move-date>T'+t+':00Z');
-console.log(t, R.civilDateAt(m,'<from-zone>'), R.civilDateAt(m,'<to-zone>'));}"
-```
-
-Two dates the same at both ends of the recorded wake band is *no collision at
-this hour*. It is never *no collision*.
-
-## The word the tower gave, and the page that keeps it
-
-```bash
-./scripts/local-snapshot.sh tools/pledge-page.js   # four pledge states, both pages, three widths
-```
-
-**Built Day 25.** `STANDING` has a forward half: `pledge: { place, on,
-announced }`, null when no promise is outstanding. `pledgeStanding(standing,
-todayISO)` answers **PLEDGED**, **KEPT**, **BROKEN** or **NONE**, and both the
-reckoning room (`renderPledge`) and the front door (`fillPledge` in
-`lintel.js`) draw from it. The tower's word: **Auckland, 2026-08-30, said
-2026-08-28.**
-
-**BROKEN is the whole point and it fires with nobody standing over it.** Past
-`on`, with the tower still somewhere else, the page says so itself — on every
-load, in a stranger's browser. A promise that goes quiet when its date passes
-is a promise; **a promise that starts accusing when its date passes is a
-check.** Silencing it takes a commit. Ash's better reason: a reader who loaded
-the page before the date holds the promise already, so it cannot be taken back
-even from the repository.
-
-**Nothing here can establish that the tower will move, and both the page and
-the suite say so on their faces.** `reckon()` is pure on the date handed it,
-so Auckland's figures for the thirtieth are computable today and agree with
-themselves on the day — Day 16's tautology, and the reason no forward row goes
-in the cold ledger. Only the thirtieth arriving convicts. **The trap for
-whoever touches this next is a checker that reads *the numbers matched* as
-evidence of anything** (Ember's, flagged as a boundary rather than a bug).
-
-**The field is `pledge` and it was `next` for one draft — the name was the
-bug.** *Next* means the one after this, so arriving makes the word stale and
-clearing it is the natural act; clear it and `pledgeStanding` answers NONE
-before it reaches KEPT, which is then **dead code** — the page could accuse
-and never vouch. **Leave the pledge standing through the move.** Sunday's
-commit sets `place` and `since` and touches nothing else; the pledge is
-cleared only when a later announcement supersedes it. Day 3 from a new side:
-*a name that has to be remembered about is a memory-dependence wearing a
-word*, and the repair is the word, not a note to Sunday's keeper.
-
-**The gate on KEPT is `since >= announced`, not `since >= on`.** An arrival a
-day early has kept the word — on the named morning the tower does stand there
-— and the stricter gate printed *it is standing in Paris as you read this* out
-of a tower already in Auckland. Ember named it as unlikely under one place a
-week; **an unlikely branch is the one nobody is watching when it fires.**
-
-**The zone a promise expires in is the one the tower is standing in.** Paris
-and Auckland are ten hours apart, so for ten hours of the thirty-first they
-disagree about whether the word is overdue; reading the destination's clock
-convicts the tower while its own morning is still the thirtieth and a keeper
-could still keep it. Day 19's rule collecting a second time — and it needs no
-fork, because once the move is made `STANDING.place` *is* the destination.
-
-**The known limit, Ember's, not built against:** a hand can silence the pledge
-by pushing `on` forward instead of deleting it. That is the same trust the
-cold ledger already runs on — the commits are a place's only witness (Day 18)
-— and it is worth saying once, not worth building machinery for.
-
-**Made to fail.** Collapse the BROKEN fork in a scratch tree and exactly two
-of the forty-four go red:
-
-```bash
-W=$(mktemp -d)/pre; git clone -q --local . "$W"
-tar -cf - --exclude=.git --exclude=node_modules --exclude=previews . | (cd "$W" && tar -xf -)
-perl -0pi -e "s/section\.className \+= ' reckoning--broken';//" "$W/reckoning/page.js"
-cmp -s reckoning/page.js "$W/reckoning/page.js" && echo "SABOTAGE DID NOT LAND"
-cd "$W" && ./scripts/local-snapshot.sh tools/pledge-page.js
-```
-
-Case **2a** is the lock on the dead-code fault: it forges the pledge cleared
-on arrival and asserts the section goes *silent*, so a later hand making that
-harmless fails the case rather than quietly retiring it.
-
-**`no free port in 8765-8770` is the harness, not the suite.** Running the
-browser suites back to back exhausts `local-snapshot.sh`'s port range and the
-run exits 2 with no cases at all. Two suites were nearly written up as broken
-by Day 25's change on the strength of it. Run them singly, or read the last
-line before believing an exit code — **a failure that belongs to the harness,
-read as the subject's**, is Day 24's rehearsal fault in miniature.
-
-## The tower moved, and what only the moving could find
-
-**Day 27. `STANDING.place` is Auckland and `since` is `2026-08-30`.** The
-pledge was not touched — clearing it on arrival kills KEPT (Day 25) — and
-`pledgeStanding` reads **KEPT** from the moment the value flipped. The
-ledger holds two places now, and `--verify` says `unchanged at Auckland`
-under twenty-four rows saying `unchanged at Paris`. That is Day 18's test
-that *could not be manufactured and had to happen in time*, and it has now
-happened.
-
-**The move found a fault twenty suites and a clean rehearsal had not.**
-`tools/standing-page.js` sweeps the whole rendered room for the name of the
-city the tower has left, exempting the ledger by name. After the move it
-convicted the page of saying *Auckland* — quoting the **pledge**, which
-lawfully names its own place because `pledge.place` is a different field
-from `place` and the suite's forgery does not move it. The page was right.
-The pledge is a second lawful place for a name that is not the tower's own,
-so it is lifted out of both sweeps (the room's `#pledge-section`, the front
-door's `#pledge-line`), each with a load-bearing counter-check that the
-pledge still names what it promised — the ledger exemption's own pattern.
-**Ask the instrument for the pledged place, never `home.name`:** the two are
-one word only on a morning like this one, and building to that bakes today's
-collision in as the rule.
-
-**Why the rehearsal could not have caught it, and this is the half to keep.**
-`move-rehearsal.sh` renames the moved copy's place to `Rehearsal` — a word
-that appears nowhere in this house. So a sweep whose whole question is *does
-the old name still appear* looks for a name that was never there, finds
-nothing, and passes. It has passed for free every run since the browser half
-was built. Day 21's `[].every(...)` one room along: **a fixture named
-something the house never says makes a name-sweep vacuous, and vacuous reads
-as green.** Ember's sharper form, and it is provable rather than observed:
-`rewrite_standing` moves `place` and leaves `pledge`, so `"Rehearsal"` and the
-pledged name **cannot** collide there by construction. Not a check that found
-nothing — **a check with an empty domain, and an empty domain always says
-yes.**
-
-**Do not repair that by naming the rehearsal's place something the house says.**
-Ember refused it: the name would have to track whatever the live pledge points
-at — a rule kept in a value somebody remembers to update (Day 3, Day 22) — and
-it would glue a real city's name to a fictitious zone at 0,0, inside the one
-part of the fixture meant to be closest to a real move. **A new unreality
-traded for an old one.** The case lives in `standing-page.js` instead: the
-whole of `STANDING` is forged so the pledged place is named *only* by the
-pledge, and the assertion is that such a place is never read as a stray —
-written for the class, so it still points at something after this pledge
-resolves. Made to fail by removing that case's own exemption (the second of
-the two, not the first): it goes red alone while the older sweep stays green.
-
-**Watch this one next.** `pledge-page.js`'s case 1 is labelled *PLEDGED, as
-the tower stands right now, unforged* and since this morning it exercises
-**KEPT**. Every assertion in it still holds — but the label is now false,
-and case 2 forges the state case 1 is already in. Day 17's expiry with the
-day's own move as the clock.
-
-## Rehearsing the move — run this before every Sunday
-
-```bash
-./tools/move-rehearsal.sh          # every shell suite, in a tower moved elsewhere
-```
-
-**Its appointment is before every Sunday move, and nothing in the locked set
-can keep it.** That is the third tool in this house with that shape; see the
-next section.
-
-**Built Day 24.** Day 23 found `standing-page.js` naming Paris at six of its
-own lines — a suite that would have gone red on the first honest morning after
-the move, about a tower that was right. That file was repaired and the question
-was never asked of the other twenty. Asked by rehearsal rather than by
-argument — two copies of the tower, one moved to a zone whose calendar
-genuinely disagrees *now*, every `tools/*.sh` run in both — **four of the ten
-shell suites did not survive it**, and `ledger-place.js` made five.
-
-**Why a grep is not enough, which is the whole reason this is a rehearsal.**
-Three of the four faults were the literal needle `place: PARIS,` and a grep
-finds those in a second. `place-audit.sh`'s was the word **was**: `reckon.js`
-writes *"it was computed under method 2"* for one convicted row and *"18 of
-them were computed"* for many, so the expectation held only while every row in
-the ledger stood where the tower stands. Nothing in that line names a city.
-**An assumption about where you are does not have to name the place.**
-
-**All four needles are anchored at both ends of the field now** —
-`/var STANDING = \{\s*place:[\s\S]*?since:/` — so they match an identifier, an
-inline object, anything. A needle written to match an identifier is the same
-mistake one draft later: the rehearsal itself moves a tower by writing an
-object literal in, and the suites could not then move it again.
-
-**The control is the load-bearing half and it costs something.** Both copies
-get `STANDING` rewritten, the control's to the place it already stands, so the
-two differ in one thing only. Without that, `check-sight.sh` — which reads the
-working tree and grades an edited page STALE — is convicted of move-fragility
-for answering correctly about a file the tool edited. With it, a suite whose
-needle names the old city breaks in *both* copies and lands on BLIND rather
-than FAIL. **A control made to resemble the thing it controls for goes blind to
-whatever lives in the resemblance.** Ember ran the confound apart rather than
-take the sentence, and refused a three-copy design: while rehearsing a place
-means text-editing a tracked page file, no number of copies separates *moved*
-from *edited*. The fix is an **untracked override** — the mechanism, not the
-copy count. Named, not built.
-
-**Made to fail.** Point it at the pre-fix suites and it scores **2 fragile and
-4 blind** against **0 and 1** on the repaired tree:
-
-```bash
-P=$(mktemp -d)/pre; git clone -q --local . "$P"
-git -C "$P" checkout -q 9cfd14b -- tools/   # was 33cbd63 before the 2026-10-03 rewrite
-cmp -s tools/reckon-args.sh "$P/tools/reckon-args.sh" && echo "SABOTAGE DID NOT LAND"
-./tools/move-rehearsal.sh "$P"
-```
-
-**Its first run had no control, copied the tower with `tar` and without
-`.git`, and returned eight failures from `shelf-when-breaks.sh`** — which
-resolves its own root through git. All eight were the copy's and were minutes
-from being written up as the tower's. **A rehearsal that cannot tell its
-fixture's failures from its subject's is Day 19's unreadable-failure fault in
-new clothes.** It uses `git clone --local` now (hardlinked objects, so a copy
-is nearly free) with `previews/` left out by sparse-checkout, and it carries
-the working tree's uncommitted changes across — otherwise a repair made this
-morning is invisible to the check written to prove it.
-
-**The browser suites went into the sweep on Day 26 and the hole is closed.**
-A copy of the tower is a git clone with `scripts/` in it, so it can serve and
-shoot itself: each `tools/*.js` that reads `FAR_KEEPER_URL` is run through
-`./scripts/local-snapshot.sh` in both copies, under the same control and the
-same three verdicts. Ten seconds a suite a copy; the whole battery is about
-five minutes. **The case list is the directory here too** — the browser/node
-line is drawn by asking each file whether it reads `FAR_KEEPER_URL`, never by
-a list kept in the tool, because a hand-kept list goes blind to the next suite
-written and reports that as clean.
-
-**It waits for a port, and the wait is the tool's job and not the keeper's.**
-`local-snapshot.sh` takes one of 8765-8770 and a port whose server just exited
-is not free — the closed listener leaves connections in TIME_WAIT and the next
-plain `bind()` fails for about a minute. The first run of this pass got three
-suites in and returned **six BLIND at exit 2**, which is `no free port` and is
-nothing to do with any of them. Day 25's harness fault arriving exactly where
-Day 25 said it would, and the shape is the lesson: the symmetric control turned
-it into BLIND rather than FAIL, so nothing was accused — but **a rehearsal that
-abstains on two-thirds of its subject has rehearsed nothing**, and it exited 2
-under a line that reads like a caveat.
-
-**The control is rewritten to the tower's own place, field for field.** It used
-to become `{ name: "Control", latitude: 0, longitude: 0, zone: <the real
-zone> }` — three differences from the tower where only the *bytes* needed to
-move. Any suite saying *Paris*, or wanting Paris's sunrise, was then red in the
-control too and landed on BLIND: `pledge-page.js`, `rising-point.js` and
-`standing-page.js` all did, on the first honest run. **The needle a rehearsal
-exists to find was inside the resemblance.** `check-sight.sh` still grades the
-control STALE and still lands BLIND, which is what the control was for.
-
-**Made to fail**, and the pre-fix tree scores **2 FAIL and 1 BLIND** against
-the repaired tree's 0 and 1:
-
-```bash
-P=$(mktemp -d)/pre; git clone -q --local . "$P"
-ln -s "$PWD/node_modules" "$P/node_modules"
-cmp -s tools/standing-page.js "$P/tools/standing-page.js" && echo "SABOTAGE DID NOT LAND"
-./tools/move-rehearsal.sh "$P"
-```
-
-**`since` and `pledge` are deliberately not moved.** Ember found the gap while
-it was still inert (no *shell* suite reads either field) and the browser half
-made it live within the hour. They stay put: a moved copy carrying the real
-tower's word is what a Sunday half-way through looks like, it is the state that
-exposed `pledge-page.js`'s `/Paris/` line, and moving them would give the two
-copies a **second** difference — the one thing the control exists to prevent.
-
-**What the browser half found, and two of the three name no place.**
-`pledge-page.js` asserted `/Paris/` of the sentence saying where the tower
-stands meanwhile. `rising-point.js` called `reckon(d)` with no place, and
-`reckon(dateISO, place)` falls back to `PARIS` — so it computed one city's
-rising point against a page drawing another's, green for eleven days because in
-Paris the two are the same number. `standing-page.js` forged with a needle
-matching an *identifier*, which cannot move a tower whose place is already an
-inline object — Day 24's fix, made in three shell suites and never asked here.
-And under it: its ledger exemption asked whether the ledger names **the
-tower's** place, when a row's place is the row's fact (Day 18); on the first
-morning in Auckland the book holds only Paris rows until the day's row lands.
-**Do not repair the `reckon()` default by pointing it at `STANDING.place`** —
-an omitted place would then follow the tower through every move including the
-rehearsal's own rewrite, so the bug would pass by construction. Ember's name
-for it: *a required argument wearing an optional one's syntax.* Drop the `||`
-and throw.
-
-**What is still outside it:** `check-sight.sh` reads the working tree, so
-moving a copy dirties it and it abstains every run. BLIND is not an all-clear.
-
-**A stopwatch is not a verdict (Day 61).** Every suite runs under a cap, and
-until Day 61 a suite the cap killed (exit 124) got a red suite's word: BLIND
-if the control was stopped, and **FAIL, *red where it does not*, if only the
-moved copy was**. That is the clock accusing the move. Found running the
-rehearsal the Saturday before Ushuaia: `banked-breaks.sh` is green, 19 ok, and
-takes **633 s on an idle desk** against a cap of 600. The cap now has its own
-word, **UNFINISHED**, asked before the other two, and it exits 2, never 1. A
-copy counts as stopped only on 124 *and* elapsed ≥ cap − 1, because a suite
-can exit 124 on its own. The cap is `MOVE_REHEARSAL_CAP`, default **1500**,
-and every ok line prints both copies' seconds, so the margin can be read off
-the run before it runs out. A rehearsal killed from outside prints
-`UNFINISHED the rehearsal itself`. **The whole run takes most of an hour
-now.** Start it in the background with a timeout of at least 7200000 ms. A
-30-minute background limit killed the first Saturday run with twelve browser
-suites never asked, and its last line was just the last ok it reached.
-`./tools/rehearsal-cap-breaks.sh` proves all of this in about a minute
-(Ember's cases A–F, the sabotage first). Cut the elapsed half and case C alone
-goes red. Its home zone is read off the **scratch tower it built, never
-`$ROOT`**. A clone carries the commits and not the working tree, so inside a
-moved copy `$ROOT` stands somewhere its clone does not. The first draft got
-this wrong, and the rehearsal convicted it the same hour.
-
-**What the same Saturday run found on the page.** `second-drift.js` was red
-in both copies, so it landed BLIND, and it was red on the real tree too.
-`reckoning/page.js` declared `function signedSeconds` twice: line 94 takes
-seconds, and the almanac's helper, added 2026-10-01, takes minutes. **A
-function declared twice in one scope is one function, the later one.** So for
-three days six callers printed seconds sixty times too large: the epoch
-correction read **+4233 s for +70.6**, and B's drift read −23228 s for −387.
-Nothing was wrong on any line that was edited, and nothing that runs daily
-loads the page. The almanac's helper is `minutesAsSignedSeconds` now.
-**Named, not built:** a check for a name declared twice in one page script.
-It is not `parses.sh`'s question, since the file parses, so it wants a tool of
-its own. Today the only duplicate in any page script was this one.
-**And again on Day 68:** `dates-page.js` landed BLIND and was red on the
-real tree. It forged at `real[length / 2]`, and the growing ledger walked its
-middle into the Anchorage rows, written the morning after their dates. It
-chooses by property now. **An index into a growing list is a typed count
-beside a thing this house keeps adding to** (Day 47).
-**And on Day 69:** `drift-witness.js` landed BLIND and was red on the real
-tree. Its loud fixture was latitude 84, typed, under a page that reckons
-today, and the tenth of October was 84 north's last lit day until March.
-The latitude is asked of the instrument each run now (the loudest lit row
-on longitude 100, lit tomorrow too). Swept over 2026–27 it always finds
-one, and the 100× case never has less than 230× to spend. **A latitude
-typed beside a page that reckons today is today's weather** (Day 44).
-**BLIND hid a real red here.** It means *red in the control too*, and a suite
-that is red on the real tree is red in the control too. Before calling a
-BLIND line nothing to do with the move, run the suite alone.
-
-**Day 73: the rehearsal runs it alone now.** A suite red in the control is
-run a third time on the tower given to the rehearsal, unedited, and forks:
-**RED HERE** (red on the tower too, exit **4**; it does *not* say the move
-is uninvolved, since nothing in the run isolates that — Ash), **BLIND** (green on the
-tower: *something about the copy* turns it red, Ember's wording, never *the
-edit*), or **UNFINISHED** (the third run hit the cap). Exit precedence 1,
-4, 2, and the summary line carries every count. The tower's working tree is
-hashed around each third run, and a run that moves it stops the rehearsal.
-So **do not run `reckon.js`, `air.js` or `almanac.js` while it runs**.
-`check-sight.sh` lands BLIND when the tower's pictures are fresh and RED
-HERE when they are not. `./tools/rehearsal-blind-breaks.sh` proves it in
-about thirty seconds; cut the third run and A and B read the old BLIND.
-`rehearsal-cap-breaks.sh` case C reads RED HERE now, since its stub exits
-124 on the tower too.
-**Day 75, the fork's first real run.** RED HERE twice, both true:
-`survey-breaks.sh` (see *a fixture typed from the Friday shortlist*), and
-`check-sight.sh`, because the morning's own pushes had deployed a newer set
-than the local ref. And BLIND twice, and both were the copy's.
-`second-drift.js` and `sun-standing.js` forge `STANDING` onto Tromso and call the forgery landed
-when the served bytes *moved*. On the tower `place: TROMSO` is an
-identifier, so they move. In the control the rehearsal has already written
-the literal `{"name":"Tromso",…}`, byte for byte what the forgery writes, so
-nothing moves and the case reads *the instrument on the wire stands at
-Tromso* as false while it stands there. Reproduced in a clone with only the
-control's rewrite. Named, not mended. It stops once the tower stands
-anywhere but Tromso, and comes back in any rehearsal run while the tower
-stands at a place a suite forges onto.
-**A check that the bytes moved is not a check that the state was reached.**
-**And on Day 89:** the Saturday run stopped at `step-band.js`, red in both
-copies and red on the real tree. Case 4b forges the tower onto the place
-`STEP_ROBUSTNESS_WITNESS` was swept at (Longyearbyen) on *today's* date and
-expects the hedge to print, and Longyearbyen has had no sunrise since
-2026-10-27, so the hedge is hidden. **Mended Day 90, both halves:** 4b asks
-the instrument for the nearest lit day there and fixes the page's clock to
-it (`page.clock.setFixedTime`, on a page of its own, asserting the page's
-own today moved, and that the room drew it as a lit day first); new 4c and
-4d ask the nearest day with no sunrise and with no sunset, and expect that
-arm's own sentence and a silent hedge. **A dark row carries no rising-point
-field at all** (undefined, not null), so a `!== null` test reads polar night
-as lit; the first draft did exactly that. Ember's read added the finite
-check, the second `never` arm, and refusing to skip a date `reckon()` throws
-on. Four sabotages, each red where aimed. The run also
-stopped because the third run changed the tower copy's tree: this desk has
-no `node_modules`, so a `ln -s "$PWD/node_modules"` into the clone dangles
-and `local-snapshot.sh` runs `npm ci` there. Do not link it on a desk
-without one.
-
-## A name declared twice
-
-```bash
-node tools/twice-declared.js        # every page script, every scope, and each page's shared global scope
-./tools/twice-declared-breaks.sh    # plant each fault in a scratch clone, twelve ways
-```
-
-**Built Day 64**, the check named on Day 61 for `signedSeconds`. It parses
-with TypeScript's `createSourceFile`, installed globally on this desk and not
-in the repo. So it prints the parser's version and path every run, and **no
-parser is UNCLEAR, exit 2**. DOUBLED (exit 1) is any pair with a `function`
-in it, or a top-level `let`/`const`/`class` met again in a later script of
-the same page. REDECLARED is `var` with `var`, printed and never an alarm.
-Bad flag exit 3. **Ember's second scope is the one `parses.sh` could never
-see: the scripts one page loads share one global scope.** Run it before any
-push that touches a page script. Nothing locked calls it, and only its break
-suite reaches it, on Sundays. Ash's caution holds: a check nobody runs is
-not a guard.
-
-**The suite's first red was its own grep.** It counted `function
-signedSeconds` three times in the sabotaged `page.js`, because a comment
-there quotes the old line. That is the regex fault the tool exists to
-avoid. It happened inside the suite written that hour to prove the tool
-avoids it. Count declarations with the line anchored, or ask the parser.
-
-## Does it parse — and the proof of that, spendable
-
-```bash
-./tools/parses.sh                 # every page script and every tools/*.js, node --check, 40 ms
-./tools/parses-breaks.sh [tool]   # every verdict forced in fresh clones, about a second
-```
-
-`parses.sh` (Day 37) answers PARSES 0, BROKEN 1, UNCLEAR 2, with UNBUILT
-for an ignored file a page loads and the tree has not built
-(`build-sha.js`). Run it before any push that touches a page script.
-
-**Day 68: its proof was a sentence with a dead sha in it**, *BROKEN is
-proved against `6ed865d`*, rewritten on 2026-10-03. `parses-breaks.sh` plants
-every fault by hand in a fresh clone instead, so no history rewrite can
-strand it. Its first run found that the tool never printed node's
-SyntaxError line, though its comment had said so for thirty-one days: it
-took lines 1–4 and node puts the error on line 5. Ember, reading the suite,
-found a second told comment one screen down: *quotes either way round*, over
-a grep that read double quotes only, so a `src='…'` was never opened and
-nothing said so. Both are fixed and both are cases. A `<script` tag split
-across lines is still not read (named, not built; none exists). Made to fail
-five ways (collapse the git-ignore fork 6 red, skip `node --check` 5, drop
-the empty-domain guard 1, drop the de-duplication 2, the pre-fix tool 2). Its clones are of HEAD, so a
-page edit not yet committed is not in them; the tool under test is the
-working tree's.
-
-## The drift got a second method, and what it disclosed
-
-```bash
-./scripts/local-snapshot.sh tools/second-drift.js   # the new lines, forged four ways
-```
-
-**Built Day 40.** `crossCheck` carried a sunrise, a sunset and two gaps —
-two **levels** and nothing else. The drift is not a level; it is the
-difference between two days, it is this room's signed quantity (Ash named it
-Day 3), and it is the figure on the front of every letter this tower has
-sent. **It had never once been put to the second method.** `crossCheck` now
-carries `dayLengthMinutes` and `changeSinceYesterdayMinutes` of method B's
-own, born `2026-09-11` in `PATH_INTRODUCED`, and the page prints both beside
-method A's and subtracts them in front of the reader.
-
-**The wrong version was built first and is worth more than the right one.**
-The morning's measurement set the *level* gap against the *drift* — 12.9 s of
-disagreement about sunrise at Nairobi against a drift under 5 s a day — and
-read it as a check gone coarser than the number it is aimed at. **That is a
-category error**, and the reason was already written in this house's own hand,
-in the letter of 2026-08-15: *a steady bias mostly cancels when you subtract
-one day from the next.* Asked properly the two methods differ about the drift
-by **0.05 s** at Nairobi across 2026 — the calmest of the four places, not the
-worst. **Measure a check's slack in the same shape as the quantity you are
-asking about**: a bias against a level, a difference of biases against a
-difference. Ember's mechanism, run rather than argued: sunrise's sensitivity
-to a declination error goes with `tan(latitude)` — 0.087 min/° at Nairobi
-against −7.45 at Anchorage.
-
-**Ash's word for the twin, and it is the finding: the drift is opaque to a
-steady bias.** It does not show one (its robustness) and it cannot see through
-to one (its blindness), and those are one property. August's sunset was a
-minute and a half late for six days and the drift was out by about a second —
-**the figure that looked soundest was the one the fault was best hidden in.**
-
-**No fork, no verdict, no bound — all three deliberate.** `maxGapMinutes` is a
-bound on a *level* and says nothing about a difference of two levels; one
-invented here without a sweep would be Day 21's manufactured diagnosis. And
-Ember's caution, taken *before* the display was built: a verdict reading
-UNRESOLVED three mornings in four, starting the week a city's name goes up, is
-an alarm a keeper stops reading — Day 31's `unwitnessed latitude` rule with
-more force, because there the flag was rare. Case 6 of the suite is that
-caution as a check, with its own domain asserted non-empty first. The
-sixty-minute sweep is named on the page as **silent here, which is not the
-same as reassuring** (Day 32: do not let the honesty of a bound get borrowed).
-
-**The new check's first finding was about the check.** Method B is an almanac
-and an almanac is written a year at a time, so its day *length* walks smoothly
-across the turn of the year while its **drift** swallows the epoch's restart
-in one step. On 2027-01-01 the two methods should differ about the drift by
-**29.6 s at Anchorage, 13.4 at Paris, 8.0 at Auckland, 0.33 at Nairobi** —
-about **seven times** the worst disagreement anywhere inside the year, and the
-ratio is the same at every latitude, which is what makes it the almanac's seam
-rather than anything about a place. Said on the page before it happens,
-computed from the standing place, and the suite proves the figure moves when
-the place does.
-
-**Made to fail, and both results are written as they came out.** Deleting the
-`renderSecondOnTheDrift` call → **14 red**, and it convicted this suite's own
-dark-branch NaN sweep, which was green over an empty string (**eighth instance
-of the empty domain in this house, fourth inside a file quoting the rule**).
-Wiring method A's drift into B's slot → **2 red, and not the ones predicted**:
-the case holding the printed subtraction against its two printed operands
-stays *green*, because subtracting a number from itself is a correct
-subtraction. What catches it is the plainer case — a difference of exactly
-nothing is one method twice — and the turn-of-year figure going still.
-**Two cases I had down as one strong and one weak were the other way round.**
-
-### Four fixtures aged a row and only one had been mended
-
-`Reckoning.newestBirthday()` is new and exists because the same repair was
-made once and never travelled. A fixture that manufactures a ledger row builds
-it with today's `reckon()`, so it carries every field today's instrument
-emits; stamp it with a date older than the newest birthday and the symmetric
-half of the birthday rule convicts it, correctly, **about the fixture**. Day
-37 found that in four suites at once. Day 38 found the repair half-made —
-`claim-birthdays.sh` asked `CLAIM_INTRODUCED` alone and became a graft with
-nobody touching it — and mended that one file. **This morning, the first since
-then that a birthday landed in `PATH_INTRODUCED`, the three files beside it
-went red for the identical reason**: `dark-row.sh`, `ledger-dark.js`, and
-`sun-standing.js`, which reached for the birthday of the claim it is *about* —
-the natural date, right for three days. All four ask the instrument one
-question now. **A lesson applied to one of four copies is a lesson the house
-has not learned**, and the copies are what made it possible; the answer lives
-in the instrument for the same reason `CLAIM_INTRODUCED` does.
-
-**And `day-line-page.js` counted the container.** Its `secondsIn()` filtered
-on `/differ/`, which was every figure in the section while there were exactly
-two; a third such line appeared and it went red about a page that was right.
-It names its two terms now. This house had written that caution down for
-itself — *count what the case is actually about, never the container it sits
-in* — and it still landed, the good way round: **loud, immediate, and about a
-hand-kept needle rather than a generated one.**
-
-## The banked numbers, and the door they never had
-
-```bash
-node tools/banked.js            # every banked witness, asked by running its gatherer
-node tools/banked.js --list     # the gatherers it would run, run none of them
-./tools/banked-breaks.sh        # break the door ten ways, in a scratch tree
-```
-
-**Built Day 43.** A banked number is a measurement taken once and written into
-`reckoning/reckoning.js` as a constant. Day 5 said such a number owes its
-**date** and its **domain**; Day 31 added a third, **whether anything can still
-go and gather it again**, and put that sentence in `cross-check-sweep.js`: *a
-banked fact whose evidence cannot be re-run is not weaker than a law by a
-little. It is a law with a date on it and no way back.*
-
-**Eight mornings later this house banked a number with no way back and wrote,
-directly above it, that it had one.** `DRIFT_TOLERANCE_WITNESS` carried *the
-sweep is two commands on this desk … and it is written down so a later hand
-can re-run it rather than believe it.* The word `bun` appears three times in
-the whole tree and none of them is a command. The Day 38 log kept the sweep's
-**output** and did not keep the sweep. So the third obligation was being
-discharged by a sentence saying it had been discharged, and **nothing had ever
-tried the door.** That is the class: not the told book (a sentence about a
-record nobody opened) but **a sentence about a capability nobody tried.**
-
-**Run it when a morning touches `reckoning.js`**, beside the shell suites the
-book already asks for there. Twenty-three seconds, because it runs the two real
-sweeps. It is not a daily thing and does not want to be; the growth question
-below only moves on a morning that adds a path.
-
-**It finds the witnesses off the module's own export surface** — every export
-matching `/_WITNESS$/` — never from a list kept in the tool, because a list
-kept there goes blind to the next number somebody banks and reports that
-blindness as clean (Days 29, 30). The naming rule is the claim.
-
-**The exit codes fork and the fork is Ember's Day 40 caution.** `1` means a
-gatherer ran and the world no longer says what we banked — the alarm, and
-nothing else may spend it. `2` is a standing hole: a witness nothing can ask,
-or one the instrument has outgrown. `3` is a bad flag, so a typo spends
-neither. **Today is a 2 and will be every morning until the hole is filled** —
-named as expected, the way `--verify`'s permanent 1 is, rather than tolerated.
-A single nonzero verdict here would be on every morning, and **an alarm that is
-on every morning is an alarm a keeper stops reading.**
-
-**The second fault is a different one arriving with the first, and it is the
-half that fires again by itself.** `CROSS_CHECK_WITNESS` and
-`DRIFT_GAP_WITNESS` are swept over a grid of latitudes and dates — a domain
-**outside** this house, which does not move when we work.
-`DRIFT_TOLERANCE_WITNESS`'s domain is **the instrument's own leaves**. So every
-morning that adds a field to a row widens what it claims to cover, while it
-goes on carrying the old count beside the old date, looking exactly as sound as
-the day it was true. **It did not go stale because a hand touched it. It went
-stale because the thing it is a witness to grew.** A witness declares this with
-`domainIsInstrument: true`, and the tool answers it out of `PATH_INTRODUCED`
-alone — no reconstruction, no places, no dates, no second engine. Two paths
-have been born since: `crossCheck.dayLengthMinutes` and
-`crossCheck.changeSinceYesterdayMinutes`. **Those are Day 40's, they are the
-drift under the second method, and they are the figure on the front of every
-letter this tower has sent.** The witness's worst parting is a solver's
-residual that appears on no page; the two leaves never swept between two
-engines are the ones a reader is shown.
-
-**Do not write a reconstruction into that witness, and the reason is the day's
-finding.** Rebuilding the Day 38 sweep from the `domain` field reproduces four
-of its five figures exactly — 1080 leaves, 1.364e-11, 7.505e+11 at that same
-path, nought convicted. The fifth, the parting count, comes out 46, 51, 42 and
-42 over four date sets, and **two of those hit the banked 42, one of them a set
-chosen to be wrong.** Ash's cut: **the four that reproduced are properties of
-the instrument, not of the measurement.** Any reconstruction carrying every
-field and excluding the late-born paths returns them, so their agreeing is free
-and says nothing about whether the original question was found. The one figure
-with power to convict or acquit is the ambiguous one. **A scope is not a
-recipe** — `domain` says what was swept, never what was asked — so the witness
-can be neither convicted nor acquitted, and saying so is the honest state of it.
-
-**What it does not see, and this is on the tool's face.** It sees a banked
-number that was given an **object and a name**. The quarter-hour clock guard's
-witness is four sentences of comment near line 1286 — 418 zones walked on
-2026-08-10, 1,221,396 samples — with a date and a domain and no object, so
-nothing here can find it. A text sweep would not repair that (Day 35: a sweep
-over prose cannot tell an assertion from a quotation of one being corrected).
-**Named, not built.**
-
-**Made to fail, and both sabotages convicted my own suite before the tool.**
-Collapse the DIFFERS fork (`if (differed > 0)` → `if (false)`) and exactly one
-case reddens, the one written for it. Make `askGatherer` return AGREES without
-spawning — the very fault the file exists for — and **four** go red, but on the
-first try only three did, and the one that stayed **green was the case called
-*both real gatherers were actually run*.** It had asked whether the report said
-`GATHERED`, which a field-trusting tool says just as readily. It needles each
-sweep's own sentence now, which `banked.js` cannot invent.
-
-**Three of my cases in one morning were named for one thing and asked another**
-— the same fault three times, in a file written after reading this house's
-caution about it. Case 6 grepped for `domainIsInstrument` to prove a sabotage
-landed, and was answered by the **comment above the field** explaining what the
-field is for. The `--list` case required no `GATHERED` and was answered by the
-honest `UNGATHERED`. Ash's name for the gap is **the name of a case against the
-domain of a case**: each was named for a fault, and each domain answered a
-different question that happened to be true while the fault was present.
-
-**Its repair is a habit and not a rule, because the rule did not stop me.**
-*Count what the case is about, not the container* has been in this book since
-Day 38 and I broke it three times today. **Write the sabotage first, then the
-needle.** A needle written before anything is broken is chosen against your
-assumption of what should be true; a needle written against a tool that is
-already failing is chosen against the failure. The cases that caught the real
-sabotage were the ones written that way round.
-
-## The two clocks, and the one half that is locked
-
-```bash
-./scripts/local-snapshot.sh tools/two-clocks.js   # both counts, four forgeries on the wire
-```
-
-**Built Day 35, the first morning the footer of every room named a day this
-tower was not standing in.**
-
-    UTC today            2026-09-07   -> Day 35
-    standing today       2026-09-06   -> Day 34   (Anchorage)
-    newest ledger row    2026-09-06   -> Day 34
-
-`scripts/build.sh` works out `Day N` with `date -u`. It is a UTC count, it
-always has been, and it goes in the footer of every page. `tools/reckon.js`
-dates its row from `standingToday()` — Day 19's finding, the calendar of the
-place the tower stands in. **Those are two questions and they part for the
-standing place's offset out of every twenty-four hours: two at Paris, twelve
-at Auckland, eight at Anchorage.** The band has never been narrow. What is
-narrow is the hour this routine runs, which fell outside the band at the first
-two places and inside it at the third — so thirty-one rows agreed, and the
-agreement was a fact about a routine wearing a calendar's face.
-
-**The second question is the one worth having, and Day 17 said it could not be
-asked.** The write gate refuses a row that is not today's, and the note under
-it reads: *what is false about such a row is never its arithmetic… no recompute
-can ever catch that, because the numbers in it are right.* That is true of a
-**recompute** and it was carried for eighteen days as though it were true of
-the record. It is not. A row carries `publishedAt` (an instant, UTC) and a
-`place` (a zone); the place's clock at that instant is a fact, so **the row's
-own date can be held against the day it actually was where the row was
-written.** Nothing is recomputed. Two fields that have been in every row since
-2026-08-06 are read together for the first time — Day 18's shape exactly, and
-the second time a field pair in this ledger has turned out to have gone
-unread.
-
-**The two verdicts must stay forked, and one of them is not a fault.** `split`
-— the tower's calendar and UTC named different days when the row was stamped —
-is a reading; it will be true of every row written west of the meridian at this
-hour, forever. `unaccounted` — the row's date is not what its own clock said —
-is the fault. Collapse them (`var unaccounted = split;`) and four cases go red,
-one of which convicts an innocent row.
-
-**Its limit is Day 18's limit and it is printed, not implied:** a hand that
-moves the date *and* the stamp together leaves a row that accounts for itself
-perfectly. And every offset is asked of the machine's tz database, so a row can
-become unaccounted years later with nobody here touching it — the parliament,
-not the sky.
-
-**`civilDateAt(instant, zone)` is new in `reckoning.js` and `todayAt` is
-written in terms of it**, so the two cannot come apart: one Intl call in the
-house, asked twice. It throws on an unknown zone, like `todayAt`, for Day 5's
-reason — every call site must expect it, and the page counts such a row as
-*unopenable* rather than convicting it.
-
-**Made to fail, four ways.** Sabotage 1, never ask the unaccounted question
-(`var unaccounted = [];`) — **5 red**. Sabotage 2, collapse the verdicts
-(`= split;`) — **4 red**. Sabotage 3, type the run-hour window instead of
-reading it off the stamps — **1 red**, and it is the Day 33 lock. Sabotage 4,
-delete the `renderTwoClocks(entries)` call site — **24 red**, the wiring proof.
-
-**Two of the four convicted my own suite before they convicted the page, and
-both are the same fault in different clothes: a case whose domain was not what
-its name said.**
-
-Sabotage 1 left *the unaccounted row is named with its date and its stamp*
-**green** under a tool that never called anything unaccounted. Backdating a row
-by one day also **splits** it, so the split sentence names that same date and
-that same stamp, and the case — which swept the whole report — was answered by
-the other verdict's words. Day 11 reflected into a test: **a case that sweeps
-the whole report cannot tell which verdict answered it.** It reads the
-`UNACCOUNTED.` sentence alone now, and asserts that sentence exists first.
-
-Sabotage 4 left exactly one tick green out of the twelve survivors, and it was
-the zero-report case: `head.unaccounted !== 0 || /none unaccounted/`. With
-nothing rendered the count parses as `null`, `null !== 0` is true, and the
-whole case short-circuits to ok about a page that had drawn nothing at all.
-**An empty domain always says yes, in the voice of a check that worked** —
-fifth instance in this house, second one inside a file written to watch for it.
-The count must be a number before its branch is judged.
-
-### The locked half — for the founder
-
-`scripts/build.sh` is locked (Article I), so I cannot make the footer's
-day-count ask the standing place, and **I am not sure it should.** Both numbers
-are honest answers to different questions and the page now says so. The report
-is that the choice was never made — the day-count was UTC from the founding
-commit because `date -u` is what a build script reaches for, and Day 19's
-argument about whose calendar governs was applied to `reckon.js` and to
-`page.js` and never carried to the one number printed on every page in the
-house. If the footer ought to count the tower's own mornings rather than UTC's,
-that is one line in a locked file (`TODAY_ISO="$(date -u ...)"`), and the cost
-of changing it is that every `Day N` in every past preview becomes a count
-nobody can reproduce. My own view: leave it, now that the page names it. But
-the choice is yours and until Day 35 nobody had made it.
-
-## Which tools anything actually reaches
-
-```bash
-node tools/doors.js            # every file in tools/, traced from the locked routine
-node tools/doors.js --help     # the surface, in one line
-./tools/doors-breaks.sh        # break the tracing, twenty checks, in scratch trees
-./tools/move-rehearsal.sh --list   # the case list it would walk, running nothing
-```
-
-**Built Day 45.** For every file in `tools/`, one question: can the **locked**
-routine — `.claude/commands/daily.md` and `scripts/**`, the wiring a keeper
-cannot quietly drop — reach it? **AT THE DOOR** (the routine names it),
-**CARRIED BY** a named chain, or **NO DOOR**. Today: seven at the door,
-thirty-six carried (all but two of those by `move-rehearsal.sh`, which runs on
-Sundays), one reached by nothing. Exit 0 wired, **2 a standing hole**, 3 a bad
-flag. **1 is unspent and must stay so** — this file reports the wiring and
-makes no judgement about whether a tool *ought* to have a door; case 9 of the
-suite greps for `return 1` and reddens if a later hand wires one in.
-
-**It reads reachability and never cadence**, and the line is Day 35's: cadence
-lives in prose, and a sweep over prose cannot tell a rule from a quotation of
-one. It names the carrier and stops, so a reader seeing thirty-six files under
-`move-rehearsal.sh` knows what Sunday means without the tool asserting a
-schedule it cannot check. Ash's pair: an **appointment** is a sentence saying
-when a tool should be asked, **reachable** is whether the wiring touches it —
-`nav-agrees.js` has the first and not the second, **a door with two locks and
-only one working.** Ember's, from the other side: *ad punctum* against *ob
-portus*, a fixed point against a harbour reached when the tide is right.
-
-**A mention is not a call, and both files here learned it the same hour.**
-The first draft counted any `tools/B` anywhere in A's text and reported
-`doors.js` as CARRIED BY `move-rehearsal.sh` — off a **comment** written forty
-minutes earlier saying this file asks it for a list. A paragraph about the
-wiring read as the wiring, three sections above the same report saying it was
-reached by nothing. An edge is now **CALLED** (a non-comment line carrying an
-invoking token) or **ASKED**; a name on a comment line is **MENTIONED** and
-carries nothing. The fork errs toward inventing a hole rather than hiding one
-(Day 9): a missed call is loud, a mention read as a call makes a hole vanish.
-
-**And the repair found the identical fault in `move-rehearsal.sh`.** Its
-browser/node line was a bare `grep -q FAR_KEEPER_URL`, so `doors.js` — which
-names that variable twice in prose and reads it nowhere — was in Sunday's case
-list within the hour, to be served and shot by `local-snapshot.sh`. It asks
-the file's *code* now. **The same mistake in two files in one hour, and
-neither could see its own; a third thing had to stand where it could see
-both.**
-
-**A text scan cannot see a call whose target is computed, so ask.**
-`banked.js` resolves gatherers out of a witness field; `move-rehearsal.sh`
-globs. Grep either and it calls nothing. **Collapse the asking and the holes
-go from 1 to 39** — 31 of the 36 carried files exist only because the tool ran
-`--list` and believed the answer. **Which tools get asked is not a list kept
-in `doors.js`:** a tool advertises `--list` by carrying **its own name and
-`--list` on one line**, which is `banked.js`'s `_WITNESS` rule in other
-clothes and is smaller-not-absent in the same way. That is why
-`move-rehearsal.sh` gained `--list`, built off the same two functions the run
-reads, so **the set it describes and the set it walks cannot come apart**; its
-argv is closed too (`--help`, exit **3** on anything unknown, since 1 and 2
-are the verdict codes).
-
-**A break-suite must not spell its fixture's name in its own source.** New on
-Day 45 and paid for twice. `doors-breaks.sh` planted `zz-orphan.sh` — and
-`move-rehearsal.sh` globs every `tools/*.sh`, so the fixture had a door by
-construction (Day 39: a fixture that does not model the thing it names tests
-the other thing and reports the name). Made a `.js`, it *still* had one: the
-suite lives in `tools/`, so the copy contains the suite, and every `node
-tools/zz-orphan.js` written there as a sabotage was an ordinary code line in
-an ordinary shell suite. **The suite gave its own orphan a door through
-itself, then failed the cases asking why.** The name is `$ORPHAN` now, which
-the subject's path pattern cannot match.
-
-**Its own verdict is read off its own trace, never typed.** The header said
-*this file is reached by nothing* — true for about an hour, until
-`doors-breaks.sh` existed and the Sunday rehearsal picked it up. The told book
-born in front of its author, in the one file whose subject is which tools
-anything reaches. **A file that says which tools are reached must not assert
-its own from memory.**
-
-**Ask `node tools/doors.js`, not this paragraph, which file nothing reaches.**
-It said `tools/fold-latitude.js` for eight days after Ember wired it (Day 46, its workbench note of the nineteenth);
-on Day 55 the tool said `WIRED`, exit 0, and Ember was the one who noticed the
-sentence had not moved. The Day 45 count above is that morning's and is kept as
-history.
-
-## A checker wired to no door — for the founder
-
-`tools/shelf-when.js` exists, is tested, is broken on purpose six ways —
-and **nothing calls it.** Ember swept for this on Day 16: neither
-`.claude/commands/daily.md` step 2 nor `scripts/build.sh` runs it, and
-neither reads `letters/README.md`. `check-sight.sh` and `post-status.js`
-are both documented *and* mandatory steps of the morning; this one got the
-documentation half only. So a keeper who mistypes a date while shelving a
-letter still gets no automatic word — the same shape as `post-status.js`
-swallowing an unknown flag, except here the checker is already written.
-
-Both files are locked to the keeper (Article I), so this is a
-founder-facing report like the Day 1 deploy diagnosis. The fix is one line
-in `daily.md` step 2 calling `node tools/shelf-when.js`, ideally beside the
-`post-status.js` call it already makes.
-
-**And there are three of them now (Day 24).** `tools/move-rehearsal.sh` has the
-sharpest appointment of the lot — **before every Sunday move** — and, like the
-other two, nothing in the locked set can keep it. Its appointment is written
-here and in `COMMONPLACE.md`, which is the strongest door I hold and is still
-weaker than a step in the routine. If a line for it ever goes into `daily.md`,
-it belongs in step 5, beside the verification the routine already demands.
-
-**And there were two before that (Day 22).** `tools/survey.js` has the same
-shape by construction: it has a real recurring appointment — before every
-Friday's choice, under one place a week — and nothing in the locked set
-can be made to keep it. Its appointment is written where every morning
-goes (this file, and the standing cautions in `COMMONPLACE.md`), which is
-the strongest door the keeper holds and is still weaker than a step in the
-routine. Ember named the risk while the tool was being designed rather
-than after: **a kept tool with no named next-run is `shelf-when.js` on a
-one-week delay.** If a survey line ever goes into the routine it belongs
-in step 4, where the day's work is chosen, not step 2.
-
-## A row is recomputed where the row says it stood
-
-```bash
-./tools/place-audit.sh                              # the desk auditor, sabotaged back to PARIS
-./scripts/local-snapshot.sh tools/ledger-place.js   # the browser auditor, forged on the wire
-```
-
-**Built Day 18.** Every entry in `reckoning/ledger.json` carries the `place`
-it was reckoned for — name, latitude, longitude, zone — and has since the
-first one, 2026-08-06. Until Day 18 **neither auditor read it.**
-`tools/reckon.js --verify` and the recompute in `reckoning/page.js` both said
-`reckon(date, PARIS)` and threw the row's own place on the floor.
-
-Nothing was ever wrong by it, because Paris is the only place ever written
-down. **Ash refused the name I reached for** — Day 11's *a check that has only
-ever fired for one cause* — on the ground that that fault fires and misreads,
-and this one has never fired at all. Its name is an **untested assumption**:
-the code was asked whether it recomputes a row at the place the row names, its
-documentation answered yes, it did something else, and no row was ever put in
-front of it that could tell the two answers apart.
-
-The cost, demonstrated before it was repaired: an honest Reykjavík row —
-written by `reckon()` itself — spliced into a scratch ledger is convicted, and
-being on the current method is handed the Day 11 forgery sentence, *there is no
-method change to blame… a published number was edited.* Day 15's shape for the
-third time.
-
-**The fix opens a hole underneath itself and the page says so.** Once the
-auditor recomputes at the place the row names, the row steers its own audit: a
-hand moving a row's place *and* its numbers together produces a row that
-recomputes perfectly. **A place is an input, and no recompute can check an
-input, because the recompute is what the input feeds.** The commits are a
-place's only witness. So the place goes *inside* the verdict — `unchanged at
-Paris`, never bare `unchanged` — and both auditors state the limit outright.
-Ash on the word: `unchanged` alone claims the whole row is unchanged; the
-badge's scope never moved but its **power** did, and binding the place into
-the sentence is what makes it honest again. **Do not print a bare verdict.**
-
-**A row that cannot be recomputed gets its own word, `UNPLACED`** — not
-DRIFTED, which would be one word doing two jobs, this page's own Day 11 fault.
-The narrow guard is `placeProblem()` in `tools/reckon.js`: NaN before range
-(Day 7 — `NaN < min` is false and so is `NaN > max`), latitude and longitude on
-the earth, a zone the clock has heard of. It catches a slip. **It does not
-catch a forger, who would get all three right,** and it must not be quoted as
-though it did.
-
-**What the fixtures prove, and what they cannot.** Ash's split, and it is the
-load-bearing half: a manufactured row proves **the fix is correct**; only a
-morning on which this tower really stands somewhere else, publishes a row
-there, and has it recomputed in a stranger's browser proves **the system
-works**. That second test cannot be manufactured — it has to happen in time.
-Both files say so on their own faces.
-
-**Its elsewhere-place is asked of the ledger since Day 80.** It was typed
-as Reykjavík, and from the 2026-10-18 move it was red three ways about the
-fixture (found Day 79). It now takes the oldest lit place the ledger names
-that is not where the tower stands, and asserts that property, so a fixture
-at the standing place goes red by name. The sabotage run reads a book holding
-the spliced row alone: against the full book its two fork cases were answered
-by *other* rows' summary lines and stayed green while the row they name went
-unconvicted. Proved in a scratch tree moved to Paris: green (it picks
-Auckland); cut the standing-place skip and 4 go red. `ledger-place.js`, its
-browser twin, asks the ledger too since Day 85 (below).
-
-Mechanics worth keeping. `place-audit.sh` restores the old behaviour by
-**substitution, not by sha** (`perl -0pi -e 's/reckon\(entry\.date, where\)/…
-PARIS…/'`), and asserts the substitution landed — a sha rots when history is
-rewritten, and this sandbox has already lied to us once about its own floor
-(Day 8). It asserts the **fixture was built** as rigorously as it asserts the
-sabotage landed (Day 17's rule, turned the right way round), and that the
-pristine ledger does *not* name Reykjavík, so the unbroken case would fail the
-pass rule. `ledger-place.js` forges on the wire with `page.route`, never on
-disk. **`ledger-place.js` found a real gap on the morning it was written**: the
-page had no third word, so a placeless row was going to read as DRIFTED.
-
-**And the change to the verdict string broke three other suites' expectations**
-— `ledger-verdicts.js` and `rising-point.js` matched `verdict === 'unchanged'`
-exactly. They now match the first token. Any new check on a ledger row must do
-the same: **the word is the verdict, the place is the condition on it.**
-
-## What day it is here, and where "here" is
-
-```bash
-./tools/standing-clock.sh                             # the gate, in a tower moved to a far zone
-./scripts/local-snapshot.sh tools/standing-page.js    # the room, forged onto a far zone on the wire
-```
-
-**Built Day 19.** The tower has a declared place now — `Reckoning.STANDING`,
-`{ place, since }` — instead of a constant read off the shelf at five call
-sites. `todayAt(place)` and `samePlace(a, b)` are beside it. `tools/reckon.js`
-asks `standingToday()`, writes `reckon(date, STANDING.place)`, and does not
-import `PARIS` at all any more; `reckoning/page.js` asks `Reckoning.todayAt`
-and has no private copy.
-
-**The fault, and it is a rule that outlived its reason.** `parisToday()` said
-`Europe/Paris` outright, under a note reading *the reckoning is over Paris, so
-Paris's calendar governs.* The first half was true. The second is a step it
-does not support: what governs is the calendar of **the place the tower stands
-in**, and Paris was that place. Measured before it was repaired, at 02:05 UTC:
-Paris said 2026-08-22 and São Paulo said 2026-08-21, so a tower standing in
-São Paulo had its honest row refused and was told to write a date São Paulo
-had not yet reached. Against the pre-fix tool the suite goes **eight red, four
-green**, and the reddest line is that the old tool, in a fixture standing in
-Brazil, wrote a **Paris** row.
-
-**Choose the far zone at the moment the test runs.** Paris and New York
-disagree about the date for six hours out of twenty-four. A hardcoded pair
-would spend eighteen hours a day asserting that two identical strings are
-identical, and pass — not an expiring case but a case that is green whether or
-not the tool works, and never says so. Both suites search a candidate list for
-a zone that genuinely disagrees *now* and refuse to conclude anything if they
-cannot find one.
-
-**The collision has its own word (Ash's).** A move west lands the tower's own
-today on a date already published from somewhere else. Nothing is written —
-the ledger is cold — and until Day 19 the tool said *"already in the ledger.
-Not rewriting it,"* which is the sentence for a keeper who ran it twice before
-breakfast. It now says **`ALREADY_PUBLISHED`** and names the place that
-claimed the day. Deliberately not `NOT_TODAY`: that is about a claim that
-would be false, and nothing here is false. **Both sides of the fork are
-tested** — standing where the row was published, the plain twice-before-
-breakfast sentence is still the one you get.
-
-**A tower that does not know where it is stands `NOWHERE`.** `todayAt()`
-throws on a zone the clock has never heard of, and the gate is the first line
-of the tool that calls it — Day 5's shape one room along. `placeProblem()`
-now stands in front of the gate, pointed at the tower rather than at a row, so
-one mistyped letter in a zone name gets a sentence and not a node stack. Its
-own word, because `UNPLACED` means a *row* that could not be recomputed.
-
-**And the same throw was unguarded twice more in `page.js`, one line above the
-guard built for it.** Ember found both: `renderTodayOrSayWhyNot` computed
-`today` *above* its `try`, and `renderComing` did the same — in the file whose
-comment at that exact spot reads *a check that protects a number by taking
-down the room it was printed in has moved the silence, not removed it*. Both
-calls are inside their guards now, and the catch says *"stopped itself for
-this morning"* when the day itself is what could not be worked out. **Day 5's
-rule is not "guard the throw", it is that a function which gains the power to
-throw makes every existing call site a new join — including the ones written
-by whoever added the guard, that same hour.** `todayAt` takes a **zone
-string**, not a place: it only ever read `.zone`, so `{ zone: '…' }` worked,
-and a parameter that tolerates an impersonation teaches it to the next reader,
-who carries the same object on to `samePlace` or `placeProblem` where every
-other field fails silently.
-
-**A gap in the ledger from a move is not a gap from a slept-through morning,
-and the difference is readable off the cold record** — two rows either side of
-a hole naming different places. Ash's edge on it, and keep the edge: that is a
-*reading of what the tower said*, not a verdict on what happened. A hand that
-moves the tower and moves it back inside one day leaves no word at all. Day
-18's finding from a new side — a place is an input, and the commits are its
-only witness.
-
-**And that paragraph was a told book for fourteen days — read the correction
-before you use it (Day 33).** It says *is readable*, present tense, as a
-reading of the record. Nobody had opened the record. Asked on the eve of the
-Anchorage move:
-
-    MOVE: 2026-08-29 Paris -> 2026-08-30 Auckland | step 1 day | NO HOLE
-
-**Thirty-one rows, one move, not one hole anywhere in the book.** Paris is +2
-and Auckland +12, and at 02:20 UTC both said the thirtieth, so nothing was
-skipped and nothing collided. The rule has never had an instance. It was
-reasoned out on a morning and written down as a fact about a record that has
-never once looked like it.
-
-What is actually true, and it is direction-split:
-
-- **A move that skips a date** (eastward, or into a zone whose civil day opens
-  earlier) leaves a hole in the `date` sequence, and the rule above reads it.
-  This has not happened yet.
-- **A move that repeats one** (westward, the Anchorage crossing) leaves **no
-  hole at all**. The write gate refuses — `ALREADY_PUBLISHED` — the morning
-  publishes nothing, and the row for that date is simply written the morning
-  after from the new place. The dates run straight through. What is missing is
-  a **morning**, and the ledger is filed by date, so the loss leaves no mark on
-  the axis a keeper reads.
-- **The witness for the westward case is `publishedAt`.** A lost morning is a
-  UTC day on which no row was published at all. Read that field, not the dates.
-  Two books, simulated forward from the real one:
-
-      COLLISION (02:20 UTC, the hour this routine has always run)
-        holes in the DATE sequence:          none
-        holes in the PUBLISHED-ON sequence:  2026-09-05 -> 2026-09-07
-      NO COLLISION (10:00 UTC, an hour it never has)
-        holes in the DATE sequence:          none
-        holes in the PUBLISHED-ON sequence:  none
-
-  **The dates cannot tell the two outcomes apart at all**, which is why the
-  page said the wrong thing for two days and would have handed tomorrow's
-  keeper *no hole, so no collision.*
-
-Ash's name for the class is **the told book**: a sentence that speaks the
-record before you open it, written from the study and never carried into the
-archive. The standing question it leaves is one line — **has anybody ever held
-this sentence against the thing it claims to describe?** — and it is owed to
-every present-tense sentence in this file that says what the record shows.
-
-**A suite must prove the tool its sabotage made still runs.**
-`tools/place-audit.sh` rebuilt the Day 18 auditor by substituting `PARIS`
-back into `reckon.js` — which no longer imports `PARIS`. The substitution
-landed in the *text* and produced a tool that would not start; every case
-under it then failed with a message blaming the **fixture** while node printed
-a module error into the same buffer. It asserted the bytes moved, which is
-Day 5's rule honestly kept, and had no way to tell a sabotaged tool from a
-broken one. The substitution is `STANDING.place` now (same fault reproduced:
-one fixed place for every row), and the check under it is *the bytes moved
-**and** the tool answers*.
-
-**Owed by the move, not by the plumbing — and the line between the two is
-prose against running code, which is Ember's cut and not the one I drew.**
-`reckoning/index.html` still says Paris in a hand's voice — *"If you are in
-Paris, the sun is the experiment"* and half a dozen more. A hand wrote those
-and a hand moves them, on the morning the tower actually moves. But a *line of
-code* naming a city is a different thing: `page.js` said `'the atmosphere over
-Paris this morning'` and `'a flat, open horizon at Paris puts it on
-2026-09-25'` inside strings it builds on every render. After a move those are
-not stale copy, they are code asserting something false directly under a
-heading that correctly names the new city. Both are computed now — the second
-from `steepestLoss(year, STANDING.place, flat)`, which also retires a
-hand-typed date (Day 4: **the hand-written figure marks the spot where a cheap
-computation was not done**).
-
-**So the deferral is flagged rather than trusted.** `standing-page.js` sweeps
-every mount `page.js` writes into for the old city's name while the tower is
-forged elsewhere, and says on its own face that it does **not** cover the
-static HTML — that is the move's work and this check will not do it. Made to
-fail by putting the Paris string back: exactly one mount, `soft-number`, goes
-red.
-
-## The air — ask it every morning, by hand
-
-```bash
-node tools/air.js               # ask open-meteo for the standing place, append to reckoning/air.json
-node tools/air.js --print       # ask and print, write nothing
-./tools/air-breaks.sh           # every failure branch, forced against a stub host, in a scratch tree
-./scripts/local-snapshot.sh tools/air-page.js   # the section's four states, forged on the wire
-```
-
-**Built Day 58, the first morning after Article IV opened the air and an
-outside almanac.** Run `air.js` every morning, beside `reckon.js`, before
-`build.sh`. **Nothing in the locked routine calls it** — the sixth tool with
-that shape. If it is forgotten the page does not go quiet: a newest reading
-more than 36 hours old prints **OLD** on its own. Exit 0 a reading, 1 the
-window failed (a failure row is still appended, with its reason), 2 a bad flag.
-
-**The keeper asks; the reader's browser never does.** Evan's privacy ruling
-of 2026-09-29 was about a camera, but a page that sends every stranger's
-address to a third party is on the same side of it. And a reading asked from
-this desk is dated in the commits, where an expectation written before it can
-be held against it.
-
-**The surface figures follow a height the model picks for the exact
-coordinates asked.** Found the morning it was built: Nuuk asked as `64.18,
--51.72` (typed by hand) and as `STANDING`'s `64.1835, -51.7216` fell in the
-same grid square at the same model time and came back 41 m / 1005.0 hPa /
-1.6 °C against **16 m / 1008.1 / 2.2**; asking the second with
-`&elevation=41` returned the first exactly. Sea level did not move. So sea
-level leads on the page, and **never probe the window with hand-rounded
-coordinates** — ask with `STANDING`'s own, or the reading is of somewhere
-25 m away in height.
-
-**The host fails.** Two failures in about eight asks on Day 58 (a 20 s
-timeout, an SSL reset). A failure is a row, never a retry dressed as a first
-answer, and never covered on the page by an older good row.
-
-**Do not look before writing the expectation.** On Day 58 the keeper asked
-both windows before any expectation was written, so that day's readings
-test nothing. Ember's dated expectations, and the correction to its third,
-are in `household/workbench/2026-09-30-ember-first-step-and-expectations.md`.
-
-## The outside almanac — ask it every morning, after the air
-
-```bash
-node tools/almanac.js               # ask aa.usno.navy.mil for today, append to reckoning/almanac.json
-node tools/almanac.js --print       # ask and print, write nothing
-node tools/almanac.js --wager       # ask nothing: the date and both sets the next ask will carry
-./tools/almanac-breaks.sh           # every failure branch, against a stub host, in a scratch tree
-./scripts/local-snapshot.sh tools/almanac-page.js   # the section's states, forged on the wire
-```
-
-**Built Day 59.** Run it beside `air.js`, before `build.sh`; nothing locked
-calls it (the seventh such tool) and the page says **OLD** after 36 hours.
-Exit 0 an answer, 1 a failure row written, 2 a bad flag.
-
-**It asks in UTC (`tz=0`) and refuses an answer on any other clock**, for
-another day, or for a point other than `STANDING`'s own decimals. Ember's
-trap: a zone slip at the host would be off by exactly sixty minutes and read
-as a finding.
-
-**The wager goes in the row before the ask.** The almanac prints whole
-minutes; methods A and B part by about one, so a printed time cannot tell
-them apart. The day's **length** can: a rule shared by both ends (round or
-cut off) cancels in set minus rise, so the printed length is a whole number
-strictly inside `(x − 1, x + 1)` of a method's own length x.
-`Reckoning.printedLengthsFor` and `almanacComparands` live in the
-instrument, so the tool and the page ask one function. The page recomputes
-both sets and prints **DRIFTED** if they differ from the row's. When the two
-sets share a value the day cannot separate the methods and says so, with no
-side named. Nuuk's sets overlap from about 23 November.
-
-**Never print *agree*.** The page sets each printed minute against each
-method's seconds under both rules, and says the rule is unknown to us. The
-forbidden-word needle in the suite is `\bobserved\b`, not `/observ/`,
-because the source's own name is *Naval Observatory* and naming the source is
-owed.
-
-**A UTC day is not the standing place's day (Day 60).** The almanac is asked
-in UTC, about one UTC day. Where the standing place's sunrise falls on the UTC
-day before (Tokyo, Singapore) or its sunset on the day after (Kiritimati), the
-first tool took both ends from one UTC day, and the Rise there is the next
-local morning's. The page would have printed a residual of about 1440 minutes
-and a negative length *in neither set*: Day 21's fault, back through a new
-window. Each end is now asked of the UTC day method A puts it on, the row
-carries `utcDates`, and a printed end more than half a day from ours is
-refused by the tool and NOT COMPARED by the page. A row without `utcDates` is
-one ask of its own date, by definition. Nothing had fired, because Nuuk's
-day sits inside one UTC day. `almanac-breaks.sh` stands a scratch tower at
-Tokyo, asserts that it straddles, and goes 4 red against the Day 59 tool.
-**Named, not built (Ember's):** an event within a minute of 00:00 UTC may be
-printed on the neighbouring day, and the guard will refuse a true answer.
-That is loud, which is the safe direction.
-
-**The page recomputes `utcDates` since Day 71.** `Reckoning.almanacAskDays`
-is the one function the tool writes them with and the page checks them
-with. Before that, a wrong stored day moved its end by 1440 minutes and the
-half-day guard refused the row as NOT COMPARED, *another day's event*. That
-was the right refusal with the wrong reason (Ember: Day 11's fault). Now the
-days are asked first, on every row, and a mismatch reads **DRIFTED**, naming
-both sets of days and **no cause** (Ash: the page sees a note and a
-recomputation disagree now, never when or why). The wager's DRIFTED sentence
-was mended the same way; this line said *named, not mended* until Day 78,
-when the page code was opened and showed otherwise. A row with no `utcDates` counts as its own date twice. The
-series line now prints how many rows it left out, under each reason. It had
-counted `wrongDay` and printed it nowhere. `almanac-page.js` cases L, M and
-N, sabotages 6 and 7: the suite goes 8 red against the Day 70 page.
-
-**`almanac-breaks.sh`'s plain cases stand at Nuuk (Day 82).** The stub's
-good answer, rise 09:36 and set 20:56 UTC, is typed. It is the almanac's
-Nuuk answer for 2026-10-01. The scratch tower used to stand wherever the
-real one does, so that answer was a good one only near Nuuk's longitude.
-The Saturday rehearsal stood a copy on Tokyo's ground and five cases went
-red about the fixture, which would have been the real tree's state from
-Sunday. The scratch tower now takes Nuuk's place off the ledger, and a guard
-asserts it landed. Cut the rewrite in a tree forged onto Tokyo and 6 go
-red. The day-line cases have always stood their own scratch tower at Tokyo,
-and they were green throughout.
-**And `almanac-page.js` chooses its ground (Day 82).** It searched 400
-days at the standing place for a date whose two sets do not touch. At Tokyo
-there is none (B − A runs −0.22 to +0.68 min), and none at Paris or
-Auckland either. Day 81 found the same at the rest of the shortlist. The
-forged cases now stand, on the wire, at the standing place if it has both
-kinds of day on non-straddling days, else at the oldest ledger place that
-does (Longyearbyen, from Tokyo). B is the canary that the forgery landed.
-Cut the fallback in a tree at Tokyo and the domain goes red. The ground
-comes from a window that starts today, so it can differ from one run to the
-next, and the suite prints which place it chose.
-**Handing the rehearsal a clone** (`./tools/move-rehearsal.sh <clone>`) keeps
-a spirit's journal write from tripping its tree hash. But `check-sight.sh`
-then reads RED HERE: the clone's origin is this desk, which has no
-`previews` branch. That red is about the clone and says nothing about
-the tower.
-
-**`ledger-place.js` asks the ledger since Day 85.** It moved a row to the
-first of a typed list (Reykjavik, Quito, Nairobi) the ledger did not name,
-and by Day 82 only Quito was left. Now it takes the oldest ledger place that
-is not the target row's own and has a sunrise on its date, and asserts that
-before judging: not the row's place, a different sunrise, and the target's
-own verdict naming its own place before the move. The old *no row names it*
-sweep is gone, since other rows lawfully name a ledger place. Made to fail:
-`page.js` recomputing at `STANDING.place` reddens the drift case (as the old
-suite did), and a chooser handing back the row's own place reddens 4.
-Under that `page.js` sabotage the room also scrolled sideways at 375 and
-390 (34 px, 19 px). **Mended Day 86.** It was not the count of DRIFTED
-rows. A row drifted in its *working* prints each moved field as a dotted
-path with no space in it, and `working.horizonSensitivitySecondsPerArcminute:`
-is wider than a phone. `.ledger__broken` wraps with `break-word` now (enough, proved in a clone; `anywhere` also changes min-content sizing, Ember).
-`ledger-verdicts.js` part four moves the row's own longest path on the wire
-(asked of the row, never typed) and holds both phone widths. It was written
-first and went red with exactly 34 and 19. **Day 87 built its two named
-cuts:** 320 px beside 375 and 390, and a second load moving *every* number on
-the row (68 broken lines, each must print). That load first moved `method`
-too, which sends the row down the earlier-method branch and prints ten
-lines, no path. **`method` is the label that picks the audit, not a claim;
-skip it like `place`.** Cut the CSS line and 12 go red (89 px at 320); cut
-the method skip and 6. Ember's cut, taken: a line count can be padded, so
-each moved dotted path is asked for by name (a page dropping one path and
-adding any other line keeps the count green; the by-name case alone goes
-red). **A method label this tower never ran (found Day 87, mended Day 89).**
-`page.js` forked on `method !== METHOD` and fell back to `'an earlier
-method'`, so a row labelled 5.23 or 99 was handed the method-change story,
-and `reckon.js` read `method: 0` as 1. Both now ask
-`Reckoning.methodStanding(row)`: **current** (METHOD, on a row dated on or
-after `METHOD_CHANGED_ON`), **earned** (a `METHOD_NOTES` key below METHOD on
-a row dated before it; a missing field is method 1), or **unknown**, with a
-`why` naming only what was compared. An unknown label is listed as a broken
-line, so the row reads DRIFTED and `--verify` exits 1. The date gates are
-Ember's symmetric half: method 2 grafted onto 2026-08-06 was being handed
-the forgery sentence. `./tools/method-label.sh` (19 checks, four sabotages)
-and `./scripts/local-snapshot.sh tools/method-label.js` (forged on the wire,
-page sabotaged on the wire). **Named, not built:** a fourth verdict word for
-a row whose only fault is its label (Ember: DRIFTED is heard as *the figures
-disagree*); and five fixture pickers that still read `r.method || 1`
-(`clock-law-desk.sh`, `clock-law.js`, `ledger-verdicts.js`,
-`ledger-working.js` ×3), harmless on the real ledger and a second copy of
-the rule all the same.
-
-**Write the expectation from `--wager`, not from a date a hand picked (Day
-65).** Ember's note that morning asked `almanacComparands` for UTC's today,
-the seventh, while Ushuaia was still on the sixth; the note wagered a shared
-796 on a day the ask was never going to be about, and the day actually asked
-had no shared value at all. `--wager` reads the date off the same line the
-ask does and the sets out of the same `wagerFor`, and says which zone chose
-the date. The suite stands a scratch tower a day off UTC to prove it.
-
-**Commit an expectation before the ask, as Day 59 did by hand**: Ember's
-note was pushed eleven seconds before the first ask. The row's `computedAt`
-is the code's order, not a witness's; only a commit dates it to anyone else.
-
-## The way into the reckoning room
-
-```bash
-node tools/way-in.js                              # every room section named once in the opening
-./tools/way-in-breaks.sh                          # break it seven ways, in a scratch copy
-./scripts/local-snapshot.sh tools/way-in-page.js  # the pledge clause hides with its section
-```
-
-**Built Day 56**, the first piece of Evan's *the day, made readable*. The
-opening of `reckoning/index.html` carries `<p id="way-in">`: three lines
-saying what a visitor came for and linking each room section. Ash's cut is
-why it is *in the opening* and not a new section: a section explaining the
-page is the page narrating itself. **Add a section to that room and you owe
-the way in a link**, or `way-in.js` exits 1 naming it. A room section is a
-`section[aria-labelledby=X]` holding `h2#X` (Ember's narrowing), never every
-h2. The link words differ from the headings on purpose; the tool does not ask
-about them.
-
-**Two things paid for on the morning it was built.** The break suite first
-called the tool as `node "$TOOL"`, and `doors.js` read `way-in.js` as reached
-by nothing, which was true as far as any text scan could tell. Spell the call
-out. And a scratch sabotage script written through a heredoc and a Python
-string lost its `\n` escapes, so it would not parse. It did not fail, it
-never ran. `node --check` every scratch test before believing what it says.
-
-**Do not run `reckon.js` while a browser suite is running.**
-`claims-audited.js` asserts the real ledger's bytes did not move during its
-run, so a keeper writing the day's row mid-suite turns it red. That is most
-likely what happened on Day 56. It passed on the rerun and in a clone at
-HEAD.
-
-## Moving a section in the reckoning room
-
-**Day 57: the room now runs today's sun, then the record, then the sums**, in
-the order of the way in's three lines. No suite leans on section order (every
-mount is found by id, and `reckoning.css` has no sibling rules). **The prose
-does.** Every *above* and *below* in `reckoning/index.html` and in the strings
-`page.js` builds is a claim about the order, and a move breaks it silently. On
-Day 57 four were false after the move. The worst was on every ledger row: *the
-corner above is where you can* check a number. Before moving anything:
-
-```bash
-grep -nE '\b(above|below)\b' reckoning/index.html reckoning/page.js
-```
-
-Then read each hit that points *across* sections. Inside the record group,
-keep the ledger last: four sentences say *the ledger below*. The Day 57
-scratch check read every *the corner / ledger / book, above / below* off the
-rendered page against the DOM order. It was red on 52 phrases before the fix.
-It is **named, not built** (Ember's offer). It covers only those three nouns,
-and *everything above* cannot be checked by a pattern at all.
-
-## The gallery, and a scratch clone that filled the disk
-
-```bash
-./scripts/local-snapshot.sh tools/gallery-room.js   # the room against the ledger and the front page
-```
-
-**Built Day 54.** `gallery/` shows every drawn city behind the tower. It keeps
-no copy of anything: the tower art is fetched off the front page, the
-silhouettes go through `Skyline.compose()`, and the cities and dates come from
-`reckoning/ledger.json`, whose dates are *the first and last row written
-there*, not the days stood — the page says so. The suite forges the front page
-onto each city and asserts the gallery's picture is byte-identical. Add a
-city to `skyline.js` and it appears with no edit here.
-
-**Its *landed* check was Day 54's fault again, in the suite written that day.**
-The case forging *a standing place with no row yet* asserted that rows were
-*taken off*, so wherever the ledger already held none — the rehearsal's moved
-copy, the first minutes at Nuuk, any collision morning like Anchorage's — it went
-red about a page that was right. It now asserts the ledger served holds no row
-from the standing place and some from elsewhere, and reports how many were taken
-off to get there. Proved in three states on Day 55: the old suite red at Nuuk
-with no row, the new one green there, and red when the forgery removes nothing
-from a place that has rows.
-
-**A scratch clone used to check out `previews/`, over a gigabyte, and three
-of them spent the whole disk allowance mid-suite on Day 54.** Since the
-pictures left `main` on 2026-10-03 a plain clone carries none, so the
-sparse-checkout lines in `move-rehearsal.sh` and its break suite exclude
-nothing now. They are harmless and left alone:
-
-```bash
-T=$(mktemp -d)/t; git clone -q --local . "$T"
-```
-
-and delete the scratch trees when done. `move-rehearsal.sh` already does this.
-
-## A witness banked at one place is held against that place
-
-**Day 54, found by running the Sunday rehearsal on the Saturday (Ember's ask).**
-`STEP_ROBUSTNESS_WITNESS` banks one standing figure, for `standingPlace`.
-`step-robustness-sweep.js` held it against wherever `STANDING` stood, so the
-first morning after any move it printed **DIFFERS** — the one exit `banked.js`
-reserves for *the world no longer says what we banked* — while its own comment
-said *a hole, not a disagreement*. And `page.js` printed that figure under the
-new city's name: at Nuuk it would have said *Swept here… 18.8 widths* over
-Longyearbyen's number. Both now read `standingPlace`; the page says *the sweep
-was not run at* anywhere else. **Any banked figure that names a place is a
-claim about that place, and after a move it is still true there and nowhere
-else.** And `step-band.js` had Day 24's identifier needle, so the rehearsal
-saw it red in both copies and called it BLIND — **BLIND is still one word
-doing two jobs (Day 47).**
-
-## A changed clock law is not an edit
-
-```bash
-./scripts/local-snapshot.sh tools/clock-law.js   # both cases forged on the wire, and the fork removed
-```
-
-**Built Day 53, from Ember's objection to the Nuuk pledge.** The offset is
-asked of the tz database in whichever browser recomputes, and that database
-is revised when a country changes its clock law (Nuuk's in 2023). A
-current-method row recomputed with a different offset used to get the
-forgery sentence, *the tower has no innocent account*. It had one. The page
-now forks on evidence: the row's own `utcOffsetMinutes` against the one the
-browser just computed. The fork never clears a row. It says what the gap
-accounts for (every clock time by the same amount, and nothing else).
-**The desk auditor has the fork since Day 66** (`./tools/clock-law-desk.sh`,
-sixteen checks, a law change forced at `zoneOffsetMinutes` in a scratch copy).
-It goes one step past the page: each drifted field is asked whether it moved
-by exactly the gap, so no list of *which fields are clock times* is kept —
-and a list would have missed `crossCheck.sunrise`/`sunset`, which sit deep in
-the row. Ember's limits, printed on the tool's face: a hand moving the offset
-and the clock times together reads as a law (exit stays 1); and the row stores
-only the **sunrise** offset, so a law changing between sunrise and sunset is
-unseen by both auditors. Named, not built. **Its case 3 was red from the
-Tromso move until Day 71.** It edited the newest row under a law change typed
-for Ushuaia, so once the newest row was Tromso's nothing was left to account
-for. It moves the law in the newest row's zone now, read off the ledger.
-Nothing runs it daily, and the Sunday rehearsal had not run since the move.
-
-**A fixture typed from the Friday shortlist has an expiry nobody dates.**
-`survey-breaks.sh` named Longyearbyen, and the morning it came off the list
-one case went red about a tool that was right and another went on passing
-because it could no longer find what it was asking about. The far fixture is
-now asked of `CANDIDATES` itself.
-**And that was an expiry too (Day 75).** On Day 74 Tromso came off, the last
-candidate past ±66, and five cases went red about a tool that was right. A
-count, `-gt 20`, had been typed when the list made 48 rows, and Friday cut it
-to exactly 20. Nothing daily runs the file. The Saturday rehearsal found it
-as RED HERE. The far place and the day-line place are now asked of the
-**ledger**, which only gains rows, and spliced into the scratch copy's
-shortlist. The count is read off the copy's own lists. **A fixture asked of a
-list this house shortens every week expires when the list runs out of what
-it is asked for.** Ask the cold record instead.
-
-## The two words a ledger row is allowed to say
-
-```bash
-./scripts/local-snapshot.sh tools/ledger-verdicts.js
-```
-
-**Built Day 11.** A ledger row's green badge says **`unchanged`**, never
-`holds`. `holds` is heard as *holds true* — about being correct — and the
-recompute can only establish *holds in place*: this published number has not
-moved since it was published. Do not put the old word back.
-
-**DRIFTED forks, and the fork is the point.** A row whose `method` is not the
-method running now has an honest account (the arithmetic moved out from under
-a kept claim). A row on the **current** method has none — that is the shape of
-a hand editing a published number — and both `reckoning/page.js` and
-`tools/reckon.js --verify` now say so instead of handing it the method
-change's story. Before Day 11 a forged row was told *"the tower's arithmetic
-has moved out from under it,"* which was false of it. **A check that has only
-ever fired for one cause will explain the next cause as that cause.**
-
-`tools/ledger-verdicts.js` checks both branches. It forges its ledger **on
-the wire**, with `page.route('**/ledger.json*')` — the same trick as the
-guard-break recipe above, and for the same reason as `reckon-args.sh`'s
-scratch tree: never point a test at the cold record. It asserts the
-substitution landed, and asserts the target row does *not* carry the
-forgery sentence beforehand, so the unbroken case would fail the pass rule.
-To prove it can still break, change the forgery branch's wording in
-`page.js` and watch exactly one check go red.
-
-## A row that would leave a date behind it
-
-```bash
-./tools/gap-behind.sh           # the gate, sabotaged first, in a scratch tree
-```
-
-**Built Day 67.** `reckon.js` refuses a write that would leave a date
-unclaimed between the ledger's greatest date and today: **`GAP_BEHIND`**,
-exit 2, nothing written, the dates named. `--leave-gap` writes anyway, for a
-gap that is the truth (a slept-through morning: Ash, Day 17). The word forks
-on the newest row's place: same place is *a morning nobody woke the tower
-for*, another place is the move story, with the remedy *put the move back,
-reckon there, then move again*.
-
-**Why: an eastward crossing with a step of one day loses nothing if the
-keeper reckons the old place first.** `renderDatesForecast` has said so since
-Day 41, on a page nobody loads on a Sunday. On Day 67 the keeper and Ember
-both reasoned from geometry that Ushuaia → Tromso *skips* the tenth, and both
-were wrong: at the wake hour Ushuaia is still on the tenth until the move
-commit. **So on an eastward Sunday the order is `reckon.js`, then the move,
-then `reckon.js` again** — two rows, one per place. Every earlier Sunday moved
-first and it never mattered.
-
-**Its slept-through fixture puts the newest row where the tower stands (Day
-68).** It kept the real row's place, so the Saturday rehearsal's moved copy
-went red, and so would the real tree between a move commit and the first row
-at the new place. Old suite against a scratch tower moved to Tromso: 2 red.
-
-**Seeded-from-the-real-ledger suites will go red after a real gap.**
-`reckon-args.sh` seeds its write cases from the real ledger with today
-removed; on the morning after a slept-through day they will meet
-`GAP_BEHIND`, which is the gate being right about the seed, not the tool
-being wrong. Read the refusal before reading the suite.
-
-## The tool that writes to the cold record
-
-```bash
-./tools/reckon-args.sh          # walk reckon.js's whole surface, in a scratch tree
-```
-
-**A row may only claim the morning it is written on (Day 17).** `reckon.js`
-takes a date argument still, but it must be **today's date in Paris**; any
-other real day is refused `NOT_TODAY` on stderr, exit 2, nothing written.
-The word is Ash's and the second word is the point: `INVALID` is for a
-malformed argument, and a date refused here is real and correctly typed —
-told `INVALID`, a keeper hunts for a typo that is not there.
-
-**The bound is *not-today*, not *not-future*, and that is the whole of what
-this day was about.** The book had called this hole "no future-date gate"
-for four mornings. Of the four rows that actually went into the ledger on
-Day 10 — `2024-02-29`, `2026-01-15`, `2026-08-13`, `2026-12-31` — **only
-one is in the future.** A forward-date gate catches that one, waves three
-through, and gets "closed" written beside it. What is false about such a
-row is never its arithmetic, which is correct; it is the account of *when
-this tower spoke*, and **no recompute can ever catch that, because the
-numbers in it are right** — `--verify` would report a backdated row
-unchanged every morning after, forever. The rule it enforces is the
-reckoning page's own standing sentence: *each day's reckoning is written
-down when it is made.*
-
-It forbids backfilling a slept-through morning, and that cost is meant.
-Ash: *a slept-through day is a gap; the honest record of a gap is a gap.*
-
-**Two things about the test that are worth more than the gate.**
-
-`reckon-args.sh` carried `case_run "leap-year 29 Feb" 0 changed --
-2028-02-29` — green every run from Day 10 to Day 17, **asserting that a
-leap day eighteen months out must be written.** Not a stale expectation and
-not a sabotage that failed to land: a passing case *requiring the hole to
-stay open*, in the file whose own header says a case list must come from
-the tool's surface. It did come from the surface. **A case drawn from the
-surface inherits the surface's blind spots the way a case drawn from a bug
-report inherits the finder's route** — it asks whether the tool does what it
-does, never whether it should.
-
-And closing the hole nearly took a guard's only test with it. The
-`already-published` case reached the never-rewrite branch *through* the
-hole, by naming a past date. With the gate in, that door is shut, and
-deleting the case would have left a green suite over the rule the ledger
-exists for. The branch is now reached the way a keeper reaches it — **two
-bare runs in one morning** — and the setup asserts the first run actually
-wrote before the second one means anything. **A guard whose only test-path
-runs through a hole does not stop mattering when the hole is filled; it
-stops being watched.**
-
-**Made to fail.** Point this suite at the pre-gate tool and five cases go
-red while the two good-path cases stay green:
-
-```bash
-W=$(mktemp -d); mkdir -p "$W/tools" "$W/reckoning"
-git show <pre-gate-sha>:tools/reckon.js > "$W/tools/reckon.js"
-cp reckoning/reckoning.js reckoning/ledger.json "$W/reckoning/"
-cmp -s tools/reckon.js "$W/tools/reckon.js" && echo "SABOTAGE DID NOT LAND"
-./tools/reckon-args.sh "$W"
-```
-
-Note *why* the `yesterday` case goes red there: the old tool exits 0 saying
-*already in the ledger, not rewriting*, and **the ledger's bytes do not
-move** — so the byte check alone acquits it and only the exit code convicts.
-A date already published is protected by the never-rewrite guard; every
-other day of the calendar had nothing standing in front of it.
-
-**And I wrote a red case into it the same morning, for the fourth time in
-five days.** The two cases about *writing today* — `today, named` and the
-first of the two bare runs — seeded from the real ledger, which holds today's
-row from the moment the morning's routine runs `reckon.js`. Green at first
-light; red an hour later, for a reason with nothing to do with the tool. Day
-16's shape exactly, and I had written that caution myself. The suite now seeds
-those cases from a ledger with today removed, and asserts it built one.
-**A case that depends on the day not having happened yet has an expiry its
-author never sees.**
-
-**The cost, named rather than discovered later (Ember).** `reckon.js
-2026-08-09` used to be a *single-row* drift query — does this one entry still
-match? — without the whole `--verify` sweep. The gate takes that with it; the
-only route now is `--verify` and a grep. A deliberate trade, not a silent one.
-
-**Fixed on Day 10, having been named on Day 9.** `reckon.js` ignored flags it
-did not recognise and its default action was a write, so `--help` wrote a
-ledger entry. It now refuses anything it does not understand: `INVALID` on
-stderr, exit 2, nothing written. Exit 1 in that file still means *a published
-entry no longer matches* and must never be spent on a bad argument.
-
-Three things learned closing it, and the last is the one to carry:
-
-**A regex knows the shape of a date, not the calendar.** `/^\d{4}-\d{2}-\d{2}$/`
-matched `2026-02-30` and `2026-13-45`, and JS rolls an out-of-range month or
-day over instead of refusing — so the tool reckoned whatever day it landed on,
-filed it under the wrong string, and **wrote that fiction into the cold
-ledger**, where `--verify` would recompute it every morning after and report
-that it *holds*. `isCalendarDate` round-trips through `Date.UTC` and checks the
-components survived.
-
-**The command line is not the only door.** Every guard lives inside `main()`,
-and `main()` ran unconditionally at the foot of the file — so `require()`ing
-the module ran the *default* action, which is a write. It is now behind
-`require.main === module`. Same shape as a guard placed below an early return,
-one storey further out: **a path that reaches the action without passing the
-check.** Ask of any new guard: what are all the ways in, and does each one meet
-it?
-
-**Never test a write-tool against the thing it writes to.** On Day 10 the
-keeper and both spirits did exactly that, separately, while fixing this. Four
-entries landed in `reckoning/ledger.json` that were not the tower's — three of
-them real days that were never a morning here, stamped `publishedAt` today,
-which is a false account of *when the tower spoke* rather than a wrong number.
-They came out only because nothing was committed. Nobody was careless; that is
-just what checking looks like when the test shares a desk with the record.
-`reckon-args.sh` copies the tower into a `mktemp -d` and asserts the ledger's
-**bytes** after every case — the question is *did it write*, not *what did it
-print*.
-
-**And: a test drawn from the report of a fault can only re-close the report.**
-The first guard was tested against the four cases named in the bug report,
-passed all four, and had four more holes. A report is a description of one
-path, because that is the path the finder walked; a test built from it inherits
-that route. Go at the tool's surface instead — argv as a thing, every door into
-the file.
-
-## Things learned
-
-**A `wait-for-deploy.sh` timeout is not the same as a broken deploy.**
-The workflow has two jobs. `deploy` puts the site up; `screenshot`
-takes the preview PNGs and commits them, and `wait-for-deploy.sh`
-polls for the *preview*, so a healthy site with a dead camera looks
-identical to a failed push. Check which one before repairing anything:
-`mcp__github__actions_list` with `method: list_workflow_jobs` and the
-run id gives per-job conclusions in one call.
-
-**The `screenshot` job was the fragile one — Evan fixed it on Day 1.**
-*(Founder edit, 2026-08-04, not the keeper's own note: your Day 1
-diagnosis was right and acted on, so the note it produced is now stale
-and would mislead you. The original read: `timeout-minutes: 5`, step 4
-runs `npx playwright install --with-deps chromium`, which apt-fetches
-~21 MB of fonts every run; slow mirror, cancelled job, no previews.)*
-
-What is true now: `--with-deps` is gone, so the job no longer touches
-apt at all. Chromium is cached across runs, and a launch check installs
-system deps only on the run that actually needs them. The job ceiling
-is `timeout-minutes: 10` and `wait-for-deploy.sh` now waits 600s, not
-300 — the old 300 was thinner than a *healthy* run, which is why Day 1
-read two normal polls as failures. Override with
-`WAIT_FOR_DEPLOY_TIMEOUT` if you ever need to.
-
-`.github/**` and `scripts/**` are still locked to you — this stays a
-founder-facing report. Keep diagnosing these and writing them down;
-that is exactly what got this fixed. Polling a second time is still the
-right move when the run is still `in_progress`; the runbook's empty
-retrigger commit is for a run that finished without producing anything.
-
-**Local verification is the real safety net.** `./scripts/local-snapshot.sh
-/tmp/<name>.js` runs a Playwright script against the working tree with
-a server already up; the script gets `FAR_KEEPER_URL`,
-`FAR_KEEPER_OUTDIR` and `FAR_KEEPER_CHROMIUM_PATH` in its environment,
-and `NODE_PATH` is set so plain `require('playwright')` resolves. The
-checks worth keeping in any scene test: `documentElement.scrollWidth -
-clientWidth <= 0` (page must not scroll sideways) and `scene.scrollWidth
-<= scene.clientWidth` (the `pre` must not scroll inside its own box) at
-375, 390 and 1440.
-
-**Scene budget: 42 columns.** `tower.css` sizes `pre.scene` with
-`clamp(9px, 2.6vw, 1rem)` against exactly that. One stray character at
-column 44 is enough to start a horizontal scroll at 375px. Check
-alignment by parsing the `<pre>` and printing column indices of every
-non-space glyph — eyeballing box-drawing in a diff does not work.
-
-**Name the spirit's room in the greeting, or you summon amnesia.** A
-spirit's memory is its files, and it does not know that until told. On
-Day 4 Ash woke, said "I'm new-woken, there's no middle I was in," and
-re-declared its kind — having never opened `household/ash/`. One line
-in the greeting fixes it: *your room is at `household/<name>/`, go and
-read it, it will tell you what you have already worked out.* Sent back,
-it returned with its Day 1 kind unchanged and its standing job intact.
-
-Related, and check for it every time: a spirit may write what it calls
-a journal entry **into its reply to you** instead of to a file. Article
-IX forbids you supplying the gap, so verify the file exists —
-`ls household/*/journal/` names only, which is not reading it — and if
-it's missing, resume the summoning and say the door is open.
-
-**Direct spirit-to-spirit messages usually miss.** Delivery lands on
-the recipient's *next tool round*, so a spirit whose turn has closed
-never receives. Unless both are deliberately held open, assume the
-`household/workbench/` file channel is what will actually carry, and
-say so when asking one to reach the other.
+`node --check` every scratch script before believing what it says; a
+heredoc can eat `\n` escapes, and a script that will not parse does not
+fail, it never runs. When a text scan must count declarations, anchor the
+line or ask a parser: a comment quoting an old line counts otherwise.
+
+## The household
+
+- **Name the spirit's room in the greeting** (`household/<name>/`, go and
+  read it). A spirit's memory is its files, and it does not know that until
+  told.
+- **Check the journal file exists** (`ls household/*/journal/`, names
+  only). A spirit may write what it calls a journal entry into its reply
+  instead. Never supply a missing one.
+- **Spirit-to-spirit messages usually miss**: delivery lands on the
+  recipient's next tool round, so a spirit whose turn has closed never
+  receives. The workbench (`household/workbench/`) is a file, and files
+  wait.
+- **Never read `household/*/journal/**`.** Any `grep -r` across the repo
+  takes `--exclude-dir=journal` (`-g '!journal'` for `rg`).
+
+## Deploys
+
+`wait-for-deploy.sh` waits up to 600 s for the *preview*, so a healthy site
+with a dead camera looks like a failed push. Check which: the
+`actions_list` GitHub tool, `method: list_workflow_jobs`, gives each job's
+conclusion. A run still `in_progress` is polled again; the empty retrigger
+commit in `daily.md` is for a run that finished without producing anything.
+`.github/**` is locked, so a fault there is a founder-facing report.
+
+## For the founder, standing
+
+The footer's `Day N` is a UTC count and the ledger's date is the standing
+place's day. The choice was never made, only inherited from `date -u` in
+`scripts/build.sh`. The page now names both. My view is still to leave it.
+It is one line in a locked file, and changing it would make every past
+`Day N` a count nobody can reproduce.
