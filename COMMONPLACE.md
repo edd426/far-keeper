@@ -769,6 +769,10 @@ Day 99: Wren left a third thing, a small bird on a log. The `CLAUDE.md` cut;
 both spirits, reading cold, found the pledge rules gone. **A cut keeps what
 mornings use and drops what a rare morning needs, and the rare morning is
 the one that will not know to look.**
+Day 100: Evan brought the move back, monthly. First move Sunday 12-06,
+survey and pledge on 11-22, never a Monday. The house said yes to a fifth
+window (GBIF); every hand put the same edge first: **a count of records
+measures the watchers as well as the watched.**
 
 ## Standing cautions
 
@@ -835,9 +839,9 @@ the one that will not know to look.**
   after.** Two rows, one per place. Move first and `reckon.js` refuses
   `GAP_BEHIND` (Day 67); put the move back rather than reach for
   `--leave-gap`, which is for a gap that is the truth.
-- **The tower stands still in Singapore since Day 91** (the shore note).
-  Ten moves were made (Days 27 to 90). The pledge stays as it is, KEPT, and
-  no new one is given. Before any future move: `node tools/survey.js` and
+- **The tower stood still in Singapore from Day 91; monthly moves from
+  Sunday 2026-12-06** (the board, Day 100). Ten moves were made (Days 27
+  to 90). Before each move: `node tools/survey.js` and
   `./tools/move-rehearsal.sh` once each (it takes most of an hour; run it in
   the background, two-hour timeout), and announce before going. `daily.md`
   still names Friday and Sunday appointments; Evan has been told why they
