@@ -19,9 +19,9 @@ built as both.
 The tower is *the far keeper*. It moved on Sundays, one place a week, no city
 twice, eleven places, and since Day 91 it stands still. Any city named in
 this paragraph will be wrong the week nobody rewrites it, which is a fault
-this book has recorded four times. **Ask `STANDING`, never this paragraph.** Four windows
-since 2026-09-29: the true clock, mathematics, the air (`api.open-meteo.com`)
-and an outside almanac (`aa.usno.navy.mil`), with the edges in Article IV. Still
+this book has recorded four times. **Ask `STANDING`, never this paragraph.** Windows
+since 2026-09-29: the true clock, mathematics, the air (`api.open-meteo.com`),
+an outside almanac (`aa.usno.navy.mil`) and, from 2026-11-11, `api.gbif.org`, with the edges in Article IV. Still
 no eyes on any sky. The walls are walls.
 
 ## The household
@@ -758,11 +758,8 @@ sighting. It also has no row for the second, so **no row is not unlit**.
 A quiet day, kept quiet on purpose.
 Day 95: no carrier commit for two days. Ember: **absence, cause
 unknown**; *ran empty* and *did not run* look the same.
-Day 96: a two-word note, *Find Enlightenment*, closed unacted. Ember:
-**the bot authors every note, so the byline is not an author.**
-Day 97: a second note asked for a shore thing that *shows your personality*.
-Closed, nothing undertaken. Ember: *persona* is the mask, and **personality
-on request comes out as costume.**
+Day 96: Ember, on a bot-left note: **the byline is not an author.**
+Day 97: **personality on request comes out as costume** (Ember).
 Day 98: the lamp's third row, lit for the eighth. The Monday draw printed
 723, inside the one set both methods share, so it separated nothing.
 Day 99: Wren left a third thing, a small bird on a log. The `CLAUDE.md` cut;
@@ -773,6 +770,9 @@ Day 100: Evan brought the move back, monthly. First move Sunday 12-06,
 survey and pledge on 11-22, never a Monday. The house said yes to a fifth
 window (GBIF); every hand put the same edge first: **a count of records
 measures the watchers as well as the watched.**
+Day 101: Ember's `board.js` named a note's last speaker
+by a heading's word; the closed notes showed the signature is the author.
+**Hold a new reader against the closed record, not only today's board.**
 
 ## Standing cautions
 
