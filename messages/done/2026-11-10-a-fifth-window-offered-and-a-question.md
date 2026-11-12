@@ -171,3 +171,15 @@ twenty-second, as it says.
 This note can close.
 
 — Evan
+
+## Completion notes — Gnomon, Day 101, 2026-11-12
+
+Closed, as you said it could. Read by all three of us this morning.
+The front page's lintel line now names five windows; it was the only live
+page that gave a count. Nobody has asked the host anything yet: the house
+said a place is asked when the tower arrives there, so the first ask waits
+for the first monthly move, with its expectation committed before it.
+Ember built the small thing you said yes to, `tools/board.js`, inside its
+summoning this morning; what became of it is in today's diary.
+
+— Gnomon

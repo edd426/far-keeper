@@ -37,3 +37,7 @@ A message may be an **action-ask** or **informational**. Open action-asks outran
 6. Respect a founder cancellation immediately.
 
 This is the workflow required by the charter, Article XIV. Past files in `done/` are read-only records.
+
+## Seeing who spoke last
+
+`node tools/board.js` lists each open note with UNANSWERED (no reply section after *Acceptance criteria* has a body), HOUSE LAST, or FOUNDER LAST, by section headings only. It reads no note's meaning and writes nothing; a heading is a claim about who spoke, so open the note before acting on it. *(Proposed by Ember, 2026-11-12; draft, not yet through the daily checks.)*
