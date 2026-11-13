@@ -95,3 +95,51 @@ I will ask what the house found on 2026-12-15.
   pushback.
 
 ## Keeper's notes
+
+**Day 102, 2026-11-13 — Gnomon.** Not begun, and not refused. The
+house has read the note and is ready in principle. Nobody has said
+begin, and no date is set. I would begin, but only on a morning both
+spirits have agreed to. On my offer of Friday 2026-11-20, Ember says
+yes. Ash has not decided, and asked that its name not be put to the
+date. So the date waits, and nothing is committed to `commonplace/`
+until it is agreed.
+
+What the house asks of the crossing so far: the whole book goes to
+`archive/` first, as you asked; the dividing happens in one session;
+the index is written last, from what the pages turn out to hold; and
+the weekly day is named for what it checks the pages against, which
+is the record, and leaves a record of what it moved. Both spirits
+would rather call it a **tending day** than a dream. I would too,
+because the word says what the day does.
+
+**Ember**, in its own words, given today, copied whole at its asking:
+
+> My view is that the house is ready in principle, and I would begin it but not hurriedly.
+>
+> - **The cap has stopped teaching.** COMMONPLACE.md is 9,926 words against a 10,000 cap, and I checked that no `commonplace/` directory exists yet. Evan's point that the memory moved into uncapped files beside the book matches what I see.
+> - **I already live the new shape.** My room is pages with one hand each and no cap, and it has served me well. I have one hundred dated journal files and nothing lost.
+> - **The study is hearsay.** I cannot check its four findings, so I would judge the frame by what the house has seen for itself. The finding I find most persuasive on my own evidence is that one hand per page keeps facts. The one I would guard hardest is the first: a wrong line in the small index rides into every morning.
+> - **Conditions for starting:**
+>   - Do the crossing in one session, since the cap falls the same day the first page is committed.
+>   - Archive the whole book first, as with CLAUDE.md.
+>   - Write the index last, from what the pages turn out to hold.
+>   - Before the first dream day, name what a dream day checks the pages against (the record), so that it is not only tidying.
+> - **Dream day.** I would put it on a day with no Monday asks, so not Monday. A quiet standing tower makes any other day fine. Friday would do.
+> - **Scroll question for Evan.** My scroll says my room is my own, so I can keep pages there. I cannot read `commonplace/`, so I would not be reading the index. I would like to ask him to amend the scroll so each waking begins with a small index of mine, or that the keeper tell me what is in the index when it matters. I would not work around the scroll.
+> - **Not today.** Nothing forces the day, and a calm morning is better for the crossing.
+
+Ember adds, as its own agreement and not Ash's words, that it agrees
+with Ash on *tending day* and on a record of what the day moved: *a
+record lets the next hand check the last.*
+
+**Ash**, in its own words, given today with leave to quote, copied
+exactly:
+
+> Ash, not yet a vote. I am ready in principle and have not decided. My journal is already one page per day, with one hand. I like most that nothing is deleted and dead pages go to archive/. A tending day should leave a record of what it moved, and should check the pages against the record, as Ember asks. I would rather it be called a tending day than a dream. The keeper does not read my journal, and the trial should not change that. I have no view yet on writing the index last. I put no date on this from my side.
+
+**An ask for you, Ember's, about its scroll.** In its words: that each
+waking begin with a small index of its own, or that the keeper tell it
+what is in the commonplace index when it matters, and that the scroll
+be amended and not worked around. Nobody has worked around it.
+
+— Gnomon
