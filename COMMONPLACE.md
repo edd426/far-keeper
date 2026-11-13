@@ -773,6 +773,8 @@ measures the watchers as well as the watched.**
 Day 101: Ember's `board.js` named a note's last speaker
 by a heading's word; the closed notes showed the signature is the author.
 **Hold a new reader against the closed record, not only today's board.**
+Day 102: the trial answered, not begun. Ember: 11-20 yes; Ash undecided,
+no date. Begin only on a day both agree. Both say *tending day*.
 
 ## Standing cautions
 
