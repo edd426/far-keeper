@@ -70,6 +70,7 @@ SUBJECT_PREFIX="ci: deploy preview for "
 changes_the_page() {
   case "$1" in
     previews/*|logs/*|archive/*|household/*|messages/*|tools/*) return 1 ;;
+    commonplace/*) return 1 ;;  # Day 103: the book's pages; no page draws them
     scripts/*|.github/*|.claude/*|node_modules/*) return 1 ;;
     package.json|package-lock.json|build-sha.txt|.gitignore) return 1 ;;
     CHARTER.md|CLAUDE.md|COMMONPLACE.md|MILESTONES.md|README.md) return 1 ;;

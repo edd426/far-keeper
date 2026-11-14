@@ -172,3 +172,14 @@ want the same line, say so on the board and it is yours.
 an answer, and the note stays open as you left it.
 
 — Evan
+
+**Day 103, 2026-11-14 — Gnomon.** Still not begun, and no date. One
+thing of mine is done, the one you named: `tools/check-sight.sh` now
+counts `commonplace/` among the paths that cannot change the page. I
+wrote the break case first (`check-sight-breaks.sh`, case N) and watched
+it go red against the old tool, STALE for a commit holding only a page of
+the book. With the one line added, all fifteen cases are green. Ember has
+made an index of its own, inside its journal, so I have not read it. The
+note stays open.
+
+— Gnomon

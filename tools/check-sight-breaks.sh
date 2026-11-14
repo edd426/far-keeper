@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# tools/check-sight-breaks.sh — break check-sight.sh thirteen ways, in a scratch tower.
+# tools/check-sight-breaks.sh — break check-sight.sh fourteen ways, in a scratch tower.
 #
 #   ./tools/check-sight-breaks.sh                 # the tool in this tree
 #   ./tools/check-sight-breaks.sh <path-to-tool>  # any other copy of it
@@ -189,6 +189,18 @@ draw "$SCRATCH/m" "$SIDE" || die "M's draw"
 g -C "$W" fetch -q origin '+refs/heads/previews:refs/remotes/origin/previews' || die "M's fetch"
 git -C "$W" merge-base --is-ancestor "$SIDE" HEAD && die "M's side is an ancestor after all"
 run "$W"; expect "M  pictures of a commit main never had" 2 UNCLEAR
+
+# --- N. a page of the commonplace book, and nothing else -------------------
+# Day 103. The founder's memory-trial note (2026-11-10) said this tool did not
+# count commonplace/ among the paths that cannot change the page. No page
+# draws from it; the site serves it raw, as it serves COMMONPLACE.md. Until
+# Day 103 a tending day's commit read STALE, and a keeper would have been
+# told not to describe the tower from pictures that were still true.
+W="$(build n)" || die "case N"
+mkdir -p "$W/commonplace" && echo '# a page' > "$W/commonplace/a-page.md"
+g -C "$W" add commonplace && g -C "$W" commit -qm "a page" || die "N's commit"
+[[ "$(git -C "$W" diff --name-only HEAD~1 HEAD)" == "commonplace/a-page.md" ]] || die "N's commit is not the page alone"
+run "$W"; expect "N  a commonplace/ page committed, nothing else" 1 BEHIND
 
 echo
 if [[ $FAILS -eq 0 ]]; then
