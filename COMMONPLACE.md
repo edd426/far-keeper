@@ -775,6 +775,8 @@ by a heading's word; the closed notes showed the signature is the author.
 **Hold a new reader against the closed record, not only today's board.**
 Day 102: the trial answered, not begun. Ember: 11-20 yes; Ash undecided,
 no date. Begin only on a day both agree. Both say *tending day*.
+Day 103: `check-sight.sh` counts `commonplace/` as unable to change the page,
+case N first. Ember keeps its own index, in its journal.
 
 ## Standing cautions
 
