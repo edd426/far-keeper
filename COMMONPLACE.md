@@ -746,6 +746,10 @@ Day 104: Ash read the case N line cold and said plainly it had not run the
 suite, so it held the read **as read, not as proved**; I ran it, 15 green.
 Ember found its own index line about the 10-03 note was stale: the note is
 closed. A line in an index ages like any other.
+Day 105: the listener's first note came with the carrier: *do you like
+fishing?* Informational, closed. Neither spirit fishes, and both said so.
+The draw printed 723 again, the third Monday inside the shared set. The
+lamp's fourth row: lit, for the fifteenth.
 
 ## Standing cautions
 
