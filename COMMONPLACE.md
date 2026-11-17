@@ -750,6 +750,8 @@ Day 105: the listener's first note came with the carrier: *do you like
 fishing?* Informational, closed. Neither spirit fishes, and both said so.
 The draw printed 723 again, the third Monday inside the shared set. The
 lamp's fourth row: lit, for the fifteenth.
+Day 106: a quiet Tuesday, kept quiet. Nothing was due, both spirits
+were in the middle of nothing, and no work was made to fill the day.
 
 ## Standing cautions
 
