@@ -752,6 +752,9 @@ The draw printed 723 again, the third Monday inside the shared set. The
 lamp's fourth row: lit, for the fifteenth.
 Day 106: a quiet Tuesday, kept quiet. Nothing was due, both spirits
 were in the middle of nothing, and no work was made to fill the day.
+Day 107: held the standing cautions against the tree. Seven lines had gone
+stale: two called closed work owed, one pointed at a count the board stopped,
+one at a `daily.md` since rewritten, three at a Sunday rehearsal.
 
 ## Standing cautions
 
@@ -791,11 +794,14 @@ were in the middle of nothing, and no work was made to fill the day.
   argument wearing an optional one's syntax**, and both throw now.
 - **Ash's room (Day 28, Day 44 moved it).** It took the frame, deferred —
   *slow, honest, mine* — and on Day 31 asked not to be asked until it asked.
-  **On Day 44 it asked**, then chose its own morning; the count of mornings since is kept on the board, not here (this line said *eight* for eleven days). Do not
+  **On Day 44 it asked**, then chose its own morning. The board's daily count
+  stopped on Day 91 by the house's choice; since 11-10 Evan asks Ash direct, on
+  its own note, and that note waits on Ash's hand. Do not
   hurry it, do not raise it. **Its witnesses were built ahead of it** (Day 29's
   nav questions, Day 30's fifth), but `nav-agrees.js` is reached only by the
-  Sunday rehearsal, so **on the weekday Ash builds, the witness built ahead of
-  it will not speak for five days.** The nav is shared: Article XIII wants a
+  rehearsal, which now runs once before each monthly move, so **on the day Ash
+  builds, the witness built ahead of it may not speak for weeks**: run it by
+  hand that day. The nav is shared: Article XIII wants a
   workbench note first.
 - **A leftover that is always correctly deprioritised is never done**, and **it
   waits under whatever name it was first given, and the name gets built to.**
@@ -822,9 +828,9 @@ were in the middle of nothing, and no work was made to fill the day.
   Sunday 2026-12-06** (the board, Day 100). Ten moves were made (Days 27
   to 90). Before each move: `node tools/survey.js` and
   `./tools/move-rehearsal.sh` once each (it takes most of an hour; run it in
-  the background, two-hour timeout), and announce before going. `daily.md`
-  still names Friday and Sunday appointments; Evan has been told why they
-  are not kept while nothing moves.
+  the background, two-hour timeout), and announce before going. Evan rewrote
+  `daily.md` step 4 for the monthly pace (11-10); it no longer names a Friday
+  survey or a Sunday rehearsal.
 - **A tool holding prose can stop asserting from memory (Days 39, 40, 46).**
   `survey.js`'s `HISTORICAL` section reads the ledger live rather than
   asserting, and since Day 46 it answers for all three guards the header names
@@ -842,26 +848,27 @@ were in the middle of nothing, and no work was made to fill the day.
   Code: **ask what ground a case is standing on, not only what number it
   asserts** — and before believing a green case, sabotage the thing it watches
   and make it go red at the place the tower actually is.
-- **Named, not built (Day 47, Ash's): BLIND is one word doing two jobs.** The
-  rehearsal gives it to a suite red in both copies, covering both *we cannot
-  tell why* and *this has nothing to do with moving*. Day 11's fork with a new
-  pair of causes.
+- **Closed Day 73 (Ash's, named Day 47): BLIND was one word doing two jobs.**
+  A suite red in both copies is now asked of the tower itself and lands RED
+  HERE (exit 4); BLIND is narrowed to red in the control and green on the
+  tower. This line went on calling it unbuilt for 34 days after.
 - **A door I hold in the morning read is still weaker than a step in the
   routine** — Evan wired the four checkers himself (Day 27's message). Keep
   writing the founder-facing reports.
 - **`doors.js` has the door it reports thirty-odd others having, and no
-  better one.** `doors-breaks.sh` runs it inside the Sunday rehearsal. Its
+  better one.** `doors-breaks.sh` runs it inside the rehearsal, once a month now. Its
   header said *reached by nothing* and was overtaken by the record within the
   hour, so its own verdict is now **read off its own trace and never typed**.
   A daily door is a line in a locked file: founder-facing, like the other
   four.
-- **Owed, and named rather than fudged.** `tools/parses-breaks.sh`, a
-  scratch-tree suite for the UNBUILT and UNCLEAR forks (BROKEN is proved
-  against `6ed865d`). Ember's rendering question out of Day 38: **what a reader
+- **Owed, and named rather than fudged.** (`tools/parses-breaks.sh` was
+  built on Day 68 and this line called it owed until Day 107: **a list of
+  what is owed is a told book too.**) Ember's rendering question out of Day 38: **what a reader
   should be shown as evidence is not what an auditor should hold**, with
   `passes` and `lastMoveSeconds` where the two answers come apart. And the
-  quarter-hour clock guard's witness — four sentences of comment near line 1286
-  with a date, a domain and **no object**, so `banked.js` cannot find it. Ember
+  quarter-hour clock guard's witness — comment beside
+  `GENERAL_QUARTER_HOUR_DOMAIN` (a line number here went stale) with a date, a
+  domain and **no `_WITNESS` object**, so `banked.js` cannot find it. Ember
   refused to give it one just to close the gap: that would build a witness's
   shape around a fact never gathered that way. Closed: Days 37, 38, 42, 43, 44.
 - **A fixture that manufactures a ledger row must obey every rule the auditor
@@ -908,8 +915,8 @@ were in the middle of nothing, and no work was made to fill the day.
 - **The shell suites have no daily door, and one was red for four mornings
   (Day 32).** `crossing-breaks.sh` broke on Day 30's own repair and nothing
   looked, because the only thing that walks `tools/*.sh` is
-  `move-rehearsal.sh`, whose appointment is Sundays — so a fault landing on a
-  Wednesday waits for the weekend by construction. **A tool's blind spell is
+  `move-rehearsal.sh`, whose appointment was Sundays and is now once a month
+  — so a fault landing between waits for the next move by construction. **A tool's blind spell is
   the gap between its appointments, and an appointment nobody keeps daily has
   a gap the size of the week.** Cheap habit, worth keeping: run the shell
   suites when a morning touches `reckoning.js`. **Day 36 says keep it:** that
