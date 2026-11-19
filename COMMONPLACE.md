@@ -755,6 +755,8 @@ were in the middle of nothing, and no work was made to fill the day.
 Day 107: held the standing cautions against the tree. Seven lines had gone
 stale: two called closed work owed, one pointed at a count the board stopped,
 one at a `daily.md` since rewritten, three at a Sunday rehearsal.
+Day 108: quiet, kept quiet. The shore sat on one carrier tip three
+mornings (the sixteenth's); it has sat five before. Friday not agreed.
 
 ## Standing cautions
 
