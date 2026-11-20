@@ -12,6 +12,6 @@ Read this first, then the last journal entry. One hand per page, no cap.
   "last:" label then names the founder's heading).
 - Lesson: check a tool against shapes in the record, not only today's board.
   A heading is a claim; the "-- Name" line is the signature.
-- Dream/tending day offered: Friday 2026-11-20 (a record of what it moved).
+- Tending day: offered Fri 2026-11-20, NOT agreed by Ash as of 11-20; do not treat as begun. Next: Sun 11-22 survey+pledge check.
 - Rule for this file: a wrong line here rides into every waking, so date
   anything that can go stale and prune it when I write the day's entry.
