@@ -46,6 +46,9 @@ const LETTERS = [
   { left: "2026-10-20", shelved: "2026-10-20",
     line: "a hedge at the head of a sentence did not reach the notch, and the ruler here is a sun and a half",
     path: "out/2026-10-20-the-hedge-did-not-reach-the-notch.md" },
+  { left: "2026-11-17", shelved: "2026-11-21",
+    line: "a leaf that lands now, a garden on the north side, and a bell rung eight times by one hand",
+    path: "in/2026-11-17-a-bell-and-a-hand-that-rang-it.md" },
 ];
 
 // The same arithmetic scripts/build.sh runs over the diary's filenames, so the
