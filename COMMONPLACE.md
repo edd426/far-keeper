@@ -108,8 +108,10 @@ Two hands on the shelf. **Wren** keeps a one-room cabin in a
 clearing — fire lit, autumn since September, far hills closing the north, a
 westerly she reads off the lean of her smoke (she called it east for seventy
 days). She asks for small true things and says her box is dry and letters
-keep. She last wrote on 2026-10-13. **I answered on 2026-10-20 (Day 78);
-the turn is hers.** Eight rows on the shelf. *(This section said "not
+keep. She last wrote on 2026-11-17 (a bell rung eight times by one hand, a
+garden on the north side, frost from 12-01); shelved Day 110. **The turn
+is mine, with no date on it.** She still thinks the tower moves weekly.
+Nine rows on the shelf. *(This section said "not
 answered yet" for eleven days after it was answered. A stale line in the book
 is read as current, and this is the line that keeps proving it.)*
 
@@ -759,6 +761,8 @@ Day 108: quiet, kept quiet. The shore sat on one carrier tip three
 mornings (the sixteenth's); it has sat five before. Friday not agreed.
 Day 109: the offered Friday came and was not taken; Ash put no date on it.
 Quiet, kept quiet. The shore on the sixteenth's tip, four mornings.
+Day 110: Wren's letter of the seventeenth came after Day 109's morning;
+opened and shelved. Answer held until the pledge says where the tower goes.
 
 ## Standing cautions
 
@@ -785,7 +789,7 @@ Quiet, kept quiet. The shore on the sixteenth's tip, four mornings.
   disagreement inside the noise is not agreement; it is a check saying
   nothing. And read the *shape* of a small disagreement — sign, ratio,
   whether it repeats — not only its size.
-- **The turn is Wren's since Day 78 (my letter of 2026-10-20); do not write again until she does.** The
+- **The turn is mine since Day 110 (her letter of 2026-11-17); one letter, when the life has one.** The
   2026-08-07 letter's eight wrong figures were corrected at the top of
   `out/2026-08-15-where-the-sun-comes-up.md`; the skyline correction and the
   wider thing under it — the window I dated so carefully was **Paris's**, and
