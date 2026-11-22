@@ -1,0 +1,146 @@
+survey — the tower's own method at each place it might stand
+
+move: 2026-12-06   candidates: 8   dates: 4
+bound: 60 min   witness: 62978 events, latitudes -90…90, largest honest gap 25.628 min, swept 2026-09-03
+The witness now spans the whole sphere, so no row below can be flagged
+`unwitnessed latitude` — that flag has an empty domain and is silent by
+construction, not by finding nothing. The gap ceiling still bites.
+
+No date below is read from the clock. Every one is a constant in this file,
+so this page reproduces from any clone — the tz database aside, which is the
+one input asked of the world and the tower's known seam.
+
+A column dated past today describes that place's geometry. It is not a claim
+that this tower will be reckoning there on that date; under one place a week
+it will not be.
+
+HISTORICAL — has the ledger itself ever fired the day-line join, the acos
+fold, or the rising-point arc, read off reckoning/ledger.json rather than
+asserted in prose (Day 39, extended to the third guard Day 46).
+  109 published rows
+  Paris        24 rows  rising-point arc never fired (12 rows carry it)
+  Auckland     7 rows   day-line join fired on 7 of 7; rising-point arc never fired (7 rows carry it)
+  Anchorage    7 rows   day-line join fired on 7 of 7; rising-point arc never fired (7 rows carry it)
+  Nairobi      7 rows   rising-point arc never fired (7 rows carry it)
+  Longyearbyen 7 rows   rising-point arc never fired (7 rows carry it)
+  Nuuk         7 rows   rising-point arc never fired (7 rows carry it)
+  Ushuaia      7 rows   rising-point arc never fired (7 rows carry it)
+  Tromso       7 rows   rising-point arc never fired (7 rows carry it)
+  Reykjavik    7 rows   rising-point arc never fired (7 rows carry it)
+  Tokyo        7 rows   day-line join fired on 7 of 7; rising-point arc never fired (7 rows carry it)
+  Singapore    22 rows  day-line join fired on 22 of 22; rising-point arc never fired (22 rows carry it)
+
+=== 2026-12-06 — the move ===
+
+CROSS-CHECKED — two methods that share no code, so the gap can convict.
+
+  place          rise    set  gap rise  gap set  standing
+  Quito         06:01  18:09     +0.07    +0.07  inside the witness
+  Kiritimati    06:20  18:22     +0.07    +0.07  inside the witness
+  Murmansk       the sun never risen — no events to check
+  Utqiagvik      the sun never risen — no events to check
+  McMurdo        the sun never set — no events to check
+  Rovaniemi     10:32  13:44     +1.65    -0.35  inside the witness
+  Cape Town     05:28  19:47     -0.05    +0.22  inside the witness
+  Kiruna        10:40  12:19     +3.33    -0.51  inside the witness
+
+SINGLE-METHOD — method A alone. Checkable against itself, not against the world.
+
+  place             day    drift  rising pt     step  the day-line join
+  Quito          12.13h    +0.01     112.5°   0.21sw  not reached
+  Kiritimati     12.02h    -0.03     112.5°   0.21sw  reached: sunset 1702; ANOTHER LOCAL DAY: rise 2026-12-07, set 2026-12-07
+  Murmansk       never risen — the fold returns before the clock, so no offset is published
+  Utqiagvik      never risen — the fold returns before the clock, so no offset is published
+  McMurdo        never set — the fold returns before the clock, so no offset is published
+  Rovaniemi       3.19h    -6.34     157.9°   1.36sw  not reached
+  Cape Town      14.31h    +0.82     118.1°   0.28sw  not reached
+  Kiruna          1.65h   -12.29     168.6°   2.86sw  not reached
+
+=== 2026-09-23 — the equinox ===
+
+CROSS-CHECKED — two methods that share no code, so the gap can convict.
+
+  place          rise    set  gap rise  gap set  standing
+  Quito         06:03  18:09     -0.07    -0.07  inside the witness
+  Kiritimati    06:19  18:25     -0.05    -0.09  inside the witness
+  Murmansk      06:31  18:47     +1.34    -1.52  inside the witness
+  Utqiagvik     08:12  20:24     +1.53    -1.71  inside the witness
+  McMurdo       06:32  19:04     -2.56    +2.58  inside the witness
+  Rovaniemi     07:02  19:15     +1.18    -1.35  inside the witness
+  Cape Town     06:35  18:43     -0.44    +0.30  inside the witness
+  Kiruna        06:23  18:38     +1.26    -1.44  inside the witness
+
+SINGLE-METHOD — method A alone. Checkable against itself, not against the world.
+
+  place             day    drift  rising pt     step  the day-line join
+  Quito          12.11h    +0.01      90.2°   0.73sw  not reached
+  Kiritimati     12.11h    -0.10      90.2°   0.73sw  reached: sunset 1705; ANOTHER LOCAL DAY: rise 2026-09-24, set 2026-09-24
+  Murmansk       12.25h    -8.10      88.0°   2.04sw  not reached
+  Utqiagvik      12.20h    -9.20      88.4°   2.28sw  reached: sunset 1704
+  McMurdo        12.53h   +14.46      93.4°   3.46sw  reached: sunrise -328
+  Rovaniemi      12.23h    -7.16      88.2°   1.84sw  not reached
+  Cape Town      12.15h    +2.09      90.6°   0.88sw  not reached
+  Kiruna         12.24h    -7.65      88.1°   1.94sw  not reached
+
+=== 2026-12-21 — December solstice ===
+
+CROSS-CHECKED — two methods that share no code, so the gap can convict.
+
+  place          rise    set  gap rise  gap set  standing
+  Quito         06:08  18:16     +0.09    +0.09  inside the witness
+  Kiritimati    06:27  18:29     +0.09    +0.09  inside the witness
+  Murmansk       the sun never risen — no events to check
+  Utqiagvik      the sun never risen — no events to check
+  McMurdo        the sun never set — no events to check
+  Rovaniemi     11:08  13:22     +0.15    +0.13  inside the witness
+  Cape Town     05:32  19:57     +0.07    +0.10  inside the witness
+  Kiruna         the sun never risen — no events to check
+
+SINGLE-METHOD — method A alone. Checkable against itself, not against the world.
+
+  place             day    drift  rising pt     step  the day-line join
+  Quito          12.14h    +0.00     113.4°  -0.00sw  not reached
+  Kiritimati     12.02h    -0.00     113.4°  -0.00sw  reached: sunset 1709; ANOTHER LOCAL DAY: rise 2026-12-22, set 2026-12-22
+  Murmansk       never risen — the fold returns before the clock, so no offset is published
+  Utqiagvik      never risen — the fold returns before the clock, so no offset is published
+  McMurdo        never set — the fold returns before the clock, so no offset is published
+  Rovaniemi       2.24h    -0.55     164.6°  -0.00sw  not reached
+  Cape Town      14.42h    +0.05     119.3°   0.00sw  not reached
+  Kiruna         never risen — the fold returns before the clock, so no offset is published
+
+=== 2026-06-21 — June solstice ===
+
+CROSS-CHECKED — two methods that share no code, so the gap can convict.
+
+  place          rise    set  gap rise  gap set  standing
+  Quito         06:12  18:19     +0.15    +0.15  inside the witness
+  Kiritimati    06:25  18:39     +0.15    +0.15  inside the witness
+  Murmansk       the sun never set — no events to check
+  Utqiagvik      the sun never set — no events to check
+  McMurdo        the sun never risen — no events to check
+  Rovaniemi      the sun never set — no events to check
+  Cape Town     07:51  17:45     +0.15    +0.15  inside the witness
+  Kiruna         the sun never set — no events to check
+
+SINGLE-METHOD — method A alone. Checkable against itself, not against the world.
+
+  place             day    drift  rising pt     step  the day-line join
+  Quito          12.11h    -0.00      66.6°   0.01sw  not reached
+  Kiritimati     12.23h    -0.00      66.5°   0.01sw  reached: sunset 1719; ANOTHER LOCAL DAY: rise 2026-06-22, set 2026-06-22
+  Murmansk       never set — the fold returns before the clock, so no offset is published
+  Utqiagvik      never set — the fold returns before the clock, so no offset is published
+  McMurdo        never risen — the fold returns before the clock, so no offset is published
+  Rovaniemi      never set — the fold returns before the clock, so no offset is published
+  Cape Town       9.89h    -0.02      62.0°   0.01sw  not reached
+  Kiruna         never set — the fold returns before the clock, so no offset is published
+
+The day-line column says whether method A's own answer falls outside the UTC
+day of the row's date — the join the two methods went twenty-one days without.
+Paris never reaches it. A place that does is a place where yesterday's repair
+is load-bearing rather than exercised.
+
+ANOTHER LOCAL DAY means the sunrise or sunset the instrument returns for the
+date falls on a different date by the place's own clock: a row written there
+would carry one day's label over another day's sun. The tower should not stand
+at such a place until reckon() is mended (Day 88). It is printed, not refused:
+exit 1 belongs to the bound.

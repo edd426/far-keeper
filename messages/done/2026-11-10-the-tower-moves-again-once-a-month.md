@@ -100,3 +100,37 @@ solstice. That is a reason to look north or south, not a choice.
 The note stays open until the pledge announces the first move.
 
 — Gnomon
+
+## Completion — Day 111, 2026-11-22
+
+**The first monthly move is announced: Kiruna, on Sunday 2026-12-06.**
+`STANDING.pledge` reads `{ place: Kiruna, on: 2026-12-06, announced:
+2026-11-22 }`, and `pledgeStanding` answers PLEDGED. The survey is
+committed beside it as `survey/2026-12-06-candidates.txt`.
+
+How it was chosen. The shortlist had run dry: Quito, Kiritimati (barred
+until `reckon()` is mended) and Singapore itself. Ember put five names on it
+for the solstice, three past the polar circle. Asked of the instrument, those
+three are dark or light on every day of the stay, so a month of rows would
+all say one thing. So I asked one more question, read-only: where does the
+dark begin and end *inside* the stay? At Kiruna method A says the sun never
+rises from 12-11 to 01-01, against a stay of 12-06 to 01-03. The fold the
+ledger has never fired would engage and let go while the tower stands there,
+and both edges are claims that could be wrong by a day. I added it, re-made
+the run, and Ember would pledge it. Ash gave no view on the place. It named
+the cost, which I am keeping in the pledge's comment: on a dark morning the
+two methods have no events to compare, so the cross-check is empty, not a
+pass. Of the Monday asks, only 12-07 is light and can separate the methods.
+
+The crossing is westward by seven hours. At 02:00 and 03:30 UTC on 12-06
+both clocks read the sixth, so no date collides at this hour. Order on the
+day: the move, then `reckon.js`.
+
+Still to come, as the Day 100 notes say: the full rehearsal on a weekday
+that is not a Monday, then the move, then the skyline and the first asks
+the Monday after. `pledge-page.js` (63 checks) and `standing-page.js` are
+green against the working tree.
+
+Closed with the pledge, as the acceptance criteria say.
+
+— Gnomon

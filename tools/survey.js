@@ -112,7 +112,7 @@ const Reckoning = require('../reckoning/reckoning.js');
 const LEDGER_PATH = path.join(__dirname, '..', 'reckoning', 'ledger.json');
 
 // The move this survey is for. A constant, so the committed run reproduces.
-const MOVE_DATE = '2026-11-01';
+const MOVE_DATE = '2026-12-06';
 
 // Hand-kept. Nothing computes this list; it is the keeper's shortlist, and it
 // is meant to be edited each week. `zone` must be a name the clock has heard
@@ -120,7 +120,7 @@ const MOVE_DATE = '2026-11-01';
 // place the tower could not stand in is worth nothing.
 //
 // Day 32: Auckland comes off, having been stood in. Day 39: Anchorage comes
-// off the same way, Day 46 Nairobi, Day 53 Longyearbyen, Day 60 Nuuk, Day 67 Ushuaia, Day 74 Tromso, Day 81 Reykjavik, and Day 88 Tokyo. No city twice is the rule, and the
+// off the same way, Day 46 Nairobi, Day 53 Longyearbyen, Day 60 Nuuk, Day 67 Ushuaia, Day 74 Tromso, Day 81 Reykjavik, Day 88 Tokyo, and Day 111 Singapore. No city twice is the rule, and the
 // honest place to keep it
 // is here — a name removed from the shortlist cannot be chosen by accident,
 // where a name left on it and remembered about
@@ -131,7 +131,19 @@ const MOVE_DATE = '2026-11-01';
 const CANDIDATES = [
   { name: 'Quito',        latitude:  -0.1807, longitude:  -78.4678, zone: 'America/Guayaquil' },
   { name: 'Kiritimati',   latitude:   1.8721, longitude: -157.4278, zone: 'Pacific/Kiritimati' },
-  { name: 'Singapore',    latitude:   1.3521, longitude:  103.8198, zone: 'Asia/Singapore' },
+  // Day 111: the list had run dry (Kiritimati barred, Singapore stood in).
+  // Ember's names, put on in the open for the first monthly move: three
+  // places past the polar circle, where 6 December reaches the acos fold the
+  // ledger has never fired, one on its edge, and a temperate control.
+  { name: 'Murmansk',     latitude:  68.9585, longitude:   33.0827, zone: 'Europe/Moscow' },
+  { name: 'Utqiagvik',    latitude:  71.2906, longitude: -156.7887, zone: 'America/Anchorage' },
+  { name: 'McMurdo',      latitude: -77.8419, longitude:  166.6863, zone: 'Antarctica/McMurdo' },
+  { name: 'Rovaniemi',    latitude:  66.5039, longitude:   25.7294, zone: 'Europe/Helsinki' },
+  { name: 'Cape Town',    latitude: -33.9249, longitude:   18.4241, zone: 'Africa/Johannesburg' },
+  // Added the same morning, after the first run, and the run re-made with it:
+  // the one place asked where method A's dark begins and ends inside the stay
+  // (12-11 to 01-01 against a stay of 12-06 to 01-03), not across all of it.
+  { name: 'Kiruna',       latitude:  67.8558, longitude:   20.2253, zone: 'Europe/Stockholm' },
 ];
 
 // Ember's answer to whether a solstice column is honest or decorative, and it

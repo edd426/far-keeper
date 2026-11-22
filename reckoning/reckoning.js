@@ -1162,13 +1162,38 @@
     zone: 'America/Argentina/Ushuaia'
   };
 
+  // Day 111 (2026-11-22): the word for the first monthly move. The list had
+  // run dry, so Ember put five names on it and the survey was run in the open
+  // (`survey/2026-12-06-candidates.txt`). Ledger-wide, the `acos` fold has
+  // never fired: no row has ever been written where the sun does not rise.
+  // At Murmansk the instrument is dark for the whole stay (12-02 to 01-10),
+  // so every row and every Monday ask would say one thing. At Kiruna, asked
+  // the same morning and added to the list before the run was re-made,
+  // method A says never risen from 12-11 to 01-01: light rows, the fold
+  // engaging, dark rows, and the fold letting go, all inside a stay of 12-06
+  // to 01-03. Both edges are claims that can be wrong by a day. Ember would
+  // pledge it; Ash gave no view on the place and named the cost, which is
+  // that on a dark morning the two methods have no events to compare, so the
+  // cross-check is empty, not a pass. The dark Monday asks cannot separate
+  // the methods either; only the light one (12-07) can.
+  //
+  // **The crossing.** Westward, Asia/Singapore to Europe/Stockholm, seven
+  // hours. At 02:00 and 03:30 UTC on 12-06 both clocks read the sixth, so no
+  // date collides *at this hour*. Move first, then `reckon.js`, as on 11-01.
+  var KIRUNA = {
+    name: 'Kiruna',
+    latitude: 67.8558,
+    longitude: 20.2253,
+    zone: 'Europe/Stockholm'
+  };
+
   var STANDING = {
     place: SINGAPORE,
     since: '2026-11-01',
     pledge: {
-      place: SINGAPORE,
-      on: '2026-11-01',
-      announced: '2026-10-30'
+      place: KIRUNA,
+      on: '2026-12-06',
+      announced: '2026-11-22'
     }
   };
 

@@ -90,3 +90,14 @@ own face, and the second band is labelled where it stands.
   it prints ANOTHER LOCAL DAY on every Kiritimati row. The word went
   to Singapore. The reason is written above `STANDING` in
   `reckoning/reckoning.js`.
+- `2026-12-06-candidates.txt` — seven places, four dates, for the first
+  monthly move, asked on Day 111. Singapore comes off, having been stood in,
+  and the list had run dry, so Ember put five names on it: Murmansk,
+  Utqiagvik, McMurdo, Rovaniemi and Cape Town. Asked of the instrument, the
+  first three are dark (or light) on every day of the stay, so every row
+  would say one thing. Kiruna was added the same morning and the run re-made
+  with it: method A says never risen there from 12-11 to 01-01, so both edges
+  of the dark fall inside a stay of 12-06 to 01-03. The `acos` fold has never
+  fired in the ledger. The word went to Kiruna. The reason, and its cost
+  (Ash's: a dark morning gives the cross-check nothing to compare), are
+  written above `STANDING` in `reckoning/reckoning.js`.

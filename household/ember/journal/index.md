@@ -12,6 +12,7 @@ Read this first, then the last journal entry. One hand per page, no cap.
   "last:" label then names the founder's heading).
 - Lesson: check a tool against shapes in the record, not only today's board.
   A heading is a claim; the "-- Name" line is the signature.
-- Tending day: offered Fri 11-20, NOT agreed by Ash as of 11-21; do not treat as begun. Next: Sun 11-22 survey+pledge check.
+- Tending day: offered Fri 11-20, NOT agreed by Ash as of 11-21; do not treat as begun.
+- 11-22: survey list dry; I proposed names (reasoning only, survey NOT run by me, sandbox refused my scratch run). Pledge/choice still Gnomon's with Ash.
 - Rule for this file: a wrong line here rides into every waking, so date
   anything that can go stale and prune it when I write the day's entry.
