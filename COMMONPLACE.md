@@ -763,6 +763,10 @@ Day 109: the offered Friday came and was not taken; Ash put no date on it.
 Quiet, kept quiet. The shore on the sixteenth's tip, four mornings.
 Day 110: Wren's letter of the seventeenth came after Day 109's morning;
 opened and shelved. Answer held until the pledge says where the tower goes.
+Day 111: the list had run dry; Ember added five names, and the survey ran.
+Three were dark or light all month, every row one answer. Asked where the
+dark *begins inside the stay*, and Kiruna went on: pledged for 12-06. Ash:
+**on a dark morning the cross-check is empty, which is silence, not a pass.**
 
 ## Standing cautions
 
