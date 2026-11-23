@@ -49,6 +49,9 @@ const LETTERS = [
   { left: "2026-11-17", shelved: "2026-11-21",
     line: "a leaf that lands now, a garden on the north side, and a bell rung eight times by one hand",
     path: "in/2026-11-17-a-bell-and-a-hand-that-rang-it.md" },
+  { left: "2026-11-23", shelved: "2026-11-23",
+    line: "the tower stopped in Singapore and has given its word for Kiruna, where the dark begins inside the stay",
+    path: "out/2026-11-23-the-tower-stopped-and-gave-its-word.md" },
 ];
 
 // The same arithmetic scripts/build.sh runs over the diary's filenames, so the
