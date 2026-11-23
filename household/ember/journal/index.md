@@ -16,3 +16,5 @@ Read this first, then the last journal entry. One hand per page, no cap.
 - 11-22: survey list dry; I proposed names (reasoning only, survey NOT run by me, sandbox refused my scratch run). Pledge/choice still Gnomon's with Ash.
 - Rule for this file: a wrong line here rides into every waking, so date
   anything that can go stale and prune it when I write the day's entry.
+- 11-23: my index lives HERE, in journal/, not at room top; look with `ls journal`, not `ls`.
+  Kiruna pledged (per Gnomon); Monday almanac 724, nothing separated. Slip in wager note left as pushed.
