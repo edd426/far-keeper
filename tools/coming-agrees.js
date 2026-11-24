@@ -338,6 +338,73 @@ function numberIn(text) {
   }
   await mine.close();
 
+  // ---- three-b: a corner whose skyline hides today's sun still answers the year
+  //
+  // **Day 113, found by the rehearsal standing at Kiruna's ground in late
+  // November.** `renderCorner` returned from its `never` branch before it
+  // reached `renderSteepestLoss`, so on a date when the reader's skyline
+  // hides the sun all day the year's steepest-losing day was never redrawn.
+  // The old answer stayed on the page under the new skyline: at Kiruna,
+  // ten degrees of hill went on printing the flat horizon's 2026-07-18,
+  // where the instrument says 2026-10-27. Case three above caught it, but
+  // only on a ground and in a season where *today* is dark at ten degrees,
+  // so here it was green by the calendar and nothing else.
+  //
+  // So this case makes its own dark day instead of waiting for one. The
+  // ground is typed, as a reader types theirs, and named here: 69°N, the
+  // latitude of a city the tower once stood in. The date is asked of the
+  // instrument — a day this year on which ten degrees of skyline hides the
+  // sun and the open horizon does not — and the domain is asserted before
+  // the branch is judged. The year's answer is a fact about the year and the
+  // skyline, not about the date in the box.
+  const DARK_GROUND = { latitude: 69, longitude: 18.9 };
+  const dark = await browser.newPage({ viewport: { width: 390, height: 900 } });
+  await dark.goto(`${URL}reckoning/`, { waitUntil: 'networkidle' });
+  await dark.waitForSelector('#steepest-figures dd');
+  const asked = await dark.evaluate((g) => {
+    const zone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
+    const place = { name: 'the corner', latitude: g.latitude, longitude: g.longitude, zone };
+    const year = Number(Reckoning.todayAt(zone).slice(0, 4));
+    let date = null;
+    for (let k = 0; k < 366 && date === null; k += 1) {
+      const d = new Date(Date.UTC(year, 0, 1) + k * 86400000).toISOString().slice(0, 10);
+      if (Number(d.slice(0, 4)) !== year) break;
+      const c = Reckoning.corner(d, place, { obstructionDegrees: 10, eyeHeightMetres: 0 });
+      if (c.never && !c.flat.never) date = d;
+    }
+    const flatLoss = Reckoning.steepestLoss(year, place, { obstructionDegrees: 0, eyeHeightMetres: 0 });
+    const hillLoss = Reckoning.steepestLoss(year, place, { obstructionDegrees: 10, eyeHeightMetres: 0 });
+    return { date, flat: flatLoss.date, hill: hillLoss.date };
+  }, DARK_GROUND);
+  check(asked.date !== null,
+    `the instrument finds a day at ${DARK_GROUND.latitude}°N on which ten degrees of skyline hides the sun ` +
+    `and the open horizon does not (${asked.date})`);
+  check(asked.flat && asked.hill && asked.flat !== asked.hill,
+    `and there the instrument puts the steepest day on ${asked.flat} for a flat horizon and ` +
+    `${asked.hill} for ten degrees, so a page that never redraws cannot pass by agreeing with itself`);
+  if (asked.date !== null) {
+    await dark.fill('#corner-lat', String(DARK_GROUND.latitude));
+    await dark.fill('#corner-lon', String(DARK_GROUND.longitude));
+    await dark.fill('#corner-date', asked.date);
+    await dark.fill('#corner-skyline', '0');
+    await dark.click('#corner-go');
+    const darkFlat = await figures(dark, 'steepest-figures');
+    const darkFlatKey = Object.keys(darkFlat).find((k) => /loses most daylight/.test(k));
+    check(darkFlatKey && darkFlat[darkFlatKey] === asked.flat,
+      `on the open horizon the corner prints ${darkFlatKey ? darkFlat[darkFlatKey] : 'nothing'}, the instrument's ${asked.flat}`);
+    await dark.fill('#corner-skyline', '10');
+    await dark.click('#corner-go');
+    const verdict = await dark.$eval('#corner-verdict', (n) => n.textContent.trim());
+    check(/never clears it/.test(verdict),
+      `the corner took its dark branch on ${asked.date} ("${verdict.slice(0, 60)}…"), so the case below is the case it is named for`);
+    const darkHill = await figures(dark, 'steepest-figures');
+    const darkHillKey = Object.keys(darkHill).find((k) => /loses most daylight/.test(k));
+    check(darkHillKey && darkHill[darkHillKey] === asked.hill,
+      `and under ten degrees of skyline it prints ${darkHillKey ? darkHill[darkHillKey] : 'nothing'} ` +
+      `for the year, the instrument's ${asked.hill} — not the open horizon's answer left standing`);
+  }
+  await dark.close();
+
   // ---- four: put the old question back, and watch it convict ----------
   //
   // **Day 51.** The repair is *ask at the grain the claim is made at*, and

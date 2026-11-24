@@ -138,12 +138,68 @@ async function cornerWith(page, skylineDegrees, ground) {
 (async () => {
   const browser = await chromium.launch({ executablePath: EXECUTABLE });
 
+  // ---- The date every part below one through four is asked on --------
+  //
+  // **Day 113, found by the move rehearsal standing at Kiruna's ground.**
+  // Parts one to four read the page's own today, and part three asks the
+  // corner at five degrees of skyline on that same today. At 67.9°N in late
+  // November the sun never clears five degrees, so the corner drew its dark
+  // branch, the figure part three waits for never came, and the suite died
+  // on a timeout about a page that was right. From 2026-12-11 the flat
+  // horizon goes dark there too, and part one would have followed. Day 69's
+  // *a place typed beside a page that reckons today is today's weather*,
+  // with the place asked of `STANDING` and the date still borrowed from the
+  // week: Day 90 mended it in step-band.js and this file had the same shape.
+  //
+  // So the date is asked of the instrument, as step-band.js asks it: the
+  // nearest day from the standing place's today on which the standing
+  // ground has a rising point and a step, on the open horizon and at five
+  // degrees of skyline both. Every page in parts one to four is pinned to
+  // it. On an ordinary morning at an ordinary latitude that day is today,
+  // and nothing changes. Parts five and six do not depend on a lit day and
+  // keep the real clock.
+  const Desk = require('../reckoning/reckoning.js');
+  const DESK_HERE = Desk.STANDING.place;
+  function litFor(d) {
+    try {
+      const r = Desk.reckon(d, DESK_HERE);
+      if (!Number.isFinite(r.risingPointDegrees) || !Number.isFinite(r.risingPointStepArcminutes)) return false;
+      for (const sky of [0, 5]) {
+        const c = Desk.corner(d, DESK_HERE, { obstructionDegrees: sky, eyeHeightMetres: 0 });
+        if (c.never || !Number.isFinite(c.risingPointDegrees) ||
+          !Number.isFinite(c.risingPointStepArcminutes)) return false;
+      }
+      return true;
+    } catch (error) { return null; }
+  }
+  const deskToday = Desk.todayAt(DESK_HERE.zone);
+  let PINNED = null;
+  const pinThrew = [];
+  for (let k = 0; k <= 400 && PINNED === null; k += 1) {
+    const d = new Date(Date.parse(deskToday + 'T00:00:00Z') + k * 86400000).toISOString().slice(0, 10);
+    const lit = litFor(d);
+    if (lit === null) pinThrew.push(d);
+    else if (lit) PINNED = d;
+  }
+  check(PINNED !== null && pinThrew.length === 0,
+    `the instrument finds a day within 400 on which ${DESK_HERE.name} has a rising point and a step ` +
+    `at both skylines (${PINNED}${PINNED === deskToday ? ', which is today' : ', not today'})` +
+    (pinThrew.length ? ` — but it threw on ${pinThrew.join(', ')}` : ''));
+  async function pinnedPage() {
+    const p = await browser.newPage({ viewport: { width: 390, height: 900 } });
+    // Midday UTC is the same civil date in every zone within ±11h; the page's
+    // own today is asserted below rather than trusted.
+    if (PINNED !== null) await p.clock.setFixedTime(new Date(PINNED + 'T12:00:00Z'));
+    return p;
+  }
+
   // ---- Part one: the two roads to one bearing -------------------------
-  const page = await browser.newPage({ viewport: { width: 390, height: 900 } });
+  const page = await pinnedPage();
   await page.goto(`${URL}reckoning/`, { waitUntil: 'networkidle' });
   await page.waitForSelector('#rising-figures dt');
 
   const today = await page.evaluate(() => document.querySelector('#today-figures dd').textContent.trim());
+  check(today === PINNED, `the page's own today is the day asked of the instrument (${today})`);
   const both = await bothFormulas(page, today);
 
   check(both.risePublished !== null, `the rising point exists for ${today} (${both.risePublished?.toFixed(3)}°)`);
@@ -364,7 +420,7 @@ async function cornerWith(page, skylineDegrees, ground) {
   // flat-plain bearing. This is the fault that puts a mark on the wrong
   // tree, and nothing else on the page would look wrong.
   async function sabotaged(find, replace) {
-    const p = await browser.newPage({ viewport: { width: 390, height: 900 } });
+    const p = await pinnedPage();
     let landed = false;
     await p.route('**/reckoning.js*', async (route) => {
       const res = await route.fetch();

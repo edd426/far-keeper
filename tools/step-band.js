@@ -138,9 +138,25 @@ async function bandText(page) {
     });
 
   // ---- 4. Forged outside the band: it must speak, and say the right things ----
-  await withStanding(page, { name: 'Testbed', latitude: 75, longitude: 0, zone: 'Etc/UTC' },
-    async (landed) => {
-      check(landed, 'the outside-the-band forgery landed in the served module');
+  //
+  // Day 113. This case forged the place and left the date to the clock, the
+  // same fault Day 90 mended in 4b and left standing here, one case up: 75°N
+  // has no sunrise from early November to February, so on those mornings the
+  // room correctly drew no step and the hedge was never reached. Red on the
+  // real tower since about 2026-11-04, and nothing looked until the move
+  // rehearsal of the twenty-fourth. The date is asked of the instrument now,
+  // by the same `nearest` 4b uses: the nearest day from today on which 75°N
+  // has a rising point and a step.
+  const TESTBED_75 = { name: 'Testbed', latitude: 75, longitude: 0, zone: 'Etc/UTC' };
+  const lit75 = nearest(TESTBED_75, 'lit');
+  check(lit75.threw.length === 0 && !!lit75.date,
+    'the instrument finds a day within 400 on which 75°N has a rising point and a step' +
+      (lit75.date ? ' (' + lit75.date + ')' : ''),
+    lit75.threw.length ? 'threw on ' + lit75.threw.join(', ') : 'no such day');
+  if (lit75.date) await onDate(TESTBED_75, lit75.date,
+    async (page, landed, pageToday) => {
+      check(landed && pageToday === lit75.date,
+        'the outside-the-band forgery landed in the served module, the page reading ' + pageToday);
       const b = await bandText(page);
       check(b && !b.hidden && b.text.length > 0,
         'outside the band the hedge speaks');

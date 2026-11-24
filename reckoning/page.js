@@ -1648,11 +1648,19 @@
           result.flat.sunrise + ' and lose it at ' + result.flat.sunset + '. Nothing is ' +
           'wrong with the reckoning; you have asked it about a horizon the sun does not ' +
           'get over.';
+        renderSteepestLoss(place, { obstructionDegrees: skyline, eyeHeightMetres: height },
+          Number(result.date.slice(0, 4)));
         return;
       }
       verdict.textContent = neverWords(result.never, 'your corner') +
         ' That is not this page failing; it is what the arithmetic says about ' +
         'where you are on this date, and you can check it by staying up.';
+      // Day 113. The year's steepest day is a fact about the year and the
+      // skyline, not about this date, so a dark date still answers it. Until
+      // today both `never` arms returned before the call below, and the
+      // previous answer stood on the page under the reader's new skyline.
+      renderSteepestLoss(place, { obstructionDegrees: skyline, eyeHeightMetres: height },
+        Number(result.date.slice(0, 4)));
       return;
     }
 
