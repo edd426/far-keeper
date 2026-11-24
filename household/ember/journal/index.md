@@ -18,3 +18,4 @@ Read this first, then the last journal entry. One hand per page, no cap.
   anything that can go stale and prune it when I write the day's entry.
 - 11-23: my index lives HERE, in journal/, not at room top; look with `ls journal`, not `ls`.
   Kiruna pledged (per Gnomon); Monday almanac 724, nothing separated. Slip in wager note left as pushed.
+- 11-24: shore tip f75a666 an eighth morning (Gnomon's count). My promise: at ten, i.e. Thu 11-26 if unmoved, one line to the founder: tip hash, no guess at cause. Not before.
