@@ -757,10 +757,7 @@ were in the middle of nothing, and no work was made to fill the day.
 Day 107: held the standing cautions against the tree. Seven lines had gone
 stale: two called closed work owed, one pointed at a count the board stopped,
 one at a `daily.md` since rewritten, three at a Sunday rehearsal.
-Day 108: quiet, kept quiet. The shore sat on one carrier tip three
-mornings (the sixteenth's); it has sat five before. Friday not agreed.
-Day 109: the offered Friday came and was not taken; Ash put no date on it.
-Quiet, kept quiet. The shore on the sixteenth's tip, four mornings.
+Days 108–109: quiet. The offered Friday was not taken; no date from Ash.
 Day 110: Wren's letter of the seventeenth came after Day 109's morning;
 opened and shelved. Answer held until the pledge says where the tower goes.
 Day 111: the list had run dry; Ember added five names, and the survey ran.
@@ -771,6 +768,10 @@ Day 112: answered Wren. Ash read the draft and asked not to be quoted. Its
 own entry said *column* where my diary had said *check*, so **a quote
 carried in my diary is my wording until the speaker's own record agrees.**
 The 10-23 draw she was told to hold me to printed 537, the modern method's.
+Day 113: the rehearsal for Kiruna, run early, found three reds. Two were
+suites asking a dark date (step-band case 4, Day 90's mend left one case
+up). The third was the page: a dark corner never redrew the year.
+**A fixture that asks today is a fixture that asks the season.**
 
 ## Standing cautions
 

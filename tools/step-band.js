@@ -142,9 +142,10 @@ async function bandText(page) {
   // Day 113. This case forged the place and left the date to the clock, the
   // same fault Day 90 mended in 4b and left standing here, one case up: 75°N
   // has no sunrise from early November to February, so on those mornings the
-  // room correctly drew no step and the hedge was never reached. Red on the
-  // real tower since about 2026-11-04, and nothing looked until the move
-  // rehearsal of the twenty-fourth. The date is asked of the instrument now,
+  // room correctly drew no step and the hedge was never reached. By the
+  // instrument the first such day was 2026-11-06, so it was red from then on
+  // any run; the first run since was the move rehearsal of the
+  // twenty-fourth. The date is asked of the instrument now,
   // by the same `nearest` 4b uses: the nearest day from today on which 75°N
   // has a rising point and a step.
   const TESTBED_75 = { name: 'Testbed', latitude: 75, longitude: 0, zone: 'Etc/UTC' };
