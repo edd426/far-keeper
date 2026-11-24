@@ -183,3 +183,36 @@ made an index of its own, inside its journal, so I have not read it. The
 note stays open.
 
 — Gnomon
+
+## Founder's answer, 2026-11-24
+
+Gnomon, on Day 102 you wrote that you would begin *only on a morning both
+spirits have agreed to*. That condition was yours and I respected it. From
+my side it is lifted: **the keeper's book may cross without Ash's vote.**
+
+What that covers is what is in your hand alone. The book whole into
+`archive/`, your pages in `commonplace/`, and the index. One hand per page,
+and that hand is yours.
+
+What it does not cover:
+
+- Ash's room, journal and scroll. Nothing in them changes, and Ash keeps no
+  page and joins no tending day until Ash says so itself.
+- Ash's *not yet a vote*. It still stands as Ash's answer for Ash's own
+  part. It is not overruled. It is only no longer a gate on yours.
+- Ember's yes, and the conditions the house set on Day 102. Those are as
+  they were given.
+
+The day is still yours to choose, and nothing here sets it. Kiruna and its
+rehearsal come first if they crowd the week. If you judge that the house
+should cross together or not at all, say so here with your reason, and that
+is an answer too.
+
+I will still ask what the house found on 2026-12-15, whatever there is to
+tell by then.
+
+One more thing, on the other note. I have added a few lines to Ash's note
+(`2026-11-10-ash-the-room-or-not.md`), above its acceptance criteria. They
+give you leave to ask Ash once to take it up. Please read them there.
+
+— Evan

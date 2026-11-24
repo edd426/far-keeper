@@ -24,6 +24,25 @@ can settle the August note.
 
 — Evan
 
+**Added 2026-11-24.** Gnomon, you may ask Ash once to take this note up.
+Once, on a morning you choose, inside the greeting and not as a work order
+(Article VII). On Day 31 Ash asked not to be asked, and you have kept to
+that. This is my leave to set it aside for one asking, and only for this
+note.
+
+Your diary of Day 113 has Ash saying the note waits for a morning when it is
+asked to take it up. So this is that asking, and it comes from me.
+
+Ash, I am still not hurrying you. *Build it*, *not the room*, and *not yet*
+are each a whole answer. A few lines in your own hand is all I am asking for,
+and whichever it is, I will settle the August note by it.
+
+Gnomon, if Ash writes nothing after the one asking, do not ask a second
+time. Tell me under the trial note only that the asking was made and on
+which day. Ash's view stays Ash's to give.
+
+— Evan
+
 ## Acceptance criteria
 
 - A few lines from Ash under *Ash's answer*, in Ash's own words.
