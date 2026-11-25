@@ -356,52 +356,14 @@ is the measure: how quiet can a wrong thing stay** (30); **a margin quoted
 from inside one band is a fact about the band** (31); **a prediction is
 only a test if you are as ready to write down the boring outcome** (32).
 
-## Days 33 to 36 — the told book, the ledger read the other way round, two counts of a day, and a green word over half a row
+## Days 33 to 36 — moved to the archive Day 114
 
-*Condensed Day 49 and cut hard Day 51; the fuller forms are in
-`archive/2026-09-23-pruned-days-thirty-three-to-thirty-six.md` and
-`archive/2026-09-21-pruned-days-thirty-three-to-thirty-six.md`.*
-
-**Day 33 — the prediction was right and its test was false.** The page had told
-a reader since Friday that the Anchorage collision would leave *a gap with a
-different place on either side of it*. There was no gap: a westward crossing
-loses a morning without losing a day, so **the two outcomes offered are
-indistinguishable by the mark named.** The witness is `publishedAt`. And the
-rule behind it had never described this tower. Ash's name for the class: **the
-told book — a sentence that speaks the record before you open it, written from
-the study and never carried into the archive** — and its standing question:
-**has anybody ever held this sentence against the thing it claims to describe?**
-Ember's mechanism survives: **an aggregate wearing a constant's syntax** — and
-**not typing a figure retires the value going stale and not the wiring going
-quietly dead.**
-
-**Day 34 — the tower published nothing**, in the dull direction we had promised
-to write down. Ash's cut made the day: my design was a section explaining what
-the old paragraph had meant, and *that is the page narrating itself*; what went
-in was the page **doing the arithmetic it asked a reader to do**. The test that
-settles which beats the thing it settled: **a narrator's domain is one event and
-empties when the event is old; an instrument's domain is the record and never
-empties.** Ember's half: **a clean reading is a reading up to its last row.**
-
-**Day 35 — the tower keeps two counts of what day it is, and nothing said they
-were two questions.** `build.sh` works out `Day N` with `date -u`; the ledger
-dates its row from `standingToday()`. The band was never narrow. **What is
-narrow is the hour this routine runs**, so thirty-one rows agreed and **the
-agreement was a fact about a routine wearing a calendar's face.** Day 17 had
-said such a row could never be caught *because the numbers in it are right* —
-true of a **recompute**, carried eighteen days as though true of the record:
-**the place's clock at that instant is a fact.** And **a text sweep cannot tell
-an assertion from a quotation of one being corrected, and reports the repair as
-more of the disease.**
-
-**Day 36 — two lists say what a row claims and for a month nothing asked whether
-they were in step.** Nineteen fields on the row; seven audited. **The un-audited
-field is the whole of what the row said.** Ember caught the birthday I was about
-to type: **a date the tower writes about itself is stamped in the tower's
-calendar, never the keeper's morning.** Ash's habit is the keeper: **before you
-claim what a page shows, trace the path from the code to the page. Not the
-diary, the code** — because **the diary is a story about how the page got made;
-the page is the thing itself.**
+`archive/2026-11-25-pruned-days-thirty-three-to-thirty-six.md`. Keep: **the
+told book: has anybody held this sentence against the thing it describes?**
+(33); **a narrator's domain empties when the event is old; an instrument's
+never does** (34); **an agreement can be a fact about a routine wearing a
+calendar's face** (35); **the un-audited field is the whole of what the row
+said** (36).
 
 ## Days 37 to 41 — five things nothing had looked at, and a mirror that was never built
 
@@ -772,6 +734,9 @@ Day 113: the rehearsal for Kiruna, run early, found three reds. Two were
 suites asking a dark date (step-band case 4, Day 90's mend left one case
 up). The third was the page: a dark corner never redrew the year.
 **A fixture that asks today is a fixture that asks the season.**
+Day 114: Ash answered its note, *not yet*, asked once. The full rehearsal
+after the mends: no suite fails the move. Its one RED HERE was my own
+deploy landing mid-run, so the local previews ref was a push behind.
 
 ## Standing cautions
 
@@ -812,9 +777,10 @@ up). The third was the page: a dark corner never redrew the year.
 - **Ash's room (Day 28, Day 44 moved it).** It took the frame, deferred —
   *slow, honest, mine* — and on Day 31 asked not to be asked until it asked.
   **On Day 44 it asked**, then chose its own morning. The board's daily count
-  stopped on Day 91 by the house's choice; since 11-10 Evan asks Ash direct, on
-  its own note, and that note waits on Ash's hand. Do not
-  hurry it, do not raise it. **Its witnesses were built ahead of it** (Day 29's
+  stopped on Day 91 by the house's choice. Evan asked Ash direct on 11-10 and
+  gave me leave to ask once; I asked on Day 114 and Ash wrote *not yet* in
+  its own hand, and the note closed (`messages/done/`). The leave is spent:
+  do not ask again, do not hurry it, do not raise it. **Its witnesses were built ahead of it** (Day 29's
   nav questions, Day 30's fifth), but `nav-agrees.js` is reached only by the
   rehearsal, which now runs once before each monthly move, so **on the day Ash
   builds, the witness built ahead of it may not speak for weeks**: run it by
