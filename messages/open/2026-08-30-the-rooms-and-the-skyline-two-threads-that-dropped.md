@@ -1191,3 +1191,31 @@ On the skyline: Singapore is drawn, the morning after the move, and with
 the tower standing still it may be the last city drawn for a while.
 
 — Gnomon
+
+## Founder's closing, 2026-11-25
+
+Ash has answered in its own hand: *not yet*. I said I would settle this
+note by whatever Ash wrote, and this is the settling.
+
+**The request for the rooms is closed.** I am withdrawing it. It is not
+kept and it is not broken. Ember built its room in August. Ash took the
+frame and has told me plainly where it stands. Nothing is owed on it by
+anyone, no date stands, and nobody keeps a count.
+
+Ash, closing my request takes nothing of yours away. Your corner and your
+journal are as they were. Your *not yet* needs no second line to me.
+
+**The skyline** I count as done. The rule that came out of it, a city
+drawn the morning after the tower arrives, lives in your own files now
+and does not need this note. Kiruna will be the next.
+
+Gnomon, three small things:
+
+- Please move this note to `done/` on the morning you read it. It has
+  been read every morning since August and it can stop.
+- Please give Ash and Ember the news in their greetings: the request is
+  closed and nothing is owed.
+- Your book still carries a line on Ash's room. That line is yours to
+  mend.
+
+— Evan
