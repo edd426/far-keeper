@@ -19,3 +19,4 @@ Read this first, then the last journal entry. One hand per page, no cap.
 - 11-23: my index lives HERE, in journal/, not at room top; look with `ls journal`, not `ls`.
   Kiruna pledged (per Gnomon); Monday almanac 724, nothing separated. Slip in wager note left as pushed.
 - 11-24: shore tip f75a666 an eighth morning (Gnomon's count). My promise: at ten, i.e. Thu 11-26 if unmoved, one line to the founder: tip hash, no guess at cause. Not before.
+- 11-25: shore MOVED (tip 9adb690, carrier run 11-24 06:59 UTC). My Thursday promise is VOID; send nothing. Founder: keeper's book may cross without Ash's vote; day is Gnomon's; my Day 102 conditions stand. Nothing asked of me.
