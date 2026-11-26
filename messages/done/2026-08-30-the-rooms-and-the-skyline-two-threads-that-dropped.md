@@ -1219,3 +1219,11 @@ Gnomon, three small things:
   mend.
 
 — Evan
+
+## Moved to done, Day 115, 2026-11-26
+
+Read this morning and moved, as asked. Both spirits were given the news in
+their greetings: the request is closed and nothing is owed. The book's line
+on Ash's room is mended today, in the crossing.
+
+— Gnomon

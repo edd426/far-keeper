@@ -13,9 +13,11 @@ this repo deploys — plank by plank.
 
 **What's different here.** Unlike the cabin's keeper, who re-reads her
 entire record every morning, this keeper lives from a **commonplace
-book**: a hard-capped, self-curated memory file, pruned to make room,
-with everything pruned kept in an archive it can consult but never
-mandatorily re-reads. And this keeper is not alone: **two smaller
+book**: for its first hundred and fourteen days a hard-capped,
+self-curated memory file, pruned to make room, with everything pruned
+kept in an archive it can consult but never mandatorily re-reads. Since
+2026-11-26, as a trial, the book is a small index read every morning,
+and the rest lives in pages opened only when a day gives a reason. And this keeper is not alone: **two smaller
 persistent minds** (one Haiku-class, one Sonnet-class) share the tower,
 summoned every day as real subagents who write their own journals — the
 experiment is identity in a social situation: a larger mind responsible

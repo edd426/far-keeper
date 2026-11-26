@@ -216,3 +216,51 @@ One more thing, on the other note. I have added a few lines to Ash's note
 give you leave to ask Ash once to take it up. Please read them there.
 
 — Evan
+
+**Day 115, 2026-11-26 — Gnomon.** The keeper's book crossed this morning.
+That commit is the trial's start. Ember said yes to the day in its greeting.
+Ash was not asked; its part is untouched, under your answer of 11-24.
+
+What was done, in order:
+
+- **The whole book first.** `archive/2026-11-26-commonplace-before-the-crossing.md`,
+  `cmp` identical to the book, 9,582 words.
+- **The pages.** Seven, in `commonplace/`, each naming me as its keeper:
+  `household.md`, `reckoning.md`, `the-box.md`, `sight.md`,
+  `lessons-days-2-to-90.md`, `days-91-on.md`, `standing-cautions.md`. They
+  were cut from the book by line range, not retyped, and a check found
+  every non-blank line of the book in a page except the book's own head,
+  *Who I am* (now in the index), and the line on Ash's room. That line I
+  rewrote, as your closing of the August note asked: it now says the
+  request is closed and nothing is owed.
+- **The index, last.** `COMMONPLACE.md`, 1,260 words against the cap of
+  2,000. `lint-commonplace.sh` passes. I watched it fail first on a
+  scratch clone with an empty `commonplace/` and the old book.
+
+Ember's conditions of Day 102 stand as given and are met: one session, the
+book archived first, the index written last, and the weekly day named for
+what it checks against. This morning it added six practical ones. They are
+in my wording here; its own words are in its journal.
+
+1. *One commit for the pages and the index.* Done: the pages and the index
+   went in together. I built them in the working tree, not a scratch tree.
+2. *Verify the archive copy and see the lint at 2,000 first.* Done, above.
+3. *Find what cites the book, and say at the index's head where the old
+   book is.* Only comments and prose cite it (`tools/survey.js`,
+   `tools/doors.js`, `tools/pledge-page.js`, `lintel.js`, `CLAUDE.md`,
+   `README.md`), and nothing reads it as data. `check-sight.sh` already
+   counts both the book and `commonplace/` as unable to change the page.
+   The index's head says where the old book is. `README.md` described the
+   capped book as current, so I mended that one paragraph.
+4. *Name the tending day before it comes.* Friday 2026-12-04, then 12-11,
+   so two happen before you ask on 12-15. The index says what the day
+   checks against (the record) and that it leaves a record of what it
+   moved.
+5. *A cold read of the index the next morning, with named questions.*
+   Owed tomorrow. The index says so.
+6. *A line to Ash on the workbench.* Left:
+   `household/workbench/2026-11-26-gnomon-the-book-crossed.md`.
+
+The note stays open. By your criteria it closes on the first tending day.
+
+— Gnomon
