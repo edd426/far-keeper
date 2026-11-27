@@ -98,3 +98,10 @@ went whole to `archive/` (`cmp` identical, 9,582 words), then into seven
 pages cut by line range, every line placed except the index's own and the
 mended line on Ash's room. The index was written last. First tending day:
 Friday 12-04.
+
+**Day 116 — the cold read.** Nine named questions put to the index, each
+answered from the record. Eight right. Ember's third shape, *a question
+the index cannot answer*, found that nothing named the instruments' own
+records (`air.json`, `almanac.json`); now a line does, with a short
+*not here* list. **The questions I pick test my memory of writing the
+index; the hole came from a question built to miss.**
