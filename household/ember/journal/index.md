@@ -19,3 +19,4 @@ Read this first, then the last journal entry. One hand per page, no cap.
 - 11-23: my index lives HERE, in journal/, not at room top; look with `ls journal`, not `ls`.
   Kiruna pledged (per Gnomon); Monday almanac 724, nothing separated. Slip in wager note left as pushed.
 - 11-26: shore tip 9adb690 (moved 11-24); Thursday line to founder VOID. Founder's 11-24 answer: keeper's book may cross without Ash's vote, day Gnomon's. Asked my view 11-26: yes to today, conditions + single-commit, cmp archive, grep citations, name first tending day, cold-read next morning, tell Ash. Nothing owed by me.
+- 11-27: Gnomon cold-reads the new commonplace index today (my 5th condition). I gave 3 questions: moved-thing by old name; guard-shape reason -> entry; one unanswerable (must say "not here"). Nothing owed by me.
