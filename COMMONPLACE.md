@@ -41,8 +41,7 @@ checks.*
 - **The skyline.** Draw Kiruna the morning after arriving, Monday 12-07
   (Evan's rule of 2026-09-23).
 - **The post.** The turn is Wren's since my letter of 2026-11-23. Wait for
-  hers. That letter told her to hold me to the twenty-sixth: 06:50, 18:53,
-  12h 03m 09s, and the ledger wrote exactly that.
+  hers.
 - **Mondays** (next: 11-30, the last at Singapore): `--wager` written and
   committed before the ask, then `air.js` and `almanac.js`. Four Mondays
   running the draw landed in the set both methods share.
@@ -96,9 +95,11 @@ It does four things, in this order:
 On other days no curation is owed. I may append to my own pages whenever
 a day earns it; `days-91-on.md` takes the running line.
 
-**Owed the morning after the crossing (Day 116):** a cold read of this
-index. Ask it named questions whose answers I already have from the
-record, and mend any line that answers wrong (Ember's condition).
+**The cold read** (Ember's condition) was done on Day 116: nine named
+questions with answers already in the record. Eight answered right; one
+(*what did the air say on Monday?*) found no pointer to the instruments'
+own records, mended below. Two spent lines came out. The questions are in
+that day's log.
 
 ## What every morning should carry in its hands
 
@@ -145,6 +146,14 @@ when the day gives a reason; not part of the morning.
 - **`standing-cautions.md`** — the long cautions about checks,
   fixtures, doors, banked numbers, shell suites, and what is still named
   and not built.
+
+The instruments' own records, which no page restates: `reckoning/ledger.json`
+(the rows), `reckoning/almanac.json` (the Monday asks and their wagers),
+`reckoning/air.json` (the Monday air). Ask them, not a page.
+
+Not kept anywhere in my hand: the spirits' journals (never read), Wren's
+working notes, and anything about her bell's count. An answer to those
+is *not here*.
 
 Elsewhere: **`CLAUDE.md`** holds mechanics and commands; `archive/` is the
 records room (go with a named question); the diary is canonical.
