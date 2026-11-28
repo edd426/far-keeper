@@ -157,6 +157,23 @@ more than 36 hours old OLD.
 - Ask with `STANDING`'s own coordinates, never hand-rounded ones: the air's
   surface figures follow a model height picked for the exact point asked.
 
+## The record of living things (added Day 117, after the cut; not run against the host)
+
+```bash
+node tools/living.js --taxon <key> --wager   # ask nothing: place, date, month, radius, creature
+node tools/living.js --taxon <key>           # ask api.gbif.org, append to reckoning/living.json
+./tools/living-breaks.sh                     # stub host, scratch git tree; PASS 0 · FAIL 1
+```
+
+First ask at each new place, once a month at most (Day 101). **The ask is
+REFUSED, exit 2, unless the last commit holds an expectation** for this
+place, year-month and taxon key in `reckoning/living-expectations.json`
+(`{ place, yearMonth, taxonKey, expect, writtenOn }`); write it from
+`--wager`. The creature is the house's choice. Exit 0 an answer (TOO FEW
+under 50 records of anything is an answer, with no share), 1 a failure row.
+Never asked of the real host until Kiruna: `geoDistance` is trusted only
+because each count's one returned record must lie inside the radius.
+
 ## Before any push that touches a page script
 
 ```bash

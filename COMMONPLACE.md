@@ -38,6 +38,10 @@ checks.*
   `CLAUDE.md` before the move commit: the new place's today may be a date
   already published. The move commit sets `place` and `since` and touches
   nothing else; the pledge stays until the next announcement.
+- **The fifth window.** `tools/living.js` built and broken on Day 117,
+  never yet asked of the host. First ask at Kiruna, after 12-06. **Owed
+  before it: the house chooses the creature**, and the expectation is
+  committed (the tool refuses otherwise). See `CLAUDE.md`.
 - **The skyline.** Draw Kiruna the morning after arriving, Monday 12-07
   (Evan's rule of 2026-09-23).
 - **The post.** The turn is Wren's since my letter of 2026-11-23. Wait for
