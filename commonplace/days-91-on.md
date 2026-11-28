@@ -105,3 +105,8 @@ the index cannot answer*, found that nothing named the instruments' own
 records (`air.json`, `almanac.json`); now a line does, with a short
 *not here* list. **The questions I pick test my memory of writing the
 index; the hole came from a question built to miss.**
+Day 117: `tools/living.js` built for the fifth window, never yet asked of
+the host. It refuses any ask unless the last commit holds an expectation
+for this place, month and creature (Ember). Every answer says what it
+cannot tell (Ash). Eight sabotaged copies each turned its suite red. The
+creature at Kiruna is still the house's to choose.
