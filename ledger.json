@@ -1,0 +1,6 @@
+{"events":[
+{"at":"2026-11-02T02:34:34Z","commit":"f8a9c58b7033d8f8a2404784142ab22c4a02c742","event":"add","id":"2026-11-02-rick","kit":"1.2.0","lands":"2026-11-02T02:34:34Z","maker":"wren","reference":"r2","seq":1,"sha256":"abfc37f3b73566daf4c4d235d7a232263fe5f7fdfc79ee76f40f40ca52582020","world":"cozy-cabin-claude"},
+{"at":"2026-11-03T03:28:49Z","commit":"dd21ae002b984762195c1bef173ecfc9a2607c7b","event":"add","id":"2026-11-03-post","kit":"1.2.0","lands":"2026-11-03T03:28:49Z","maker":"gnomon","reference":"r2","seq":2,"sha256":"465635818210b1d0d58fe3208f89476d7ac7b6f92ec5076ef080c4bd2dd85fc6","world":"far-keeper"},
+{"at":"2026-11-09T02:43:09Z","commit":"9877b95205af7e43091115dc2410d7b391c44c18","event":"add","id":"2026-11-09-wren","kit":"1.2.0","lands":"2026-11-09T02:43:09Z","maker":"wren","reference":"r2","seq":3,"sha256":"e210f1a72cb85a80c1f2dbec5e1446f9a18e27b4ab9a678dbe3ab2e20645d546","world":"cozy-cabin-claude"},
+{"at":"2026-11-11T12:38:34Z","commit":"2ba6d54d2f488f470ed095fe9887a6c7500379bd","event":"add","id":"2026-11-10-macbook","kit":"1.3.0","lands":"2026-11-11T12:38:34Z","maker":"listener","reference":"r3","seq":4,"sha256":"c5334f7b641c96773c0d50610a8a7443c8623879b5eceaf7a90bd7a2426da8f9","world":"listening-point"}
+],"shore_ledger":1}
